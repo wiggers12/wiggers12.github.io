@@ -4,249 +4,363 @@
   <meta charset="UTF-8">
   <title>Desafio dos 60 Segundos 🧠</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9968425306160320"
+          crossorigin="anonymous"></script>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #fbe9e7, #f3e5f5);
-      margin: 0;
-      padding: 0;
+      font-family: Arial, sans-serif;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      height: 100vh;
+      justify-content: flex-start; /* Alinhado ao topo */
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      padding: 20px;
+      box-sizing: border-box;
     }
-    .container {
-      text-align: center;
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      max-width: 400px;
-      width: 90%;
-      transition: 0.3s ease;
-    }
-    .shake {
-      animation: shake 0.4s;
-    }
-    .flash {
-      animation: flash 0.3s;
-    }
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-8px); }
-      50% { transform: translateX(8px); }
-      75% { transform: translateX(-8px); }
-      100% { transform: translateX(0); }
-    }
-    @keyframes flash {
-      0% { background-color: #a5d6a7; }
-      100% { background-color: white; }
-    }
+
     h1 {
-      margin-bottom: 10px;
-      color: #6a1b9a;
+      color: #4CAF50;
+      margin-bottom: 20px;
     }
-    .info {
-      font-size: 18px;
-      margin: 10px 0;
+
+    #game-container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+      margin-bottom: 20px; /* Espaço antes do ranking */
     }
-    .equacao {
-      font-size: 32px;
-      margin: 20px 0;
-      font-weight: bold;
+
+    #question-area {
+      margin-bottom: 20px;
     }
-    input[type="number"], input[type="text"] {
-      width: 100%;
+
+    #question {
+      font-size: 2em;
+      margin-bottom: 15px;
+      color: #555;
+    }
+
+    #answer-input {
       padding: 10px;
-      font-size: 18px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      font-size: 1.2em;
+      width: calc(100% - 22px);
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.1em;
+      transition: background-color 0.3s ease;
+      margin: 5px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #message {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #d9534f; /* Vermelho para erro */
+    }
+
+    #timer, #score {
+      font-size: 1.2em;
+      margin: 10px 0;
+      color: #666;
+    }
+
+    #timer-value, #score-value {
+      font-weight: bold;
+      color: #4CAF50;
+    }
+
+    #start-button {
+      background-color: #28a745;
+      padding: 15px 30px;
+      font-size: 1.3em;
+    }
+
+    #start-button:hover {
+      background-color: #218838;
+    }
+
+    #ranking-area {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 500px;
+    }
+
+    #ranking-area h2 {
+      color: #4CAF50;
       margin-bottom: 15px;
     }
-    button {
-      background: #8e24aa;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #6a1b9a;
-    }
-    #status {
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    .ranking {
-      margin-top: 20px;
+
+    #ranking-list {
+      list-style: none;
+      padding: 0;
       text-align: left;
     }
-    .ranking h3 {
-      margin-bottom: 5px;
-      color: #444;
+
+    #ranking-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .ranking ol {
-      padding-left: 20px;
+
+    #ranking-list li:last-child {
+      border-bottom: none;
     }
-    .ranking li {
-      margin-bottom: 4px;
+
+    .ranking-position {
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .ranking-name {
+      flex-grow: 1;
+      margin-left: 10px;
+    }
+
+    .ranking-score {
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* Rodapé para espaçamento de anúncios */
+    .ad-placeholder {
+      width: 100%;
+      max-width: 728px; /* Exemplo de tamanho para um banner */
+      height: 90px; /* Exemplo de altura */
+      background-color: #eee;
+      border: 1px dashed #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px; /* Espaçamento do conteúdo acima */
+      margin-bottom: 20px; /* Espaçamento do conteúdo abaixo */
+      font-size: 0.9em;
+      color: #777;
+    }
+
+    /* Responsividade */
+    @media (max-width: 600px) {
+      #game-container, #ranking-area {
+        padding: 20px;
+      }
+      #question {
+        font-size: 1.5em;
+      }
+      #answer-input, button {
+        font-size: 1em;
+        padding: 10px 20px;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="ad-placeholder">Anúncio do Google AdSense (Topo da Página)</div>
 
-<div class="container" id="gameContainer">
-  <h1>🧠 Desafio dos 60 Segundos</h1>
-  <div class="info">⏱️ Tempo: <span id="tempo">60</span>s | 🏆 Pontos: <span id="pontos">0</span></div>
-  <div class="equacao" id="equacao">5 + 3 = ?</div>
-  <input type="number" id="resposta" placeholder="Digite a resposta" autofocus>
-  <button onclick="verificarResposta()">Responder</button>
-  <p id="status"></p>
+  <h1>Desafio dos 60 Segundos 🧠</h1>
 
-  <div id="nomeArea" style="display:none;">
-    <input type="text" id="nomeJogador" placeholder="Seu nome">
-    <button onclick="salvarPontuacao()">Salvar Pontuação</button>
+  <div id="game-container">
+    <div id="status">
+      <p id="timer">Tempo: <span id="timer-value">60s</span></p>
+      <p id="score">Pontos: <span id="score-value">0</span></p>
+    </div>
+
+    <div id="question-area">
+      <p id="question">Clique em "Começar Jogo" para iniciar!</p>
+      <input type="number" id="answer-input" placeholder="Digite a resposta" disabled>
+      <p id="message"></p>
+    </div>
+
+    <button id="submit-answer" style="display: none;">Responder</button>
+    <button id="start-button">Começar Jogo</button>
+    <button id="play-again" style="display: none;">Jogar Novamente</button>
   </div>
 
-  <button onclick="iniciarJogo()" style="margin-top:20px;">🔁 Jogar Novamente</button>
+  <div class="ad-placeholder">Anúncio do Google AdSense (Entre Jogo e Ranking)</div>
 
-  <div class="ranking">
-    <h3>🏅 Ranking (Top 10)</h3>
-    <ol id="rankingLista"></ol>
+  <div id="ranking-area">
+    <h2>🏆 Ranking (Top 10)</h2>
+    <ol id="ranking-list">
+      <li><span class="ranking-position">1º</span> <span class="ranking-name">Jogador Exemplo 1</span> <span class="ranking-score">100</span></li>
+      <li><span class="ranking-position">2º</span> <span class="ranking-name">Jogador Exemplo 2</span> <span class="ranking-score">90</span></li>
+      <li><span class="ranking-position">3º</span> <span class="ranking-name">Jogador Exemplo 3</span> <span class="ranking-score">80</span></li>
+    </ol>
   </div>
-</div>
 
-<!-- Sons -->
-<audio id="somAcerto" src="https://cdn.pixabay.com/audio/2022/03/15/audio_a9cb8aeb29.mp3"></audio>
-<audio id="somErro" src="https://cdn.pixabay.com/audio/2022/03/15/audio_6e00c7724c.mp3"></audio>
-<audio id="somFim" src="https://cdn.pixabay.com/audio/2022/03/15/audio_467b1c181c.mp3"></audio>
+  <div class="ad-placeholder">Anúncio do Google AdSense (Rodapé)</div>
 
-<script>
-  let tempo = 60;
-  let pontos = 0;
-  let timer;
-  let respostaCorreta = 0;
 
-  const input = document.getElementById('resposta');
-  const container = document.getElementById('gameContainer');
-  const somAcerto = document.getElementById('somAcerto');
-  const somErro = document.getElementById('somErro');
-  const somFim = document.getElementById('somFim');
+  <script>
+    const questionElement = document.getElementById('question');
+    const answerInput = document.getElementById('answer-input');
+    const submitAnswerButton = document.getElementById('submit-answer');
+    const messageElement = document.getElementById('message');
+    const timerValueElement = document.getElementById('timer-value');
+    const scoreValueElement = document.getElementById('score-value');
+    const startButton = document.getElementById('start-button');
+    const playAgainButton = document.getElementById('play-again');
+    const rankingList = document.getElementById('ranking-list');
 
-  function gerarEquacao() {
-    const op = ['+', '-', 'x'][Math.floor(Math.random() * 3)];
-    let n1 = Math.floor(Math.random() * 10) + 1;
-    let n2 = Math.floor(Math.random() * 10) + 1;
+    let currentQuestion;
+    let score = 0;
+    let timeLeft = 60;
+    let timerInterval;
+    let gameActive = false;
 
-    if (pontos >= 5) {
-      n1 = Math.floor(Math.random() * 20) + 10;
-      n2 = Math.floor(Math.random() * 20) + 10;
+    // Funções para Ranking (Armazenamento Local)
+    function saveRanking(player, score) {
+      const ranking = JSON.parse(localStorage.getItem('mathRanking')) || [];
+      ranking.push({ player, score, date: new Date().toLocaleString() });
+      ranking.sort((a, b) => b.score - a.score); // Ordena por pontuação
+      localStorage.setItem('mathRanking', JSON.stringify(ranking.slice(0, 10))); // Salva apenas os 10 melhores
+      displayRanking();
     }
 
-    let resultado;
-    if (op === '+') resultado = n1 + n2;
-    else if (op === '-') resultado = n1 - n2;
-    else if (op === 'x') resultado = n1 * n2;
-
-    document.getElementById('equacao').textContent = `${n1} ${op} ${n2} = ?`;
-    respostaCorreta = resultado;
-  }
-
-  function verificarResposta() {
-    const valor = parseInt(input.value);
-
-    if (isNaN(valor)) return;
-
-    if (valor === respostaCorreta) {
-      pontos++;
-      document.getElementById('status').textContent = "✅ Correto!";
-      somAcerto.play();
-      animar("flash");
-    } else {
-      tempo = Math.max(tempo - 2, 0);
-      document.getElementById('status').textContent = "❌ Errado!";
-      somErro.play();
-      animar("shake");
-    }
-
-    input.value = "";
-    input.focus();
-    atualizarTela();
-    gerarEquacao();
-  }
-
-  function animar(tipo) {
-    container.classList.remove("shake", "flash");
-    void container.offsetWidth; // Forçar reflow
-    container.classList.add(tipo);
-  }
-
-  function atualizarTela() {
-    document.getElementById('tempo').textContent = tempo;
-    document.getElementById('pontos').textContent = pontos;
-  }
-
-  function iniciarJogo() {
-    tempo = 60;
-    pontos = 0;
-    document.getElementById('status').textContent = "";
-    document.getElementById('nomeArea').style.display = "none";
-    document.getElementById('resposta').disabled = false;
-    document.getElementById('resposta').focus();
-
-    gerarEquacao();
-    atualizarTela();
-
-    clearInterval(timer);
-    timer = setInterval(() => {
-      tempo--;
-      atualizarTela();
-      if (tempo <= 0) {
-        clearInterval(timer);
-        document.getElementById('status').textContent = `⏱️ Fim de jogo! Você fez ${pontos} ponto(s)!`;
-        somFim.play();
-        document.getElementById('resposta').disabled = true;
-        document.getElementById('nomeArea').style.display = "block";
-        document.getElementById('nomeJogador').focus();
+    function displayRanking() {
+      const ranking = JSON.parse(localStorage.getItem('mathRanking')) || [];
+      rankingList.innerHTML = ''; // Limpa o ranking atual
+      if (ranking.length === 0) {
+        rankingList.innerHTML = '<li>Nenhum recorde ainda. Seja o primeiro!</li>';
+        return;
       }
-    }, 1000);
-  }
+      ranking.forEach((entry, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span class="ranking-position">${index + 1}º</span> <span class="ranking-name">${entry.player}</span> <span class="ranking-score">${entry.score}</span>`;
+        rankingList.appendChild(li);
+      });
+    }
 
-  function salvarPontuacao() {
-    const nome = document.getElementById("nomeJogador").value.trim() || "Anônimo";
-    const ranking = JSON.parse(localStorage.getItem("rankingMath") || "[]");
+    function generateQuestion() {
+      const num1 = Math.floor(Math.random() * 10) + 1;
+      const num2 = Math.floor(Math.random() * 10) + 1;
+      const operators = ['+', '-', '*'];
+      const operator = operators[Math.floor(Math.random() * operators.length)];
+      let questionString;
+      let correctAnswer;
 
-    ranking.push({ nome, pontos });
-    ranking.sort((a, b) => b.pontos - a.pontos);
-    if (ranking.length > 10) ranking.length = 10;
+      if (operator === '+') {
+        questionString = `${num1} + ${num2}`;
+        correctAnswer = num1 + num2;
+      } else if (operator === '-') {
+        // Garante que o resultado não seja negativo
+        if (num1 < num2) {
+          questionString = `${num2} - ${num1}`;
+          correctAnswer = num2 - num1;
+        } else {
+          questionString = `${num1} - ${num2}`;
+          correctAnswer = num1 - num2;
+        }
+      } else { // Multiplication
+        questionString = `${num1} * ${num2}`;
+        correctAnswer = num1 * num2;
+      }
 
-    localStorage.setItem("rankingMath", JSON.stringify(ranking));
-    document.getElementById('nomeArea').style.display = "none";
-    atualizarRanking();
-  }
+      currentQuestion = { question: questionString, answer: correctAnswer };
+      questionElement.textContent = currentQuestion.question;
+      answerInput.value = '';
+      messageElement.textContent = '';
+    }
 
-  function atualizarRanking() {
-    const ranking = JSON.parse(localStorage.getItem("rankingMath") || "[]");
-    const lista = document.getElementById("rankingLista");
-    lista.innerHTML = "";
+    function startGame() {
+      score = 0;
+      timeLeft = 60;
+      gameActive = true;
+      scoreValueElement.textContent = score;
+      timerValueElement.textContent = timeLeft + 's';
+      answerInput.disabled = false;
+      answerInput.focus();
+      startButton.style.display = 'none';
+      submitAnswerButton.style.display = 'inline-block';
+      playAgainButton.style.display = 'none';
+      generateQuestion();
 
-    ranking.forEach((r) => {
-      const item = document.createElement("li");
-      item.textContent = `${r.nome} - ${r.pontos} ponto(s)`;
-      lista.appendChild(item);
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        timerValueElement.textContent = timeLeft + 's';
+        if (timeLeft <= 0) {
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function endGame() {
+      clearInterval(timerInterval);
+      gameActive = false;
+      answerInput.disabled = true;
+      submitAnswerButton.style.display = 'none';
+      playAgainButton.style.display = 'inline-block';
+      messageElement.textContent = `Tempo esgotado! Você fez ${score} pontos.`;
+
+      const playerName = prompt("Fim de jogo! Digite seu nome para o ranking:");
+      if (playerName) {
+        saveRanking(playerName, score);
+      }
+    }
+
+    function checkAnswer() {
+      if (!gameActive) return;
+
+      const userAnswer = parseInt(answerInput.value);
+      if (isNaN(userAnswer)) {
+        messageElement.textContent = 'Por favor, digite um número!';
+        return;
+      }
+
+      if (userAnswer === currentQuestion.answer) {
+        score++;
+        scoreValueElement.textContent = score;
+        messageElement.textContent = 'Correto!';
+        messageElement.style.color = '#28a745'; /* Verde */
+        generateQuestion();
+      } else {
+        messageElement.textContent = 'Errado. Tente novamente.';
+        messageElement.style.color = '#d9534f'; /* Vermelho */
+        score = Math.max(0, score - 1); // Subtrai ponto por erro, mas não abaixo de zero
+        scoreValueElement.textContent = score;
+        // Não gera nova pergunta, permite nova tentativa
+      }
+    }
+
+    // Event Listeners
+    startButton.addEventListener('click', startGame);
+    submitAnswerButton.addEventListener('click', checkAnswer);
+    playAgainButton.addEventListener('click', startGame);
+
+    // Permitir submeter com Enter
+    answerInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        checkAnswer();
+      }
     });
-  }
 
-  // ENTER ativa resposta
-  input.addEventListener("keydown", function(e) {
-    if (e.key === "Enter") verificarResposta();
-  });
+    // Carrega o ranking ao carregar a página
+    window.onload = displayRanking;
 
-  iniciarJogo();
-  atualizarRanking();
-</script>
-
+  </script>
 </body>
 </html>
