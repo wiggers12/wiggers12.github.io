@@ -149,8 +149,6 @@
     }
 
     /* Ad-placeholder CSS está aqui, mas os DIVs foram removidos do HTML */
-    /* Você pode manter esta regra de CSS se quiser reutilizar a classe no futuro,
-       mas ela não terá efeito até que os DIVs sejam adicionados de volta. */
     .ad-placeholder {
       width: 100%;
       max-width: 728px;
@@ -190,7 +188,7 @@
       apiKey: "AIzaSyA4PWRt-22S8HGc6GS1m-4Wa9hYsh5Zbo",
       authDomain: "desafio-dos-60-segundos.firebaseapp.com",
       projectId: "desafio-dos-60-segundos",
-      storageBucket: "desafio-dos-60-segundos.firebaseapp.com", // Corrigido para .firebaseapp.com
+      storageBucket: "desafio-dos-60-segundos.firebaseapp.com",
       messagingSenderId: "1054471364887",
       appId: "1:1054471364887:web:332b4f28814e9f5d0cd752",
       measurementId: "G-N4PWJ72YCJ"
@@ -279,14 +277,18 @@
                 return;
             }
 
-            snapshot.forEach((doc, index) => {
+            let rankingIndex = 0; // CORREÇÃO PARA O NaN: Inicializa um contador de ranking
+            snapshot.forEach((doc) => { // CORREÇÃO PARA O NaN: Remove 'index' do argumento aqui
                 const data = doc.data();
                 const li = document.createElement('li');
                 
-                // ADICIONADO PARA DEPURAR:
-                console.log(`Debug Ranking: index = ${index}, position = ${index + 1}, player = ${data.player}, score = ${data.score}`);
+                rankingIndex++; // CORREÇÃO PARA O NaN: Incrementa o contador para cada item
+
+                // console.log para depuração (pode deixar ou remover depois)
+                console.log(`Debug Ranking: index (manual) = ${rankingIndex - 1}, position = ${rankingIndex}º, player = ${data.player}, score = ${data.score}`); 
                 
-                li.innerHTML = `<span class="ranking-position">${index + 1}º</span> <span class="ranking-name">${data.player}</span> <span class="ranking-score">${data.score}</span>`;
+                // CORREÇÃO PARA O NaN: Usamos rankingIndex aqui
+                li.innerHTML = `<span class="ranking-position">${rankingIndex}º</span> <span class="ranking-name">${data.player}</span> <span class="ranking-score">${data.score}</span>`;
                 rankingList.appendChild(li);
             });
         } catch (error) {
