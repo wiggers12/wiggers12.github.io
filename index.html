@@ -178,6 +178,29 @@
       }
     }
   </style>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // SEU CÓDIGO firebaseConfig DO FIREBASE VAI AQUI:
+    const firebaseConfig = {
+      apiKey: "AIzaSyA4PWRt-22S8HGc6GS1m-4Wa9hYsh5Zbo",
+      authDomain: "desafio-dos-60-segundos.firebaseapp.com",
+      projectId: "desafio-dos-60-segundos",
+      storageBucket: "desafio-dos-60-segundos.firebaseapp.com", // Corrigido para .firebaseapp.com
+      messagingSenderId: "1054471364887",
+      appId: "1:1054471364887:web:332b4f28814e9f5d0cd752",
+      measurementId: "G-N4PWJ72YCJ"
+    };
+
+    // Inicialize o Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    // Obtenha uma referência ao serviço Firestore
+    const db = app.firestore(); 
+  </script>
+
 </head>
 <body>
   <div class="ad-placeholder">Anúncio do Google AdSense (Topo da Página)</div>
@@ -232,27 +255,50 @@
     let timerInterval;
     let gameActive = false;
 
-    // Funções para Ranking (Armazenamento Local)
+    // Funções para Ranking (AGORA COM FIREBASE)
     function saveRanking(player, score) {
-      const ranking = JSON.parse(localStorage.getItem('mathRanking')) || [];
-      ranking.push({ player, score, date: new Date().toLocaleString() });
-      ranking.sort((a, b) => b.score - a.score); // Ordena por pontuação
-      localStorage.setItem('mathRanking', JSON.stringify(ranking.slice(0, 10))); // Salva apenas os 10 melhores
-      displayRanking();
+        // Adiciona um novo documento à coleção 'ranking' no Firestore
+        db.collection("ranking").add({
+            player: player,
+            score: score,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp() // Para ordenar por data
+        })
+        .then((docRef) => {
+            console.log("Documento escrito com ID: ", docRef.id);
+            displayRanking(); // Atualiza o ranking depois de salvar
+        })
+        .catch((error) => {
+            console.error("Erro ao adicionar documento: ", error);
+            alert("Erro ao salvar pontuação: " + error.message); // Alerta o usuário em caso de erro
+        });
     }
 
-    function displayRanking() {
-      const ranking = JSON.parse(localStorage.getItem('mathRanking')) || [];
-      rankingList.innerHTML = ''; // Limpa o ranking atual
-      if (ranking.length === 0) {
-        rankingList.innerHTML = '<li>Nenhum recorde ainda. Seja o primeiro!</li>';
-        return;
-      }
-      ranking.forEach((entry, index) => {
-        const li = document.createElement('li');
-        li.innerHTML = `<span class="ranking-position">${index + 1}º</span> <span class="ranking-name">${entry.player}</span> <span class="ranking-score">${entry.score}</span>`;
-        rankingList.appendChild(li);
-      });
+    async function displayRanking() {
+        rankingList.innerHTML = '<li>Carregando ranking...</li>';
+        try {
+            // Pega os 10 melhores da coleção 'ranking', ordenados por pontuação decrescente
+            const snapshot = await db.collection("ranking")
+                                    .orderBy("score", "desc")
+                                    .limit(10)
+                                    .get();
+
+            rankingList.innerHTML = ''; // Limpa o ranking
+            if (snapshot.empty) {
+                rankingList.innerHTML = '<li>Nenhum recorde ainda. Seja o primeiro!</li>';
+                return;
+            }
+
+            snapshot.forEach((doc, index) => {
+                const data = doc.data();
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="ranking-position">${index + 1}º</span> <span class="ranking-name">${data.player}</span> <span class="ranking-score">${data.score}</span>`;
+                rankingList.appendChild(li);
+            });
+        } catch (error) {
+            console.error("Erro ao carregar ranking: ", error);
+            rankingList.innerHTML = '<li>Erro ao carregar ranking. Verifique as regras do Firebase.</li>';
+            alert("Erro ao carregar ranking. Verifique o console para mais detalhes."); // Alerta o usuário
+        }
     }
 
     function generateQuestion() {
