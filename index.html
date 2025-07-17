@@ -148,18 +148,20 @@
       color: #333;
     }
 
-    /* Rodapé para espaçamento de anúncios */
+    /* Ad-placeholder CSS está aqui, mas os DIVs foram removidos do HTML */
+    /* Você pode manter esta regra de CSS se quiser reutilizar a classe no futuro,
+       mas ela não terá efeito até que os DIVs sejam adicionados de volta. */
     .ad-placeholder {
       width: 100%;
-      max-width: 728px; /* Exemplo de tamanho para um banner */
-      height: 90px; /* Exemplo de altura */
+      max-width: 728px;
+      height: 90px;
       background-color: #eee;
       border: 1px dashed #ccc;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 20px; /* Espaçamento do conteúdo acima */
-      margin-bottom: 20px; /* Espaçamento do conteúdo abaixo */
+      margin-top: 20px;
+      margin-bottom: 20px;
       font-size: 0.9em;
       color: #777;
     }
@@ -180,7 +182,6 @@
   </style>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
   <script>
@@ -203,8 +204,6 @@
 
 </head>
 <body>
-  <div class="ad-placeholder">Anúncio do Google AdSense (Topo da Página)</div>
-
   <h1>Desafio dos 60 Segundos 🧠</h1>
 
   <div id="game-container">
@@ -224,16 +223,11 @@
     <button id="play-again" style="display: none;">Jogar Novamente</button>
   </div>
 
-  <div class="ad-placeholder">Anúncio do Google AdSense (Entre Jogo e Ranking)</div>
-
   <div id="ranking-area">
     <h2>🏆 Ranking (Top 10)</h2>
     <ol id="ranking-list">
-          </ol>
+    </ol>
   </div>
-
-  <div class="ad-placeholder">Anúncio do Google AdSense (Rodapé)</div>
-
 
   <script>
     const questionElement = document.getElementById('question');
@@ -275,9 +269,9 @@
         try {
             // Pega os 10 melhores da coleção 'ranking', ordenados por pontuação decrescente
             const snapshot = await db.collection("ranking")
-                                    .orderBy("score", "desc")
-                                    .limit(10)
-                                    .get();
+                                     .orderBy("score", "desc")
+                                     .limit(10)
+                                     .get();
 
             rankingList.innerHTML = ''; // Limpa o ranking
             if (snapshot.empty) {
@@ -288,6 +282,10 @@
             snapshot.forEach((doc, index) => {
                 const data = doc.data();
                 const li = document.createElement('li');
+                
+                // ADICIONADO PARA DEPURAR:
+                console.log(`Debug Ranking: index = ${index}, position = ${index + 1}, player = ${data.player}, score = ${data.score}`);
+                
                 li.innerHTML = `<span class="ranking-position">${index + 1}º</span> <span class="ranking-name">${data.player}</span> <span class="ranking-score">${data.score}</span>`;
                 rankingList.appendChild(li);
             });
