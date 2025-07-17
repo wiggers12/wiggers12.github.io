@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Desafio dos 60 Segundos 🧠</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #fbe9e7, #f3e5f5);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      text-align: center;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 90%;
+      transition: 0.3s ease;
+    }
+    .shake {
+      animation: shake 0.4s;
+    }
+    .flash {
+      animation: flash 0.3s;
+    }
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      50% { transform: translateX(8px); }
+      75% { transform: translateX(-8px); }
+      100% { transform: translateX(0); }
+    }
+    @keyframes flash {
+      0% { background-color: #a5d6a7; }
+      100% { background-color: white; }
+    }
+    h1 {
+      margin-bottom: 10px;
+      color: #6a1b9a;
+    }
+    .info {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    .equacao {
+      font-size: 32px;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+    input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+    }
+    button {
+      background: #8e24aa;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #6a1b9a;
+    }
+    #status {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .ranking {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .ranking h3 {
+      margin-bottom: 5px;
+      color: #444;
+    }
+    .ranking ol {
+      padding-left: 20px;
+    }
+    .ranking li {
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="gameContainer">
+  <h1>🧠 Desafio dos 60 Segundos</h1>
+  <div class="info">⏱️ Tempo: <span id="tempo">60</span>s | 🏆 Pontos: <span id="pontos">0</span></div>
+  <div class="equacao" id="equacao">5 + 3 = ?</div>
+  <input type="number" id="resposta" placeholder="Digite a resposta" autofocus>
+  <button onclick="verificarResposta()">Responder</button>
+  <p id="status"></p>
+
+  <div id="nomeArea" style="display:none;">
+    <input type="text" id="nomeJogador" placeholder="Seu nome">
+    <button onclick="salvarPontuacao()">Salvar Pontuação</button>
+  </div>
+
+  <button onclick="iniciarJogo()" style="margin-top:20px;">🔁 Jogar Novamente</button>
+
+  <div class="ranking">
+    <h3>🏅 Ranking (Top 10)</h3>
+    <ol id="rankingLista"></ol>
+  </div>
+</div>
+
+<!-- Sons -->
+<audio id="somAcerto" src="https://cdn.pixabay.com/audio/2022/03/15/audio_a9cb8aeb29.mp3"></audio>
+<audio id="somErro" src="https://cdn.pixabay.com/audio/2022/03/15/audio_6e00c7724c.mp3"></audio>
+<audio id="somFim" src="https://cdn.pixabay.com/audio/2022/03/15/audio_467b1c181c.mp3"></audio>
+
+<script>
+  let tempo = 60;
+  let pontos = 0;
+  let timer;
+  let respostaCorreta = 0;
+
+  const input = document.getElementById('resposta');
+  const container = document.getElementById('gameContainer');
+  const somAcerto = document.getElementById('somAcerto');
+  const somErro = document.getElementById('somErro');
+  const somFim = document.getElementById('somFim');
+
+  function gerarEquacao() {
+    const op = ['+', '-', 'x'][Math.floor(Math.random() * 3)];
+    let n1 = Math.floor(Math.random() * 10) + 1;
+    let n2 = Math.floor(Math.random() * 10) + 1;
+
+    if (pontos >= 5) {
+      n1 = Math.floor(Math.random() * 20) + 10;
+      n2 = Math.floor(Math.random() * 20) + 10;
+    }
+
+    let resultado;
+    if (op === '+') resultado = n1 + n2;
+    else if (op === '-') resultado = n1 - n2;
+    else if (op === 'x') resultado = n1 * n2;
+
+    document.getElementById('equacao').textContent = `${n1} ${op} ${n2} = ?`;
+    respostaCorreta = resultado;
+  }
+
+  function verificarResposta() {
+    const valor = parseInt(input.value);
+
+    if (isNaN(valor)) return;
+
+    if (valor === respostaCorreta) {
+      pontos++;
+      document.getElementById('status').textContent = "✅ Correto!";
+      somAcerto.play();
+      animar("flash");
+    } else {
+      tempo = Math.max(tempo - 2, 0);
+      document.getElementById('status').textContent = "❌ Errado!";
+      somErro.play();
+      animar("shake");
+    }
+
+    input.value = "";
+    input.focus();
+    atualizarTela();
+    gerarEquacao();
+  }
+
+  function animar(tipo) {
+    container.classList.remove("shake", "flash");
+    void container.offsetWidth; // Forçar reflow
+    container.classList.add(tipo);
+  }
+
+  function atualizarTela() {
+    document.getElementById('tempo').textContent = tempo;
+    document.getElementById('pontos').textContent = pontos;
+  }
+
+  function iniciarJogo() {
+    tempo = 60;
+    pontos = 0;
+    document.getElementById('status').textContent = "";
+    document.getElementById('nomeArea').style.display = "none";
+    document.getElementById('resposta').disabled = false;
+    document.getElementById('resposta').focus();
+
+    gerarEquacao();
+    atualizarTela();
+
+    clearInterval(timer);
+    timer = setInterval(() => {
+      tempo--;
+      atualizarTela();
+      if (tempo <= 0) {
+        clearInterval(timer);
+        document.getElementById('status').textContent = `⏱️ Fim de jogo! Você fez ${pontos} ponto(s)!`;
+        somFim.play();
+        document.getElementById('resposta').disabled = true;
+        document.getElementById('nomeArea').style.display = "block";
+        document.getElementById('nomeJogador').focus();
+      }
+    }, 1000);
+  }
+
+  function salvarPontuacao() {
+    const nome = document.getElementById("nomeJogador").value.trim() || "Anônimo";
+    const ranking = JSON.parse(localStorage.getItem("rankingMath") || "[]");
+
+    ranking.push({ nome, pontos });
+    ranking.sort((a, b) => b.pontos - a.pontos);
+    if (ranking.length > 10) ranking.length = 10;
+
+    localStorage.setItem("rankingMath", JSON.stringify(ranking));
+    document.getElementById('nomeArea').style.display = "none";
+    atualizarRanking();
+  }
+
+  function atualizarRanking() {
+    const ranking = JSON.parse(localStorage.getItem("rankingMath") || "[]");
+    const lista = document.getElementById("rankingLista");
+    lista.innerHTML = "";
+
+    ranking.forEach((r) => {
+      const item = document.createElement("li");
+      item.textContent = `${r.nome} - ${r.pontos} ponto(s)`;
+      lista.appendChild(item);
+    });
+  }
+
+  // ENTER ativa resposta
+  input.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") verificarResposta();
+  });
+
+  iniciarJogo();
+  atualizarRanking();
+</script>
+
+</body>
+</html>
