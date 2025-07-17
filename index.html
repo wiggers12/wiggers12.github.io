@@ -7,13 +7,14 @@
   
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9968425306160320"
           crossorigin="anonymous"></script>
+  
   <style>
     body {
       font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start; /* Alinhado ao topo */
+      justify-content: flex-start;
       min-height: 100vh;
       margin: 0;
       background-color: #f4f4f4;
@@ -35,11 +36,19 @@
       text-align: center;
       width: 90%;
       max-width: 500px;
-      margin-bottom: 20px; /* Espaço antes do ranking */
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
     }
 
     #question-area {
       margin-bottom: 20px;
+    }
+
+    #difficulty-level { /* Novo estilo para o nível de dificuldade */
+        font-size: 0.9em;
+        color: #777;
+        margin-bottom: 10px;
     }
 
     #question {
@@ -48,7 +57,15 @@
       color: #555;
     }
 
-    #answer-input {
+    /* Animações para #question */
+    #question.correct-animation {
+        animation: pulseGreen 0.5s ease-out;
+    }
+    #question.incorrect-animation {
+        animation: shakeRed 0.5s ease-out;
+    }
+
+    #answer-input, #player-name-input {
       padding: 10px;
       font-size: 1.2em;
       width: calc(100% - 22px);
@@ -56,7 +73,32 @@
       border: 1px solid #ddd;
       border-radius: 4px;
       text-align: center;
+      transition: border-color 0.3s ease, transform 0.1s ease; /* Adiciona transição para transform */
     }
+
+    #player-name-input {
+        margin-bottom: 20px;
+    }
+
+    /* Cores de feedback para o input (já existentes) */
+    #answer-input.correct {
+      border-color: #28a745;
+      box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+    }
+
+    #answer-input.incorrect {
+      border-color: #d9534f;
+      box-shadow: 0 0 5px rgba(217, 83, 79, 0.5);
+    }
+
+    /* Animações para o input de resposta */
+    #answer-input.correct-input-anim {
+        animation: bounceIn 0.3s forwards;
+    }
+    #answer-input.incorrect-input-anim {
+        animation: shake 0.5s ease-out;
+    }
+
 
     button {
       background-color: #007bff;
@@ -77,8 +119,24 @@
     #message {
       margin-top: 15px;
       font-weight: bold;
-      color: #d9534f; /* Vermelho para erro */
+      opacity: 0; /* Começa oculto */
+      transition: opacity 0.3s ease;
     }
+
+    #message.show {
+        opacity: 1;
+    }
+    #message.correct-text {
+        color: #28a745;
+    }
+    #message.incorrect-text {
+        color: #d9534f;
+    }
+    #message.speed-bonus-text { /* Novo estilo para bônus de velocidade */
+        color: #007bff;
+        animation: fadeInOut 1.5s forwards; /* Animação para a mensagem de bônus */
+    }
+
 
     #timer, #score {
       font-size: 1.2em;
@@ -106,8 +164,10 @@
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
       width: 90%;
       max-width: 500px;
+      margin-bottom: 20px;
     }
 
     #ranking-area h2 {
@@ -136,37 +196,98 @@
     .ranking-position {
       font-weight: bold;
       color: #007bff;
+      min-width: 25px;
     }
 
     .ranking-name {
       flex-grow: 1;
       margin-left: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .ranking-score {
       font-weight: bold;
       color: #333;
+      min-width: 40px;
+      text-align: right;
     }
 
-    /* Ad-placeholder CSS está aqui, mas os DIVs foram removidos do HTML */
-    /* Você pode manter esta regra de CSS se quiser reutilizar a classe no futuro,
-       mas ela não terá efeito até que os DIVs sejam adicionados de volta. */
-    .ad-placeholder {
+    /* Cores para os Top 3 */
+    #ranking-list li:nth-child(1) .ranking-name,
+    #ranking-list li:nth-child(1) .ranking-score,
+    #ranking-list li:nth-child(2) .ranking-name,
+    #ranking-list li:nth-child(2) .ranking-score,
+    #ranking-list li:nth-child(3) .ranking-name,
+    #ranking-list li:nth-child(3) .ranking-score {
+        color: #007bff;
+    }
+
+    /* Cores para os 3 Últimos */
+    .ranking-item-bottom .ranking-name,
+    .ranking-item-bottom .ranking-score {
+        color: #d9534f;
+    }
+
+    #time-bar-container {
       width: 100%;
-      max-width: 728px;
-      height: 90px;
-      background-color: #eee;
-      border: 1px dashed #ccc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 20px;
-      margin-bottom: 20px;
-      font-size: 0.9em;
-      color: #777;
+      height: 10px;
+      background-color: #ddd;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      overflow: hidden;
     }
 
-    /* Responsividade */
+    #time-bar {
+      height: 100%;
+      width: 100%;
+      background-color: #4CAF50;
+      border-radius: 5px;
+      transition: width 0.9s linear, background-color 0.9s linear;
+    }
+
+    #answer-input {
+        display: none;
+    }
+
+    /* Keyframes para as animações */
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
+    @keyframes bounceIn {
+      0% { transform: scale(0.9); opacity: 0; }
+      50% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes pulseGreen {
+        0% { transform: scale(1); color: #555; }
+        50% { transform: scale(1.05); color: #28a745; }
+        100% { transform: scale(1); color: #555; }
+    }
+
+    @keyframes shakeRed {
+        0% { transform: translateX(0); color: #555; }
+        25% { transform: translateX(-5px); color: #d9534f; }
+        50% { transform: translateX(5px); color: #d9534f; }
+        75% { transform: translateX(-5px); color: #d9534f; }
+        100% { transform: translateX(0); color: #555; }
+    }
+
+    @keyframes fadeInOut { /* Nova animação para a mensagem de bônus */
+        0% { opacity: 0; transform: translateY(10px); }
+        20% { opacity: 1; transform: translateY(0); }
+        80% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-10px); }
+    }
+
+
     @media (max-width: 600px) {
       #game-container, #ranking-area {
         padding: 20px;
@@ -174,7 +295,7 @@
       #question {
         font-size: 1.5em;
       }
-      #answer-input, button {
+      #answer-input, #player-name-input, button {
         font-size: 1em;
         padding: 10px 20px;
       }
@@ -184,24 +305,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-  <script>
-    // SEU CÓDIGO firebaseConfig DO FIREBASE VAI AQUI:
-    const firebaseConfig = {
-      apiKey: "AIzaSyA4PWRt-22S8HGc6GS1m-4Wa9hYsh5Zbo",
-      authDomain: "desafio-dos-60-segundos.firebaseapp.com",
-      projectId: "desafio-dos-60-segundos",
-      storageBucket: "desafio-dos-60-segundos.firebaseapp.com", // Corrigido para .firebaseapp.com
-      messagingSenderId: "1054471364887",
-      appId: "1:1054471364887:web:332b4f28814e9f5d0cd752",
-      measurementId: "G-N4PWJ72YCJ"
-    };
-
-    // Inicialize o Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    // Obtenha uma referência ao serviço Firestore
-    const db = app.firestore(); 
-  </script>
-
 </head>
 <body>
   <h1>Desafio dos 60 Segundos 🧠</h1>
@@ -209,12 +312,16 @@
   <div id="game-container">
     <div id="status">
       <p id="timer">Tempo: <span id="timer-value">60s</span></p>
+      <div id="time-bar-container">
+          <div id="time-bar"></div>
+      </div>
       <p id="score">Pontos: <span id="score-value">0</span></p>
     </div>
 
     <div id="question-area">
-      <p id="question">Clique em "Começar Jogo" para iniciar!</p>
-      <input type="number" id="answer-input" placeholder="Digite a resposta" disabled>
+      <p id="difficulty-level"></p> <p id="question">Digite seu nome e clique em "Começar Jogo"!</p>
+      <input type="text" id="player-name-input" placeholder="Seu nome" maxlength="20" pattern="[A-Za-zÀ-ú\s]+" title="Apenas letras e espaços são permitidos.">
+      <input type="number" id="answer-input" placeholder="Digite a resposta">
       <p id="message"></p>
     </div>
 
@@ -224,14 +331,28 @@
   </div>
 
   <div id="ranking-area">
-    <h2>🏆 Ranking (Top 10)</h2>
+    <h2>🏆 Ranking Geral (Top 10)</h2>
     <ol id="ranking-list">
     </ol>
   </div>
 
   <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA4PWRt-22S8HGc6GS1m-4Wa9hYsh5Zbo",
+      authDomain: "desafio-dos-60-segundos.firebaseapp.com",
+      projectId: "desafio-dos-60-segundos",
+      storageBucket: "desafio-dos-60-segundos.firebaseapp.com",
+      messagingSenderId: "1054471364887",
+      appId: "1:1054471364887:web:332b4f28814e9f5d0cd752",
+      measurementId: "G-N4PWJ72YCJ"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = app.firestore(); 
+
     const questionElement = document.getElementById('question');
     const answerInput = document.getElementById('answer-input');
+    const playerNameInput = document.getElementById('player-name-input');
     const submitAnswerButton = document.getElementById('submit-answer');
     const messageElement = document.getElementById('message');
     const timerValueElement = document.getElementById('timer-value');
@@ -239,113 +360,245 @@
     const startButton = document.getElementById('start-button');
     const playAgainButton = document.getElementById('play-again');
     const rankingList = document.getElementById('ranking-list');
+    const timeBar = document.getElementById('time-bar');
+    const difficultyLevelElement = document.getElementById('difficulty-level'); // Novo elemento
 
     let currentQuestion;
     let score = 0;
     let timeLeft = 60;
     let timerInterval;
     let gameActive = false;
+    let currentDifficulty = 1;
+    let currentPlayerName = '';
+    let questionStartTime; // Para o feedback de velocidade
 
-    // Funções para Ranking (AGORA COM FIREBASE)
+    const correctSound = new Audio('correct.mp3');
+    const incorrectSound = new Audio('incorrect.mp3');
+
+    const difficultyNames = {
+        1: "Iniciante",
+        2: "Aprendiz",
+        3: "Intermediário",
+        4: "Avançado",
+        5: "Mestre",
+        6: "Gênio Matemático"
+        // Adicione mais níveis se necessário
+    };
+
     function saveRanking(player, score) {
-        // Adiciona um novo documento à coleção 'ranking' no Firestore
         db.collection("ranking").add({
             player: player,
             score: score,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp() // Para ordenar por data
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
         })
         .then((docRef) => {
             console.log("Documento escrito com ID: ", docRef.id);
-            displayRanking(); // Atualiza o ranking depois de salvar
+            displayRanking();
         })
         .catch((error) => {
             console.error("Erro ao adicionar documento: ", error);
-            alert("Erro ao salvar pontuação: " + error.message); // Alerta o usuário em caso de erro
+            alert("Erro ao salvar pontuação. Por favor, tente novamente mais tarde.");
         });
     }
 
     async function displayRanking() {
         rankingList.innerHTML = '<li>Carregando ranking...</li>';
-        try {
-            // Pega os 10 melhores da coleção 'ranking', ordenados por pontuação decrescente
-            const snapshot = await db.collection("ranking")
-                                     .orderBy("score", "desc")
-                                     .limit(10)
-                                     .get();
 
-            rankingList.innerHTML = ''; // Limpa o ranking
-            if (snapshot.empty) {
+        try {
+            const generalSnapshot = await db.collection("ranking")
+                                            .orderBy("score", "desc")
+                                            .limit(10)
+                                            .get();
+            rankingList.innerHTML = '';
+            if (generalSnapshot.empty) {
                 rankingList.innerHTML = '<li>Nenhum recorde ainda. Seja o primeiro!</li>';
                 return;
             }
 
-            snapshot.forEach((doc, index) => {
-                const data = doc.data();
+            const rankings = [];
+            generalSnapshot.forEach((doc) => {
+                rankings.push(doc.data());
+            });
+
+            rankings.forEach((data, index) => {
                 const li = document.createElement('li');
+                const rankingPosition = index + 1;
+
+                const positionSpan = `<span class="ranking-position">${rankingPosition}º</span>`;
+                const nameSpan = `<span class="ranking-name">${data.player}</span>`;
+                const scoreSpan = `<span class="ranking-score">${data.score}</span>`;
                 
-                // ADICIONADO PARA DEPURAR:
-                console.log(`Debug Ranking: index = ${index}, position = ${index + 1}, player = ${data.player}, score = ${data.score}`);
+                li.innerHTML = `${positionSpan} ${nameSpan} ${scoreSpan}`;
                 
-                li.innerHTML = `<span class="ranking-position">${index + 1}º</span> <span class="ranking-name">${data.player}</span> <span class="ranking-score">${data.score}</span>`;
+                if (rankingPosition <= 3) {
+                    li.classList.add('ranking-item-top'); 
+                }
+                if (rankings.length >= 4 && rankingPosition > rankings.length - 3) {
+                    li.classList.add('ranking-item-bottom');
+                }
+
                 rankingList.appendChild(li);
             });
+
         } catch (error) {
             console.error("Erro ao carregar ranking: ", error);
-            rankingList.innerHTML = '<li>Erro ao carregar ranking. Verifique as regras do Firebase.</li>';
-            alert("Erro ao carregar ranking. Verifique o console para mais detalhes."); // Alerta o usuário
+            rankingList.innerHTML = '<li>Erro ao carregar ranking.</li>';
+            alert("Erro ao carregar ranking. Verifique o console para mais detalhes.");
         }
     }
 
     function generateQuestion() {
-      const num1 = Math.floor(Math.random() * 10) + 1;
-      const num2 = Math.floor(Math.random() * 10) + 1;
-      const operators = ['+', '-', '*'];
-      const operator = operators[Math.floor(Math.random() * operators.length)];
-      let questionString;
+      let num1, num2;
+      // Adicionado '÷' para divisão
+      const operators = ['+', '-', '*', '÷']; 
+      let operator;
       let correctAnswer;
+
+      // Lógica de dificuldade aprimorada
+      // Dificuldade 1-2: Apenas +, -
+      // Dificuldade 3-4: +, -, *
+      // Dificuldade 5+: +, -, *, ÷
+      let availableOperators;
+      if (currentDifficulty <= 2) {
+          availableOperators = ['+', '-'];
+      } else if (currentDifficulty <= 4) {
+          availableOperators = ['+', '-', '*'];
+      } else {
+          availableOperators = operators; // Todos os operadores, incluindo divisão
+      }
+      operator = availableOperators[Math.floor(Math.random() * availableOperators.length)];
+
+
+      if (currentDifficulty === 1) {
+        num1 = Math.floor(Math.random() * 10) + 1;
+        num2 = Math.floor(Math.random() * 10) + 1;
+      } else if (currentDifficulty === 2) {
+        num1 = Math.floor(Math.random() * 20) + 1;
+        num2 = Math.floor(Math.random() * 20) + 1;
+      } else if (currentDifficulty === 3) {
+        num1 = Math.floor(Math.random() * 30) + 1;
+        num2 = Math.floor(Math.random() * 30) + 1;
+      } else if (currentDifficulty === 4) {
+        num1 = Math.floor(Math.random() * 50) + 1;
+        num2 = Math.floor(Math.random() * 50) + 1;
+      } else if (currentDifficulty === 5) {
+        num1 = Math.floor(Math.random() * 70) + 1;
+        num2 = Math.floor(Math.random() * 70) + 1;
+      } else { // Dificuldade 6+
+        num1 = Math.floor(Math.random() * 100) + 1;
+        num2 = Math.floor(Math.random() * 100) + 1;
+      }
+
+
+      let questionString;
 
       if (operator === '+') {
         questionString = `${num1} + ${num2}`;
         correctAnswer = num1 + num2;
       } else if (operator === '-') {
-        // Garante que o resultado não seja negativo
-        if (num1 < num2) {
+        if (num1 < num2) { // Garante que o resultado da subtração não seja negativo
           questionString = `${num2} - ${num1}`;
           correctAnswer = num2 - num1;
         } else {
           questionString = `${num1} - ${num2}`;
           correctAnswer = num1 - num2;
         }
-      } else { // Multiplication
+      } else if (operator === '*') {
         questionString = `${num1} * ${num2}`;
         correctAnswer = num1 * num2;
+      } else { // Divisão '÷'
+        // Garante que num1 seja um múltiplo de num2 para um resultado inteiro
+        let tempNum1 = Math.floor(Math.random() * 10) + 1; // Fator para multiplicação
+        let tempNum2 = Math.floor(Math.random() * 10) + 1; // Divisor inicial
+        
+        // Para evitar divisões por zero ou resultados muito pequenos/grandes inicialmente
+        if (currentDifficulty < 5) { // Divisões mais simples para dificuldades menores
+            tempNum1 = Math.floor(Math.random() * 5) + 1; 
+            tempNum2 = Math.floor(Math.random() * 5) + 1;
+        } else {
+            tempNum1 = Math.floor(Math.random() * 10) + 1; 
+            tempNum2 = Math.floor(Math.random() * 10) + 1;
+        }
+
+        num1 = tempNum1 * tempNum2; // O dividendo é um múltiplo do divisor
+        num2 = tempNum2;
+        
+        // Evita divisão por zero
+        if (num2 === 0) num2 = 1;
+
+        questionString = `${num1} ÷ ${num2}`;
+        correctAnswer = num1 / num2;
       }
 
       currentQuestion = { question: questionString, answer: correctAnswer };
       questionElement.textContent = currentQuestion.question;
+      difficultyLevelElement.textContent = `Nível: ${difficultyNames[currentDifficulty] || 'Desconhecido'}`; // Atualiza o nível
       answerInput.value = '';
       messageElement.textContent = '';
+      // Remove classes de animação e cor ao gerar nova pergunta
+      answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
+      questionElement.classList.remove('correct-animation', 'incorrect-animation');
+      messageElement.classList.remove('show', 'correct-text', 'incorrect-text', 'speed-bonus-text'); // Remove speed-bonus-text
+      
+      questionStartTime = Date.now(); // Marca o tempo de início da pergunta
     }
 
     function startGame() {
+      currentPlayerName = playerNameInput.value.trim();
+      
+      if (!playerNameInput.checkValidity()) {
+        alert(playerNameInput.title);
+        playerNameInput.focus();
+        return;
+      }
+      if (currentPlayerName === '') {
+        alert("Por favor, digite seu nome para começar o jogo!");
+        playerNameInput.focus();
+        return;
+      }
+
       score = 0;
       timeLeft = 60;
       gameActive = true;
+      currentDifficulty = 1;
       scoreValueElement.textContent = score;
       timerValueElement.textContent = timeLeft + 's';
+      
+      playerNameInput.style.display = 'none';
+      answerInput.style.display = 'inline-block';
       answerInput.disabled = false;
       answerInput.focus();
+      
+      questionElement.textContent = 'Preparar...';
+      difficultyLevelElement.textContent = ''; // Limpa o nível antes de começar
+      
       startButton.style.display = 'none';
       submitAnswerButton.style.display = 'inline-block';
       playAgainButton.style.display = 'none';
-      generateQuestion();
+      timeBar.style.width = '100%';
+      timeBar.style.backgroundColor = '#4CAF50';
 
-      timerInterval = setInterval(() => {
-        timeLeft--;
-        timerValueElement.textContent = timeLeft + 's';
-        if (timeLeft <= 0) {
-          endGame();
-        }
+      setTimeout(() => {
+        generateQuestion();
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          timerValueElement.textContent = timeLeft + 's';
+          
+          const percentage = (timeLeft / 60) * 100;
+          timeBar.style.width = percentage + '%';
+
+          if (percentage > 50) {
+              timeBar.style.backgroundColor = '#4CAF50';
+          } else if (percentage > 20) {
+              timeBar.style.backgroundColor = '#FFC107';
+          } else {
+              timeBar.style.backgroundColor = '#DC3545';
+          }
+
+          if (timeLeft <= 0) {
+            endGame();
+          }
+        }, 1000);
       }, 1000);
     }
 
@@ -356,11 +609,23 @@
       submitAnswerButton.style.display = 'none';
       playAgainButton.style.display = 'inline-block';
       messageElement.textContent = `Tempo esgotado! Você fez ${score} pontos.`;
+      messageElement.classList.add('show'); // Exibe a mensagem final
+      messageElement.classList.remove('correct-text', 'incorrect-text', 'speed-bonus-text'); // Garante que a cor seja neutra
+      
+      // Limpa animações residuais
+      answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
+      questionElement.classList.remove('correct-animation', 'incorrect-animation');
 
-      const playerName = prompt("Fim de jogo! Digite seu nome para o ranking:");
-      if (playerName) {
-        saveRanking(playerName, score);
+
+      if (currentPlayerName) {
+        saveRanking(currentPlayerName, score);
       }
+      
+      playerNameInput.value = '';
+      playerNameInput.style.display = 'inline-block';
+      answerInput.style.display = 'none';
+      questionElement.textContent = 'Digite seu nome e clique em "Começar Jogo"!';
+      difficultyLevelElement.textContent = ''; // Limpa o nível ao final do jogo
     }
 
     function checkAnswer() {
@@ -369,6 +634,16 @@
       const userAnswer = parseInt(answerInput.value);
       if (isNaN(userAnswer)) {
         messageElement.textContent = 'Por favor, digite um número!';
+        messageElement.classList.add('show', 'incorrect-text'); // Mostra e colore a mensagem
+        answerInput.classList.add('incorrect-input-anim'); // Adiciona animação de tremer
+        incorrectSound.play();
+        
+        // Remove as classes de animação após o término da animação
+        answerInput.addEventListener('animationend', function handler() {
+            answerInput.classList.remove('incorrect-input-anim');
+            answerInput.removeEventListener('animationend', handler);
+        });
+
         return;
       }
 
@@ -376,31 +651,100 @@
         score++;
         scoreValueElement.textContent = score;
         messageElement.textContent = 'Correto!';
-        messageElement.style.color = '#28a745'; /* Verde */
-        generateQuestion();
+        messageElement.classList.add('show', 'correct-text'); // Mostra e colore a mensagem
+        answerInput.classList.add('correct-input-anim'); // Adiciona animação de pulso
+        questionElement.classList.add('correct-animation'); // Animação na pergunta
+        correctSound.play();
+
+        const timeTaken = (Date.now() - questionStartTime) / 1000; // Tempo em segundos
+        const speedBonusThreshold = 1.5; // Respostas em até 1.5 segundos ganham bônus
+        const bonusTime = 0.5; // 0.5 segundos de bônus
+
+        if (timeTaken <= speedBonusThreshold) {
+            timeLeft = Math.min(60, timeLeft + bonusTime); // Adiciona bônus, máximo 60s
+            timerValueElement.textContent = Math.ceil(timeLeft) + 's'; // Arredonda para cima para exibir
+            messageElement.textContent += " (WOW! Rápido! +0.5s)";
+            messageElement.classList.add('speed-bonus-text'); // Adiciona classe de animação para o bônus
+        }
+
+
+        // Aumenta dificuldade a cada 5 pontos
+        if (score > 0 && score % 5 === 0) {
+            currentDifficulty++;
+            console.log(`Dificuldade aumentada para: ${currentDifficulty}`);
+            messageElement.textContent += ` (Dificuldade: ${difficultyNames[currentDifficulty] || 'Desconhecido'}!)`;
+        }
+
+        // Remove as classes de animação após o término da animação
+        answerInput.addEventListener('animationend', function handler() {
+            answerInput.classList.remove('correct-input-anim');
+            answerInput.removeEventListener('animationend', handler);
+        });
+        questionElement.addEventListener('animationend', function handler() {
+            questionElement.classList.remove('correct-animation');
+            questionElement.removeEventListener('animationend', handler);
+        });
+        messageElement.addEventListener('animationend', function handler() { // Remove a classe de bônus após a animação
+            messageElement.classList.remove('speed-bonus-text');
+            messageElement.removeEventListener('animationend', handler);
+        });
+
+
+        setTimeout(() => {
+            generateQuestion();
+        }, 500); // Pequeno atraso para a animação ser visível
+        
       } else {
-        messageElement.textContent = 'Errado. Tente novamente.';
-        messageElement.style.color = '#d9534f'; /* Vermelho */
-        score = Math.max(0, score - 1); // Subtrai ponto por erro, mas não abaixo de zero
+        score = Math.max(0, score - 1); // Garante que a pontuação não seja negativa
         scoreValueElement.textContent = score;
-        // Não gera nova pergunta, permite nova tentativa
+        messageElement.textContent = 'Errado. Tente novamente.';
+        messageElement.classList.add('show', 'incorrect-text'); // Mostra e colore a mensagem
+        answerInput.classList.add('incorrect-input-anim'); // Adiciona animação de tremer
+        questionElement.classList.add('incorrect-animation'); // Animação na pergunta
+        incorrectSound.play();
+        
+        // Remove as classes de animação após o término da animação
+        answerInput.addEventListener('animationend', function handler() {
+            answerInput.classList.remove('incorrect-input-anim');
+            answerInput.removeEventListener('animationend', handler);
+        });
+        questionElement.addEventListener('animationend', function handler() {
+            questionElement.classList.remove('incorrect-animation');
+            questionElement.removeEventListener('animationend', handler);
+        });
+
+        setTimeout(() => {
+             // Não gera nova pergunta, apenas remove as classes para a próxima tentativa
+            answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
+            questionElement.classList.remove('correct-animation', 'incorrect-animation');
+            // Mantém a mensagem para o usuário tentar novamente, não removemos aqui
+        }, 500);
       }
     }
 
-    // Event Listeners
     startButton.addEventListener('click', startGame);
     submitAnswerButton.addEventListener('click', checkAnswer);
     playAgainButton.addEventListener('click', startGame);
 
-    // Permitir submeter com Enter
+    playerNameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            startGame();
+        }
+    });
+
     answerInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
         checkAnswer();
       }
     });
 
-    // Carrega o ranking ao carregar a página
-    window.onload = displayRanking;
+    window.onload = () => {
+        displayRanking();
+        answerInput.style.display = 'none';
+        playerNameInput.style.display = 'inline-block';
+        playerNameInput.focus();
+        difficultyLevelElement.textContent = ''; // Garante que o nível não apareça antes do jogo
+    };
 
   </script>
 </body>
