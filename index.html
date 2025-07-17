@@ -54,7 +54,7 @@
         20%, 40%, 60%, 80% { transform: translateX(2px); }
     }
 
-    #game-container, .ranking-section, #challenge-area, #mode-selection { /* Adicionado #mode-selection */
+    #game-container, .ranking-section, #mode-selection { /* Removido #challenge-area */
       background-color: #fff;
       padding: 30px;
       border-radius: 8px;
@@ -77,42 +77,8 @@
     #game-container {
         animation-delay: 0.4s;
     }
-    #challenge-area {
-        background-color: #f0f0f0; /* Fundo diferente para a área de desafio */
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra interna */
-        animation-delay: 0.6s;
-        display: none; /* Esconda inicialmente até o JS mostrar */
-    }
     .ranking-section { /* Aplica para ambas as seções de ranking */
-        animation-delay: 0.8s;
-    }
-
-
-    #challenge-area h3 {
-        color: #007bff;
-        margin-bottom: 15px;
-    }
-    #challenge-code-display {
-        font-size: 1.5em;
-        font-weight: bold;
-        color: #4CAF50;
-        margin-bottom: 10px;
-        word-break: break-all; /* Quebra texto longo */
-    }
-    #share-link-display {
-        font-size: 0.9em;
-        color: #666;
-        margin-bottom: 15px;
-        word-break: break-all;
-    }
-    #challenge-code-input {
-        padding: 10px;
-        font-size: 1.1em;
-        width: calc(100% - 22px);
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        text-align: center;
+        animation-delay: 0.6s; /* Ajustado o delay */
     }
 
     #question-area {
@@ -195,13 +161,6 @@
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
     
-    /* Cores específicas para botões de desafio */
-    #copy-challenge-button, #play-challenge-button, #generate-challenge-button {
-        background-color: #17a2b8; /* Cor secundária para desafios */
-    }
-    #copy-challenge-button:hover, #play-challenge-button:hover, #generate-challenge-button:hover {
-        background-color: #138496;
-    }
     /* Cores para botões de seleção de modo */
     #mode-kids-button, #mode-adults-button {
         background-color: #6c757d; /* Cor neutra inicial */
@@ -379,7 +338,7 @@
     }
 
     @media (max-width: 600px) {
-      #game-container, .ranking-section, #challenge-area, #mode-selection {
+      #game-container, .ranking-section, #mode-selection { /* Removido #challenge-area */
         padding: 20px;
       }
       #question {
@@ -425,19 +384,6 @@
     <button id="submit-answer" style="display: none;">Responder</button>
     <button id="start-game-button" style="display: none;">Começar Jogo</button> <button id="play-again" style="display: none;">Jogar Novamente</button>
   </div>
-
-  <div id="challenge-area">
-    <h3>Desafie um Amigo! (<span id="challenge-mode-display"></span>)</h3>
-    <button id="generate-challenge-button">Gerar Novo Desafio</button>
-    <p id="challenge-code-display" style="display: none;"></p>
-    <p id="share-link-display" style="display: none;"></p>
-    <button id="copy-challenge-button" style="display: none;">Copiar Código</button>
-    <hr style="margin: 20px 0; border: none; border-top: 1px dashed #ccc;">
-    <h3>Entrar em um Desafio Existente</h3>
-    <input type="text" id="challenge-code-input" placeholder="Código do Desafio" maxlength="10">
-    <button id="play-challenge-button">Jogar Desafio</button>
-  </div>
-
 
   <div id="ranking-kids-area" class="ranking-section">
     <h2>🏆 Ranking Crianças (Top 20)</h2>
@@ -486,17 +432,6 @@
     const rankingKidsList = document.getElementById('ranking-kids-list');
     const rankingAdultsList = document.getElementById('ranking-adults-list');
 
-    // Elementos de desafio
-    const challengeArea = document.getElementById('challenge-area');
-    const generateChallengeButton = document.getElementById('generate-challenge-button');
-    const challengeCodeDisplay = document.getElementById('challenge-code-display');
-    const shareLinkDisplay = document.getElementById('share-link-display');
-    const copyChallengeButton = document.getElementById('copy-challenge-button');
-    const challengeCodeInput = document.getElementById('challenge-code-input');
-    const playChallengeButton = document.getElementById('play-challenge-button');
-    const challengeModeDisplay = document.getElementById('challenge-mode-display');
-
-
     let currentQuestion;
     let score = 0;
     let timeLeft = 60;
@@ -505,7 +440,6 @@
     let currentDifficulty = 1;
     let currentPlayerName = '';
     let questionStartTime; 
-    let currentChallengeCode = null;
 
     const correctSound = new Audio('correct.mp3');
     const incorrectSound = new Audio('incorrect.mp3');
@@ -518,35 +452,6 @@
         5: "Mestre",
         6: "Gênio Matemático"
     };
-
-    // --- Funções de Ajuda para o Desafio (e gerador de sementes) ---
-
-    function generateUniqueCode(length = 6) {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let result = '';
-        for (let i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * characters.length));
-        }
-        return result;
-    }
-
-    let seed = Date.now();
-    function random() {
-        var x = Math.sin(seed++) * 10000;
-        return x - Math.floor(x);
-    }
-    function seededRandomInt(min, max) {
-        return Math.floor(random() * (max - min + 1)) + min;
-    }
-    function stringToHash(str) {
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            const char = str.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash |= 0;
-        }
-        return Math.abs(hash);
-    }
 
     // --- Funções do Jogo ---
 
@@ -569,9 +474,6 @@
         playerNameInput.focus();
         questionElement.textContent = 'Digite seu nome e clique em "Começar Jogo"!';
         
-        // Atualiza a exibição do modo de desafio
-        challengeModeDisplay.textContent = mode === 'kids' ? 'Modo Crianças' : 'Modo Adultos';
-
         // Atualiza os rankings
         displayRanking('kids');
         displayRanking('adults');
@@ -631,7 +533,7 @@
                     li.classList.add('ranking-item-top'); 
                 }
                 // Marca os 3 últimos (se houver pelo menos 4 itens no ranking)
-                if (rankings.length >= 4 && rankingPosition > rankings.length - 3) {
+                if (rankings.length >= 4) {
                     const startIndexForBottom = Math.max(0, rankings.length - 3); 
                     if (index >= startIndexForBottom) {
                         li.classList.add('ranking-item-bottom');
@@ -648,6 +550,14 @@
         }
     }
 
+    // Função random para gerar números pseudo-aleatórios (sem seed externa)
+    function random() {
+        return Math.random();
+    }
+    function randomInt(min, max) {
+        return Math.floor(random() * (max - min + 1)) + min;
+    }
+
     function generateQuestion() {
       let num1, num2;
       let operators; 
@@ -657,28 +567,28 @@
       if (currentGameMode === 'kids') {
           operators = ['+', '-'];
           currentDifficulty = Math.min(currentDifficulty, 3); // Limita a dificuldade para crianças
-          num1 = seededRandomInt(1, 10 + currentDifficulty * 5); // Aumenta um pouco com dificuldade
-          num2 = seededRandomInt(1, 10 + currentDifficulty * 5);
+          num1 = randomInt(1, 10 + currentDifficulty * 5); // Aumenta um pouco com dificuldade
+          num2 = randomInt(1, 10 + currentDifficulty * 5);
       } else { // Adults mode
           operators = ['+', '-', '*', '÷'];
           if (currentDifficulty === 1) {
-            num1 = seededRandomInt(1, 10);
-            num2 = seededRandomInt(1, 10);
+            num1 = randomInt(1, 10);
+            num2 = randomInt(1, 10);
           } else if (currentDifficulty === 2) {
-            num1 = seededRandomInt(1, 20);
-            num2 = seededRandomInt(1, 20);
+            num1 = randomInt(1, 20);
+            num2 = randomInt(1, 20);
           } else if (currentDifficulty === 3) {
-            num1 = seededRandomInt(1, 30);
-            num2 = seededRandomInt(1, 30);
+            num1 = randomInt(1, 30);
+            num2 = randomInt(1, 30);
           } else if (currentDifficulty === 4) {
-            num1 = seededRandomInt(1, 50);
-            num2 = seededRandomInt(1, 50);
+            num1 = randomInt(1, 50);
+            num2 = randomInt(1, 50);
           } else if (currentDifficulty === 5) {
-            num1 = seededRandomInt(1, 70);
-            num2 = seededRandomInt(1, 70);
+            num1 = randomInt(1, 70);
+            num2 = randomInt(1, 70);
           } else { 
-            num1 = seededRandomInt(1, 100);
-            num2 = seededRandomInt(1, 100);
+            num1 = randomInt(1, 100);
+            num2 = randomInt(1, 100);
           }
       }
       
@@ -704,15 +614,15 @@
       } else { // Divisão '÷'
         let tempNum1, tempNum2;
         if (currentGameMode === 'kids') { // Crianças não fazem divisão tão complexa
-            tempNum1 = seededRandomInt(1, 5);
-            tempNum2 = seededRandomInt(1, 5);
+            tempNum1 = randomInt(1, 5);
+            tempNum2 = randomInt(1, 5);
         } else {
             if (currentDifficulty < 5) { 
-                tempNum1 = seededRandomInt(1, 5); 
-                tempNum2 = seededRandomInt(1, 5);
+                tempNum1 = randomInt(1, 5); 
+                tempNum2 = randomInt(1, 5);
             } else {
-                tempNum1 = seededRandomInt(1, 10); 
-                tempNum2 = seededRandomInt(1, 10);
+                tempNum1 = randomInt(1, 10); 
+                tempNum2 = randomInt(1, 10);
             }
         }
        
@@ -737,15 +647,10 @@
       questionStartTime = Date.now(); 
     }
 
-    function startGame(challengeCode = null, challengeMode = null) {
-      if (!currentGameMode && !challengeMode) {
+    function startGame() { // Removidos parâmetros de desafio
+      if (!currentGameMode) {
           alert("Por favor, selecione um modo de jogo (Crianças ou Adultos) antes de começar.");
           return;
-      }
-      // Se estamos iniciando um desafio, o modo do desafio sobrescreve o modo selecionado
-      if (challengeMode) {
-        currentGameMode = challengeMode;
-        selectGameMode(currentGameMode); // Atualiza os botões de modo
       }
 
       currentPlayerName = playerNameInput.value.trim();
@@ -759,16 +664,6 @@
         alert("Por favor, digite seu nome para começar o jogo!");
         playerNameInput.focus();
         return;
-      }
-
-      if (challengeCode) {
-          currentChallengeCode = challengeCode.toUpperCase();
-          seed = stringToHash(currentChallengeCode);
-          console.log(`Iniciando desafio com código: ${currentChallengeCode}, semente: ${seed}, modo: ${currentGameMode}`);
-      } else {
-          currentChallengeCode = null;
-          seed = Date.now();
-          console.log("Iniciando jogo normal com nova semente.");
       }
 
       score = 0;
@@ -790,9 +685,8 @@
       submitAnswerButton.style.display = 'inline-block';
       playAgainButton.style.display = 'none';
       
-      // Esconder a área de seleção de modo e área de desafio ao iniciar o jogo
+      // Esconder a área de seleção de modo ao iniciar o jogo
       document.getElementById('mode-selection').style.display = 'none';
-      challengeArea.style.display = 'none';
 
       timeBar.style.width = '100%';
       timeBar.style.backgroundColor = '#4CAF50';
@@ -842,11 +736,7 @@
       questionElement.classList.remove('correct-animation', 'incorrect-animation');
       timeBar.classList.remove('time-bar-shaking');
 
-      if (currentChallengeCode) {
-          saveChallengeScore(currentPlayerName, score, currentChallengeCode, currentGameMode); // Salva o modo do desafio
-      } else {
-          saveRanking(currentPlayerName, score, currentGameMode); // Salva no ranking específico
-      }
+      saveRanking(currentPlayerName, score, currentGameMode); // Salva no ranking específico
       
       playerNameInput.value = '';
       playerNameInput.style.display = 'inline-block';
@@ -854,9 +744,8 @@
       questionElement.textContent = 'Selecione um modo e digite seu nome para começar!';
       difficultyLevelElement.textContent = ''; 
       
-      // Mostrar a área de seleção de modo e área de desafio novamente
+      // Mostrar a área de seleção de modo novamente
       document.getElementById('mode-selection').style.display = 'block';
-      challengeArea.style.display = 'block';
     }
 
     function checkAnswer() {
@@ -967,132 +856,17 @@
       }
     }
 
-    // --- Funções de Desafio ---
-
-    function handleGenerateChallenge() {
-        if (!currentGameMode) {
-            alert("Por favor, selecione um modo de jogo (Crianças ou Adultos) antes de gerar um desafio.");
-            return;
-        }
-
-        const newChallengeCode = generateUniqueCode();
-        currentChallengeCode = newChallengeCode;
-        challengeCodeDisplay.textContent = newChallengeCode;
-        challengeCodeDisplay.style.display = 'block';
-
-        const shareUrl = window.location.origin + window.location.pathname + `?challenge=${newChallengeCode}&mode=${currentGameMode}`;
-        shareLinkDisplay.textContent = `Link para compartilhar: ${shareUrl}`;
-        shareLinkDisplay.style.display = 'block';
-
-        copyChallengeButton.style.display = 'inline-block';
-        
-        db.collection("challenges").doc(newChallengeCode).set({
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            mode: currentGameMode // Salva o modo do desafio
-        })
-        .then(() => {
-            console.log(`Desafio ${newChallengeCode} registrado no modo ${currentGameMode}.`);
-            alert(`Desafio ${newChallengeCode} gerado no modo ${currentGameMode}! Compartilhe este código/link com seu amigo:\n\nCódigo: ${newChallengeCode}\nLink: ${shareUrl}`);
-        })
-        .catch(error => {
-            console.error("Erro ao registrar desafio:", error);
-            alert("Erro ao gerar desafio. Tente novamente.");
-        });
-    }
-
-    function handleCopyChallengeCode() {
-        if (shareLinkDisplay.textContent) { // Copia o link completo para facilitar
-            navigator.clipboard.writeText(shareLinkDisplay.textContent.replace('Link para compartilhar: ', '')).then(() => {
-                alert('Link do desafio copiado para a área de transferência!');
-            }).catch(err => {
-                console.error('Falha ao copiar: ', err);
-                alert('Falha ao copiar o link. Tente copiar manualmente: ' + shareLinkDisplay.textContent);
-            });
-        } else {
-            alert("Nenhum desafio gerado ainda para copiar.");
-        }
-    }
-
-    async function handlePlayChallenge() {
-        const code = challengeCodeInput.value.trim();
-        if (code.length === 6 && /^[A-Z0-9]+$/.test(code)) {
-            // Verifica o modo do desafio no Firebase antes de iniciar
-            try {
-                const doc = await db.collection("challenges").doc(code).get();
-                if (doc.exists && doc.data().mode) {
-                    const challengeMode = doc.data().mode;
-                    startGame(code, challengeMode); // Inicia o jogo com o código e o modo do desafio
-                } else {
-                    alert("Código de desafio inválido ou modo não especificado para este desafio.");
-                }
-            } catch (error) {
-                console.error("Erro ao verificar código de desafio:", error);
-                alert("Erro ao verificar código de desafio. Tente novamente.");
-            }
-        } else {
-            alert("Por favor, insira um código de desafio válido (6 letras/números maiúsculos).");
-            challengeCodeInput.focus();
-        }
-    }
-
-    async function saveChallengeScore(player, score, challengeCode, mode) {
-        try {
-            const challengeRef = db.collection("challengeResults").doc(challengeCode);
-            await challengeRef.set({
-                lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
-                mode: mode, // Salva o modo junto com os resultados do desafio
-                players: firebase.firestore.FieldValue.arrayUnion({
-                    name: player,
-                    score: score,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                })
-            }, { merge: true });
-
-            console.log(`Pontuação de ${player} (${score} pts) registrada para desafio ${challengeCode} no modo ${mode}.`);
-            displayChallengeResults(challengeCode, mode);
-
-        } catch (error) {
-            console.error("Erro ao salvar pontuação do desafio:", error);
-            alert("Erro ao salvar sua pontuação no desafio. Verifique o console.");
-        }
-    }
-
-    async function displayChallengeResults(challengeCode, mode) {
-        try {
-            const doc = await db.collection("challengeResults").doc(challengeCode).get();
-            if (doc.exists && doc.data().mode === mode) {
-                const data = doc.data();
-                if (data.players && data.players.length > 0) {
-                    let resultsMessage = `Resultados do Desafio "${challengeCode}" (${mode === 'kids' ? 'Crianças' : 'Adultos'}):\n\n`;
-                    data.players.sort((a, b) => b.score - a.score);
-                    data.players.forEach((p, index) => {
-                        resultsMessage += `${index + 1}º - ${p.name}: ${p.score} pontos\n`;
-                    });
-                    alert(resultsMessage);
-                } else {
-                    alert("Nenhum resultado encontrado para este desafio ainda.");
-                }
-            } else {
-                alert("Desafio não encontrado ou modo de jogo incompatível.");
-            }
-        } catch (error) {
-            console.error("Erro ao carregar resultados do desafio:", error);
-            alert("Erro ao carregar resultados do desafio.");
-        }
-    }
-
-
     // --- Event Listeners ---
     modeKidsButton.addEventListener('click', () => selectGameMode('kids'));
     modeAdultsButton.addEventListener('click', () => selectGameMode('adults'));
 
-    startGameButton.addEventListener('click', () => startGame(null, currentGameMode)); // Passa o modo atual
+    startGameButton.addEventListener('click', () => startGame()); // Removido parâmetro de desafio
     submitAnswerButton.addEventListener('click', checkAnswer);
-    playAgainButton.addEventListener('click', () => startGame(null, currentGameMode));
+    playAgainButton.addEventListener('click', () => startGame());
 
     playerNameInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            startGame(null, currentGameMode);
+            startGame();
         }
     });
 
@@ -1101,16 +875,6 @@
         checkAnswer();
       }
     });
-
-    generateChallengeButton.addEventListener('click', handleGenerateChallenge);
-    copyChallengeButton.addEventListener('click', handleCopyChallengeCode);
-    playChallengeButton.addEventListener('click', handlePlayChallenge);
-    challengeCodeInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            handlePlayChallenge();
-        }
-    });
-
 
     window.onload = () => {
         // Inicializa os rankings
@@ -1123,21 +887,8 @@
         answerInput.style.display = 'none';
         difficultyLevelElement.textContent = ''; 
 
-        // Mostra a área de seleção de modo e desafio
+        // Mostra a área de seleção de modo
         document.getElementById('mode-selection').style.display = 'block';
-        challengeArea.style.display = 'block';
-        challengeModeDisplay.textContent = 'Aguardando seleção'; // Texto inicial para o modo de desafio
-
-        // Verifica se há um código de desafio na URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const challengeFromUrl = urlParams.get('challenge');
-        const modeFromUrl = urlParams.get('mode');
-
-        if (challengeFromUrl && modeFromUrl) {
-            challengeCodeInput.value = challengeFromUrl;
-            selectGameMode(modeFromUrl); // Seleciona o modo automaticamente se vier da URL
-            alert(`Código de desafio encontrado na URL: "${challengeFromUrl}" no Modo ${modeFromUrl === 'kids' ? 'Crianças' : 'Adultos'}. Digite seu nome e clique em 'Jogar Desafio'.`);
-        }
     };
 
   </script>
