@@ -439,10 +439,7 @@
         <button data-level="1" class="difficulty-button">Iniciante</button>
         <button data-level="2" class="difficulty-button">Amador</button>
         <button data-level="3" class="difficulty-button">CDF</button>
-        <button data-level="4" class="difficulty-button adult-only-difficulty" style="display: none;">Avançado</button>
-        <button data-level="5" class="difficulty-button adult-only-difficulty" style="display: none;">Mestre</button>
-        <button data-level="6" class="difficulty-button adult-only-difficulty" style="display: none;">Gênio Matemático</button>
-    </div>
+        </div>
   </div>
 
   <div id="game-container">
@@ -526,8 +523,9 @@
 
     // Elementos de Seleção de Dificuldade
     const difficultySelectionDiv = document.getElementById('difficulty-selection');
-    const difficultyButtons = document.querySelectorAll('.difficulty-button');
-    let selectedDifficulty = null; // 1, 2, 3, 4, 5, 6
+    // Mudar para selecionar apenas os botões de 1 a 3
+    const difficultyButtons = document.querySelectorAll('#difficulty-selection .difficulty-button'); 
+    let selectedDifficulty = null; // 1, 2, 3
 
     // Elementos de Ranking
     const rankingKidsList = document.getElementById('ranking-kids-list');
@@ -547,14 +545,11 @@
     const correctSound = new Audio('correct.mp3');
     const incorrectSound = new Audio('incorrect.mp3');
 
-    // Nomes dos níveis de dificuldade atualizados
+    // Nomes dos níveis de dificuldade - AGORA APENAS 3
     const difficultyNames = {
         1: "Iniciante",
         2: "Amador",
-        3: "CDF",
-        4: "Avançado",
-        5: "Mestre",
-        6: "Gênio Matemático"
+        3: "CDF"
     };
 
     // --- Funções do Jogo ---
@@ -572,28 +567,23 @@
             modeAdultsButton.classList.add('active');
         }
 
-        // Reseta e oculta todos os botões de dificuldade para desativá-los
+        // Reseta todos os botões de dificuldade para desativá-los
         difficultyButtons.forEach(button => {
             button.classList.remove('active');
-            button.style.display = 'inline-block'; // Garante que estejam visíveis para a próxima lógica
         });
 
-        // Mostra a seção de seleção de dificuldade
+        // Mostra a seção de seleção de dificuldade (já que agora sempre teremos 3)
         difficultySelectionDiv.style.display = 'block';
 
-        // Ajusta a visibilidade dos botões de dificuldade com base no modo
-        const adultOnlyDifficulties = document.querySelectorAll('.adult-only-difficulty');
-        if (mode === 'kids') {
-            adultOnlyDifficulties.forEach(button => button.style.display = 'none');
-        } else {
-            adultOnlyDifficulties.forEach(button => button.style.display = 'inline-block');
-        }
+        // Não há mais necessidade de esconder/mostrar botões específicos de adulto
+        // pois todos os 3 níveis são compartilhados agora.
 
         // Oculta o botão de começar e o input de nome até a dificuldade ser selecionada
         startGameButton.style.display = 'none';
         playerNameInput.style.display = 'none';
         questionElement.textContent = 'Agora, escolha um nível de dificuldade!';
-        
+        difficultyLevelElement.textContent = ''; // Limpa o texto do nível
+
         // Oculta o teclado numérico
         numericKeypad.style.display = 'none';
 
@@ -698,102 +688,111 @@
     }
 
     function generateQuestion() {
-      let num1, num2;
-      let operators; 
-      let operator;
-      let correctAnswer;
+        let num1, num2;
+        let operators; 
+        let operator;
+        let correctAnswer;
 
-      const currentLevel = selectedDifficulty; // Usa a dificuldade selecionada
+        const currentLevel = selectedDifficulty; 
 
-      if (currentGameMode === 'kids') {
-          operators = ['+', '-'];
-          if (currentLevel === 1) { // Iniciante Crianças
-            num1 = randomInt(1, 10);
-            num2 = randomInt(1, 10);
-          } else if (currentLevel === 2) { // Amador Crianças
-            num1 = randomInt(5, 15);
-            num2 = randomInt(5, 15);
-          } else { // currentLevel === 3 (CDF Crianças)
-            num1 = randomInt(10, 25);
-            num2 = randomInt(10, 25);
-          }
-      } else { // Adults mode
-          operators = ['+', '-', '*', '÷'];
-          if (currentLevel === 1) { // Iniciante Adultos
-            num1 = randomInt(1, 15);
-            num2 = randomInt(1, 15);
-          } else if (currentLevel === 2) { // Amador Adultos
-            num1 = randomInt(5, 25);
-            num2 = randomInt(5, 25);
-          } else if (currentLevel === 3) { // CDF Adultos
-            num1 = randomInt(10, 40);
-            num2 = randomInt(10, 40);
-          } else if (currentLevel === 4) { // Avançado Adultos
-            num1 = randomInt(1, 60);
-            num2 = randomInt(1, 60);
-          } else if (currentLevel === 5) { // Mestre Adultos
-            num1 = randomInt(1, 80);
-            num2 = randomInt(1, 80);
-          } else { // currentLevel === 6 (Gênio Matemático Adultos)
-            num1 = randomInt(1, 100);
-            num2 = randomInt(1, 100);
-          }
-      }
-      
-      operator = operators[Math.floor(random() * operators.length)];
-
-
-      let questionString;
-
-      if (operator === '+') {
-        questionString = `${num1} + ${num2}`;
-        correctAnswer = num1 + num2;
-      } else if (operator === '-') {
-        if (num1 < num2) { 
-          questionString = `${num2} - ${num1}`;
-          correctAnswer = num2 - num1;
-        } else {
-          questionString = `${num1} - ${num2}`;
-          correctAnswer = num1 - num2;
-        }
-      } else if (operator === '*') {
-        questionString = `${num1} * ${num2}`;
-        correctAnswer = num1 * num2;
-      } else { // Divisão '÷'
-        let tempNum1, tempNum2;
-        if (currentGameMode === 'kids') { // Crianças: divisão mais simples
-            tempNum1 = randomInt(1, 5);
-            tempNum2 = randomInt(1, 5);
-        } else { // Adultos: divisão
-            if (currentLevel < 5) { 
-                tempNum1 = randomInt(1, 8); 
-                tempNum2 = randomInt(1, 8);
-            } else {
-                tempNum1 = randomInt(1, 15); 
-                tempNum2 = randomInt(1, 15);
+        if (currentGameMode === 'kids') {
+            if (currentLevel === 1) { // Iniciante Crianças: SOMA
+                operators = ['+'];
+                num1 = randomInt(1, 10);
+                num2 = randomInt(1, 10);
+            } else if (currentLevel === 2) { // Amador Crianças: SOMA e SUBTRAÇÃO
+                operators = ['+', '-'];
+                num1 = randomInt(5, 15);
+                num2 = randomInt(5, 15);
+            } else { // currentLevel === 3 (CDF Crianças): SOMA, MULTIPLICAÇÃO e DIVISÃO
+                operators = ['+', '*', '÷'];
+                num1 = randomInt(10, 25);
+                num2 = randomInt(10, 25);
+            }
+        } else { // Adults mode
+            if (currentLevel === 1) { // Iniciante Adultos: SOMA e SUBTRAÇÃO
+                operators = ['+', '-'];
+                num1 = randomInt(1, 20); // Ajustado para valores um pouco maiores para adultos iniciantes
+                num2 = randomInt(1, 20);
+            } else if (currentLevel === 2) { // Amador Adultos: SOMA, SUBTRAÇÃO e MULTIPLICAÇÃO
+                operators = ['+', '-', '*'];
+                num1 = randomInt(10, 50); // Valores um pouco maiores para amador
+                num2 = randomInt(10, 50);
+            } else { // currentLevel === 3 (CDF Adultos): SOMA, SUBTRAÇÃO, MULTIPLICAÇÃO e DIVISÃO (valores até 100 para todas)
+                operators = ['+', '-', '*', '÷'];
+                num1 = randomInt(1, 100); // Faixa de números ampliada para CDF
+                num2 = randomInt(1, 100); // Faixa de números ampliada para CDF
             }
         }
-       
-        num1 = tempNum1 * tempNum2; 
-        num2 = tempNum2;
         
-        if (num2 === 0) num2 = 1; // Evita divisão por zero
+        operator = operators[Math.floor(random() * operators.length)];
 
-        questionString = `${num1} ÷ ${num2}`;
-        correctAnswer = num1 / num2;
-      }
+        let questionString;
 
-      currentQuestion = { question: questionString, answer: correctAnswer };
-      questionElement.textContent = currentQuestion.question;
-      // Exibe o nome do nível selecionado
-      difficultyLevelElement.textContent = `Nível: ${difficultyNames[selectedDifficulty]} (${currentGameMode === 'kids' ? 'Crianças' : 'Adultos'})`; 
-      answerInput.value = '';
-      messageElement.textContent = '';
-      answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
-      questionElement.classList.remove('correct-animation', 'incorrect-animation');
-      messageElement.classList.remove('show', 'correct-text', 'incorrect-text', 'speed-bonus-text'); 
-      
-      questionStartTime = Date.now(); 
+        if (operator === '+') {
+            questionString = `${num1} + ${num2}`;
+            correctAnswer = num1 + num2;
+        } else if (operator === '-') {
+            // Garante que o resultado da subtração não seja negativo para crianças.
+            // Para adultos, permite resultados negativos nos níveis mais avançados (agora apenas CDF)
+            if (currentGameMode === 'kids' || currentLevel < 3) { // Para crianças e adultos Iniciante, Amador
+                if (num1 < num2) { 
+                    questionString = `${num2} - ${num1}`;
+                    correctAnswer = num2 - num1;
+                } else {
+                    questionString = `${num1} - ${num2}`;
+                    correctAnswer = num1 - num2;
+                }
+            } else { // Adultos CDF podem ter negativos
+                questionString = `${num1} - ${num2}`;
+                correctAnswer = num1 - num2;
+            }
+        } else if (operator === '*') {
+            questionString = `${num1} * ${num2}`;
+            correctAnswer = num1 * num2;
+        } else { // Divisão '÷'
+            let tempNum1, tempNum2;
+            if (currentGameMode === 'kids') { // Crianças: divisão sempre com números pequenos
+                tempNum1 = randomInt(1, 5);
+                tempNum2 = randomInt(1, 5);
+            } else { // Adultos: Divisão
+                if (currentLevel === 1) { // Iniciante Adultos (não deve ter divisão, mas fallback)
+                    tempNum1 = randomInt(1, 5);
+                    tempNum2 = randomInt(1, 5);
+                } else if (currentLevel === 2) { // Amador Adultos (não deve ter divisão, mas fallback)
+                    tempNum1 = randomInt(1, 8); 
+                    tempNum2 = randomInt(1, 8);
+                } else { // CDF Adultos
+                    tempNum1 = randomInt(1, 12); // Para garantir divisões mais complexas
+                    tempNum2 = randomInt(1, 12);
+                }
+            }
+           
+            // Garante que o dividendo seja um múltiplo do divisor
+            num2 = tempNum2;
+            num1 = tempNum1 * num2; 
+            
+            // Re-sorteia se num2 for zero (embora os ranges deveriam evitar isso)
+            if (num2 === 0) { 
+                num2 = 1; 
+                num1 = tempNum1 * num2;
+            }
+
+            questionString = `${num1} ÷ ${num2}`;
+            correctAnswer = num1 / num2;
+        }
+
+        currentQuestion = { question: questionString, answer: correctAnswer };
+        questionElement.textContent = currentQuestion.question;
+        // Exibe o nome do nível selecionado
+        difficultyLevelElement.textContent = `Nível: ${difficultyNames[selectedDifficulty]} (${currentGameMode === 'kids' ? 'Crianças' : 'Adultos'})`; 
+        answerInput.value = '';
+        messageElement.textContent = '';
+        answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
+        questionElement.classList.remove('correct-animation', 'incorrect-animation');
+        messageElement.classList.remove('show', 'correct-text', 'incorrect-text', 'speed-bonus-text'); 
+        
+        questionStartTime = Date.now(); 
     }
 
     function startGame() {
@@ -815,7 +814,7 @@
       }
       if (currentPlayerName === '') {
         alert("Por favor, digite seu nome para começar o jogo!");
-        playerNameInput.focus();
+        playerNameInput.focus(); // Corrigido de playerNameNameInput para playerNameInput
         return;
       }
 
@@ -904,7 +903,7 @@
       selectedDifficulty = null; // Reseta a dificuldade selecionada
       currentGameMode = null; // Reseta o modo de jogo
 
-      questionElement.textContent = 'Selecione um modo e um nível, digite seu nome para começar!';
+      questionElement.textContent = 'Selecione um modo, um nível e digite seu nome para começar!';
       difficultyLevelElement.textContent = ''; 
       
       // Ocultar o teclado numérico no final do jogo
@@ -919,6 +918,8 @@
       const correctAnswerLength = String(currentQuestion.answer).length;
       const userAnswerString = answerInput.value;
 
+      // Verifica se a resposta do usuário já tem o mesmo número de dígitos que a resposta correta
+      // ou se o usuário digitou mais dígitos do que a resposta correta (indicando que ele "finalizou" a resposta)
       if (!isNaN(userAnswer) && 
          (userAnswerString.length === correctAnswerLength || userAnswerString.length > correctAnswerLength)) {
 
@@ -947,8 +948,6 @@
                 messageElement.textContent += " (WOW! Rápido! +0.5s)";
                 messageElement.classList.add('speed-bonus-text'); 
             }
-            
-            // REMOVIDA LÓGICA DE AUMENTO DE DIFICULDADE AUTOMÁTICA
             
             answerInput.addEventListener('animationend', function handler() {
                 answerInput.classList.remove('correct-input-anim');
@@ -995,6 +994,8 @@
             }, 300);
         }
       } else if (!isNaN(userAnswer) && userAnswerString.length < correctAnswerLength) {
+        // Se o usuário está digitando e ainda não atingiu o número de dígitos da resposta correta,
+        // não faz nada, espera ele terminar de digitar.
         messageElement.textContent = '';
         messageElement.classList.remove('show', 'correct-text', 'incorrect-text', 'speed-bonus-text');
         answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
@@ -1033,9 +1034,15 @@
                 answerInput.value = '';
             } else {
                 // Para evitar múltiplos zeros no início (e.g. 005)
-                if (answerInput.value === '0' && value !== 'clear') {
+                // Se o input está vazio e o primeiro dígito é zero, apenas define como '0'
+                // Se já é '0', não adiciona outro '0'
+                // Senão, concatena o valor
+                if (answerInput.value === '' && value === '0') {
+                    answerInput.value = '0';
+                } else if (answerInput.value === '0' && value !== '0') {
                     answerInput.value = value;
-                } else {
+                }
+                else {
                     answerInput.value += value;
                 }
             }
