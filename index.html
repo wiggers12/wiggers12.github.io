@@ -5,6 +5,7 @@
   <title>Desafio dos 60 Segundos 🧠</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
+  <!-- Script principal do Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9968425306160320"
           crossorigin="anonymous"></script>
   
@@ -272,13 +273,6 @@
       text-overflow: ellipsis;
     }
 
-    .ranking-score {
-      font-weight: bold;
-      color: #333;
-      min-width: 40px;
-      text-align: right;
-    }
-
     .ranking-level {
         font-size: 0.8em;
         color: #666;
@@ -429,6 +423,19 @@
 <body>
   <h1>Desafio dos 60 Segundos 🧠</h1>
 
+  <!-- Bloco de Anúncio (Topo) - AGORA COM SEUS VALORES REAIS E WRAPPER PARA LARGURA -->
+  <div style="width: 100%; max-width: 728px; margin: 0 auto 20px auto;">
+    <ins class="adsbygoogle"
+         style="display:block; width:100%; height:auto; min-height:90px;"
+         data-ad-client="ca-pub-9968425306160320"
+         data-ad-slot="9401721950"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
   <div id="mode-selection">
     <h3>Escolha o Modo de Jogo:</h3>
     <button id="mode-kids-button" class="mode-button">Modo Crianças</button>
@@ -477,6 +484,20 @@
     <button data-value="0">0</button>
   </div>
 
+  <!-- Bloco de Anúncio Sugerido (Entre o Jogo e os Rankings) - SUBSTITUA PELOS SEUS VALORES REAIS -->
+  <!-- Se não quiser este anúncio, pode remover este bloco. -->
+  <div style="width: 100%; max-width: 728px; margin: 20px auto;">
+    <ins class="adsbygoogle"
+         style="display:block; width:100%; height:auto; min-height:90px;"
+         data-ad-client="ca-pub-9968425306160320"
+         data-ad-slot="SEU_SLOT_ID_2"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
   <div id="rankings-container">
     <div id="ranking-kids-area" class="ranking-section">
       <h2>🏆 Ranking Crianças (Top 20)</h2>
@@ -491,7 +512,23 @@
     </div>
   </div>
 
+  <!-- Bloco de Anúncio Sugerido (Fundo) - SUBSTITUA PELOS SEUS VALORES REAIS -->
+  <!-- Se não quiser este anúncio, pode remover este bloco. -->
+  <div style="width: 100%; max-width: 728px; margin: 20px auto 0 auto;">
+    <ins class="adsbygoogle"
+         style="display:block; width:100%; height:auto; min-height:90px;"
+         data-ad-client="ca-pub-9968425306160320"
+         data-ad-slot="SEU_SLOT_ID_3"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
   <script>
+    // Configuração do Firebase para o "Desafio dos 60 Segundos"
+    // Use as credenciais do projeto "desafio-dos-60-segundos"
     const firebaseConfig = {
       apiKey: "AIzaSyA4PWRt-22S8HGc6GS1m-4Wa9hYsh5Zbo",
       authDomain: "desafio-dos-60-segundos.firebaseapp.com",
@@ -523,7 +560,6 @@
 
     // Elementos de Seleção de Dificuldade
     const difficultySelectionDiv = document.getElementById('difficulty-selection');
-    // Mudar para selecionar apenas os botões de 1 a 3
     const difficultyButtons = document.querySelectorAll('#difficulty-selection .difficulty-button'); 
     let selectedDifficulty = null; // 1, 2, 3
 
@@ -542,10 +578,11 @@
     let currentPlayerName = '';
     let questionStartTime; 
 
-    const correctSound = new Audio('correct.mp3');
+    // Os ficheiros de áudio (correct.mp3, incorrect.mp3) devem estar na mesma pasta ou num caminho acessível
+    const correctSound = new Audio('correct.mp3'); 
     const incorrectSound = new Audio('incorrect.mp3');
 
-    // Nomes dos níveis de dificuldade - AGORA APENAS 3
+    // Nomes dos níveis de dificuldade
     const difficultyNames = {
         1: "Iniciante",
         2: "Amador",
@@ -572,11 +609,8 @@
             button.classList.remove('active');
         });
 
-        // Mostra a seção de seleção de dificuldade (já que agora sempre teremos 3)
+        // Mostra a seção de seleção de dificuldade
         difficultySelectionDiv.style.display = 'block';
-
-        // Não há mais necessidade de esconder/mostrar botões específicos de adulto
-        // pois todos os 3 níveis são compartilhados agora.
 
         // Oculta o botão de começar e o input de nome até a dificuldade ser selecionada
         startGameButton.style.display = 'none';
@@ -755,6 +789,9 @@
             if (currentGameMode === 'kids') { // Crianças: divisão sempre com números pequenos
                 tempNum1 = randomInt(1, 5);
                 tempNum2 = randomInt(1, 5);
+                // Garante que o dividendo seja um múltiplo do divisor
+                num2 = tempNum2;
+                num1 = tempNum1 * num2; 
             } else { // Adultos: Divisão
                 if (currentLevel === 1) { // Iniciante Adultos (não deve ter divisão, mas fallback)
                     tempNum1 = randomInt(1, 5);
@@ -766,12 +803,11 @@
                     tempNum1 = randomInt(1, 12); // Para garantir divisões mais complexas
                     tempNum2 = randomInt(1, 12);
                 }
+                // Garante que o dividendo seja um múltiplo do divisor
+                num2 = tempNum2;
+                num1 = tempNum1 * num2; 
             }
            
-            // Garante que o dividendo seja um múltiplo do divisor
-            num2 = tempNum2;
-            num1 = tempNum1 * num2; 
-            
             // Re-sorteia se num2 for zero (embora os ranges deveriam evitar isso)
             if (num2 === 0) { 
                 num2 = 1; 
@@ -849,6 +885,232 @@
         timerInterval = setInterval(() => {
           timeLeft--;
           timerValueElement.textContent = timeLeft + 's';
+          
+          const percentage = (timeLeft / 60) * 100;
+          timeBar.style.width = percentage + '%';
+
+          if (percentage > 50) {
+              timeBar.style.backgroundColor = '#4CAF50';
+          } else if (percentage > 20) {
+              timeBar.style.backgroundColor = '#FFC107';
+              if (timeLeft <= 10 && !timeBar.classList.contains('time-bar-shaking')) {
+                  timeBar.classList.add('time-bar-shaking');
+              }
+          } else {
+              timeBar.style.backgroundColor = '#DC3545';
+              if (timeLeft <= 10 && !timeBar.classList.contains('time-bar-shaking')) {
+                  timeBar.classList.add('time-bar-shaking');
+                  // Força o redraw para garantir que a animação de shake comece
+                  void timeBar.offsetWidth; 
+              }
+          }
+
+          if (timeLeft <= 0) {
+            endGame();
+          }
+        }, 1000);
+      }, 1000);
+    }
+
+    function endGame() {
+      clearInterval(timerInterval);
+      gameActive = false;
+      answerInput.disabled = true;
+      playAgainButton.style.display = 'inline-block';
+      messageElement.textContent = `Tempo esgotado! Você fez ${score} pontos.`;
+      messageElement.classList.add('show'); 
+      messageElement.classList.remove('correct-text', 'incorrect-text', 'speed-bonus-text'); 
+      
+      answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
+      questionElement.classList.remove('correct-animation', 'incorrect-animation');
+      timeBar.classList.remove('time-bar-shaking');
+
+      // Salva o ranking com o nível de dificuldade selecionado
+      saveRanking(currentPlayerName, score, currentGameMode, selectedDifficulty);
+      
+      playerNameInput.value = '';
+      playerNameInput.style.display = 'inline-block';
+      answerInput.style.display = 'none';
+      
+      // Reseta e mostra a área de seleção de modo e dificuldade novamente
+      document.getElementById('mode-selection').style.display = 'block';
+      difficultySelectionDiv.style.display = 'none'; // Oculta a dificuldade inicialmente
+      modeKidsButton.classList.remove('active');
+      modeAdultsButton.classList.remove('active');
+      difficultyButtons.forEach(button => button.classList.remove('active'));
+      selectedDifficulty = null; // Reseta a dificuldade selecionada
+      currentGameMode = null; // Reseta o modo de jogo
+
+      questionElement.textContent = 'Selecione um modo, um nível e digite seu nome para começar!';
+      difficultyLevelElement.textContent = ''; 
+      
+      // Ocultar o teclado numérico no final do jogo
+      numericKeypad.style.display = 'none';
+    }
+
+    function checkAnswer() {
+      if (!gameActive) return;
+
+      const userAnswer = parseInt(answerInput.value);
+      
+      const correctAnswerLength = String(currentQuestion.answer).length;
+      const userAnswerString = answerInput.value;
+
+      // Verifica se a resposta do usuário já tem o mesmo número de dígitos que a resposta correta
+      // ou se o usuário digitou mais dígitos do que a resposta correta (indicando que ele "finalizou" a resposta)
+      if (!isNaN(userAnswer) && 
+         (userAnswerString.length === correctAnswerLength || userAnswerString.length > correctAnswerLength)) {
+
+        if (userAnswer === currentQuestion.answer) {
+            score++;
+            scoreValueElement.textContent = score;
+            scoreValueElement.classList.add('pulse-effect');
+            scoreValueElement.addEventListener('animationend', function handler() {
+                scoreValueElement.classList.remove('pulse-effect');
+                scoreValueElement.removeEventListener('animationend', handler);
+            });
+
+            messageElement.textContent = 'Correto!';
+            messageElement.classList.add('show', 'correct-text'); 
+            answerInput.classList.add('correct-input-anim'); 
+            questionElement.classList.add('correct-animation'); 
+            correctSound.play();
+
+            const timeTaken = (Date.now() - questionStartTime) / 1000; 
+            const speedBonusThreshold = 1.5; 
+            const bonusTime = 0.5; 
+
+            if (timeTaken <= speedBonusThreshold) {
+                timeLeft = Math.min(60, timeLeft + bonusTime); 
+                timerValueElement.textContent = Math.ceil(timeLeft) + 's'; 
+                messageElement.textContent += " (WOW! Rápido! +0.5s)";
+                messageElement.classList.add('speed-bonus-text'); 
+            }
+            
+            answerInput.addEventListener('animationend', function handler() {
+                answerInput.classList.remove('correct-input-anim');
+                answerInput.removeEventListener('animationend', handler);
+            });
+            questionElement.addEventListener('animationend', function handler() {
+                questionElement.classList.remove('correct-animation');
+                questionElement.removeEventListener('animationend', handler);
+            });
+            messageElement.addEventListener('animationend', function handler() { 
+                messageElement.classList.remove('speed-bonus-text');
+                messageElement.removeEventListener('animationend', handler);
+            });
+
+            setTimeout(() => {
+                generateQuestion();
+            }, 300); 
+            
+        } else { // Resposta incorreta e "finalizada"
+            scoreValueElement.textContent = score;
+            scoreValueElement.classList.add('pulse-effect');
+            scoreValueElement.addEventListener('animationend', function handler() {
+                scoreValueElement.classList.remove('pulse-effect');
+                scoreValueElement.removeEventListener('animationend', handler);
+            });
+
+            messageElement.textContent = 'Errado. Próxima pergunta.';
+            messageElement.classList.add('show', 'incorrect-text'); 
+            answerInput.classList.add('incorrect-input-anim'); 
+            questionElement.classList.add('incorrect-animation'); 
+            incorrectSound.play();
+            
+            answerInput.addEventListener('animationend', function handler() {
+                answerInput.classList.remove('incorrect-input-anim');
+                answerInput.removeEventListener('animationend', handler);
+            });
+            questionElement.addEventListener('animationend', function handler() {
+                questionElement.classList.remove('incorrect-animation');
+                questionElement.removeEventListener('animationend', handler);
+            });
+
+            setTimeout(() => {
+                generateQuestion();
+            }, 300);
+        }
+      } else if (!isNaN(userAnswer) && userAnswerString.length < correctAnswerLength) {
+        // Se o usuário está digitando e ainda não atingiu o número de dígitos da resposta correta,
+        // não faz nada, espera ele terminar de digitar.
+        messageElement.textContent = '';
+        messageElement.classList.remove('show', 'correct-text', 'incorrect-text', 'speed-bonus-text');
+        answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
+        questionElement.classList.remove('correct-animation', 'incorrect-animation');
+      }
+    }
+
+    // --- Event Listeners ---
+    modeKidsButton.addEventListener('click', () => selectGameMode('kids'));
+    modeAdultsButton.addEventListener('click', () => selectGameMode('adults'));
+
+    // Adiciona listener para os botões de dificuldade
+    difficultyButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            selectDifficulty(parseInt(button.dataset.level));
+        });
+    });
+
+    startGameButton.addEventListener('click', () => startGame());
+    playAgainButton.addEventListener('click', () => startGame());
+
+    playerNameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            startGame();
+        }
+    });
+
+    numericKeypad.addEventListener('click', (e) => {
+        if (!gameActive) return;
+
+        const target = e.target;
+        if (target.tagName === 'BUTTON') {
+            const value = target.dataset.value;
+
+            if (value === 'clear') {
+                answerInput.value = '';
+            } else {
+                // Para evitar múltiplos zeros no início (e.g. 005)
+                // Se o input está vazio e o primeiro dígito é zero, apenas define como '0'
+                // Se já é '0', não adiciona outro '0'
+                // Senão, concatena o valor
+                if (answerInput.value === '' && value === '0') {
+                    answerInput.value = '0';
+                } else if (answerInput.value === '0' && value !== '0') {
+                    answerInput.value = value;
+                }
+                else {
+                    answerInput.value += value;
+                }
+            }
+            checkAnswer();
+        }
+    });
+
+    answerInput.addEventListener('focus', (e) => {
+        e.target.blur();
+    });
+
+    window.onload = () => {
+        displayRanking('kids');
+        displayRanking('adults');
+        
+        startGameButton.style.display = 'none';
+        playerNameInput.style.display = 'none';
+        answerInput.style.display = 'none';
+        difficultyLevelElement.textContent = ''; 
+
+        // Garante que as seleções de modo/dificuldade e nome do jogador sejam exibidas ao carregar
+        document.getElementById('mode-selection').style.display = 'block';
+        difficultySelectionDiv.style.display = 'none'; // Começa oculto
+        numericKeypad.style.display = 'none';
+        questionElement.textContent = 'Selecione um modo, um nível e digite seu nome para começar!';
+    };
+
+  </script>
+</body>
+</html>
           
           const percentage = (timeLeft / 60) * 100;
           timeBar.style.width = percentage + '%';
