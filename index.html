@@ -54,7 +54,7 @@
         20%, 40%, 60%, 80% { transform: translateX(2px); }
     }
 
-    #game-container, .ranking-section, #mode-selection { /* Removido #challenge-area */
+    #game-container, .ranking-section, #mode-selection {
       background-color: #fff;
       padding: 30px;
       border-radius: 8px;
@@ -77,9 +77,10 @@
     #game-container {
         animation-delay: 0.4s;
     }
-    .ranking-section { /* Aplica para ambas as seções de ranking */
-        animation-delay: 0.6s; /* Ajustado o delay */
-    }
+    /* A animação para .ranking-section será aplicada ao #rankings-container agora */
+    /* .ranking-section { 
+        animation-delay: 0.6s; 
+    } */
 
     #question-area {
       margin-bottom: 20px;
@@ -114,6 +115,13 @@
       border-radius: 4px;
       text-align: center;
       transition: border-color 0.3s ease, transform 0.1s ease;
+      /* Impede que o teclado virtual do sistema apareça */
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+      -khtml-user-select: none; /* Konqueror HTML */
+      -moz-user-select: none; /* Old versions of Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
     }
 
     #player-name-input {
@@ -211,7 +219,7 @@
     }
 
 
-    #start-game-button { /* Renomeado */
+    #start-game-button {
       background-color: #28a745;
       padding: 15px 30px;
       font-size: 1.3em;
@@ -221,12 +229,12 @@
       background-color: #218838;
     }
 
-    .ranking-section h2 { /* Aplica para ambos os h2 de ranking */
+    .ranking-section h2 {
       color: #4CAF50;
       margin-bottom: 15px;
     }
 
-    .ranking-list { /* Aplica para ambas as ol de ranking */
+    .ranking-list {
       list-style: none;
       padding: 0;
       text-align: left;
@@ -297,48 +305,88 @@
         animation: timeShake 0.5s ease-out infinite;
     }
 
-    #answer-input {
-        display: none;
+    /* Teclado numérico */
+    #numeric-keypad {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        width: 100%;
+        max-width: 300px; /* Ajuste a largura máxima conforme necessário */
+        margin-top: 20px;
+        background-color: #f0f0f0;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        display: none; /* Inicia oculto */
     }
 
-    /* Keyframes para as animações */
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
+    #numeric-keypad button {
+        width: 100%;
+        height: 60px; /* Altura dos botões */
+        font-size: 1.8em;
+        background-color: #e0e0e0;
+        color: #333;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+        padding: 0; /* Remove padding extra dos botões padrão */
+        box-shadow: none; /* Remove sombra extra */
     }
 
-    @keyframes bounceIn {
-      0% { transform: scale(0.9); opacity: 0; }
-      50% { transform: scale(1.1); opacity: 1; }
-      100% { transform: scale(1); }
+    #numeric-keypad button:hover {
+        background-color: #d0d0d0;
+        transform: translateY(-1px);
     }
 
-    @keyframes pulseGreen {
-        0% { transform: scale(1); color: #555; }
-        50% { transform: scale(1.05); color: #28a745; }
-        100% { transform: scale(1); color: #555; }
+    #numeric-keypad button:active {
+        background-color: #c0c0c0;
+        transform: translateY(0);
     }
 
-    @keyframes shakeRed {
-        0% { transform: translateX(0); color: #555; }
-        25% { transform: translateX(-5px); color: #d9534f; }
-        50% { transform: translateX(5px); color: #d9534f; }
-        75% { transform: translateX(-5px); color: #d9534f; }
-        100% { transform: translateX(0); color: #555; }
+    #numeric-keypad button.key-backspace {
+        background-color: #f44336; /* Cor para o botão de apagar */
+        color: white;
+    }
+    #numeric-keypad button.key-backspace:hover {
+        background-color: #d32f2f;
     }
 
-    @keyframes fadeInOut {
-        0% { opacity: 0; transform: translateY(10px); }
-        20% { opacity: 1; transform: translateY(0); }
-        80% { opacity: 1; transform: translateY(0); }
-        100% { opacity: 0; transform: translateY(-10px); }
+    /* CONTAINER PARA OS RANKINGS LADO A LADO */
+    #rankings-container {
+        display: flex; /* Habilita flexbox */
+        flex-direction: column; /* Colunas por padrão (para mobile) */
+        gap: 20px; /* Espaço entre os rankings */
+        width: 90%;
+        max-width: 1024px; /* Ajuste a largura máxima total para os dois rankings */
+        margin-bottom: 20px; /* Para manter o espaçamento com o rodapé se houver */
+        opacity: 0; 
+        transform: scale(0.95) translateY(20px); 
+        animation: fadeInScale 0.7s ease-out forwards;
+        animation-delay: 0.6s; /* Aplica a animação no container */
+    }
+
+    #rankings-container .ranking-section {
+        flex: 1; /* Faz com que cada ranking ocupe o mesmo espaço disponível */
+        margin-bottom: 0; /* Remove margem inferior individual, a margem está no gap do container */
+        max-width: none; /* Remove a max-width individual para que possam se expandir */
+        width: auto; /* Permite que o flexbox controle a largura */
+    }
+
+
+    /* MEDIA QUERIES para layout responsivo */
+    @media (min-width: 768px) { /* A partir de tablets e desktops */
+        #rankings-container {
+            flex-direction: row; /* Coloca os rankings lado a lado */
+            align-items: flex-start; /* Alinha os itens ao topo se tiverem alturas diferentes */
+        }
+        #rankings-container .ranking-section {
+            /* flex: 1; - já definido, mas pode ser repetido para clareza */
+            /* max-width: 49%; */ /* Ou algum valor percentual para um pequeno gap visual, se preferir */
+        }
     }
 
     @media (max-width: 600px) {
-      #game-container, .ranking-section, #mode-selection { /* Removido #challenge-area */
+      #game-container, .ranking-section, #mode-selection {
         padding: 20px;
       }
       #question {
@@ -348,7 +396,15 @@
         font-size: 1em;
         padding: 10px 20px;
       }
+      #numeric-keypad {
+        max-width: 250px; /* Ajuste para telas menores */
+      }
+      #numeric-keypad button {
+        height: 50px;
+        font-size: 1.5em;
+      }
     }
+
   </style>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -377,24 +433,40 @@
       <p id="difficulty-level"></p> 
       <p id="question">Selecione um modo e digite seu nome para começar!</p>
       <input type="text" id="player-name-input" placeholder="Seu nome" maxlength="20" pattern="[A-Za-zÀ-ú\s]+" title="Apenas letras e espaços são permitidos.">
-      <input type="number" id="answer-input" placeholder="Digite a resposta">
+      <input type="text" id="answer-input" placeholder="Digite a resposta" readonly>
       <p id="message"></p>
     </div>
 
-    <button id="submit-answer" style="display: none;">Responder</button>
-    <button id="start-game-button" style="display: none;">Começar Jogo</button> <button id="play-again" style="display: none;">Jogar Novamente</button>
+    <button id="start-game-button" style="display: none;">Começar Jogo</button>
+    <button id="play-again" style="display: none;">Jogar Novamente</button>
   </div>
 
-  <div id="ranking-kids-area" class="ranking-section">
-    <h2>🏆 Ranking Crianças (Top 20)</h2>
-    <ol id="ranking-kids-list" class="ranking-list">
-    </ol>
+  <div id="numeric-keypad">
+    <button data-value="1">1</button>
+    <button data-value="2">2</button>
+    <button data-value="3">3</button>
+    <button data-value="4">4</button>
+    <button data-value="5">5</button>
+    <button data-value="6">6</button>
+    <button data-value="7">7</button>
+    <button data-value="8">8</button>
+    <button data-value="9">9</button>
+    <button data-value="clear" class="key-backspace">APAGAR</button>
+    <button data-value="0">0</button>
   </div>
 
-  <div id="ranking-adults-area" class="ranking-section">
-    <h2>🏆 Ranking Adultos (Top 20)</h2>
-    <ol id="ranking-adults-list" class="ranking-list">
-    </ol>
+  <div id="rankings-container">
+    <div id="ranking-kids-area" class="ranking-section">
+      <h2>🏆 Ranking Crianças (Top 20)</h2>
+      <ol id="ranking-kids-list" class="ranking-list">
+      </ol>
+    </div>
+
+    <div id="ranking-adults-area" class="ranking-section">
+      <h2>🏆 Ranking Adultos (Top 20)</h2>
+      <ol id="ranking-adults-list" class="ranking-list">
+      </ol>
+    </div>
   </div>
 
   <script>
@@ -414,11 +486,10 @@
     const questionElement = document.getElementById('question');
     const answerInput = document.getElementById('answer-input');
     const playerNameInput = document.getElementById('player-name-input');
-    const submitAnswerButton = document.getElementById('submit-answer');
     const messageElement = document.getElementById('message');
     const timerValueElement = document.getElementById('timer-value');
     const scoreValueElement = document.getElementById('score-value');
-    const startGameButton = document.getElementById('start-game-button'); // ID Renomeado
+    const startGameButton = document.getElementById('start-game-button');
     const playAgainButton = document.getElementById('play-again');
     const timeBar = document.getElementById('time-bar');
     const difficultyLevelElement = document.getElementById('difficulty-level'); 
@@ -431,6 +502,9 @@
     // Elementos de Ranking
     const rankingKidsList = document.getElementById('ranking-kids-list');
     const rankingAdultsList = document.getElementById('ranking-adults-list');
+
+    // Elemento do Teclado Numérico
+    const numericKeypad = document.getElementById('numeric-keypad');
 
     let currentQuestion;
     let score = 0;
@@ -474,6 +548,9 @@
         playerNameInput.focus();
         questionElement.textContent = 'Digite seu nome e clique em "Começar Jogo"!';
         
+        // Oculta o teclado numérico
+        numericKeypad.style.display = 'none';
+
         // Atualiza os rankings
         displayRanking('kids');
         displayRanking('adults');
@@ -546,7 +623,7 @@
         } catch (error) {
             console.error(`Erro ao carregar ranking ${mode}: `, error);
             rankingListElement.innerHTML = '<li>Erro ao carregar ranking.</li>';
-            alert(`Erro ao carregar ranking ${mode}. Verifique o console para mais detalhes.`);
+            // alert(`Erro ao carregar ranking ${mode}. Verifique o console para mais detalhes.`); // Removido alerta para não atrapalhar
         }
     }
 
@@ -647,7 +724,7 @@
       questionStartTime = Date.now(); 
     }
 
-    function startGame() { // Removidos parâmetros de desafio
+    function startGame() {
       if (!currentGameMode) {
           alert("Por favor, selecione um modo de jogo (Crianças ou Adultos) antes de começar.");
           return;
@@ -676,13 +753,14 @@
       playerNameInput.style.display = 'none';
       answerInput.style.display = 'inline-block';
       answerInput.disabled = false;
-      answerInput.focus();
+
+      // Exibir o teclado numérico
+      numericKeypad.style.display = 'grid';
       
       questionElement.textContent = 'Preparar...';
       difficultyLevelElement.textContent = ''; 
       
       startGameButton.style.display = 'none';
-      submitAnswerButton.style.display = 'inline-block';
       playAgainButton.style.display = 'none';
       
       // Esconder a área de seleção de modo ao iniciar o jogo
@@ -726,7 +804,6 @@
       clearInterval(timerInterval);
       gameActive = false;
       answerInput.disabled = true;
-      submitAnswerButton.style.display = 'none';
       playAgainButton.style.display = 'inline-block';
       messageElement.textContent = `Tempo esgotado! Você fez ${score} pontos.`;
       messageElement.classList.add('show'); 
@@ -736,7 +813,7 @@
       questionElement.classList.remove('correct-animation', 'incorrect-animation');
       timeBar.classList.remove('time-bar-shaking');
 
-      saveRanking(currentPlayerName, score, currentGameMode); // Salva no ranking específico
+      saveRanking(currentPlayerName, score, currentGameMode);
       
       playerNameInput.value = '';
       playerNameInput.style.display = 'inline-block';
@@ -746,113 +823,111 @@
       
       // Mostrar a área de seleção de modo novamente
       document.getElementById('mode-selection').style.display = 'block';
+      
+      // Ocultar o teclado numérico no final do jogo
+      numericKeypad.style.display = 'none';
     }
 
     function checkAnswer() {
       if (!gameActive) return;
 
       const userAnswer = parseInt(answerInput.value);
-      if (isNaN(userAnswer)) {
-        messageElement.textContent = 'Por favor, digite um número!';
-        messageElement.classList.add('show', 'incorrect-text'); 
-        answerInput.classList.add('incorrect-input-anim'); 
-        incorrectSound.play();
-        
-        answerInput.addEventListener('animationend', function handler() {
-            answerInput.classList.remove('incorrect-input-anim');
-            answerInput.removeEventListener('animationend', handler);
-        });
+      
+      const correctAnswerLength = String(currentQuestion.answer).length;
+      const userAnswerString = answerInput.value;
 
-        return;
-      }
+      if (!isNaN(userAnswer) && 
+         (userAnswerString.length === correctAnswerLength || userAnswerString.length > correctAnswerLength)) {
 
-      if (userAnswer === currentQuestion.answer) {
-        score++;
-        scoreValueElement.textContent = score;
-        scoreValueElement.classList.add('pulse-effect');
-        scoreValueElement.addEventListener('animationend', function handler() {
-            scoreValueElement.classList.remove('pulse-effect');
-            scoreValueElement.removeEventListener('animationend', handler);
-        });
+        if (userAnswer === currentQuestion.answer) {
+            score++;
+            scoreValueElement.textContent = score;
+            scoreValueElement.classList.add('pulse-effect');
+            scoreValueElement.addEventListener('animationend', function handler() {
+                scoreValueElement.classList.remove('pulse-effect');
+                scoreValueElement.removeEventListener('animationend', handler);
+            });
 
-        messageElement.textContent = 'Correto!';
-        messageElement.classList.add('show', 'correct-text'); 
-        answerInput.classList.add('correct-input-anim'); 
-        questionElement.classList.add('correct-animation'); 
-        correctSound.play();
+            messageElement.textContent = 'Correto!';
+            messageElement.classList.add('show', 'correct-text'); 
+            answerInput.classList.add('correct-input-anim'); 
+            questionElement.classList.add('correct-animation'); 
+            correctSound.play();
 
-        const timeTaken = (Date.now() - questionStartTime) / 1000; 
-        const speedBonusThreshold = 1.5; 
-        const bonusTime = 0.5; 
+            const timeTaken = (Date.now() - questionStartTime) / 1000; 
+            const speedBonusThreshold = 1.5; 
+            const bonusTime = 0.5; 
 
-        if (timeTaken <= speedBonusThreshold) {
-            timeLeft = Math.min(60, timeLeft + bonusTime); 
-            timerValueElement.textContent = Math.ceil(timeLeft) + 's'; 
-            messageElement.textContent += " (WOW! Rápido! +0.5s)";
-            messageElement.classList.add('speed-bonus-text'); 
-        }
-
-        // Dificuldade para crianças sobe mais devagar ou até um limite
-        if (currentGameMode === 'kids') {
-            if (score > 0 && score % 3 === 0 && currentDifficulty < 3) { // Mais rápido para subir dificuldade, mas limitado
-                currentDifficulty++;
-                console.log(`Dificuldade crianças aumentada para: ${currentDifficulty}`);
-                messageElement.textContent += ` (Dificuldade: ${difficultyNames[currentDifficulty]}!)`;
+            if (timeTaken <= speedBonusThreshold) {
+                timeLeft = Math.min(60, timeLeft + bonusTime); 
+                timerValueElement.textContent = Math.ceil(timeLeft) + 's'; 
+                messageElement.textContent += " (WOW! Rápido! +0.5s)";
+                messageElement.classList.add('speed-bonus-text'); 
             }
-        } else { // Adultos
-            if (score > 0 && score % 5 === 0) {
-                currentDifficulty++;
-                console.log(`Dificuldade adultos aumentada para: ${currentDifficulty}`);
-                messageElement.textContent += ` (Dificuldade: ${difficultyNames[currentDifficulty]}!)`;
+
+            if (currentGameMode === 'kids') {
+                if (score > 0 && score % 3 === 0 && currentDifficulty < 3) {
+                    currentDifficulty++;
+                    console.log(`Dificuldade crianças aumentada para: ${currentDifficulty}`);
+                    messageElement.textContent += ` (Dificuldade: ${difficultyNames[currentDifficulty]}!)`;
+                }
+            } else { // Adultos
+                if (score > 0 && score % 5 === 0) {
+                    currentDifficulty++;
+                    console.log(`Dificuldade adultos aumentada para: ${currentDifficulty}`);
+                    messageElement.textContent += ` (Dificuldade: ${difficultyNames[currentDifficulty]}!)`;
+                }
             }
+            
+            answerInput.addEventListener('animationend', function handler() {
+                answerInput.classList.remove('correct-input-anim');
+                answerInput.removeEventListener('animationend', handler);
+            });
+            questionElement.addEventListener('animationend', function handler() {
+                questionElement.classList.remove('correct-animation');
+                questionElement.removeEventListener('animationend', handler);
+            });
+            messageElement.addEventListener('animationend', function handler() { 
+                messageElement.classList.remove('speed-bonus-text');
+                messageElement.removeEventListener('animationend', handler);
+            });
+
+            setTimeout(() => {
+                generateQuestion();
+            }, 300); 
+            
+        } else { // Resposta incorreta e "finalizada"
+            scoreValueElement.textContent = score;
+            scoreValueElement.classList.add('pulse-effect');
+            scoreValueElement.addEventListener('animationend', function handler() {
+                scoreValueElement.classList.remove('pulse-effect');
+                scoreValueElement.removeEventListener('animationend', handler);
+            });
+
+            messageElement.textContent = 'Errado. Próxima pergunta.';
+            messageElement.classList.add('show', 'incorrect-text'); 
+            answerInput.classList.add('incorrect-input-anim'); 
+            questionElement.classList.add('incorrect-animation'); 
+            incorrectSound.play();
+            
+            answerInput.addEventListener('animationend', function handler() {
+                answerInput.classList.remove('incorrect-input-anim');
+                answerInput.removeEventListener('animationend', handler);
+            });
+            questionElement.addEventListener('animationend', function handler() {
+                questionElement.classList.remove('incorrect-animation');
+                questionElement.removeEventListener('animationend', handler);
+            });
+
+            setTimeout(() => {
+                generateQuestion();
+            }, 300);
         }
-        
-
-        answerInput.addEventListener('animationend', function handler() {
-            answerInput.classList.remove('correct-input-anim');
-            answerInput.removeEventListener('animationend', handler);
-        });
-        questionElement.addEventListener('animationend', function handler() {
-            questionElement.classList.remove('correct-animation');
-            questionElement.removeEventListener('animationend', handler);
-        });
-        messageElement.addEventListener('animationend', function handler() { 
-            messageElement.classList.remove('speed-bonus-text');
-            messageElement.removeEventListener('animationend', handler);
-        });
-
-        setTimeout(() => {
-            generateQuestion();
-        }, 500); 
-        
-      } else {
-        score = Math.max(0, score - 1); 
-        scoreValueElement.textContent = score;
-        scoreValueElement.classList.add('pulse-effect');
-        scoreValueElement.addEventListener('animationend', function handler() {
-            scoreValueElement.classList.remove('pulse-effect');
-            scoreValueElement.removeEventListener('animationend', handler);
-        });
-
-        messageElement.textContent = 'Errado. Tente novamente.';
-        messageElement.classList.add('show', 'incorrect-text'); 
-        answerInput.classList.add('incorrect-input-anim'); 
-        questionElement.classList.add('incorrect-animation'); 
-        incorrectSound.play();
-        
-        answerInput.addEventListener('animationend', function handler() {
-            answerInput.classList.remove('incorrect-input-anim');
-            answerInput.removeEventListener('animationend', handler);
-        });
-        questionElement.addEventListener('animationend', function handler() {
-            questionElement.classList.remove('incorrect-animation');
-            questionElement.removeEventListener('animationend', handler);
-        });
-
-        setTimeout(() => {
-            answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
-            questionElement.classList.remove('correct-animation', 'incorrect-animation');
-        }, 500);
+      } else if (!isNaN(userAnswer) && userAnswerString.length < correctAnswerLength) {
+        messageElement.textContent = '';
+        messageElement.classList.remove('show', 'correct-text', 'incorrect-text', 'speed-bonus-text');
+        answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
+        questionElement.classList.remove('correct-animation', 'incorrect-animation');
       }
     }
 
@@ -860,8 +935,7 @@
     modeKidsButton.addEventListener('click', () => selectGameMode('kids'));
     modeAdultsButton.addEventListener('click', () => selectGameMode('adults'));
 
-    startGameButton.addEventListener('click', () => startGame()); // Removido parâmetro de desafio
-    submitAnswerButton.addEventListener('click', checkAnswer);
+    startGameButton.addEventListener('click', () => startGame());
     playAgainButton.addEventListener('click', () => startGame());
 
     playerNameInput.addEventListener('keypress', (e) => {
@@ -870,25 +944,39 @@
         }
     });
 
-    answerInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        checkAnswer();
-      }
+    numericKeypad.addEventListener('click', (e) => {
+        if (!gameActive) return;
+
+        const target = e.target;
+        if (target.tagName === 'BUTTON') {
+            const value = target.dataset.value;
+
+            if (value === 'clear') {
+                answerInput.value = '';
+            } else if (value === 'enter') {
+                // Não é necessário um botão ENTER, pois a verificação é automática
+            } else {
+                answerInput.value += value;
+                checkAnswer();
+            }
+        }
+    });
+
+    answerInput.addEventListener('focus', (e) => {
+        e.target.blur();
     });
 
     window.onload = () => {
-        // Inicializa os rankings
         displayRanking('kids');
         displayRanking('adults');
         
-        // Esconde o botão de iniciar jogo inicialmente
         startGameButton.style.display = 'none';
         playerNameInput.style.display = 'none';
         answerInput.style.display = 'none';
         difficultyLevelElement.textContent = ''; 
 
-        // Mostra a área de seleção de modo
         document.getElementById('mode-selection').style.display = 'block';
+        numericKeypad.style.display = 'none';
     };
 
   </script>
