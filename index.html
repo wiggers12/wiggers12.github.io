@@ -77,10 +77,6 @@
     #game-container {
         animation-delay: 0.4s;
     }
-    /* A animação para .ranking-section será aplicada ao #rankings-container agora */
-    /* .ranking-section { 
-        animation-delay: 0.6s; 
-    } */
 
     #question-area {
       margin-bottom: 20px;
@@ -169,16 +165,24 @@
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
     
-    /* Cores para botões de seleção de modo */
-    #mode-kids-button, #mode-adults-button {
+    /* Cores para botões de seleção de modo e dificuldade */
+    .mode-button, .difficulty-button {
         background-color: #6c757d; /* Cor neutra inicial */
     }
-    #mode-kids-button.active, #mode-adults-button.active {
+    .mode-button.active, .difficulty-button.active {
         background-color: #4CAF50; /* Verde quando ativo */
         box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.5); /* Anel verde */
     }
-    #mode-kids-button:hover, #mode-adults-button:hover {
+    .mode-button:hover, .difficulty-button:hover {
         background-color: #5a6268;
+    }
+
+    #difficulty-selection {
+        margin-top: 15px;
+        display: none; /* Inicia oculto */
+    }
+    #difficulty-selection h3 {
+        margin-bottom: 10px;
     }
 
 
@@ -246,6 +250,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap; /* Permite quebrar linha em telas menores se o conteúdo for muito longo */
     }
 
     .ranking-list li:last-child {
@@ -256,11 +261,12 @@
       font-weight: bold;
       color: #007bff;
       min-width: 25px;
+      margin-right: 5px; /* Espaço entre a posição e o nome */
     }
 
     .ranking-name {
       flex-grow: 1;
-      margin-left: 10px;
+      margin-right: 5px; /* Espaço entre nome e score */
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -273,15 +279,24 @@
       text-align: right;
     }
 
+    .ranking-level {
+        font-size: 0.8em;
+        color: #666;
+        margin-left: 5px; /* Espaço após o nome */
+        white-space: nowrap;
+    }
+
     /* Cores para os Top 3 */
     .ranking-list li.ranking-item-top .ranking-name,
-    .ranking-list li.ranking-item-top .ranking-score {
+    .ranking-list li.ranking-item-top .ranking-score,
+    .ranking-list li.ranking-item-top .ranking-level {
         color: #007bff;
     }
 
     /* Cores para os 3 Últimos */
     .ranking-list li.ranking-item-bottom .ranking-name,
-    .ranking-list li.ranking-item-bottom .ranking-score {
+    .ranking-list li.ranking-item-bottom .ranking-score,
+    .ranking-list li.ranking-item-bottom .ranking-level {
         color: #d9534f;
     }
 
@@ -416,8 +431,18 @@
 
   <div id="mode-selection">
     <h3>Escolha o Modo de Jogo:</h3>
-    <button id="mode-kids-button">Modo Crianças</button>
-    <button id="mode-adults-button">Modo Adultos</button>
+    <button id="mode-kids-button" class="mode-button">Modo Crianças</button>
+    <button id="mode-adults-button" class="mode-button">Modo Adultos</button>
+
+    <div id="difficulty-selection">
+        <h3>Escolha o Nível de Dificuldade:</h3>
+        <button data-level="1" class="difficulty-button">Iniciante</button>
+        <button data-level="2" class="difficulty-button">Amador</button>
+        <button data-level="3" class="difficulty-button">CDF</button>
+        <button data-level="4" class="difficulty-button adult-only-difficulty" style="display: none;">Avançado</button>
+        <button data-level="5" class="difficulty-button adult-only-difficulty" style="display: none;">Mestre</button>
+        <button data-level="6" class="difficulty-button adult-only-difficulty" style="display: none;">Gênio Matemático</button>
+    </div>
   </div>
 
   <div id="game-container">
@@ -431,7 +456,7 @@
 
     <div id="question-area">
       <p id="difficulty-level"></p> 
-      <p id="question">Selecione um modo e digite seu nome para começar!</p>
+      <p id="question">Selecione um modo e um nível, digite seu nome para começar!</p>
       <input type="text" id="player-name-input" placeholder="Seu nome" maxlength="20" pattern="[A-Za-zÀ-ú\s]+" title="Apenas letras e espaços são permitidos.">
       <input type="text" id="answer-input" placeholder="Digite a resposta" readonly>
       <p id="message"></p>
@@ -499,6 +524,11 @@
     const modeAdultsButton = document.getElementById('mode-adults-button');
     let currentGameMode = null; // 'kids' ou 'adults'
 
+    // Elementos de Seleção de Dificuldade
+    const difficultySelectionDiv = document.getElementById('difficulty-selection');
+    const difficultyButtons = document.querySelectorAll('.difficulty-button');
+    let selectedDifficulty = null; // 1, 2, 3, 4, 5, 6
+
     // Elementos de Ranking
     const rankingKidsList = document.getElementById('ranking-kids-list');
     const rankingAdultsList = document.getElementById('ranking-adults-list');
@@ -511,17 +541,17 @@
     let timeLeft = 60;
     let timerInterval;
     let gameActive = false;
-    let currentDifficulty = 1;
     let currentPlayerName = '';
     let questionStartTime; 
 
     const correctSound = new Audio('correct.mp3');
     const incorrectSound = new Audio('incorrect.mp3');
 
+    // Nomes dos níveis de dificuldade atualizados
     const difficultyNames = {
         1: "Iniciante",
-        2: "Aprendiz",
-        3: "Intermediário",
+        2: "Amador",
+        3: "CDF",
         4: "Avançado",
         5: "Mestre",
         6: "Gênio Matemático"
@@ -531,9 +561,9 @@
 
     function selectGameMode(mode) {
         currentGameMode = mode;
-        console.log("Modo de jogo selecionado:", currentGameMode);
+        selectedDifficulty = null; // Reseta a dificuldade ao mudar o modo
         
-        // Atualiza o estado dos botões
+        // Atualiza o estado dos botões de modo
         modeKidsButton.classList.remove('active');
         modeAdultsButton.classList.remove('active');
         if (mode === 'kids') {
@@ -542,11 +572,27 @@
             modeAdultsButton.classList.add('active');
         }
 
-        // Mostra o botão de começar jogo e input de nome
-        startGameButton.style.display = 'inline-block';
-        playerNameInput.style.display = 'inline-block';
-        playerNameInput.focus();
-        questionElement.textContent = 'Digite seu nome e clique em "Começar Jogo"!';
+        // Reseta e oculta todos os botões de dificuldade para desativá-los
+        difficultyButtons.forEach(button => {
+            button.classList.remove('active');
+            button.style.display = 'inline-block'; // Garante que estejam visíveis para a próxima lógica
+        });
+
+        // Mostra a seção de seleção de dificuldade
+        difficultySelectionDiv.style.display = 'block';
+
+        // Ajusta a visibilidade dos botões de dificuldade com base no modo
+        const adultOnlyDifficulties = document.querySelectorAll('.adult-only-difficulty');
+        if (mode === 'kids') {
+            adultOnlyDifficulties.forEach(button => button.style.display = 'none');
+        } else {
+            adultOnlyDifficulties.forEach(button => button.style.display = 'inline-block');
+        }
+
+        // Oculta o botão de começar e o input de nome até a dificuldade ser selecionada
+        startGameButton.style.display = 'none';
+        playerNameInput.style.display = 'none';
+        questionElement.textContent = 'Agora, escolha um nível de dificuldade!';
         
         // Oculta o teclado numérico
         numericKeypad.style.display = 'none';
@@ -556,11 +602,27 @@
         displayRanking('adults');
     }
 
-    function saveRanking(player, score, mode) {
+    function selectDifficulty(level) {
+        selectedDifficulty = level;
+        
+        // Atualiza o estado dos botões de dificuldade
+        difficultyButtons.forEach(button => button.classList.remove('active'));
+        document.querySelector(`.difficulty-button[data-level="${level}"]`).classList.add('active');
+
+        // Mostra o botão de começar jogo e input de nome
+        startGameButton.style.display = 'inline-block';
+        playerNameInput.style.display = 'inline-block';
+        playerNameInput.focus();
+        questionElement.textContent = 'Digite seu nome e clique em "Começar Jogo"!';
+    }
+
+
+    function saveRanking(player, score, mode, difficultyLevelPlayed) {
         const collectionName = `ranking_${mode}`;
         db.collection(collectionName).add({
             player: player,
             score: score,
+            difficulty: difficultyNames[difficultyLevelPlayed], // Salva o nome do nível
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         })
         .then((docRef) => {
@@ -601,9 +663,10 @@
 
                 const positionSpan = `<span class="ranking-position">${rankingPosition}º</span>`;
                 const nameSpan = `<span class="ranking-name">${data.player}</span>`;
+                const levelSpan = data.difficulty ? `<span class="ranking-level">(${data.difficulty})</span>` : ''; // Mostra o nível se existir
                 const scoreSpan = `<span class="ranking-score">${data.score}</span>`;
                 
-                li.innerHTML = `${positionSpan} ${nameSpan} ${scoreSpan}`;
+                li.innerHTML = `${positionSpan} ${nameSpan} ${levelSpan} ${scoreSpan}`; // Adiciona o nível
                 
                 // Marca os 3 primeiros
                 if (rankingPosition <= 3) {
@@ -623,7 +686,6 @@
         } catch (error) {
             console.error(`Erro ao carregar ranking ${mode}: `, error);
             rankingListElement.innerHTML = '<li>Erro ao carregar ranking.</li>';
-            // alert(`Erro ao carregar ranking ${mode}. Verifique o console para mais detalhes.`); // Removido alerta para não atrapalhar
         }
     }
 
@@ -641,29 +703,38 @@
       let operator;
       let correctAnswer;
 
+      const currentLevel = selectedDifficulty; // Usa a dificuldade selecionada
+
       if (currentGameMode === 'kids') {
           operators = ['+', '-'];
-          currentDifficulty = Math.min(currentDifficulty, 3); // Limita a dificuldade para crianças
-          num1 = randomInt(1, 10 + currentDifficulty * 5); // Aumenta um pouco com dificuldade
-          num2 = randomInt(1, 10 + currentDifficulty * 5);
-      } else { // Adults mode
-          operators = ['+', '-', '*', '÷'];
-          if (currentDifficulty === 1) {
+          if (currentLevel === 1) { // Iniciante Crianças
             num1 = randomInt(1, 10);
             num2 = randomInt(1, 10);
-          } else if (currentDifficulty === 2) {
-            num1 = randomInt(1, 20);
-            num2 = randomInt(1, 20);
-          } else if (currentDifficulty === 3) {
-            num1 = randomInt(1, 30);
-            num2 = randomInt(1, 30);
-          } else if (currentDifficulty === 4) {
-            num1 = randomInt(1, 50);
-            num2 = randomInt(1, 50);
-          } else if (currentDifficulty === 5) {
-            num1 = randomInt(1, 70);
-            num2 = randomInt(1, 70);
-          } else { 
+          } else if (currentLevel === 2) { // Amador Crianças
+            num1 = randomInt(5, 15);
+            num2 = randomInt(5, 15);
+          } else { // currentLevel === 3 (CDF Crianças)
+            num1 = randomInt(10, 25);
+            num2 = randomInt(10, 25);
+          }
+      } else { // Adults mode
+          operators = ['+', '-', '*', '÷'];
+          if (currentLevel === 1) { // Iniciante Adultos
+            num1 = randomInt(1, 15);
+            num2 = randomInt(1, 15);
+          } else if (currentLevel === 2) { // Amador Adultos
+            num1 = randomInt(5, 25);
+            num2 = randomInt(5, 25);
+          } else if (currentLevel === 3) { // CDF Adultos
+            num1 = randomInt(10, 40);
+            num2 = randomInt(10, 40);
+          } else if (currentLevel === 4) { // Avançado Adultos
+            num1 = randomInt(1, 60);
+            num2 = randomInt(1, 60);
+          } else if (currentLevel === 5) { // Mestre Adultos
+            num1 = randomInt(1, 80);
+            num2 = randomInt(1, 80);
+          } else { // currentLevel === 6 (Gênio Matemático Adultos)
             num1 = randomInt(1, 100);
             num2 = randomInt(1, 100);
           }
@@ -690,23 +761,23 @@
         correctAnswer = num1 * num2;
       } else { // Divisão '÷'
         let tempNum1, tempNum2;
-        if (currentGameMode === 'kids') { // Crianças não fazem divisão tão complexa
+        if (currentGameMode === 'kids') { // Crianças: divisão mais simples
             tempNum1 = randomInt(1, 5);
             tempNum2 = randomInt(1, 5);
-        } else {
-            if (currentDifficulty < 5) { 
-                tempNum1 = randomInt(1, 5); 
-                tempNum2 = randomInt(1, 5);
+        } else { // Adultos: divisão
+            if (currentLevel < 5) { 
+                tempNum1 = randomInt(1, 8); 
+                tempNum2 = randomInt(1, 8);
             } else {
-                tempNum1 = randomInt(1, 10); 
-                tempNum2 = randomInt(1, 10);
+                tempNum1 = randomInt(1, 15); 
+                tempNum2 = randomInt(1, 15);
             }
         }
        
         num1 = tempNum1 * tempNum2; 
         num2 = tempNum2;
         
-        if (num2 === 0) num2 = 1;
+        if (num2 === 0) num2 = 1; // Evita divisão por zero
 
         questionString = `${num1} ÷ ${num2}`;
         correctAnswer = num1 / num2;
@@ -714,7 +785,8 @@
 
       currentQuestion = { question: questionString, answer: correctAnswer };
       questionElement.textContent = currentQuestion.question;
-      difficultyLevelElement.textContent = `Nível: ${difficultyNames[currentDifficulty] || 'Desconhecido'} (${currentGameMode === 'kids' ? 'Crianças' : 'Adultos'})`; 
+      // Exibe o nome do nível selecionado
+      difficultyLevelElement.textContent = `Nível: ${difficultyNames[selectedDifficulty]} (${currentGameMode === 'kids' ? 'Crianças' : 'Adultos'})`; 
       answerInput.value = '';
       messageElement.textContent = '';
       answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
@@ -727,6 +799,10 @@
     function startGame() {
       if (!currentGameMode) {
           alert("Por favor, selecione um modo de jogo (Crianças ou Adultos) antes de começar.");
+          return;
+      }
+      if (!selectedDifficulty) {
+          alert("Por favor, selecione um nível de dificuldade antes de começar.");
           return;
       }
 
@@ -746,7 +822,6 @@
       score = 0;
       timeLeft = 60;
       gameActive = true;
-      currentDifficulty = 1;
       scoreValueElement.textContent = score;
       timerValueElement.textContent = timeLeft + 's';
       
@@ -763,7 +838,7 @@
       startGameButton.style.display = 'none';
       playAgainButton.style.display = 'none';
       
-      // Esconder a área de seleção de modo ao iniciar o jogo
+      // Esconder a área de seleção de modo e dificuldade ao iniciar o jogo
       document.getElementById('mode-selection').style.display = 'none';
 
       timeBar.style.width = '100%';
@@ -813,16 +888,24 @@
       questionElement.classList.remove('correct-animation', 'incorrect-animation');
       timeBar.classList.remove('time-bar-shaking');
 
-      saveRanking(currentPlayerName, score, currentGameMode);
+      // Salva o ranking com o nível de dificuldade selecionado
+      saveRanking(currentPlayerName, score, currentGameMode, selectedDifficulty);
       
       playerNameInput.value = '';
       playerNameInput.style.display = 'inline-block';
       answerInput.style.display = 'none';
-      questionElement.textContent = 'Selecione um modo e digite seu nome para começar!';
-      difficultyLevelElement.textContent = ''; 
       
-      // Mostrar a área de seleção de modo novamente
+      // Reseta e mostra a área de seleção de modo e dificuldade novamente
       document.getElementById('mode-selection').style.display = 'block';
+      difficultySelectionDiv.style.display = 'none'; // Oculta a dificuldade inicialmente
+      modeKidsButton.classList.remove('active');
+      modeAdultsButton.classList.remove('active');
+      difficultyButtons.forEach(button => button.classList.remove('active'));
+      selectedDifficulty = null; // Reseta a dificuldade selecionada
+      currentGameMode = null; // Reseta o modo de jogo
+
+      questionElement.textContent = 'Selecione um modo e um nível, digite seu nome para começar!';
+      difficultyLevelElement.textContent = ''; 
       
       // Ocultar o teclado numérico no final do jogo
       numericKeypad.style.display = 'none';
@@ -864,20 +947,8 @@
                 messageElement.textContent += " (WOW! Rápido! +0.5s)";
                 messageElement.classList.add('speed-bonus-text'); 
             }
-
-            if (currentGameMode === 'kids') {
-                if (score > 0 && score % 3 === 0 && currentDifficulty < 3) {
-                    currentDifficulty++;
-                    console.log(`Dificuldade crianças aumentada para: ${currentDifficulty}`);
-                    messageElement.textContent += ` (Dificuldade: ${difficultyNames[currentDifficulty]}!)`;
-                }
-            } else { // Adultos
-                if (score > 0 && score % 5 === 0) {
-                    currentDifficulty++;
-                    console.log(`Dificuldade adultos aumentada para: ${currentDifficulty}`);
-                    messageElement.textContent += ` (Dificuldade: ${difficultyNames[currentDifficulty]}!)`;
-                }
-            }
+            
+            // REMOVIDA LÓGICA DE AUMENTO DE DIFICULDADE AUTOMÁTICA
             
             answerInput.addEventListener('animationend', function handler() {
                 answerInput.classList.remove('correct-input-anim');
@@ -935,6 +1006,13 @@
     modeKidsButton.addEventListener('click', () => selectGameMode('kids'));
     modeAdultsButton.addEventListener('click', () => selectGameMode('adults'));
 
+    // Adiciona listener para os botões de dificuldade
+    difficultyButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            selectDifficulty(parseInt(button.dataset.level));
+        });
+    });
+
     startGameButton.addEventListener('click', () => startGame());
     playAgainButton.addEventListener('click', () => startGame());
 
@@ -953,12 +1031,15 @@
 
             if (value === 'clear') {
                 answerInput.value = '';
-            } else if (value === 'enter') {
-                // Não é necessário um botão ENTER, pois a verificação é automática
             } else {
-                answerInput.value += value;
-                checkAnswer();
+                // Para evitar múltiplos zeros no início (e.g. 005)
+                if (answerInput.value === '0' && value !== 'clear') {
+                    answerInput.value = value;
+                } else {
+                    answerInput.value += value;
+                }
             }
+            checkAnswer();
         }
     });
 
@@ -975,8 +1056,11 @@
         answerInput.style.display = 'none';
         difficultyLevelElement.textContent = ''; 
 
+        // Garante que as seleções de modo/dificuldade e nome do jogador sejam exibidas ao carregar
         document.getElementById('mode-selection').style.display = 'block';
+        difficultySelectionDiv.style.display = 'none'; // Começa oculto
         numericKeypad.style.display = 'none';
+        questionElement.textContent = 'Selecione um modo, um nível e digite seu nome para começar!';
     };
 
   </script>
