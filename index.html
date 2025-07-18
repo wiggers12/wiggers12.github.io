@@ -1,1337 +1,1114 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Desafio dos 60 Segundos 🧠</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <!-- Script principal do Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9968425306160320"
-          crossorigin="anonymous"></script>
-  
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-      margin: 0;
-      background-color: #f4f4f4;
-      color: #333;
-      padding: 20px;
-      box-sizing: border-box;
-    }
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+      <meta charset="UTF-8">
+      <title>Desafio dos 60 Segundos 🧠</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      
+      <!-- Script principal do Google AdSense -->
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9968425306160320"
+              crossorigin="anonymous"></script>
+      
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          min-height: 100vh;
+          margin: 0;
+          background-color: #f4f4f4;
+          color: #333;
+          padding: 20px;
+          box-sizing: border-box;
+        }
 
-    h1 {
-      color: #4CAF50;
-      margin-bottom: 20px;
-    }
+        h1 {
+          color: #4CAF50;
+          margin-bottom: 20px;
+        }
 
-    /* Animação de entrada para os contêineres principais */
-    @keyframes fadeInScale {
-      from {
-        opacity: 0;
-        transform: scale(0.95) translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
-    }
+        /* Animação de entrada para os contêineres principais */
+        @keyframes fadeInScale {
+          from {
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
 
-    /* Animação de pulso para feedback de score/tempo */
-    @keyframes pulseEffect {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
+        /* Animação de pulso para feedback de score/tempo */
+        @keyframes pulseEffect {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+          100% { transform: scale(1); }
+        }
 
-    /* Animação de shake para barra de tempo */
-    @keyframes timeShake {
-        0%, 100% { transform: translateX(0); }
-        10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
-        20%, 40%, 60%, 80% { transform: translateX(2px); }
-    }
+        /* Animação de shake para barra de tempo */
+        @keyframes timeShake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+            20%, 40%, 60%, 80% { transform: translateX(2px); }
+        }
 
-    #game-container, .ranking-section, #mode-selection {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      width: 90%;
-      max-width: 500px;
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
-      opacity: 0; /* Começa invisível para a animação */
-      transform: scale(0.95) translateY(20px); /* Posição inicial para a animação */
-      animation: fadeInScale 0.7s ease-out forwards; /* Aplica a animação */
-    }
+        #game-container, .ranking-section, #mode-selection {
+          background-color: #fff;
+          padding: 30px;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          text-align: center;
+          width: 90%;
+          max-width: 500px;
+          margin-bottom: 20px;
+          position: relative;
+          overflow: hidden;
+          opacity: 0; /* Começa invisível para a animação */
+          transform: scale(0.95) translateY(20px); /* Posição inicial para a animação */
+          animation: fadeInScale 0.7s ease-out forwards; /* Aplica a animação */
+        }
 
-    #mode-selection {
-        animation-delay: 0.2s; /* Primeiro a aparecer */
-        padding-bottom: 15px;
-    }
-    #game-container {
-        animation-delay: 0.4s;
-    }
+        #mode-selection {
+            animation-delay: 0.2s; /* Primeiro a aparecer */
+            padding-bottom: 15px;
+        }
+        #game-container {
+            animation-delay: 0.4s;
+        }
 
-    #question-area {
-      margin-bottom: 20px;
-    }
+        #question-area {
+          margin-bottom: 20px;
+        }
 
-    #difficulty-level {
-        font-size: 0.9em;
-        color: #777;
-        margin-bottom: 10px;
-    }
+        #difficulty-level {
+            font-size: 0.9em;
+            color: #777;
+            margin-bottom: 10px;
+        }
 
-    #question {
-      font-size: 2em;
-      margin-bottom: 15px;
-      color: #555;
-      transition: color 0.3s ease, transform 0.3s ease; /* Transição para cor e posição */
-    }
+        #question {
+          font-size: 2em;
+          margin-bottom: 15px;
+          color: #555;
+          transition: color 0.3s ease, transform 0.3s ease; /* Transição para cor e posição */
+        }
 
-    #question.correct-animation {
-        animation: pulseGreen 0.5s ease-out;
-    }
-    #question.incorrect-animation {
-        animation: shakeRed 0.5s ease-out;
-    }
+        #question.correct-animation {
+            animation: pulseGreen 0.5s ease-out;
+        }
+        #question.incorrect-animation {
+            animation: shakeRed 0.5s ease-out;
+        }
 
-    #answer-input, #player-name-input {
-      padding: 10px;
-      font-size: 1.2em;
-      width: calc(100% - 22px);
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      text-align: center;
-      transition: border-color 0.3s ease, transform 0.1s ease;
-      /* Impede que o teclado virtual do sistema apareça */
-      -webkit-touch-callout: none; /* iOS Safari */
-      -webkit-user-select: none; /* Safari */
-      -khtml-user-select: none; /* Konqueror HTML */
-      -moz-user-select: none; /* Old versions of Firefox */
-      -ms-user-select: none; /* Internet Explorer/Edge */
-      user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
-    }
+        #answer-input, #player-name-input {
+          padding: 10px;
+          font-size: 1.2em;
+          width: calc(100% - 22px);
+          margin-bottom: 15px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          text-align: center;
+          transition: border-color 0.3s ease, transform 0.1s ease;
+          /* Impede que o teclado virtual do sistema apareça */
+          -webkit-touch-callout: none; /* iOS Safari */
+          -webkit-user-select: none; /* Safari */
+          -khtml-user-select: none; /* Konqueror HTML */
+          -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+          user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+        }
 
-    #player-name-input {
-        margin-bottom: 20px;
-    }
+        #player-name-input {
+            margin-bottom: 20px;
+        }
 
-    #answer-input.correct {
-      border-color: #28a745;
-      box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
-    }
+        #answer-input.correct {
+          border-color: #28a745;
+          box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+        }
 
-    #answer-input.incorrect {
-      border-color: #d9534f;
-      box-shadow: 0 0 5px rgba(217, 83, 79, 0.5);
-    }
+        #answer-input.incorrect {
+          border-color: #d9534f;
+          box-shadow: 0 0 5px rgba(217, 83, 79, 0.5);
+        }
 
-    #answer-input.correct-input-anim {
-        animation: bounceIn 0.3s forwards;
-    }
-    #answer-input.incorrect-input-anim {
-        animation: shake 0.5s ease-out;
-    }
+        #answer-input.correct-input-anim {
+            animation: bounceIn 0.3s forwards;
+        }
+        #answer-input.incorrect-input-anim {
+            animation: shake 0.5s ease-out;
+        }
 
-    button {
-      background-color: #007bff;
-      color: white;
-      padding: 12px 25px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1.1em;
-      transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
-      margin: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
+        button {
+          background-color: #007bff;
+          color: white;
+          padding: 12px 25px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 1.1em;
+          transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+          margin: 5px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
 
-    button:hover {
-      background-color: #0056b3;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
+        button:hover {
+          background-color: #0056b3;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
 
-    button:active {
-      transform: translateY(1px);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    }
-    
-    /* Cores para botões de seleção de modo e dificuldade */
-    .mode-button, .difficulty-button {
-        background-color: #6c757d; /* Cor neutra inicial */
-    }
-    .mode-button.active, .difficulty-button.active {
-        background-color: #4CAF50; /* Verde quando ativo */
-        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.5); /* Anel verde */
-    }
-    .mode-button:hover, .difficulty-button:hover {
-        background-color: #5a6268;
-    }
+        button:active {
+          transform: translateY(1px);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Cores para botões de seleção de modo e dificuldade */
+        .mode-button, .difficulty-button {
+            background-color: #6c757d; /* Cor neutra inicial */
+        }
+        .mode-button.active, .difficulty-button.active {
+            background-color: #4CAF50; /* Verde quando ativo */
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.5); /* Anel verde */
+        }
+        .mode-button:hover, .difficulty-button:hover {
+            background-color: #5a6268;
+        }
 
-    #difficulty-selection {
-        margin-top: 15px;
-        display: none; /* Inicia oculto */
-    }
-    #difficulty-selection h3 {
-        margin-bottom: 10px;
-    }
-
-
-    #message {
-      margin-top: 15px;
-      font-weight: bold;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    #message.show {
-        opacity: 1;
-    }
-    #message.correct-text {
-        color: #28a745;
-    }
-    #message.incorrect-text {
-        color: #d9534f;
-    }
-    #message.speed-bonus-text {
-        color: #007bff;
-        animation: fadeInOut 1.5s forwards;
-    }
-
-    #timer, #score {
-      font-size: 1.2em;
-      margin: 10px 0;
-      color: #666;
-    }
-
-    #timer-value, #score-value {
-      font-weight: bold;
-      color: #4CAF50;
-      transition: color 0.3s ease; /* Transição para mudança de cor */
-    }
-    #timer-value.pulse-effect, #score-value.pulse-effect {
-        animation: pulseEffect 0.3s ease-out;
-    }
+        #difficulty-selection {
+            margin-top: 15px;
+            display: none; /* Inicia oculto */
+        }
+        #difficulty-selection h3 {
+            margin-bottom: 10px;
+        }
 
 
-    #start-game-button {
-      background-color: #28a745;
-      padding: 15px 30px;
-      font-size: 1.3em;
-    }
+        #message {
+          margin-top: 15px;
+          font-weight: bold;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
 
-    #start-game-button:hover {
-      background-color: #218838;
-    }
+        #message.show {
+            opacity: 1;
+        }
+        #message.correct-text {
+            color: #28a745;
+        }
+        #message.incorrect-text {
+            color: #d9534f;
+        }
+        #message.speed-bonus-text {
+            color: #007bff;
+            animation: fadeInOut 1.5s forwards;
+        }
 
-    .ranking-section h2 {
-      color: #4CAF50;
-      margin-bottom: 15px;
-    }
+        #timer, #score {
+          font-size: 1.2em;
+          margin: 10px 0;
+          color: #666;
+        }
 
-    .ranking-list {
-      list-style: none;
-      padding: 0;
-      text-align: left;
-    }
-
-    .ranking-list li {
-      padding: 8px 0;
-      border-bottom: 1px solid #eee;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap; /* Permite quebrar linha em telas menores se o conteúdo for muito longo */
-    }
-
-    .ranking-list li:last-child {
-      border-bottom: none;
-    }
-
-    .ranking-position {
-      font-weight: bold;
-      color: #007bff;
-      min-width: 25px;
-      margin-right: 5px; /* Espaço entre a posição e o nome */
-    }
-
-    .ranking-name {
-      flex-grow: 1;
-      margin-right: 5px; /* Espaço entre nome e score */
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .ranking-level {
-        font-size: 0.8em;
-        color: #666;
-        margin-left: 5px; /* Espaço após o nome */
-        white-space: nowrap;
-    }
-
-    /* Cores para os Top 3 */
-    .ranking-list li.ranking-item-top .ranking-name,
-    .ranking-list li.ranking-item-top .ranking-score,
-    .ranking-list li.ranking-item-top .ranking-level {
-        color: #007bff;
-    }
-
-    /* Cores para os 3 Últimos */
-    .ranking-list li.ranking-item-bottom .ranking-name,
-    .ranking-list li.ranking-item-bottom .ranking-score,
-    .ranking-list li.ranking-item-bottom .ranking-level {
-        color: #d9534f;
-    }
-
-    #time-bar-container {
-      width: 100%;
-      height: 10px;
-      background-color: #ddd;
-      border-radius: 5px;
-      margin-bottom: 15px;
-      overflow: hidden;
-    }
-
-    #time-bar {
-      height: 100%;
-      width: 100%;
-      background-color: #4CAF50;
-      border-radius: 5px;
-      transition: width 0.9s linear, background-color 0.9s linear, transform 0.1s ease;
-    }
-    .time-bar-shaking {
-        animation: timeShake 0.5s ease-out infinite;
-    }
-
-    /* Teclado numérico */
-    #numeric-keypad {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        width: 100%;
-        max-width: 300px; /* Ajuste a largura máxima conforme necessário */
-        margin-top: 20px;
-        background-color: #f0f0f0;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        display: none; /* Inicia oculto */
-    }
-
-    #numeric-keypad button {
-        width: 100%;
-        height: 60px; /* Altura dos botões */
-        font-size: 1.8em;
-        background-color: #e0e0e0;
-        color: #333;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        transition: background-color 0.2s ease, transform 0.1s ease;
-        padding: 0; /* Remove padding extra dos botões padrão */
-        box-shadow: none; /* Remove sombra extra */
-    }
-
-    #numeric-keypad button:hover {
-        background-color: #d0d0d0;
-        transform: translateY(-1px);
-    }
-
-    #numeric-keypad button:active {
-        background-color: #c0c0c0;
-        transform: translateY(0);
-    }
-
-    #numeric-keypad button.key-backspace {
-        background-color: #f44336; /* Cor para o botão de apagar */
-        color: white;
-    }
-    #numeric-keypad button.key-backspace:hover {
-        background-color: #d32f2f;
-    }
-
-    /* CONTAINER PARA OS RANKINGS LADO A LADO */
-    #rankings-container {
-        display: flex; /* Habilita flexbox */
-        flex-direction: column; /* Colunas por padrão (para mobile) */
-        gap: 20px; /* Espaço entre os rankings */
-        width: 90%;
-        max-width: 1024px; /* Ajuste a largura máxima total para os dois rankings */
-        margin-bottom: 20px; /* Para manter o espaçamento com o rodapé se houver */
-        opacity: 0; 
-        transform: scale(0.95) translateY(20px); 
-        animation: fadeInScale 0.7s ease-out forwards;
-        animation-delay: 0.6s; /* Aplica a animação no container */
-    }
-
-    #rankings-container .ranking-section {
-        flex: 1; /* Faz com que cada ranking ocupe o mesmo espaço disponível */
-        margin-bottom: 0; /* Remove margem inferior individual, a margem está no gap do container */
-        max-width: none; /* Remove a max-width individual para que possam se expandir */
-        width: auto; /* Permite que o flexbox controle a largura */
-    }
+        #timer-value, #score-value {
+          font-weight: bold;
+          color: #4CAF50;
+          transition: color 0.3s ease; /* Transição para mudança de cor */
+        }
+        #timer-value.pulse-effect, #score-value.pulse-effect {
+            animation: pulseEffect 0.3s ease-out;
+        }
 
 
-    /* MEDIA QUERIES para layout responsivo */
-    @media (min-width: 768px) { /* A partir de tablets e desktops */
+        #start-game-button {
+          background-color: #28a745;
+          padding: 15px 30px;
+          font-size: 1.3em;
+        }
+
+        #start-game-button:hover {
+          background-color: #218838;
+        }
+
+        .ranking-section h2 {
+          color: #4CAF50;
+          margin-bottom: 15px;
+        }
+
+        .ranking-list {
+          list-style: none;
+          padding: 0;
+          text-align: left;
+        }
+
+        .ranking-list li {
+          padding: 8px 0;
+          border-bottom: 1px solid #eee;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap; /* Permite quebrar linha em telas menores se o conteúdo for muito longo */
+        }
+
+        .ranking-list li:last-child {
+          border-bottom: none;
+        }
+
+        .ranking-position {
+          font-weight: bold;
+          color: #007bff;
+          min-width: 25px;
+          margin-right: 5px; /* Espaço entre a posição e o nome */
+        }
+
+        .ranking-name {
+          flex-grow: 1;
+          margin-right: 5px; /* Espaço entre nome e score */
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .ranking-level {
+            font-size: 0.8em;
+            color: #666;
+            margin-left: 5px; /* Espaço após o nome */
+            white-space: nowrap;
+        }
+
+        /* Cores para os Top 3 */
+        .ranking-list li.ranking-item-top .ranking-name,
+        .ranking-list li.ranking-item-top .ranking-score,
+        .ranking-list li.ranking-item-top .ranking-level {
+            color: #007bff;
+        }
+
+        /* Cores para os 3 Últimos */
+        .ranking-list li.ranking-item-bottom .ranking-name,
+        .ranking-list li.ranking-item-bottom .ranking-score,
+        .ranking-list li.ranking-item-bottom .ranking-level {
+            color: #d9534f;
+        }
+
+        #time-bar-container {
+          width: 100%;
+          height: 10px;
+          background-color: #ddd;
+          border-radius: 5px;
+          margin-bottom: 15px;
+          overflow: hidden;
+        }
+
+        #time-bar {
+          height: 100%;
+          width: 100%;
+          background-color: #4CAF50;
+          border-radius: 5px;
+          transition: width 0.9s linear, background-color 0.9s linear, transform 0.1s ease;
+        }
+        .time-bar-shaking {
+            animation: timeShake 0.5s ease-out infinite;
+        }
+
+        /* Teclado numérico */
+        #numeric-keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+            max-width: 300px; /* Ajuste a largura máxima conforme necessário */
+            margin-top: 20px;
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none; /* Inicia oculto */
+        }
+
+        #numeric-keypad button {
+            width: 100%;
+            height: 60px; /* Altura dos botões */
+            font-size: 1.8em;
+            background-color: #e0e0e0;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            padding: 0; /* Remove padding extra dos botões padrão */
+            box-shadow: none; /* Remove sombra extra */
+        }
+
+        #numeric-keypad button:hover {
+            background-color: #d0d0d0;
+            transform: translateY(-1px);
+        }
+
+        #numeric-keypad button:active {
+            background-color: #c0c0c0;
+            transform: translateY(0);
+        }
+
+        #numeric-keypad button.key-backspace {
+            background-color: #f44336; /* Cor para o botão de apagar */
+            color: white;
+        }
+        #numeric-keypad button.key-backspace:hover {
+            background-color: #d32f2f;
+        }
+
+        /* CONTAINER PARA OS RANKINGS LADO A LADO */
         #rankings-container {
-            flex-direction: row; /* Coloca os rankings lado a lado */
-            align-items: flex-start; /* Alinha os itens ao topo se tiverem alturas diferentes */
+            display: flex; /* Habilita flexbox */
+            flex-direction: column; /* Colunas por padrão (para mobile) */
+            gap: 20px; /* Espaço entre os rankings */
+            width: 90%;
+            max-width: 1024px; /* Ajuste a largura máxima total para os dois rankings */
+            margin-bottom: 20px; /* Para manter o espaçamento com o rodapé se houver */
+            opacity: 0; 
+            transform: scale(0.95) translateY(20px); 
+            animation: fadeInScale 0.7s ease-out forwards;
+            animation-delay: 0.6s; /* Aplica a animação no container */
         }
+
         #rankings-container .ranking-section {
-            /* flex: 1; - já definido, mas pode ser repetido para clareza */
-            /* max-width: 49%; */ /* Ou algum valor percentual para um pequeno gap visual, se preferir */
+            flex: 1; /* Faz com que cada ranking ocupe o mesmo espaço disponível */
+            margin-bottom: 0; /* Remove margem inferior individual, a margem está no gap do container */
+            max-width: none; /* Remove a max-width individual para que possam se expandir */
+            width: auto; /* Permite que o flexbox controle a largura */
         }
-    }
 
-    @media (max-width: 600px) {
-      #game-container, .ranking-section, #mode-selection {
-        padding: 20px;
-      }
-      #question {
-        font-size: 1.5em;
-      }
-      #answer-input, #player-name-input, button {
-        font-size: 1em;
-        padding: 10px 20px;
-      }
-      #numeric-keypad {
-        max-width: 250px; /* Ajuste para telas menores */
-      }
-      #numeric-keypad button {
-        height: 50px;
-        font-size: 1.5em;
-      }
-    }
 
-  </style>
+        /* MEDIA QUERIES para layout responsivo */
+        @media (min-width: 768px) { /* A partir de tablets e desktops */
+            #rankings-container {
+                flex-direction: row; /* Coloca os rankings lado a lado */
+                align-items: flex-start; /* Alinha os itens ao topo se tiverem alturas diferentes */
+            }
+            #rankings-container .ranking-section {
+                /* flex: 1; - já definido, mas pode ser repetido para clareza */
+                /* max-width: 49%; */ /* Ou algum valor percentual para um pequeno gap visual, se preferir */
+            }
+        }
 
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+        @media (max-width: 600px) {
+          #game-container, .ranking-section, #mode-selection {
+            padding: 20px;
+          }
+          #question {
+            font-size: 1.5em;
+          }
+          #answer-input, #player-name-input, button {
+            font-size: 1em;
+            padding: 10px 20px;
+          }
+          #numeric-keypad {
+            max-width: 250px; /* Ajuste para telas menores */
+          }
+          #numeric-keypad button {
+            height: 50px;
+            font-size: 1.5em;
+          }
+        }
 
-</head>
-<body>
-  <h1>Desafio dos 60 Segundos 🧠</h1>
+      </style>
 
-  <!-- Bloco de Anúncio (Topo) - AGORA COM SEUS VALORES REAIS E WRAPPER PARA LARGURA -->
-  <div style="width: 100%; max-width: 728px; margin: 0 auto 20px auto;">
-    <ins class="adsbygoogle"
-         style="display:block; width:100%; height:auto; min-height:90px;"
-         data-ad-client="ca-pub-9968425306160320"
-         data-ad-slot="9401721950"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
+      <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-  <div id="mode-selection">
-    <h3>Escolha o Modo de Jogo:</h3>
-    <button id="mode-kids-button" class="mode-button">Modo Crianças</button>
-    <button id="mode-adults-button" class="mode-button">Modo Adultos</button>
+    </head>
+    <body>
+      <h1>Desafio dos 60 Segundos 🧠</h1>
 
-    <div id="difficulty-selection">
-        <h3>Escolha o Nível de Dificuldade:</h3>
-        <button data-level="1" class="difficulty-button">Iniciante</button>
-        <button data-level="2" class="difficulty-button">Amador</button>
-        <button data-level="3" class="difficulty-button">CDF</button>
-        </div>
-  </div>
-
-  <div id="game-container">
-    <div id="status">
-      <p id="timer">Tempo: <span id="timer-value">60s</span></p>
-      <div id="time-bar-container">
-          <div id="time-bar"></div>
+      <!-- Bloco de Anúncio (Topo) - COM SEUS VALORES REAIS -->
+      <div style="width: 100%; max-width: 728px; margin: 0 auto 20px auto; text-align: center;">
+        <ins class="adsbygoogle"
+             style="display:block; width:100%; height:auto; min-height:90px;"
+             data-ad-client="ca-pub-9968425306160320"
+             data-ad-slot="9401721950"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
       </div>
-      <p id="score">Pontos: <span id="score-value">0</span></p>
-    </div>
 
-    <div id="question-area">
-      <p id="difficulty-level"></p> 
-      <p id="question">Selecione um modo e um nível, digite seu nome para começar!</p>
-      <input type="text" id="player-name-input" placeholder="Seu nome" maxlength="20" pattern="[A-Za-zÀ-ú\s]+" title="Apenas letras e espaços são permitidos.">
-      <input type="text" id="answer-input" placeholder="Digite a resposta" readonly>
-      <p id="message"></p>
-    </div>
+      <div id="mode-selection">
+        <h3>Escolha o Modo de Jogo:</h3>
+        <button id="mode-kids-button" class="mode-button">Modo Crianças</button>
+        <button id="mode-adults-button" class="mode-button">Modo Adultos</button>
 
-    <button id="start-game-button" style="display: none;">Começar Jogo</button>
-    <button id="play-again" style="display: none;">Jogar Novamente</button>
-  </div>
+        <div id="difficulty-selection">
+            <h3>Escolha o Nível de Dificuldade:</h3>
+            <button data-level="1" class="difficulty-button">Iniciante</button>
+            <button data-level="2" class="difficulty-button">Amador</button>
+            <button data-level="3" class="difficulty-button">CDF</button>
+            </div>
+      </div>
 
-  <div id="numeric-keypad">
-    <button data-value="1">1</button>
-    <button data-value="2">2</button>
-    <button data-value="3">3</button>
-    <button data-value="4">4</button>
-    <button data-value="5">5</button>
-    <button data-value="6">6</button>
-    <button data-value="7">7</button>
-    <button data-value="8">8</button>
-    <button data-value="9">9</button>
-    <button data-value="clear" class="key-backspace">APAGAR</button>
-    <button data-value="0">0</button>
-  </div>
+      <div id="game-container">
+        <div id="status">
+          <p id="timer">Tempo: <span id="timer-value">60s</span></p>
+          <div id="time-bar-container">
+              <div id="time-bar"></div>
+          </div>
+          <p id="score">Pontos: <span id="score-value">0</span></p>
+        </div>
 
-  <!-- Bloco de Anúncio Sugerido (Entre o Jogo e os Rankings) - SUBSTITUA PELOS SEUS VALORES REAIS -->
-  <!-- Se não quiser este anúncio, pode remover este bloco. -->
-  <div style="width: 100%; max-width: 728px; margin: 20px auto;">
-    <ins class="adsbygoogle"
-         style="display:block; width:100%; height:auto; min-height:90px;"
-         data-ad-client="ca-pub-9968425306160320"
-         data-ad-slot="SEU_SLOT_ID_2"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
+        <div id="question-area">
+          <p id="difficulty-level"></p> 
+          <p id="question">Selecione um modo e um nível, digite seu nome para começar!</p>
+          <input type="text" id="player-name-input" placeholder="Seu nome" maxlength="20" pattern="[A-Za-zÀ-ú\s]+" title="Apenas letras e espaços são permitidos.">
+          <input type="text" id="answer-input" placeholder="Digite a resposta" readonly>
+          <p id="message"></p>
+        </div>
 
-  <div id="rankings-container">
-    <div id="ranking-kids-area" class="ranking-section">
-      <h2>🏆 Ranking Crianças (Top 20)</h2>
-      <ol id="ranking-kids-list" class="ranking-list">
-      </ol>
-    </div>
+        <button id="start-game-button" style="display: none;">Começar Jogo</button>
+        <button id="play-again" style="display: none;">Jogar Novamente</button>
+      </div>
 
-    <div id="ranking-adults-area" class="ranking-section">
-      <h2>🏆 Ranking Adultos (Top 20)</h2>
-      <ol id="ranking-adults-list" class="ranking-list">
-      </ol>
-    </div>
-  </div>
+      <div id="numeric-keypad">
+        <button data-value="1">1</button>
+        <button data-value="2">2</button>
+        <button data-value="3">3</button>
+        <button data-value="4">4</button>
+        <button data-value="5">5</button>
+        <button data-value="6">6</button>
+        <button data-value="7">7</button>
+        <button data-value="8">8</button>
+        <button data-value="9">9</button>
+        <button data-value="clear" class="key-backspace">APAGAR</button>
+        <button data-value="0">0</button>
+      </div>
 
-  <!-- Bloco de Anúncio Sugerido (Fundo) - SUBSTITUA PELOS SEUS VALORES REAIS -->
-  <!-- Se não quiser este anúncio, pode remover este bloco. -->
-  <div style="width: 100%; max-width: 728px; margin: 20px auto 0 auto;">
-    <ins class="adsbygoogle"
-         style="display:block; width:100%; height:auto; min-height:90px;"
-         data-ad-client="ca-pub-9968425306160320"
-         data-ad-slot="SEU_SLOT_ID_3"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
+      <!-- Bloco de Anúncio Sugerido (Entre o Jogo e os Rankings) - SUBSTITUA PELOS SEUS VALORES REAIS -->
+      <!-- Se não quiser este anúncio, pode remover este bloco. -->
+      <div style="width: 100%; max-width: 728px; margin: 20px auto; text-align: center;">
+        <ins class="adsbygoogle"
+             style="display:block; width:100%; height:auto; min-height:90px;"
+             data-ad-client="ca-pub-9968425306160320"
+             data-ad-slot="SEU_SLOT_ID_2"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
 
-  <script>
-    // Configuração do Firebase para o "Desafio dos 60 Segundos"
-    // Use as credenciais do projeto "desafio-dos-60-segundos"
-    const firebaseConfig = {
-      apiKey: "AIzaSyA4PWRt-22S8HGc6GS1m-4Wa9hYsh5Zbo",
-      authDomain: "desafio-dos-60-segundos.firebaseapp.com",
-      projectId: "desafio-dos-60-segundos",
-      storageBucket: "desafio-dos-60-segundos.firebaseapp.com",
-      messagingSenderId: "1054471364887",
-      appId: "1:1054471364887:web:332b4f28814e9f5d0cd752",
-      measurementId: "G-N4PWJ72YCJ"
-    };
+      <div id="rankings-container">
+        <div id="ranking-kids-area" class="ranking-section">
+          <h2>🏆 Ranking Crianças (Top 20)</h2>
+          <ol id="ranking-kids-list" class="ranking-list">
+          </ol>
+        </div>
 
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = app.firestore(); 
+        <div id="ranking-adults-area" class="ranking-section">
+          <h2>🏆 Ranking Adultos (Top 20)</h2>
+          <ol id="ranking-adults-list" class="ranking-list">
+          </ol>
+        </div>
+      </div>
 
-    const questionElement = document.getElementById('question');
-    const answerInput = document.getElementById('answer-input');
-    const playerNameInput = document.getElementById('player-name-input');
-    const messageElement = document.getElementById('message');
-    const timerValueElement = document.getElementById('timer-value');
-    const scoreValueElement = document.getElementById('score-value');
-    const startGameButton = document.getElementById('start-game-button');
-    const playAgainButton = document.getElementById('play-again');
-    const timeBar = document.getElementById('time-bar');
-    const difficultyLevelElement = document.getElementById('difficulty-level'); 
+      <!-- Bloco de Anúncio Sugerido (Fundo) - SUBSTITUA PELOS SEUS VALORES REAIS -->
+      <!-- Se não quiser este anúncio, pode remover este bloco. -->
+      <div style="width: 100%; max-width: 728px; margin: 20px auto 0 auto; text-align: center;">
+        <ins class="adsbygoogle"
+             style="display:block; width:100%; height:auto; min-height:90px;"
+             data-ad-client="ca-pub-9968425306160320"
+             data-ad-slot="SEU_SLOT_ID_3"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
 
-    // Elementos de Modo de Jogo
-    const modeKidsButton = document.getElementById('mode-kids-button');
-    const modeAdultsButton = document.getElementById('mode-adults-button');
-    let currentGameMode = null; // 'kids' ou 'adults'
+      <script>
+        // Configuração do Firebase para o "Desafio dos 60 Segundos"
+        // Use as credenciais do projeto "desafio-dos-60-segundos"
+        const firebaseConfig = {
+          apiKey: "AIzaSyA4PWRt-22S8HGc6GS1m-4Wa9hYsh5Zbo",
+          authDomain: "desafio-dos-60-segundos.firebaseapp.com",
+          projectId: "desafio-dos-60-segundos",
+          storageBucket: "desafio-dos-60-segundos.firebaseapp.com",
+          messagingSenderId: "1054471364887",
+          appId: "1:1054471364887:web:332b4f28814e9f5d0cd752",
+          measurementId: "G-N4PWJ72YCJ"
+        };
 
-    // Elementos de Seleção de Dificuldade
-    const difficultySelectionDiv = document.getElementById('difficulty-selection');
-    const difficultyButtons = document.querySelectorAll('#difficulty-selection .difficulty-button'); 
-    let selectedDifficulty = null; // 1, 2, 3
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = app.firestore(); 
 
-    // Elementos de Ranking
-    const rankingKidsList = document.getElementById('ranking-kids-list');
-    const rankingAdultsList = document.getElementById('ranking-adults-list');
+        const questionElement = document.getElementById('question');
+        const answerInput = document.getElementById('answer-input');
+        const playerNameInput = document.getElementById('player-name-input');
+        const messageElement = document.getElementById('message');
+        const timerValueElement = document.getElementById('timer-value');
+        const scoreValueElement = document.getElementById('score-value');
+        const startGameButton = document.getElementById('start-game-button');
+        const playAgainButton = document.getElementById('play-again');
+        const timeBar = document.getElementById('time-bar');
+        const difficultyLevelElement = document.getElementById('difficulty-level'); 
 
-    // Elemento do Teclado Numérico
-    const numericKeypad = document.getElementById('numeric-keypad');
+        // Elementos de Modo de Jogo
+        const modeKidsButton = document.getElementById('mode-kids-button');
+        const modeAdultsButton = document.getElementById('mode-adults-button');
+        let currentGameMode = null; // 'kids' ou 'adults'
 
-    let currentQuestion;
-    let score = 0;
-    let timeLeft = 60;
-    let timerInterval;
-    let gameActive = false;
-    let currentPlayerName = '';
-    let questionStartTime; 
+        // Elementos de Seleção de Dificuldade
+        const difficultySelectionDiv = document.getElementById('difficulty-selection');
+        const difficultyButtons = document.querySelectorAll('#difficulty-selection .difficulty-button'); 
+        let selectedDifficulty = null; // 1, 2, 3
 
-    // Os ficheiros de áudio (correct.mp3, incorrect.mp3) devem estar na mesma pasta ou num caminho acessível
-    const correctSound = new Audio('correct.mp3'); 
-    const incorrectSound = new Audio('incorrect.mp3');
+        // Elementos de Ranking
+        const rankingKidsList = document.getElementById('ranking-kids-list');
+        const rankingAdultsList = document.getElementById('ranking-adults-list');
 
-    // Nomes dos níveis de dificuldade
-    const difficultyNames = {
-        1: "Iniciante",
-        2: "Amador",
-        3: "CDF"
-    };
+        // Elemento do Teclado Numérico
+        const numericKeypad = document.getElementById('numeric-keypad');
 
-    // --- Funções do Jogo ---
+        let currentQuestion;
+        let score = 0;
+        let timeLeft = 60;
+        let timerInterval;
+        let gameActive = false;
+        let currentPlayerName = '';
+        let questionStartTime; 
 
-    function selectGameMode(mode) {
-        currentGameMode = mode;
-        selectedDifficulty = null; // Reseta a dificuldade ao mudar o modo
-        
-        // Atualiza o estado dos botões de modo
-        modeKidsButton.classList.remove('active');
-        modeAdultsButton.classList.remove('active');
-        if (mode === 'kids') {
-            modeKidsButton.classList.add('active');
-        } else {
-            modeAdultsButton.classList.add('active');
-        }
+        // Os ficheiros de áudio (correct.mp3, incorrect.mp3) devem estar na mesma pasta ou num caminho acessível
+        const correctSound = new Audio('correct.mp3'); 
+        const incorrectSound = new Audio('incorrect.mp3');
 
-        // Reseta todos os botões de dificuldade para desativá-los
-        difficultyButtons.forEach(button => {
-            button.classList.remove('active');
-        });
+        // Nomes dos níveis de dificuldade
+        const difficultyNames = {
+            1: "Iniciante",
+            2: "Amador",
+            3: "CDF"
+        };
 
-        // Mostra a seção de seleção de dificuldade
-        difficultySelectionDiv.style.display = 'block';
+        // --- Funções do Jogo ---
 
-        // Oculta o botão de começar e o input de nome até a dificuldade ser selecionada
-        startGameButton.style.display = 'none';
-        playerNameInput.style.display = 'none';
-        questionElement.textContent = 'Agora, escolha um nível de dificuldade!';
-        difficultyLevelElement.textContent = ''; // Limpa o texto do nível
-
-        // Oculta o teclado numérico
-        numericKeypad.style.display = 'none';
-
-        // Atualiza os rankings
-        displayRanking('kids');
-        displayRanking('adults');
-    }
-
-    function selectDifficulty(level) {
-        selectedDifficulty = level;
-        
-        // Atualiza o estado dos botões de dificuldade
-        difficultyButtons.forEach(button => button.classList.remove('active'));
-        document.querySelector(`.difficulty-button[data-level="${level}"]`).classList.add('active');
-
-        // Mostra o botão de começar jogo e input de nome
-        startGameButton.style.display = 'inline-block';
-        playerNameInput.style.display = 'inline-block';
-        playerNameInput.focus();
-        questionElement.textContent = 'Digite seu nome e clique em "Começar Jogo"!';
-    }
-
-
-    function saveRanking(player, score, mode, difficultyLevelPlayed) {
-        const collectionName = `ranking_${mode}`;
-        db.collection(collectionName).add({
-            player: player,
-            score: score,
-            difficulty: difficultyNames[difficultyLevelPlayed], // Salva o nome do nível
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        })
-        .then((docRef) => {
-            console.log("Documento escrito com ID: ", docRef.id);
-            displayRanking(mode); // Atualiza o ranking específico
-        })
-        .catch((error) => {
-            console.error("Erro ao adicionar documento: ", error);
-            alert("Erro ao salvar pontuação. Por favor, tente novamente mais tarde.");
-        });
-    }
-
-    async function displayRanking(mode) {
-        const rankingListElement = mode === 'kids' ? rankingKidsList : rankingAdultsList;
-        const collectionName = `ranking_${mode}`;
-
-        rankingListElement.innerHTML = '<li>Carregando ranking...</li>';
-
-        try {
-            const snapshot = await db.collection(collectionName)
-                                            .orderBy("score", "desc")
-                                            .limit(20) 
-                                            .get();
-            rankingListElement.innerHTML = '';
-            if (snapshot.empty) {
-                rankingListElement.innerHTML = '<li>Nenhum recorde ainda. Seja o primeiro!</li>';
-                return;
+        function selectGameMode(mode) {
+            currentGameMode = mode;
+            selectedDifficulty = null; // Reseta a dificuldade ao mudar o modo
+            
+            // Atualiza o estado dos botões de modo
+            modeKidsButton.classList.remove('active');
+            modeAdultsButton.classList.remove('active');
+            if (mode === 'kids') {
+                modeKidsButton.classList.add('active');
+            } else {
+                modeAdultsButton.classList.add('active');
             }
 
-            const rankings = [];
-            snapshot.forEach((doc) => {
-                rankings.push(doc.data());
+            // Reseta todos os botões de dificuldade para desativá-los
+            difficultyButtons.forEach(button => {
+                button.classList.remove('active');
             });
 
-            rankings.forEach((data, index) => {
-                const li = document.createElement('li');
-                const rankingPosition = index + 1;
+            // Mostra a seção de seleção de dificuldade
+            difficultySelectionDiv.style.display = 'block';
 
-                const positionSpan = `<span class="ranking-position">${rankingPosition}º</span>`;
-                const nameSpan = `<span class="ranking-name">${data.player}</span>`;
-                const levelSpan = data.difficulty ? `<span class="ranking-level">(${data.difficulty})</span>` : ''; // Mostra o nível se existir
-                const scoreSpan = `<span class="ranking-score">${data.score}</span>`;
-                
-                li.innerHTML = `${positionSpan} ${nameSpan} ${levelSpan} ${scoreSpan}`; // Adiciona o nível
-                
-                // Marca os 3 primeiros
-                if (rankingPosition <= 3) {
-                    li.classList.add('ranking-item-top'); 
+            // Oculta o botão de começar e o input de nome até a dificuldade ser selecionada
+            startGameButton.style.display = 'none';
+            playerNameInput.style.display = 'none';
+            questionElement.textContent = 'Agora, escolha um nível de dificuldade!';
+            difficultyLevelElement.textContent = ''; // Limpa o texto do nível
+
+            // Oculta o teclado numérico
+            numericKeypad.style.display = 'none';
+
+            // Atualiza os rankings
+            displayRanking('kids');
+            displayRanking('adults');
+        }
+
+        function selectDifficulty(level) {
+            selectedDifficulty = level;
+            
+            // Atualiza o estado dos botões de dificuldade
+            difficultyButtons.forEach(button => button.classList.remove('active'));
+            document.querySelector(`.difficulty-button[data-level="${level}"]`).classList.add('active');
+
+            // Mostra o botão de começar jogo e input de nome
+            startGameButton.style.display = 'inline-block';
+            playerNameInput.style.display = 'inline-block';
+            playerNameInput.focus();
+            questionElement.textContent = 'Digite seu nome e clique em "Começar Jogo"!';
+        }
+
+
+        function saveRanking(player, score, mode, difficultyLevelPlayed) {
+            const collectionName = `ranking_${mode}`;
+            db.collection(collectionName).add({
+                player: player,
+                score: score,
+                difficulty: difficultyNames[difficultyLevelPlayed], // Salva o nome do nível
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then((docRef) => {
+                console.log("Documento escrito com ID: ", docRef.id);
+                displayRanking(mode); // Atualiza o ranking específico
+            })
+            .catch((error) => {
+                console.error("Erro ao adicionar documento: ", error);
+                alert("Erro ao salvar pontuação. Por favor, tente novamente mais tarde.");
+            });
+        }
+
+        async function displayRanking(mode) {
+            const rankingListElement = mode === 'kids' ? rankingKidsList : rankingAdultsList;
+            const collectionName = `ranking_${mode}`;
+
+            rankingListElement.innerHTML = '<li>Carregando ranking...</li>';
+
+            try {
+                const snapshot = await db.collection(collectionName)
+                                                .orderBy("score", "desc")
+                                                .limit(20) 
+                                                .get();
+                rankingListElement.innerHTML = '';
+                if (snapshot.empty) {
+                    rankingListElement.innerHTML = '<li>Nenhum recorde ainda. Seja o primeiro!</li>';
+                    return;
                 }
-                // Marca os 3 últimos (se houver pelo menos 4 itens no ranking)
-                if (rankings.length >= 4) {
-                    const startIndexForBottom = Math.max(0, rankings.length - 3); 
-                    if (index >= startIndexForBottom) {
-                        li.classList.add('ranking-item-bottom');
+
+                const rankings = [];
+                snapshot.forEach((doc) => {
+                    rankings.push(doc.data());
+                });
+
+                rankings.forEach((data, index) => {
+                    const li = document.createElement('li');
+                    const rankingPosition = index + 1;
+
+                    const positionSpan = `<span class="ranking-position">${rankingPosition}º</span>`;
+                    const nameSpan = `<span class="ranking-name">${data.player}</span>`;
+                    const levelSpan = data.difficulty ? `<span class="ranking-level">(${data.difficulty})</span>` : ''; // Mostra o nível se existir
+                    const scoreSpan = `<span class="ranking-score">${data.score}</span>`;
+                    
+                    li.innerHTML = `${positionSpan} ${nameSpan} ${levelSpan} ${scoreSpan}`; // Adiciona o nível
+                    
+                    // Marca os 3 primeiros
+                    if (rankingPosition <= 3) {
+                        li.classList.add('ranking-item-top'); 
                     }
+                    // Marca os 3 últimos (se houver pelo menos 4 itens no ranking)
+                    if (rankings.length >= 4) {
+                        const startIndexForBottom = Math.max(0, rankings.length - 3); 
+                        if (index >= startIndexForBottom) {
+                            li.classList.add('ranking-item-bottom');
+                        }
+                    }
+
+                    rankingListElement.appendChild(li);
+                });
+
+            } catch (error) {
+                console.error(`Erro ao carregar ranking ${mode}: `, error);
+                rankingListElement.innerHTML = '<li>Erro ao carregar ranking.</li>';
+            }
+        }
+
+        // Função random para gerar números pseudo-aleatórios (sem seed externa)
+        function random() {
+            return Math.random();
+        }
+        function randomInt(min, max) {
+            return Math.floor(random() * (max - min + 1)) + min;
+        }
+
+        function generateQuestion() {
+            let num1, num2;
+            let operators; 
+            let operator;
+            let correctAnswer;
+
+            const currentLevel = selectedDifficulty; 
+
+            if (currentGameMode === 'kids') {
+                if (currentLevel === 1) { // Iniciante Crianças: SOMA
+                    operators = ['+'];
+                    num1 = randomInt(1, 10);
+                    num2 = randomInt(1, 10);
+                } else if (currentLevel === 2) { // Amador Crianças: SOMA e SUBTRAÇÃO
+                    operators = ['+', '-'];
+                    num1 = randomInt(5, 15);
+                    num2 = randomInt(5, 15);
+                } else { // currentLevel === 3 (CDF Crianças): SOMA, MULTIPLICAÇÃO e DIVISÃO
+                    operators = ['+', '*', '÷'];
+                    num1 = randomInt(10, 25);
+                    num2 = randomInt(10, 25);
                 }
-
-                rankingListElement.appendChild(li);
-            });
-
-        } catch (error) {
-            console.error(`Erro ao carregar ranking ${mode}: `, error);
-            rankingListElement.innerHTML = '<li>Erro ao carregar ranking.</li>';
-        }
-    }
-
-    // Função random para gerar números pseudo-aleatórios (sem seed externa)
-    function random() {
-        return Math.random();
-    }
-    function randomInt(min, max) {
-        return Math.floor(random() * (max - min + 1)) + min;
-    }
-
-    function generateQuestion() {
-        let num1, num2;
-        let operators; 
-        let operator;
-        let correctAnswer;
-
-        const currentLevel = selectedDifficulty; 
-
-        if (currentGameMode === 'kids') {
-            if (currentLevel === 1) { // Iniciante Crianças: SOMA
-                operators = ['+'];
-                num1 = randomInt(1, 10);
-                num2 = randomInt(1, 10);
-            } else if (currentLevel === 2) { // Amador Crianças: SOMA e SUBTRAÇÃO
-                operators = ['+', '-'];
-                num1 = randomInt(5, 15);
-                num2 = randomInt(5, 15);
-            } else { // currentLevel === 3 (CDF Crianças): SOMA, MULTIPLICAÇÃO e DIVISÃO
-                operators = ['+', '*', '÷'];
-                num1 = randomInt(10, 25);
-                num2 = randomInt(10, 25);
+            } else { // Adults mode
+                if (currentLevel === 1) { // Iniciante Adultos: SOMA e SUBTRAÇÃO
+                    operators = ['+', '-'];
+                    num1 = randomInt(1, 20); // Ajustado para valores um pouco maiores para adultos iniciantes
+                    num2 = randomInt(1, 20);
+                } else if (currentLevel === 2) { // Amador Adultos: SOMA, SUBTRAÇÃO e MULTIPLICAÇÃO
+                    operators = ['+', '-', '*'];
+                    num1 = randomInt(10, 50); // Valores um pouco maiores para amador
+                    num2 = randomInt(10, 50);
+                } else { // currentLevel === 3 (CDF Adultos): SOMA, SUBTRAÇÃO, MULTIPLICAÇÃO e DIVISÃO (valores até 100 para todas)
+                    operators = ['+', '-', '*', '÷'];
+                    num1 = randomInt(1, 100); // Faixa de números ampliada para CDF
+                    num2 = randomInt(1, 100); // Faixa de números ampliada para CDF
+                }
             }
-        } else { // Adults mode
-            if (currentLevel === 1) { // Iniciante Adultos: SOMA e SUBTRAÇÃO
-                operators = ['+', '-'];
-                num1 = randomInt(1, 20); // Ajustado para valores um pouco maiores para adultos iniciantes
-                num2 = randomInt(1, 20);
-            } else if (currentLevel === 2) { // Amador Adultos: SOMA, SUBTRAÇÃO e MULTIPLICAÇÃO
-                operators = ['+', '-', '*'];
-                num1 = randomInt(10, 50); // Valores um pouco maiores para amador
-                num2 = randomInt(10, 50);
-            } else { // currentLevel === 3 (CDF Adultos): SOMA, SUBTRAÇÃO, MULTIPLICAÇÃO e DIVISÃO (valores até 100 para todas)
-                operators = ['+', '-', '*', '÷'];
-                num1 = randomInt(1, 100); // Faixa de números ampliada para CDF
-                num2 = randomInt(1, 100); // Faixa de números ampliada para CDF
-            }
-        }
-        
-        operator = operators[Math.floor(random() * operators.length)];
+            
+            operator = operators[Math.floor(random() * operators.length)];
 
-        let questionString;
+            let questionString;
 
-        if (operator === '+') {
-            questionString = `${num1} + ${num2}`;
-            correctAnswer = num1 + num2;
-        } else if (operator === '-') {
-            // Garante que o resultado da subtração não seja negativo para crianças.
-            // Para adultos, permite resultados negativos nos níveis mais avançados (agora apenas CDF)
-            if (currentGameMode === 'kids' || currentLevel < 3) { // Para crianças e adultos Iniciante, Amador
-                if (num1 < num2) { 
-                    questionString = `${num2} - ${num1}`;
-                    correctAnswer = num2 - num1;
-                } else {
+            if (operator === '+') {
+                questionString = `${num1} + ${num2}`;
+                correctAnswer = num1 + num2;
+            } else if (operator === '-') {
+                // Garante que o resultado da subtração não seja negativo para crianças.
+                // Para adultos, permite resultados negativos nos níveis mais avançados (agora apenas CDF)
+                if (currentGameMode === 'kids' || currentLevel < 3) { // Para crianças e adultos Iniciante, Amador
+                    if (num1 < num2) { 
+                        questionString = `${num2} - ${num1}`;
+                        correctAnswer = num2 - num1;
+                    } else {
+                        questionString = `${num1} - ${num2}`;
+                        correctAnswer = num1 - num2;
+                    }
+                } else { // Adultos CDF podem ter negativos
                     questionString = `${num1} - ${num2}`;
                     correctAnswer = num1 - num2;
                 }
-            } else { // Adultos CDF podem ter negativos
-                questionString = `${num1} - ${num2}`;
-                correctAnswer = num1 - num2;
-            }
-        } else if (operator === '*') {
-            questionString = `${num1} * ${num2}`;
-            correctAnswer = num1 * num2;
-        } else { // Divisão '÷'
-            let tempNum1, tempNum2;
-            if (currentGameMode === 'kids') { // Crianças: divisão sempre com números pequenos
-                tempNum1 = randomInt(1, 5);
-                tempNum2 = randomInt(1, 5);
-                // Garante que o dividendo seja um múltiplo do divisor
-                num2 = tempNum2;
-                num1 = tempNum1 * num2; 
-            } else { // Adultos: Divisão
-                if (currentLevel === 1) { // Iniciante Adultos (não deve ter divisão, mas fallback)
+            } else if (operator === '*') {
+                questionString = `${num1} * ${num2}`;
+                correctAnswer = num1 * num2;
+            } else { // Divisão '÷'
+                let tempNum1, tempNum2;
+                if (currentGameMode === 'kids') { // Crianças: divisão sempre com números pequenos
                     tempNum1 = randomInt(1, 5);
                     tempNum2 = randomInt(1, 5);
-                } else if (currentLevel === 2) { // Amador Adultos (não deve ter divisão, mas fallback)
-                    tempNum1 = randomInt(1, 8); 
-                    tempNum2 = randomInt(1, 8);
-                } else { // CDF Adultos
-                    tempNum1 = randomInt(1, 12); // Para garantir divisões mais complexas
-                    tempNum2 = randomInt(1, 12);
+                    // Garante que o dividendo seja um múltiplo do divisor
+                    num2 = tempNum2;
+                    num1 = tempNum1 * num2; 
+                } else { // Adultos: Divisão
+                    if (currentLevel === 1) { // Iniciante Adultos (não deve ter divisão, mas fallback)
+                        tempNum1 = randomInt(1, 5);
+                        tempNum2 = randomInt(1, 5);
+                    } else if (currentLevel === 2) { // Amador Adultos (não deve ter divisão, mas fallback)
+                        tempNum1 = randomInt(1, 8); 
+                        tempNum2 = randomInt(1, 8);
+                    } else { // CDF Adultos
+                        tempNum1 = randomInt(1, 12); // Para garantir divisões mais complexas
+                        tempNum2 = randomInt(1, 12);
+                    }
+                    // Garante que o dividendo seja um múltiplo do divisor
+                    num2 = tempNum2;
+                    num1 = tempNum1 * num2; 
                 }
-                // Garante que o dividendo seja um múltiplo do divisor
-                num2 = tempNum2;
-                num1 = tempNum1 * num2; 
-            }
-           
-            // Re-sorteia se num2 for zero (embora os ranges deveriam evitar isso)
-            if (num2 === 0) { 
-                num2 = 1; 
-                num1 = tempNum1 * num2;
+            
+                // Re-sorteia se num2 for zero (embora os ranges deveriam evitar isso)
+                if (num2 === 0) { 
+                    num2 = 1; 
+                    num1 = tempNum1 * num2;
+                }
+
+                questionString = `${num1} ÷ ${num2}`;
+                correctAnswer = num1 / num2;
             }
 
-            questionString = `${num1} ÷ ${num2}`;
-            correctAnswer = num1 / num2;
+            currentQuestion = { question: questionString, answer: correctAnswer };
+            questionElement.textContent = currentQuestion.question;
+            // Exibe o nome do nível selecionado
+            difficultyLevelElement.textContent = `Nível: ${difficultyNames[selectedDifficulty]} (${currentGameMode === 'kids' ? 'Crianças' : 'Adultos'})`; 
+            answerInput.value = '';
+            messageElement.textContent = '';
+            answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
+            questionElement.classList.remove('correct-animation', 'incorrect-animation');
+            messageElement.classList.remove('show', 'correct-text', 'incorrect-text', 'speed-bonus-text'); 
+            
+            questionStartTime = Date.now(); 
         }
 
-        currentQuestion = { question: questionString, answer: correctAnswer };
-        questionElement.textContent = currentQuestion.question;
-        // Exibe o nome do nível selecionado
-        difficultyLevelElement.textContent = `Nível: ${difficultyNames[selectedDifficulty]} (${currentGameMode === 'kids' ? 'Crianças' : 'Adultos'})`; 
-        answerInput.value = '';
-        messageElement.textContent = '';
-        answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
-        questionElement.classList.remove('correct-animation', 'incorrect-animation');
-        messageElement.classList.remove('show', 'correct-text', 'incorrect-text', 'speed-bonus-text'); 
-        
-        questionStartTime = Date.now(); 
-    }
+        function startGame() {
+          if (!currentGameMode) {
+              alert("Por favor, selecione um modo de jogo (Crianças ou Adultos) antes de começar.");
+              return;
+          }
+          if (!selectedDifficulty) {
+              alert("Por favor, selecione um nível de dificuldade antes de começar.");
+              return;
+          }
 
-    function startGame() {
-      if (!currentGameMode) {
-          alert("Por favor, selecione um modo de jogo (Crianças ou Adultos) antes de começar.");
-          return;
-      }
-      if (!selectedDifficulty) {
-          alert("Por favor, selecione um nível de dificuldade antes de começar.");
-          return;
-      }
+          currentPlayerName = playerNameInput.value.trim();
+          
+          if (!playerNameInput.checkValidity()) {
+            alert(playerNameInput.title);
+            playerNameInput.focus();
+            return;
+          }
+          if (currentPlayerName === '') {
+            alert("Por favor, digite seu nome para começar o jogo!");
+            playerNameInput.focus(); // Corrigido de playerNameNameInput para playerNameInput
+            return;
+          }
 
-      currentPlayerName = playerNameInput.value.trim();
-      
-      if (!playerNameInput.checkValidity()) {
-        alert(playerNameInput.title);
-        playerNameInput.focus();
-        return;
-      }
-      if (currentPlayerName === '') {
-        alert("Por favor, digite seu nome para começar o jogo!");
-        playerNameInput.focus(); // Corrigido de playerNameNameInput para playerNameInput
-        return;
-      }
-
-      score = 0;
-      timeLeft = 60;
-      gameActive = true;
-      scoreValueElement.textContent = score;
-      timerValueElement.textContent = timeLeft + 's';
-      
-      playerNameInput.style.display = 'none';
-      answerInput.style.display = 'inline-block';
-      answerInput.disabled = false;
-
-      // Exibir o teclado numérico
-      numericKeypad.style.display = 'grid';
-      
-      questionElement.textContent = 'Preparar...';
-      difficultyLevelElement.textContent = ''; 
-      
-      startGameButton.style.display = 'none';
-      playAgainButton.style.display = 'none';
-      
-      // Esconder a área de seleção de modo e dificuldade ao iniciar o jogo
-      document.getElementById('mode-selection').style.display = 'none';
-
-      timeBar.style.width = '100%';
-      timeBar.style.backgroundColor = '#4CAF50';
-      timeBar.classList.remove('time-bar-shaking');
-
-      setTimeout(() => {
-        generateQuestion();
-        timerInterval = setInterval(() => {
-          timeLeft--;
+          score = 0;
+          timeLeft = 60;
+          gameActive = true;
+          scoreValueElement.textContent = score;
           timerValueElement.textContent = timeLeft + 's';
           
-          const percentage = (timeLeft / 60) * 100;
-          timeBar.style.width = percentage + '%';
+          playerNameInput.style.display = 'none';
+          answerInput.style.display = 'inline-block';
+          answerInput.disabled = false;
 
-          if (percentage > 50) {
-              timeBar.style.backgroundColor = '#4CAF50';
-          } else if (percentage > 20) {
-              timeBar.style.backgroundColor = '#FFC107';
-              if (timeLeft <= 10 && !timeBar.classList.contains('time-bar-shaking')) {
-                  timeBar.classList.add('time-bar-shaking');
-              }
-          } else {
-              timeBar.style.backgroundColor = '#DC3545';
-              if (timeLeft <= 10 && !timeBar.classList.contains('time-bar-shaking')) {
-                  timeBar.classList.add('time-bar-shaking');
-                  // Força o redraw para garantir que a animação de shake comece
-                  void timeBar.offsetWidth; 
-              }
-          }
-
-          if (timeLeft <= 0) {
-            endGame();
-          }
-        }, 1000);
-      }, 1000);
-    }
-
-    function endGame() {
-      clearInterval(timerInterval);
-      gameActive = false;
-      answerInput.disabled = true;
-      playAgainButton.style.display = 'inline-block';
-      messageElement.textContent = `Tempo esgotado! Você fez ${score} pontos.`;
-      messageElement.classList.add('show'); 
-      messageElement.classList.remove('correct-text', 'incorrect-text', 'speed-bonus-text'); 
-      
-      answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
-      questionElement.classList.remove('correct-animation', 'incorrect-animation');
-      timeBar.classList.remove('time-bar-shaking');
-
-      // Salva o ranking com o nível de dificuldade selecionado
-      saveRanking(currentPlayerName, score, currentGameMode, selectedDifficulty);
-      
-      playerNameInput.value = '';
-      playerNameInput.style.display = 'inline-block';
-      answerInput.style.display = 'none';
-      
-      // Reseta e mostra a área de seleção de modo e dificuldade novamente
-      document.getElementById('mode-selection').style.display = 'block';
-      difficultySelectionDiv.style.display = 'none'; // Oculta a dificuldade inicialmente
-      modeKidsButton.classList.remove('active');
-      modeAdultsButton.classList.remove('active');
-      difficultyButtons.forEach(button => button.classList.remove('active'));
-      selectedDifficulty = null; // Reseta a dificuldade selecionada
-      currentGameMode = null; // Reseta o modo de jogo
-
-      questionElement.textContent = 'Selecione um modo, um nível e digite seu nome para começar!';
-      difficultyLevelElement.textContent = ''; 
-      
-      // Ocultar o teclado numérico no final do jogo
-      numericKeypad.style.display = 'none';
-    }
-
-    function checkAnswer() {
-      if (!gameActive) return;
-
-      const userAnswer = parseInt(answerInput.value);
-      
-      const correctAnswerLength = String(currentQuestion.answer).length;
-      const userAnswerString = answerInput.value;
-
-      // Verifica se a resposta do usuário já tem o mesmo número de dígitos que a resposta correta
-      // ou se o usuário digitou mais dígitos do que a resposta correta (indicando que ele "finalizou" a resposta)
-      if (!isNaN(userAnswer) && 
-         (userAnswerString.length === correctAnswerLength || userAnswerString.length > correctAnswerLength)) {
-
-        if (userAnswer === currentQuestion.answer) {
-            score++;
-            scoreValueElement.textContent = score;
-            scoreValueElement.classList.add('pulse-effect');
-            scoreValueElement.addEventListener('animationend', function handler() {
-                scoreValueElement.classList.remove('pulse-effect');
-                scoreValueElement.removeEventListener('animationend', handler);
-            });
-
-            messageElement.textContent = 'Correto!';
-            messageElement.classList.add('show', 'correct-text'); 
-            answerInput.classList.add('correct-input-anim'); 
-            questionElement.classList.add('correct-animation'); 
-            correctSound.play();
-
-            const timeTaken = (Date.now() - questionStartTime) / 1000; 
-            const speedBonusThreshold = 1.5; 
-            const bonusTime = 0.5; 
-
-            if (timeTaken <= speedBonusThreshold) {
-                timeLeft = Math.min(60, timeLeft + bonusTime); 
-                timerValueElement.textContent = Math.ceil(timeLeft) + 's'; 
-                messageElement.textContent += " (WOW! Rápido! +0.5s)";
-                messageElement.classList.add('speed-bonus-text'); 
-            }
-            
-            answerInput.addEventListener('animationend', function handler() {
-                answerInput.classList.remove('correct-input-anim');
-                answerInput.removeEventListener('animationend', handler);
-            });
-            questionElement.addEventListener('animationend', function handler() {
-                questionElement.classList.remove('correct-animation');
-                questionElement.removeEventListener('animationend', handler);
-            });
-            messageElement.addEventListener('animationend', function handler() { 
-                messageElement.classList.remove('speed-bonus-text');
-                messageElement.removeEventListener('animationend', handler);
-            });
-
-            setTimeout(() => {
-                generateQuestion();
-            }, 300); 
-            
-        } else { // Resposta incorreta e "finalizada"
-            scoreValueElement.textContent = score;
-            scoreValueElement.classList.add('pulse-effect');
-            scoreValueElement.addEventListener('animationend', function handler() {
-                scoreValueElement.classList.remove('pulse-effect');
-                scoreValueElement.removeEventListener('animationend', handler);
-            });
-
-            messageElement.textContent = 'Errado. Próxima pergunta.';
-            messageElement.classList.add('show', 'incorrect-text'); 
-            answerInput.classList.add('incorrect-input-anim'); 
-            questionElement.classList.add('incorrect-animation'); 
-            incorrectSound.play();
-            
-            answerInput.addEventListener('animationend', function handler() {
-                answerInput.classList.remove('incorrect-input-anim');
-                answerInput.removeEventListener('animationend', handler);
-            });
-            questionElement.addEventListener('animationend', function handler() {
-                questionElement.classList.remove('incorrect-animation');
-                questionElement.removeEventListener('animationend', handler);
-            });
-
-            setTimeout(() => {
-                generateQuestion();
-            }, 300);
-        }
-      } else if (!isNaN(userAnswer) && userAnswerString.length < correctAnswerLength) {
-        // Se o usuário está digitando e ainda não atingiu o número de dígitos da resposta correta,
-        // não faz nada, espera ele terminar de digitar.
-        messageElement.textContent = '';
-        messageElement.classList.remove('show', 'correct-text', 'incorrect-text', 'speed-bonus-text');
-        answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
-        questionElement.classList.remove('correct-animation', 'incorrect-animation');
-      }
-    }
-
-    // --- Event Listeners ---
-    modeKidsButton.addEventListener('click', () => selectGameMode('kids'));
-    modeAdultsButton.addEventListener('click', () => selectGameMode('adults'));
-
-    // Adiciona listener para os botões de dificuldade
-    difficultyButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            selectDifficulty(parseInt(button.dataset.level));
-        });
-    });
-
-    startGameButton.addEventListener('click', () => startGame());
-    playAgainButton.addEventListener('click', () => startGame());
-
-    playerNameInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            startGame();
-        }
-    });
-
-    numericKeypad.addEventListener('click', (e) => {
-        if (!gameActive) return;
-
-        const target = e.target;
-        if (target.tagName === 'BUTTON') {
-            const value = target.dataset.value;
-
-            if (value === 'clear') {
-                answerInput.value = '';
-            } else {
-                // Para evitar múltiplos zeros no início (e.g. 005)
-                // Se o input está vazio e o primeiro dígito é zero, apenas define como '0'
-                // Se já é '0', não adiciona outro '0'
-                // Senão, concatena o valor
-                if (answerInput.value === '' && value === '0') {
-                    answerInput.value = '0';
-                } else if (answerInput.value === '0' && value !== '0') {
-                    answerInput.value = value;
-                }
-                else {
-                    answerInput.value += value;
-                }
-            }
-            checkAnswer();
-        }
-    });
-
-    answerInput.addEventListener('focus', (e) => {
-        e.target.blur();
-    });
-
-    window.onload = () => {
-        displayRanking('kids');
-        displayRanking('adults');
-        
-        startGameButton.style.display = 'none';
-        playerNameInput.style.display = 'none';
-        answerInput.style.display = 'none';
-        difficultyLevelElement.textContent = ''; 
-
-        // Garante que as seleções de modo/dificuldade e nome do jogador sejam exibidas ao carregar
-        document.getElementById('mode-selection').style.display = 'block';
-        difficultySelectionDiv.style.display = 'none'; // Começa oculto
-        numericKeypad.style.display = 'none';
-        questionElement.textContent = 'Selecione um modo, um nível e digite seu nome para começar!';
-    };
-
-  </script>
-</body>
-</html>
+          // Exibir o teclado numérico
+          numericKeypad.style.display = 'grid';
           
-          const percentage = (timeLeft / 60) * 100;
-          timeBar.style.width = percentage + '%';
+          questionElement.textContent = 'Preparar...';
+          difficultyLevelElement.textContent = ''; 
+          
+          startGameButton.style.display = 'none';
+          playAgainButton.style.display = 'none';
+          
+          // Esconder a área de seleção de modo e dificuldade ao iniciar o jogo
+          document.getElementById('mode-selection').style.display = 'none';
 
-          if (percentage > 50) {
-              timeBar.style.backgroundColor = '#4CAF50';
-          } else if (percentage > 20) {
-              timeBar.style.backgroundColor = '#FFC107';
-              if (timeLeft <= 10 && !timeBar.classList.contains('time-bar-shaking')) {
-                  timeBar.classList.add('time-bar-shaking');
+          timeBar.style.width = '100%';
+          timeBar.style.backgroundColor = '#4CAF50';
+          timeBar.classList.remove('time-bar-shaking');
+
+          setTimeout(() => {
+            generateQuestion();
+            timerInterval = setInterval(() => {
+              timeLeft--;
+              timerValueElement.textContent = timeLeft + 's';
+              
+              const percentage = (timeLeft / 60) * 100;
+              timeBar.style.width = percentage + '%';
+
+              if (percentage > 50) {
+                  timeBar.style.backgroundColor = '#4CAF50';
+              } else if (percentage > 20) {
+                  timeBar.style.backgroundColor = '#FFC107';
+                  if (timeLeft <= 10 && !timeBar.classList.contains('time-bar-shaking')) {
+                      timeBar.classList.add('time-bar-shaking');
+                  }
+              } else {
+                  timeBar.style.backgroundColor = '#DC3545';
+                  if (timeLeft <= 10 && !timeBar.classList.contains('time-bar-shaking')) {
+                      timeBar.classList.add('time-bar-shaking');
+                      // Força o redraw para garantir que a animação de shake comece
+                      void timeBar.offsetWidth; 
+                  }
               }
-          } else {
-              timeBar.style.backgroundColor = '#DC3545';
-              if (timeLeft <= 10 && !timeBar.classList.contains('time-bar-shaking')) {
-                  timeBar.classList.add('time-bar-shaking');
+
+              if (timeLeft <= 0) {
+                endGame();
               }
-          }
-
-          if (timeLeft <= 0) {
-            endGame();
-          }
-        }, 1000);
-      }, 1000);
-    }
-
-    function endGame() {
-      clearInterval(timerInterval);
-      gameActive = false;
-      answerInput.disabled = true;
-      playAgainButton.style.display = 'inline-block';
-      messageElement.textContent = `Tempo esgotado! Você fez ${score} pontos.`;
-      messageElement.classList.add('show'); 
-      messageElement.classList.remove('correct-text', 'incorrect-text', 'speed-bonus-text'); 
-      
-      answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
-      questionElement.classList.remove('correct-animation', 'incorrect-animation');
-      timeBar.classList.remove('time-bar-shaking');
-
-      // Salva o ranking com o nível de dificuldade selecionado
-      saveRanking(currentPlayerName, score, currentGameMode, selectedDifficulty);
-      
-      playerNameInput.value = '';
-      playerNameInput.style.display = 'inline-block';
-      answerInput.style.display = 'none';
-      
-      // Reseta e mostra a área de seleção de modo e dificuldade novamente
-      document.getElementById('mode-selection').style.display = 'block';
-      difficultySelectionDiv.style.display = 'none'; // Oculta a dificuldade inicialmente
-      modeKidsButton.classList.remove('active');
-      modeAdultsButton.classList.remove('active');
-      difficultyButtons.forEach(button => button.classList.remove('active'));
-      selectedDifficulty = null; // Reseta a dificuldade selecionada
-      currentGameMode = null; // Reseta o modo de jogo
-
-      questionElement.textContent = 'Selecione um modo, um nível e digite seu nome para começar!';
-      difficultyLevelElement.textContent = ''; 
-      
-      // Ocultar o teclado numérico no final do jogo
-      numericKeypad.style.display = 'none';
-    }
-
-    function checkAnswer() {
-      if (!gameActive) return;
-
-      const userAnswer = parseInt(answerInput.value);
-      
-      const correctAnswerLength = String(currentQuestion.answer).length;
-      const userAnswerString = answerInput.value;
-
-      // Verifica se a resposta do usuário já tem o mesmo número de dígitos que a resposta correta
-      // ou se o usuário digitou mais dígitos do que a resposta correta (indicando que ele "finalizou" a resposta)
-      if (!isNaN(userAnswer) && 
-         (userAnswerString.length === correctAnswerLength || userAnswerString.length > correctAnswerLength)) {
-
-        if (userAnswer === currentQuestion.answer) {
-            score++;
-            scoreValueElement.textContent = score;
-            scoreValueElement.classList.add('pulse-effect');
-            scoreValueElement.addEventListener('animationend', function handler() {
-                scoreValueElement.classList.remove('pulse-effect');
-                scoreValueElement.removeEventListener('animationend', handler);
-            });
-
-            messageElement.textContent = 'Correto!';
-            messageElement.classList.add('show', 'correct-text'); 
-            answerInput.classList.add('correct-input-anim'); 
-            questionElement.classList.add('correct-animation'); 
-            correctSound.play();
-
-            const timeTaken = (Date.now() - questionStartTime) / 1000; 
-            const speedBonusThreshold = 1.5; 
-            const bonusTime = 0.5; 
-
-            if (timeTaken <= speedBonusThreshold) {
-                timeLeft = Math.min(60, timeLeft + bonusTime); 
-                timerValueElement.textContent = Math.ceil(timeLeft) + 's'; 
-                messageElement.textContent += " (WOW! Rápido! +0.5s)";
-                messageElement.classList.add('speed-bonus-text'); 
-            }
-            
-            answerInput.addEventListener('animationend', function handler() {
-                answerInput.classList.remove('correct-input-anim');
-                answerInput.removeEventListener('animationend', handler);
-            });
-            questionElement.addEventListener('animationend', function handler() {
-                questionElement.classList.remove('correct-animation');
-                questionElement.removeEventListener('animationend', handler);
-            });
-            messageElement.addEventListener('animationend', function handler() { 
-                messageElement.classList.remove('speed-bonus-text');
-                messageElement.removeEventListener('animationend', handler);
-            });
-
-            setTimeout(() => {
-                generateQuestion();
-            }, 300); 
-            
-        } else { // Resposta incorreta e "finalizada"
-            scoreValueElement.textContent = score;
-            scoreValueElement.classList.add('pulse-effect');
-            scoreValueElement.addEventListener('animationend', function handler() {
-                scoreValueElement.classList.remove('pulse-effect');
-                scoreValueElement.removeEventListener('animationend', handler);
-            });
-
-            messageElement.textContent = 'Errado. Próxima pergunta.';
-            messageElement.classList.add('show', 'incorrect-text'); 
-            answerInput.classList.add('incorrect-input-anim'); 
-            questionElement.classList.add('incorrect-animation'); 
-            incorrectSound.play();
-            
-            answerInput.addEventListener('animationend', function handler() {
-                answerInput.classList.remove('incorrect-input-anim');
-                answerInput.removeEventListener('animationend', handler);
-            });
-            questionElement.addEventListener('animationend', function handler() {
-                questionElement.classList.remove('incorrect-animation');
-                questionElement.removeEventListener('animationend', handler);
-            });
-
-            setTimeout(() => {
-                generateQuestion();
-            }, 300);
+            }, 1000);
+          }, 1000);
         }
-      } else if (!isNaN(userAnswer) && userAnswerString.length < correctAnswerLength) {
-        // Se o usuário está digitando e ainda não atingiu o número de dígitos da resposta correta,
-        // não faz nada, espera ele terminar de digitar.
-        messageElement.textContent = '';
-        messageElement.classList.remove('show', 'correct-text', 'incorrect-text', 'speed-bonus-text');
-        answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
-        questionElement.classList.remove('correct-animation', 'incorrect-animation');
-      }
-    }
 
-    // --- Event Listeners ---
-    modeKidsButton.addEventListener('click', () => selectGameMode('kids'));
-    modeAdultsButton.addEventListener('click', () => selectGameMode('adults'));
+        function endGame() {
+          clearInterval(timerInterval);
+          gameActive = false;
+          answerInput.disabled = true;
+          playAgainButton.style.display = 'inline-block';
+          messageElement.textContent = `Tempo esgotado! Você fez ${score} pontos.`;
+          messageElement.classList.add('show'); 
+          messageElement.classList.remove('correct-text', 'incorrect-text', 'speed-bonus-text'); 
+          
+          answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
+          questionElement.classList.remove('correct-animation', 'incorrect-animation');
+          timeBar.classList.remove('time-bar-shaking');
 
-    // Adiciona listener para os botões de dificuldade
-    difficultyButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            selectDifficulty(parseInt(button.dataset.level));
+          // Salva o ranking com o nível de dificuldade selecionado
+          saveRanking(currentPlayerName, score, currentGameMode, selectedDifficulty);
+          
+          playerNameInput.value = '';
+          playerNameInput.style.display = 'inline-block';
+          answerInput.style.display = 'none';
+          
+          // Reseta e mostra a área de seleção de modo e dificuldade novamente
+          document.getElementById('mode-selection').style.display = 'block';
+          difficultySelectionDiv.style.display = 'none'; // Oculta a dificuldade inicialmente
+          modeKidsButton.classList.remove('active');
+          modeAdultsButton.classList.remove('active');
+          difficultyButtons.forEach(button => button.classList.remove('active'));
+          selectedDifficulty = null; // Reseta a dificuldade selecionada
+          currentGameMode = null; // Reseta o modo de jogo
+
+          questionElement.textContent = 'Selecione um modo, um nível e digite seu nome para começar!';
+          difficultyLevelElement.textContent = ''; 
+          
+          // Ocultar o teclado numérico no final do jogo
+          numericKeypad.style.display = 'none';
+        }
+
+        function checkAnswer() {
+          if (!gameActive) return;
+
+          const userAnswer = parseInt(answerInput.value);
+          
+          const correctAnswerLength = String(currentQuestion.answer).length;
+          const userAnswerString = answerInput.value;
+
+          // Verifica se a resposta do usuário já tem o mesmo número de dígitos que a resposta correta
+          // ou se o usuário digitou mais dígitos do que a resposta correta (indicando que ele "finalizou" a resposta)
+          if (!isNaN(userAnswer) && 
+             (userAnswerString.length === correctAnswerLength || userAnswerString.length > correctAnswerLength)) {
+
+            if (userAnswer === currentQuestion.answer) {
+                score++;
+                scoreValueElement.textContent = score;
+                scoreValueElement.classList.add('pulse-effect');
+                scoreValueElement.addEventListener('animationend', function handler() {
+                    scoreValueElement.classList.remove('pulse-effect');
+                    scoreValueElement.removeEventListener('animationend', handler);
+                });
+
+                messageElement.textContent = 'Correto!';
+                messageElement.classList.add('show', 'correct-text'); 
+                answerInput.classList.add('correct-input-anim'); 
+                questionElement.classList.add('correct-animation'); 
+                correctSound.play();
+
+                const timeTaken = (Date.now() - questionStartTime) / 1000; 
+                const speedBonusThreshold = 1.5; 
+                const bonusTime = 0.5; 
+
+                if (timeTaken <= speedBonusThreshold) {
+                    timeLeft = Math.min(60, timeLeft + bonusTime); 
+                    timerValueElement.textContent = Math.ceil(timeLeft) + 's'; 
+                    messageElement.textContent += " (WOW! Rápido! +0.5s)";
+                    messageElement.classList.add('speed-bonus-text'); 
+                }
+                
+                answerInput.addEventListener('animationend', function handler() {
+                    answerInput.classList.remove('correct-input-anim');
+                    answerInput.removeEventListener('animationend', handler);
+                });
+                questionElement.addEventListener('animationend', function handler() {
+                    questionElement.classList.remove('correct-animation');
+                    questionElement.removeEventListener('animationend', handler);
+                });
+                messageElement.addEventListener('animationend', function handler() { 
+                    messageElement.classList.remove('speed-bonus-text');
+                    messageElement.removeEventListener('animationend', handler);
+                });
+
+                setTimeout(() => {
+                    generateQuestion();
+                }, 300); 
+                
+            } else { // Resposta incorreta e "finalizada"
+                scoreValueElement.textContent = score;
+                scoreValueElement.classList.add('pulse-effect');
+                scoreValueElement.addEventListener('animationend', function handler() {
+                    scoreValueElement.classList.remove('pulse-effect');
+                    scoreValueElement.removeEventListener('animationend', handler);
+                });
+
+                messageElement.textContent = 'Errado. Próxima pergunta.';
+                messageElement.classList.add('show', 'incorrect-text'); 
+                answerInput.classList.add('incorrect-input-anim'); 
+                questionElement.classList.add('incorrect-animation'); 
+                incorrectSound.play();
+                
+                answerInput.addEventListener('animationend', function handler() {
+                    answerInput.classList.remove('incorrect-input-anim');
+                    answerInput.removeEventListener('animationend', handler);
+                });
+                questionElement.addEventListener('animationend', function handler() {
+                    questionElement.classList.remove('incorrect-animation');
+                    questionElement.removeEventListener('animationend', handler);
+                });
+
+                setTimeout(() => {
+                    generateQuestion();
+                }, 300);
+            }
+          } else if (!isNaN(userAnswer) && userAnswerString.length < correctAnswerLength) {
+            // Se o usuário está digitando e ainda não atingiu o número de dígitos da resposta correta,
+            // não faz nada, espera ele terminar de digitar.
+            messageElement.textContent = '';
+            messageElement.classList.remove('show', 'correct-text', 'incorrect-text', 'speed-bonus-text');
+            answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
+            questionElement.classList.remove('correct-animation', 'incorrect-animation');
+          }
+        }
+
+        // --- Event Listeners ---
+        modeKidsButton.addEventListener('click', () => selectGameMode('kids'));
+        modeAdultsButton.addEventListener('click', () => selectGameMode('adults'));
+
+        // Adiciona listener para os botões de dificuldade
+        difficultyButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                selectDifficulty(parseInt(button.dataset.level));
+            });
         });
-    });
 
-    startGameButton.addEventListener('click', () => startGame());
-    playAgainButton.addEventListener('click', () => startGame());
+        startGameButton.addEventListener('click', () => startGame());
+        playAgainButton.addEventListener('click', () => startGame());
 
-    playerNameInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            startGame();
-        }
-    });
-
-    numericKeypad.addEventListener('click', (e) => {
-        if (!gameActive) return;
-
-        const target = e.target;
-        if (target.tagName === 'BUTTON') {
-            const value = target.dataset.value;
-
-            if (value === 'clear') {
-                answerInput.value = '';
-            } else {
-                // Para evitar múltiplos zeros no início (e.g. 005)
-                // Se o input está vazio e o primeiro dígito é zero, apenas define como '0'
-                // Se já é '0', não adiciona outro '0'
-                // Senão, concatena o valor
-                if (answerInput.value === '' && value === '0') {
-                    answerInput.value = '0';
-                } else if (answerInput.value === '0' && value !== '0') {
-                    answerInput.value = value;
-                }
-                else {
-                    answerInput.value += value;
-                }
+        playerNameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                startGame();
             }
-            checkAnswer();
-        }
-    });
+        });
 
-    answerInput.addEventListener('focus', (e) => {
-        e.target.blur();
-    });
+        numericKeypad.addEventListener('click', (e) => {
+            if (!gameActive) return;
 
-    window.onload = () => {
-        displayRanking('kids');
-        displayRanking('adults');
-        
-        startGameButton.style.display = 'none';
-        playerNameInput.style.display = 'none';
-        answerInput.style.display = 'none';
-        difficultyLevelElement.textContent = ''; 
+            const target = e.target;
+            if (target.tagName === 'BUTTON') {
+                const value = target.dataset.value;
 
-        // Garante que as seleções de modo/dificuldade e nome do jogador sejam exibidas ao carregar
-        document.getElementById('mode-selection').style.display = 'block';
-        difficultySelectionDiv.style.display = 'none'; // Começa oculto
-        numericKeypad.style.display = 'none';
-        questionElement.textContent = 'Selecione um modo, um nível e digite seu nome para começar!';
-    };
+                if (value === 'clear') {
+                    answerInput.value = '';
+                } else {
+                    // Para evitar múltiplos zeros no início (e.g. 005)
+                    // Se o input está vazio e o primeiro dígito é zero, apenas define como '0'
+                    // Se já é '0', não adiciona outro '0'
+                    // Senão, concatena o valor
+                    if (answerInput.value === '' && value === '0') {
+                        answerInput.value = '0';
+                    } else if (answerInput.value === '0' && value !== '0') {
+                        answerInput.value = value;
+                    }
+                    else {
+                        answerInput.value += value;
+                    }
+                }
+                checkAnswer();
+            }
+        });
 
-  </script>
-</body>
-</html>
+        answerInput.addEventListener('focus', (e) => {
+            e.target.blur();
+        });
+
+        window.onload = () => {
+            displayRanking('kids');
+            displayRanking('adults');
+            
+            startGameButton.style.display = 'none';
+            playerNameInput.style.display = 'none';
+            answerInput.style.display = 'none';
+            difficultyLevelElement.textContent = ''; 
+
+            // Garante que as seleções de modo/dificuldade e nome do jogador sejam exibidas ao carregar
+            document.getElementById('mode-selection').style.display = 'block';
+            difficultySelectionDiv.style.display = 'none'; // Começa oculto
+            numericKeypad.style.display = 'none';
+            questionElement.textContent = 'Selecione um modo, um nível e digite seu nome para começar!';
+        };
+
+      </script>
+    </body>
+    </html>
+    
