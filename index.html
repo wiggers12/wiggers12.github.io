@@ -369,11 +369,11 @@
         animation: shakeRed 0.5s ease-out;
     }
 
-    #answer-input, #player-name-input {
+    #player-name-input {
       padding: 15px; /* Padding maior */
       font-size: 1.5em; /* Fonte maior */
       width: calc(100% - 30px); /* Ajuste para padding */
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       border: 2px solid #ddd; /* Borda mais visível */
       border-radius: 10px; /* Cantos mais arredondados */
       text-align: center;
@@ -388,86 +388,34 @@
       user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
     }
 
-    #player-name-input {
-        margin-bottom: 20px;
-    }
-
-    #answer-input.correct {
-      border-color: #28a745;
-      box-shadow: 0 0 8px rgba(40, 167, 69, 0.7); /* Sombra mais forte */
-    }
-
-    #answer-input.incorrect {
-      border-color: #d9534f;
-      box-shadow: 0 0 8px rgba(217, 83, 79, 0.7); /* Sombra mais forte */
-    }
-
-    #answer-input.correct-input-anim {
-        animation: bounceIn 0.3s forwards;
-    }
-    #answer-input.incorrect-input-anim {
-        animation: shake 0.5s ease-out;
-    }
-
-    button {
-      background: linear-gradient(45deg, #007bff 0%, #0056b3 100%); /* Gradiente azul padrão */
-      color: white;
-      padding: 12px 25px;
-      border: none;
-      border-radius: 8px; /* Cantos mais arredondados */
-      cursor: pointer;
-      font-size: 1.1em;
-      transition: all 0.3s ease; /* Transição suave para todas as propriedades */
-      margin: 5px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra padrão */
-    }
-
-    button:hover {
-      background: linear-gradient(45deg, #0056b3 0%, #007bff 100%); /* Gradiente invertido no hover */
-      transform: translateY(-3px); /* Elevação no hover */
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra maior no hover */
-    }
-
-    button:active {
-      transform: translateY(0);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    }
-    
-    /* Cores para botões de seleção de modo e dificuldade */
-    .mode-button {
-        background: linear-gradient(45deg, #6c757d 0%, #5a6268 100%); /* Gradiente cinza */
-    }
-    .mode-button.active {
-        background: linear-gradient(45deg, #4CAF50 0%, #218838 100%); /* Gradiente verde quando ativo */
-        box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.6); /* Anel verde mais forte */
-    }
-    .mode-button:hover {
-        background: linear-gradient(45deg, #5a6268 0%, #6c757d 100%);
-    }
-
-    /* Botão Voltar */
-    .back-button {
-        background: linear-gradient(45deg, #f44336 0%, #d32f2f 100%); /* Gradiente vermelho */
-        margin-top: 30px !important; /* Mais espaço acima */
-        padding: 10px 20px;
-        font-size: 1em;
-    }
-    .back-button:hover {
-        background: linear-gradient(45deg, #d32f2f 0%, #f44336 100%);
-    }
-
     #message {
       margin-top: 15px;
       font-weight: bold;
-      opacity: 0; /* Sempre invisível */
-      transition: none; /* Sem transição */
+      opacity: 0; /* Começa invisível */
       font-size: 1.1em;
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Transição para aparecer/desaparecer */
+      transform: translateY(10px); /* Começa ligeiramente abaixo */
+      color: #333; /* Cor padrão, será sobrescrita pelas classes de tipo */
+      display: block; /* Garante que ocupa espaço para a transição de transform */
     }
 
-    /* Remove todas as classes que controlam visibilidade e cor de mensagem */
-    #message.show, #message.correct-text, #message.incorrect-text, #message.speed-bonus-text {
-        opacity: 0;
-        display: none; /* Garante que não ocupa espaço */
+    #message.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Cores específicas para as mensagens de feedback */
+    #message.success-message {
+        color: #28a745; /* Verde para sucesso */
+    }
+
+    #message.error-message {
+        color: #dc3545; /* Vermelho para erro */
+    }
+
+    #message.incredible-message {
+        color: #ffc107; /* Amarelo/Laranja para incrível */
+        font-size: 1.3em; /* Ligeiramente maior para ênfase */
     }
 
 
@@ -487,15 +435,19 @@
     }
 
 
-    #start-game-button {
+    #start-game-button, #play-again { /* Aplicado a ambos os botões */
       background: linear-gradient(45deg, #28a745 0%, #218838 100%); /* Gradiente verde */
       padding: 18px 35px; /* Padding maior */
       font-size: 1.5em; /* Fonte maior */
       border-radius: 12px; /* Cantos mais arredondados */
       box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+      border: none; /* Garante que não há borda padrão */
+      color: white; /* Cor do texto */
+      cursor: pointer; /* Cursor de ponteiro */
+      transition: all 0.3s ease; /* Transição suave */
     }
 
-    #start-game-button:hover {
+    #start-game-button:hover, #play-again:hover {
       background: linear-gradient(45deg, #218838 0%, #28a745 100%);
       transform: translateY(-5px);
       box-shadow: 0 10px 20px rgba(0,0,0,0.35);
@@ -608,52 +560,59 @@
         font-weight: bold;
     }
 
-    /* Teclado numérico */
-    #numeric-keypad {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3 colunas de largura igual */
-        gap: 15px; /* Aumento do espaçamento entre os botões */
+    /* NOVO: Estilos para os botões de resposta */
+    #answer-buttons-container {
+        display: flex; /* Alterado para flex para layout horizontal */
+        flex-wrap: wrap; /* Permite que os botões quebrem a linha em telas menores */
+        justify-content: space-around; /* Distribui espaço uniformemente entre os botões */
+        gap: 15px; /* Espaçamento entre os botões */
         width: 100%;
-        max-width: 400px; /* Ajuste a largura máxima conforme necessário para o layout de 3 colunas */
-        margin-top: 30px; /* Mais espaço acima */
-        background-color: #e0e0e0; /* Fundo mais claro */
-        padding: 20px; /* Mais padding */
-        border-radius: 15px; /* Cantos mais arredondados */
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Sombra mais suave */
-        display: none; /* Inicia oculto */
+        max-width: 450px; /* Limita a largura do grupo de botões para caberem 3 */
+        margin-top: 20px; /* Espaço acima dos botões */
+        margin-bottom: 20px; /* Espaço abaixo dos botões */
     }
 
-    #numeric-keypad button {
-        /* REMOVIDO: width: 100%; - Esta propriedade estava causando o empilhamento. */
-        height: 70px; /* Altura dos botões maior */
-        font-size: 2em; /* Fonte maior */
-        background: linear-gradient(45deg, #f0f0f0 0%, #dcdcdc 100%); /* Gradiente cinza claro */
-        color: #333;
-        border: 1px solid #ccc;
-        border-radius: 10px; /* Cantos arredondados */
-        transition: all 0.2s ease;
-        padding: 0;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    #answer-buttons-container button {
+        flex: 1 1 auto; /* Permite que os botões cresçam e encolham, mas mantêm um tamanho base */
+        min-width: 100px; /* Largura mínima para cada botão */
+        padding: 15px; /* Padding generoso */
+        font-size: 1.8em; /* Fonte grande para as respostas */
+        border-radius: 12px; /* Cantos arredondados */
+        background: linear-gradient(45deg, #007bff 0%, #0056b3 100%); /* Azul padrão */
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+        display: flex; /* Para centralizar o texto verticalmente */
+        align-items: center;
+        justify-content: center;
     }
 
-    #numeric-keypad button:hover {
-        background: linear-gradient(45deg, #dcdcdc 0%, #f0f0f0 100%);
-        transform: translateY(-2px);
+    #answer-buttons-container button:hover:not(:disabled) {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+    }
+
+    #answer-buttons-container button:active:not(:disabled) {
+        transform: translateY(0);
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
 
-    #numeric-keypad button:active {
-        background-color: #c0c0c0;
-        transform: translateY(0);
-        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    /* Feedback visual para os botões de resposta */
+    #answer-buttons-container button.correct-feedback {
+        background: linear-gradient(45deg, #28a745 0%, #218838 100%); /* Verde */
+        box-shadow: 0 0 15px rgba(40, 167, 69, 0.8);
     }
 
-    #numeric-keypad button.key-backspace {
-        background: linear-gradient(45deg, #e74c3c 0%, #c0392b 100%); /* Gradiente vermelho */
-        color: white;
+    #answer-buttons-container button.incorrect-feedback {
+        background: linear-gradient(45deg, #dc3545 0%, #c82333 100%); /* Vermelho */
+        box-shadow: 0 0 15px rgba(220, 53, 69, 0.8);
     }
-    #numeric-keypad button.key-backspace:hover {
-        background: linear-gradient(45deg, #c0392b 0%, #e74c3c 100%);
+
+    #answer-buttons-container button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
     }
 
     /* Settings Icon */
@@ -806,11 +765,11 @@
         margin-top: 15px; /* Espaçamento entre os botões de ação */
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         transition: all 0.3s ease;
+        color: white; /* Garante que o texto/ícone é branco */
     }
 
     .settings-action-button.green-button {
         background: linear-gradient(45deg, #4CAF50 0%, #218838 100%);
-        color: white;
     }
     .settings-action-button.green-button:hover {
         background: linear-gradient(45deg, #218838 0%, #4CAF50 100%);
@@ -820,7 +779,6 @@
 
     .settings-action-button.blue-button {
         background: linear-gradient(45deg, #007bff 0%, #0056b3 100%);
-        color: white;
     }
     .settings-action-button.blue-button:hover {
         background: linear-gradient(45deg, #0056b3 0%, #007bff 100%);
@@ -860,6 +818,50 @@
         max-width: 400px; /* Limita a largura da seção individual */
         margin: 0; /* Reseta margens de regras anteriores */
     }
+
+    /* Estilos para os botões de modo (Kids/Adulto) */
+    .mode-button {
+        background: linear-gradient(45deg, #007bff 0%, #0056b3 100%) !important; /* Azul vibrante */
+        color: white;
+        padding: 15px 25px;
+        font-size: 1.5em;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        width: 100%; /* Ocupa a largura total do container */
+        margin-bottom: 15px; /* Espaço entre os botões de modo */
+    }
+    .mode-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+        background: linear-gradient(45deg, #0056b3 0%, #007bff 100%) !important; /* Gradiente invertido no hover */
+    }
+    .mode-button.active {
+        background: linear-gradient(45deg, #4CAF50 0%, #218838 100%) !important; /* Verde quando ativo */
+        box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.6), 0 5px 10px rgba(0,0,0,0.3) !important; /* Anel verde mais forte e sombra */
+    }
+
+    /* Botão Voltar */
+    .back-button {
+        background: linear-gradient(45deg, #f44336 0%, #d32f2f 100%) !important; /* Gradiente vermelho vibrante */
+        margin-top: 30px !important; /* Mais espaço acima */
+        padding: 15px 30px;
+        font-size: 1.2em;
+        border-radius: 10px;
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    }
+    .back-button:hover {
+        background: linear-gradient(45deg, #d32f2f 0%, #f44336 100%) !important;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    }
+
 
     /* MEDIA QUERIES para layout responsivo */
     @media (min-width: 768px) { /* A partir de tablets e desktops */
@@ -924,22 +926,20 @@
       #question {
         font-size: 1.8em; /* Fonte menor para perguntas e títulos */
       }
-      #answer-input, #player-name-input {
+      #player-name-input { /* Mantém o input de nome visível */
         font-size: 1.2em; /* Inputs menores */
         padding: 12px;
       }
-      button {
-        font-size: 1em; /* Botões menores */
-        padding: 10px 20px;
+      /* Remove o display: none para o #answer-buttons-container em telas pequenas */
+      #answer-buttons-container {
+        max-width: 280px; /* Ajusta a largura dos botões de resposta em telas menores */
+        gap: 10px;
+        flex-direction: column; /* Força empilhamento em telas muito pequenas */
       }
-      #numeric-keypad {
-        max-width: 280px; /* Ajuste para telas menores */
-        gap: 10px; /* Espaçamento menor no teclado */
+      #answer-buttons-container button {
+        font-size: 1.5em;
         padding: 15px;
-      }
-      #numeric-keypad button {
-        height: 60px; /* Altura dos botões menor */
-        font-size: 1.6em; /* Fonte menor */
+        min-width: auto; /* Remove min-width quando empilhado */
       }
       .settings-icon {
             font-size: 2em;
@@ -1074,8 +1074,15 @@
       <p id="difficulty-level"></p> 
       <p id="question">Selecione um modo e digite seu nome para começar!</p>
       <input type="text" id="player-name-input" placeholder="Seu nome" maxlength="20" pattern="[A-Za-zÀ-ú\s]+" title="Apenas letras e espaços são permitidos.">
-      <input type="text" id="answer-input" placeholder="Digite a resposta" readonly>
-      <p id="message"></p> <!-- Mensagem de feedback (agora sempre vazia e invisível) -->
+      <!-- O input de resposta foi removido -->
+      <p id="message"></p> <!-- Mensagem de feedback (agora controlada por JS) -->
+    </div>
+
+    <!-- NOVO: Container para os botões de resposta -->
+    <div id="answer-buttons-container">
+        <button class="answer-button" data-value="0"></button>
+        <button class="answer-button" data-value="0"></button>
+        <button class="answer-button" data-value="0"></button>
     </div>
 
     <button id="explain-concept-button" style="display: none;">✨ Explicar Conceito ✨</button> <!-- Novo botão -->
@@ -1083,20 +1090,7 @@
     <button id="play-again" style="display: none;">Jogar Novamente</button>
   </div>
 
-  <!-- Teclado Numérico -->
-  <div id="numeric-keypad">
-    <button data-value="1">1</button>
-    <button data-value="2">2</button>
-    <button data-value="3">3</button>
-    <button data-value="4">4</button>
-    <button data-value="5">5</button>
-    <button data-value="6">6</button>
-    <button data-value="7">7</button>
-    <button data-value="8">8</button>
-    <button data-value="9">9</button>
-    <button data-value="clear" class="key-backspace">APAGAR</button>
-    <button data-value="0">0</button>
-  </div>
+  <!-- O Teclado Numérico foi removido -->
 
   <!-- Container de Rankings (Tela de Ranking Completo) -->
   <div id="rankings-container">
@@ -1234,7 +1228,6 @@
     const rankingsContainer = document.getElementById('rankings-container');
 
     const questionElement = document.getElementById('question');
-    const answerInput = document.getElementById('answer-input');
     const playerNameInput = document.getElementById('player-name-input');
     const messageElement = document.getElementById('message'); // Agora será sempre vazio e invisível
     const timerValueElement = document.getElementById('timer-value');
@@ -1251,6 +1244,7 @@
 
     // Variáveis de controlo de dificuldade
     let correctAnswersCount = 0; // Para controlo da dificuldade dinâmica no modo adulto
+    let consecutiveCorrectAnswersCount = 0; // NOVO: Para o "Incrível!"
 
     // Elementos de Ranking
     const rankingKidsList = document.getElementById('ranking-kids-list'); // Main ranking screen
@@ -1259,8 +1253,9 @@
     const rankingAdultsListComp = document.getElementById('ranking-adults-list-comp'); // Embedded in competition screen
 
 
-    // Elemento do Teclado Numérico
-    const numericKeypad = document.getElementById('numeric-keypad');
+    // Elemento dos Botões de Resposta
+    const answerButtonsContainer = document.getElementById('answer-buttons-container');
+    const answerButtons = document.querySelectorAll('#answer-buttons-container button');
 
     // Botões do novo menu principal
     const practiceButton = document.getElementById('practice-button');
@@ -1349,7 +1344,7 @@
         rankingsContainer.classList.remove('active');
         rankingsContainer.style.display = 'none';
 
-        numericKeypad.style.display = 'none'; // Sempre esconde o teclado
+        answerButtonsContainer.style.display = 'none'; // Sempre esconde os botões de resposta
         
         // Esconde os modais também
         hideSettingsModal();
@@ -1385,10 +1380,11 @@
         difficultyLevelElement.textContent = '';
         // Esconder inputs e botões de jogo
         playerNameInput.style.display = 'none';
-        answerInput.style.display = 'none';
         startGameButton.style.display = 'none';
         playAgainButton.style.display = 'none';
         explainConceptButton.style.display = 'none'; // Esconde o botão de explicação
+        messageElement.textContent = ''; // Limpa a mensagem
+        messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message'); // Esconde e limpa classes
     }
 
     function showOperationSelection() { 
@@ -1443,7 +1439,6 @@
         hideAllScreens(); // Esconde todas as telas
         gameContainer.style.display = 'flex'; // Mostra a tela do jogo
         gameContainer.classList.add('active'); // Ativa para animação
-        // numericKeypad.style.display = 'grid'; // O teclado só aparece quando o jogo *começa* de fato
     }
 
     function showRankingsScreen() {
@@ -1539,6 +1534,7 @@
     function selectGameModeAndStart(mode) { 
         currentGameMode = mode;
         correctAnswersCount = 0; // Reseta o contador de respostas corretas ao mudar o modo
+        consecutiveCorrectAnswersCount = 0; // NOVO: Reseta o contador de acertos consecutivos
         
         if (mode.startsWith('practice_')) {
             modeKidsButton.classList.remove('active');
@@ -1554,15 +1550,16 @@
 
         playerNameInput.style.display = 'inline-block';
         startGameButton.style.display = 'inline-block';
-        answerInput.style.display = 'none'; 
+        answerButtonsContainer.style.display = 'none'; // Esconde os botões de resposta inicialmente
         playAgainButton.style.display = 'none'; 
         explainConceptButton.style.display = 'none'; 
+        messageElement.textContent = ''; // Limpa a mensagem
+        messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message'); // Esconde e limpa classes
 
         playerNameInput.value = ''; 
         playerNameInput.focus(); 
         questionElement.textContent = 'Digite seu nome e clique em "Começar Jogo"!';
         difficultyLevelElement.textContent = ''; 
-        numericKeypad.style.display = 'none'; 
     }
 
     function saveRanking(player, score, mode, difficultyLevelPlayed) {
@@ -1651,6 +1648,9 @@
         let currentLevelName; 
 
         explainConceptButton.style.display = 'none'; 
+        messageElement.textContent = ''; // Limpa a mensagem
+        messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message'); // Esconde e limpa classes
+
 
         if (currentGameMode.startsWith('practice_')) {
             if (selectedOperationType === 'all') {
@@ -1730,7 +1730,6 @@
             finalAnswer = num1 / num2;
         }
 
-        // A resposta agora será sempre um número inteiro devido à lógica de divisão
         correctAnswer = finalAnswer; 
 
         currentQuestion = { question: questionString, answer: correctAnswer };
@@ -1744,14 +1743,71 @@
         }
         difficultyLevelElement.textContent = `Nível: ${currentLevelName} (${displayModeText})`; 
         
-        answerInput.value = '';
-        // Garante que as classes de feedback visual estão limpas ao gerar nova pergunta
-        answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
+        // Limpa feedback visual da pergunta anterior
         questionElement.classList.remove('correct-animation', 'incorrect-animation');
-        messageElement.textContent = ''; // Limpa a mensagem
-        messageElement.classList.remove('show', 'correct-text', 'incorrect-text', 'speed-bonus-text'); 
         
         questionStartTime = Date.now(); 
+
+        // --- Geração e atribuição dos botões de resposta ---
+        let answers = [];
+        answers.push(correctAnswer);
+
+        // Gerar duas respostas incorretas
+        while (answers.length < 3) {
+            let incorrectAnswer;
+            let attempts = 0;
+            const maxAttempts = 100; // Safety net to prevent infinite loops
+
+            do {
+                let offset = randomInt(1, 10); // Use a reasonable offset
+                if (random() < 0.5) {
+                    incorrectAnswer = correctAnswer + offset;
+                } else {
+                    incorrectAnswer = correctAnswer - offset;
+                }
+                attempts++;
+
+                // Ensure:
+                // 1. It's not the correct answer
+                // 2. It's not already in the answers array
+                // 3. It's not negative if the correct answer is non-negative (to avoid weird negative options for simple sums)
+                // 4. For division, avoid 0 as an incorrect answer if correct answer is not 0 (division by zero is undefined)
+                // 5. Ensure the incorrect answer is not 0 if the correct answer is not 0
+            } while ((incorrectAnswer === correctAnswer || answers.includes(incorrectAnswer) || (correctAnswer >= 0 && incorrectAnswer < 0) || (incorrectAnswer === 0 && correctAnswer !== 0)) && attempts < maxAttempts);
+
+            // If after maxAttempts we still can't find a good incorrect answer,
+            // generate a simple fallback to prevent infinite loop or empty button
+            if (attempts >= maxAttempts) {
+                let fallbackCandidate1 = correctAnswer + 10;
+                if (!answers.includes(fallbackCandidate1)) {
+                    incorrectAnswer = fallbackCandidate1;
+                } else {
+                    let fallbackCandidate2 = correctAnswer - 10;
+                    if (!answers.includes(fallbackCandidate2) && (correctAnswer >= 0 ? fallbackCandidate2 >= 0 : true)) {
+                        incorrectAnswer = fallbackCandidate2;
+                    } else {
+                        // Last resort: a very simple, distinct number like 1 or 100 if all else fails
+                        incorrectAnswer = answers.includes(1) ? 100 : 1;
+                        if (answers.includes(incorrectAnswer)) incorrectAnswer = answers.includes(2) ? 200 : 2; // Try another one
+                    }
+                }
+            }
+            answers.push(incorrectAnswer);
+        }
+
+        // Embaralha o array de respostas
+        for (let i = answers.length - 1; i > 0; i--) {
+            const j = Math.floor(random() * (i + 1));
+            [answers[i], answers[j]] = [answers[j], answers[i]];
+        }
+
+        // Atribui as respostas aos botões
+        answerButtons.forEach((button, index) => {
+            button.textContent = answers[index];
+            button.dataset.value = answers[index]; // Armazena o valor no data-attribute
+            button.classList.remove('correct-feedback', 'incorrect-feedback'); // Limpa feedback anterior
+            button.disabled = false; // Habilita o botão
+        });
     }
 
     function startGame() {
@@ -1781,21 +1837,21 @@
       timeLeft = 60;
       gameActive = true;
       correctAnswersCount = 0; 
+      consecutiveCorrectAnswersCount = 0; // NOVO: Reseta o contador de acertos consecutivos
       scoreValueElement.textContent = score;
       timerValueElement.textContent = timeLeft + 's';
       
       playerNameInput.style.display = 'none';
       startGameButton.style.display = 'none'; 
-      answerInput.style.display = 'inline-block'; 
-      answerInput.disabled = false;
-
-      numericKeypad.style.display = 'grid'; 
+      answerButtonsContainer.style.display = 'flex'; // Mostra os botões de resposta
       
       questionElement.textContent = 'Preparar...';
       difficultyLevelElement.textContent = ''; 
       
       playAgainButton.style.display = 'none';
       explainConceptButton.style.display = 'none'; 
+      messageElement.textContent = ''; // Limpa a mensagem
+      messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message'); // Esconde e limpa classes
       
       timeBar.style.width = '100%';
       timeBar.style.backgroundColor = '#4CAF50';
@@ -1835,14 +1891,14 @@
     function endGame() {
       clearInterval(timerInterval);
       gameActive = false;
-      answerInput.disabled = true;
+      answerButtons.forEach(button => button.disabled = true); // Desabilita os botões de resposta
       playAgainButton.style.display = 'inline-block';
-      // Mensagem final de pontuação permanece
-      messageElement.textContent = `Tempo esgotado! Você fez ${score} pontos.`;
-      messageElement.classList.add('show'); // Pode mostrar apenas a mensagem final
-      messageElement.classList.remove('correct-text', 'incorrect-text', 'speed-bonus-text'); 
       
-      answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
+      messageElement.textContent = `Tempo esgotado! Você fez ${score} pontos.`;
+      messageElement.classList.add('show'); // Mostra a mensagem final
+      messageElement.classList.remove('success-message', 'error-message', 'incredible-message'); // Limpa classes de feedback
+      
+      answerButtons.forEach(button => button.classList.remove('correct-feedback', 'incorrect-feedback')); // Limpa feedback visual
       questionElement.classList.remove('correct-animation', 'incorrect-animation');
       timeBar.classList.remove('time-bar-shaking');
       explainConceptButton.style.display = 'none'; 
@@ -1873,13 +1929,12 @@
       } else { // Practice mode ends
           playerNameInput.value = '';
           playerNameInput.style.display = 'inline-block';
-          answerInput.style.display = 'none';
+          answerButtonsContainer.style.display = 'none'; // Esconde os botões de resposta
           showMainMenu(); // Go back to main menu for practice mode
           currentGameMode = null;
           selectedOperationType = 'all';
           questionElement.textContent = 'Selecione um modo e digite seu nome para começar!';
           difficultyLevelElement.textContent = '';
-          numericKeypad.style.display = 'none';
       }
     }
 
@@ -1947,8 +2002,25 @@
         }
     }
 
-    // Função para processar uma resposta correta
-    function processCorrectAnswer() {
+    // Function to show feedback message
+    function showFeedbackMessage(text, type) {
+        messageElement.textContent = text;
+        messageElement.classList.remove('success-message', 'error-message', 'incredible-message'); // Clear previous types
+        messageElement.classList.add(type); // Add new type for styling
+        messageElement.classList.add('show'); // Make visible
+
+        // Hide message after a delay
+        setTimeout(() => {
+            messageElement.classList.remove('show');
+            // Reset text after fading out to ensure clean state
+            setTimeout(() => {
+                messageElement.textContent = '';
+            }, 500); // Wait for transition to finish
+        }, 1500); // Message visible for 1.5 seconds
+    }
+
+    // Função para processar uma resposta correta (feedback visual no botão)
+    function processCorrectAnswer(clickedButton) {
         score++;
         correctAnswersCount++; 
         scoreValueElement.textContent = score;
@@ -1958,7 +2030,7 @@
             scoreValueElement.removeEventListener('animationend', handler);
         });
 
-        answerInput.classList.add('correct-input-anim'); 
+        clickedButton.classList.add('correct-feedback'); 
         questionElement.classList.add('correct-animation'); 
         if (isSoundOn) correctSound.play();
 
@@ -1971,24 +2043,34 @@
             timerValueElement.textContent = Math.ceil(timeLeft) + 's'; 
         }
         
-        answerInput.addEventListener('animationend', function handler() {
-            answerInput.classList.remove('correct-input-anim');
-            answerInput.removeEventListener('animationend', handler);
-        });
         questionElement.addEventListener('animationend', function handler() {
             questionElement.classList.remove('correct-animation');
             questionElement.removeEventListener('animationend', handler);
         });
 
-        explainConceptButton.style.display = 'inline-block';
+        // Handle consecutive correct answers and feedback message
+        consecutiveCorrectAnswersCount++;
+        if (consecutiveCorrectAnswersCount === 10) {
+            showFeedbackMessage("Incrível!", 'incredible-message');
+            consecutiveCorrectAnswersCount = 0; // Reset after "Incrível!"
+        } else {
+            showFeedbackMessage("Parabéns!", 'success-message');
+        }
 
+        // Hide explainConceptButton immediately, it will NOT be shown after feedback automatically
+        explainConceptButton.style.display = 'none';
+
+        // Desabilita todos os botões para evitar múltiplos cliques enquanto processa
+        answerButtons.forEach(button => button.disabled = true);
+
+        // Generate next question after a shorter delay
         setTimeout(() => {
             generateQuestion();
-        }, 300); 
+        }, 500); // Generate next question after 0.5 seconds
     }
 
-    // Função para processar uma resposta incorreta (apenas feedback visual, sem avanço)
-    function processIncorrectAnswer() {
+    // Função para processar uma resposta incorreta (feedback visual no botão)
+    function processIncorrectAnswer(clickedButton) {
         scoreValueElement.textContent = score; // Atualiza para garantir que não pulsa se o score não mudou
         scoreValueElement.classList.add('pulse-effect');
         scoreValueElement.addEventListener('animationend', function handler() {
@@ -1996,25 +2078,28 @@
             scoreValueElement.removeEventListener('animationend', handler);
         });
 
-        answerInput.classList.add('incorrect-input-anim'); 
+        clickedButton.classList.add('incorrect-feedback'); 
         questionElement.classList.add('incorrect-animation'); 
         if (isSoundOn) incorrectSound.play();
         
-        answerInput.addEventListener('animationend', function handler() {
-            answerInput.classList.remove('incorrect-input-anim');
-            answerInput.removeEventListener('animationend', handler);
-        });
         questionElement.addEventListener('animationend', function handler() {
             questionElement.classList.remove('incorrect-animation');
             questionElement.removeEventListener('animationend', handler);
         });
 
-        explainConceptButton.style.display = 'inline-block';
+        // Reset consecutive correct answers on incorrect answer
+        consecutiveCorrectAnswersCount = 0;
+        showFeedbackMessage("Errou!", 'error-message');
 
-        // Não gera nova pergunta aqui, o usuário precisa apagar e corrigir
-        // setTimeout(() => {
-        //     generateQuestion();
-        // }, 300);
+        // Hide explainConceptButton immediately
+        explainConceptButton.style.display = 'none';
+
+        // Desabilita todos os botões para evitar múltiplos cliques enquanto processa
+        answerButtons.forEach(button => button.disabled = true);
+
+        setTimeout(() => {
+            generateQuestion(); // Avança para a próxima pergunta mesmo se errar
+        }, 500); // Generate next question after 0.5 seconds
     }
 
 
@@ -2053,7 +2138,7 @@
         selectedOperationType = 'all'; // Reset operation
         questionElement.textContent = 'Selecione um modo e digite seu nome para começar!';
         difficultyLevelElement.textContent = '';
-        numericKeypad.style.display = 'none';
+        answerButtonsContainer.style.display = 'none'; // Esconde os botões de resposta
     });
 
 
@@ -2066,70 +2151,22 @@
         }
     });
 
-    numericKeypad.addEventListener('click', (e) => {
+    // NOVO: Event listener para os botões de resposta
+    answerButtonsContainer.addEventListener('click', (e) => {
         if (!gameActive) return;
 
-        const target = e.target;
-        if (target.tagName === 'BUTTON') {
-            const value = target.dataset.value;
+        const clickedButton = e.target;
+        // Garante que o clique foi em um botão de resposta e não no container
+        if (clickedButton.classList.contains('answer-button')) {
+            const userAnswer = Number(clickedButton.dataset.value);
+            const correctAnswer = currentQuestion.answer;
 
-            if (value === 'clear') {
-                answerInput.value = '';
-                // Limpa quaisquer animações ou estilos de feedback visual
-                answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
-                questionElement.classList.remove('correct-animation', 'incorrect-animation');
-                messageElement.textContent = ''; // Garante que a mensagem está vazia
+            if (userAnswer === correctAnswer) {
+                processCorrectAnswer(clickedButton);
             } else {
-                // Para evitar múltiplos zeros no início (e.g. 005)
-                // Se o input está vazio e o primeiro dígito é zero, apenas define como '0'
-                // Se já é '0', não adiciona outro '0'
-                // Senão, concatena o valor
-                if (answerInput.value === '' && value === '0') {
-                    answerInput.value = '0';
-                } else if (answerInput.value === '0' && value !== '0') {
-                    answerInput.value = value;
-                }
-                else {
-                    answerInput.value += value;
-                }
-                
-                const userAnswer = Number(answerInput.value);
-                const correctAnswer = currentQuestion.answer;
-
-                // Se a resposta do usuário é exatamente igual à resposta correta, processa como correto
-                if (userAnswer === correctAnswer) {
-                    processCorrectAnswer();
-                } else {
-                    // Se o usuário digitou algo, mas não é a resposta correta,
-                    // aplica a animação de incorreto, mas NÃO avança a pergunta.
-                    // O usuário terá que apagar e corrigir.
-                    // Limpa quaisquer animações ou estilos de feedback visual anteriores
-                    answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
-                    questionElement.classList.remove('correct-animation', 'incorrect-animation');
-                    messageElement.textContent = ''; // Garante que a mensagem está vazia
-
-                    // Aplica a animação de "incorreto" para feedback visual imediato
-                    // sem avançar a pergunta.
-                    answerInput.classList.add('incorrect-input-anim');
-                    questionElement.classList.add('incorrect-animation');
-                    if (isSoundOn) incorrectSound.play();
-
-                    // Remove as classes de animação após a conclusão para que possam ser reativadas
-                    answerInput.addEventListener('animationend', function handler() {
-                        answerInput.classList.remove('incorrect-input-anim');
-                        answerInput.removeEventListener('animationend', handler);
-                    });
-                    questionElement.addEventListener('animationend', function handler() {
-                        questionElement.classList.remove('incorrect-animation');
-                        questionElement.removeEventListener('animationend', handler);
-                    });
-                }
+                processIncorrectAnswer(clickedButton);
             }
         }
-    });
-
-    answerInput.addEventListener('focus', (e) => {
-        e.target.blur();
     });
 
     settingsIcon.addEventListener('click', showSettingsModal);
@@ -2151,16 +2188,18 @@
         score = 0;
         timeLeft = 60;
         correctAnswersCount = 0;
+        consecutiveCorrectAnswersCount = 0; // NOVO: Reseta o contador de acertos consecutivos
         scoreValueElement.textContent = score;
         timerValueElement.textContent = timeLeft + 's';
         playerNameInput.style.display = 'none'; 
-        answerInput.style.display = 'inline-block'; 
-        answerInput.disabled = false; 
-        numericKeypad.style.display = 'grid'; 
+        answerButtonsContainer.style.display = 'flex'; // Mostra os botões de resposta
+        answerButtons.forEach(button => button.disabled = false); // Habilita os botões
         timeBar.style.width = '100%';
         timeBar.style.backgroundColor = '#4CAF50';
         timeBar.classList.remove('time-bar-shaking');
         explainConceptButton.style.display = 'none'; 
+        messageElement.textContent = ''; // Limpa a mensagem
+        messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message'); // Esconde e limpa classes
         generateQuestion(); 
         timerInterval = setInterval(() => { 
             timeLeft--;
@@ -2197,8 +2236,8 @@
     explanationOkButton.addEventListener('click', hideExplanationModal);
 
     window.onload = () => {
-        // Garante que o teclado numérico está oculto logo no carregamento da página
-        numericKeypad.style.display = 'none'; 
+        // Garante que os botões de resposta estão ocultos logo no carregamento da página
+        answerButtonsContainer.style.display = 'none'; 
         showSplashScreen();
     };
 
