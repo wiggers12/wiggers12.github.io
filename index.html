@@ -104,7 +104,7 @@
         overflow: hidden;
         display: none; /* Por padrão, oculto */
         flex-direction: column; /* Sempre em coluna */
-        align-items: center; /* Centraliza os itens */
+        align-items: center;
         justify-content: space-between; /* Espaço entre os itens (listas e botão) */
         box-sizing: border-box;
         text-align: center; /* Centraliza o texto dentro dos cards */
@@ -214,7 +214,7 @@
         padding: 20px 40px; /* Padding maior */
         font-size: 2em; /* Fonte maior */
         border-radius: 15px; /* Cantos mais arredondados */
-        background: linear-gradient(45deg, #ff9800 0%, #fb8c00 100%); /* Laranja vibrante */
+        background: linear-gradient(45deg, #FF6F00 0%, #FF9100 100%); /* Laranja vibrante (melhorado) */
         color: white;
         border: none;
         cursor: pointer;
@@ -224,7 +224,7 @@
     #main-menu .menu-buttons button:hover {
         transform: translateY(-7px); /* Efeito de elevação maior */
         box-shadow: 0 12px 25px rgba(0,0,0,0.4); /* Sombra maior no hover */
-        background: linear-gradient(45deg, #fb8c00 0%, #ff9800 100%); /* Gradiente invertido no hover */
+        background: linear-gradient(45deg, #FF9100 0%, #FF6F00 100%); /* Gradiente invertido no hover */
     }
     #main-menu .menu-buttons button:active {
         transform: translateY(0);
@@ -248,7 +248,7 @@
         padding: 15px 20px;
         font-size: 1.2em;
         border-radius: 10px;
-        background: linear-gradient(45deg, #007bff 0%, #0056b3 100%);
+        background: linear-gradient(45deg, #1976D2 0%, #2196F3 100%); /* Azul vibrante (melhorado) */
         color: white;
         border: none;
         cursor: pointer;
@@ -256,7 +256,7 @@
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
     #operation-selection-container .operation-buttons button:hover, #competition-mode-selection-container .competition-buttons button:hover {
-        background: linear-gradient(45deg, #0056b3 0%, #007bff 100%);
+        background: linear-gradient(45deg, #2196F3 0%, #1976D2 100%);
         transform: translateY(-3px);
         box-shadow: 0 6px 12px rgba(0,0,0,0.3);
     }
@@ -578,7 +578,7 @@
         padding: 15px; /* Padding generoso */
         font-size: 1.8em; /* Fonte grande para as respostas */
         border-radius: 12px; /* Cantos arredondados */
-        background: linear-gradient(45deg, #007bff 0%, #0056b3 100%); /* Azul padrão */
+        background: linear-gradient(45deg, #1976D2 0%, #2196F3 100%); /* Azul vibrante (melhorado) */
         color: white;
         border: none;
         cursor: pointer;
@@ -606,7 +606,7 @@
     }
 
     #answer-buttons-container button.incorrect-feedback {
-        background: linear-gradient(45deg, #dc3545 0%, #c82333 100%); /* Vermelho */
+        background: linear-gradient(45deg, #DC3545 0%, #C62828 100%); /* Vermelho (melhorado) */
         box-shadow: 0 0 15px rgba(220, 53, 69, 0.8);
     }
 
@@ -632,7 +632,7 @@
     }
     .settings-icon:hover {
         transform: rotate(30deg);
-        color: #007bff;
+        color: #1976D2; /* Azul vibrante */
     }
 
     /* Modal Overlay */
@@ -778,10 +778,10 @@
     }
 
     .settings-action-button.blue-button {
-        background: linear-gradient(45deg, #007bff 0%, #0056b3 100%);
+        background: linear-gradient(45deg, #1976D2 0%, #2196F3 100%); /* Azul vibrante (melhorado) */
     }
     .settings-action-button.blue-button:hover {
-        background: linear-gradient(45deg, #0056b3 0%, #007bff 100%);
+        background: linear-gradient(45deg, #2196F3 0%, #1976D2 100%);
         transform: translateY(-3px);
         box-shadow: 0 6px 12px rgba(0,0,0,0.3);
     }
@@ -821,7 +821,7 @@
 
     /* Estilos para os botões de modo (Kids/Adulto) */
     .mode-button {
-        background: linear-gradient(45deg, #007bff 0%, #0056b3 100%) !important; /* Azul vibrante */
+        background: linear-gradient(45deg, #1976D2 0%, #2196F3 100%) !important; /* Azul vibrante (melhorado) */
         color: white;
         padding: 15px 25px;
         font-size: 1.5em;
@@ -836,7 +836,7 @@
     .mode-button:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-        background: linear-gradient(45deg, #0056b3 0%, #007bff 100%) !important; /* Gradiente invertido no hover */
+        background: linear-gradient(45deg, #2196F3 0%, #1976D2 100%) !important; /* Gradiente invertido no hover */
     }
     .mode-button.active {
         background: linear-gradient(45deg, #4CAF50 0%, #218838 100%) !important; /* Verde quando ativo */
@@ -845,7 +845,7 @@
 
     /* Botão Voltar */
     .back-button {
-        background: linear-gradient(45deg, #f44336 0%, #d32f2f 100%) !important; /* Gradiente vermelho vibrante */
+        background: linear-gradient(45deg, #DC3545 0%, #C62828 100%) !important; /* Gradiente vermelho vibrante (melhorado) */
         margin-top: 30px !important; /* Mais espaço acima */
         padding: 15px 30px;
         font-size: 1.2em;
@@ -857,9 +857,59 @@
         box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     }
     .back-button:hover {
-        background: linear-gradient(45deg, #d32f2f 0%, #f44336 100%) !important;
+        background: linear-gradient(45deg, #C62828 0%, #DC3545 100%) !important;
         transform: translateY(-3px);
         box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Estilos para o texto animado dentro dos botões de doação */
+    .animated-donate-text {
+        display: inline-block; /* Permite transformações e animações */
+        font-size: 1em; /* Herda o tamanho da fonte do botão pai */
+        font-weight: bold;
+        color: white; /* Cor base do texto */
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.7), /* Brilho branco */
+                     0 0 10px rgba(255, 255, 255, 0.5); /* Brilho branco maior */
+        animation: neonGlow 2s infinite alternate ease-in-out; /* Animação mais longa e suave */
+    }
+
+    @keyframes neonGlow {
+        0% {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #FF6F00, 0 0 20px #FF6F00; /* Brilho laranja */
+            transform: scale(1);
+        }
+        33% {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #FF9100, 0 0 20px #FF9100; /* Brilho laranja mais claro */
+            transform: scale(1.02); /* Leve pulso */
+        }
+        66% {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #FFC107, 0 0 20px #FFC107; /* Brilho amarelo */
+            transform: scale(1);
+        }
+        100% {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #FF6F00, 0 0 20px #FF6F00; /* Volta ao brilho laranja */
+            transform: scale(1.02); /* Leve pulso */
+        }
+    }
+
+    /* Override dos backgrounds dos botões de doação para o gradiente amarelo/laranja */
+    #donate-button, #ranking-donate-button {
+        background: linear-gradient(45deg, #FF6F00 0%, #FF9100 100%) !important; /* Laranja vibrante (melhorado) */
+    }
+    #donate-button:hover, #ranking-donate-button:hover {
+        background: linear-gradient(45deg, #FF9100 0%, #FF6F00 100%) !important;
+    }
+
+    /* Estilo específico para o botão de doação no modal de configurações */
+    #settings-modal .modal-content button#settings-donate-button {
+        background: linear-gradient(45deg, #FF6F00 0%, #FF9100 100%) !important; /* Sobrescreve o fundo azul */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important; /* Garante consistência da sombra */
+        color: white !important; /* Garante que a cor do texto seja branca */
+    }
+    #settings-modal .modal-content button#settings-donate-button:hover {
+        background: linear-gradient(45deg, #FF9100 0%, #FF6F00 100%) !important;
+        transform: translateY(-3px) !important;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.3) !important;
     }
 
 
@@ -1009,6 +1059,7 @@
     <div class="menu-buttons">
       <button id="practice-button">Praticar</button>
       <button id="competition-button">Competição</button> <!-- Botão renomeado -->
+      <button id="donate-button" class="menu-buttons"><span class="animated-donate-text">$ Incentive o App $</span></button> <!-- NOVO: Botão de Doar com texto animado -->
     </div>
   </div>
 
@@ -1107,6 +1158,7 @@
           </ol>
         </div>
     </div> <!-- FIM DO NOVO WRAPPER -->
+    <button id="ranking-donate-button" class="back-button"><span class="animated-donate-text">$ Incentive o App $</span></button> <!-- NOVO: Botão de Doar no Ranking com texto animado -->
     <button id="back-to-main-from-ranking" class="back-button">Voltar ao Menu Principal</button>
   </div>
 
@@ -1138,6 +1190,9 @@
       </div>
       <div class="setting-item button-item">
         <button id="settings-replay-button" class="settings-action-button green-button">🔄 Jogar Novamente</button>
+      </div>
+      <div class="setting-item button-item">
+        <button id="settings-donate-button" class="settings-action-button blue-button"><span class="animated-donate-text">$ Incentive o App $</span></button> <!-- NOVO: Botão de Doar nas configurações com texto animado -->
       </div>
       <div class="setting-item button-item">
         <button id="settings-more-button" class="settings-action-button blue-button">⚙️ Mais Opções</button>
@@ -1260,10 +1315,13 @@
     // Botões do novo menu principal
     const practiceButton = document.getElementById('practice-button');
     const competitionButton = document.getElementById('competition-button'); 
+    const donateButton = document.getElementById('donate-button'); // NOVO: Botão de Doar no menu principal
     const backToMainFromOperationButton = document.getElementById('back-to-main-from-operation'); 
     const backToOperationSelectionButton = document.getElementById('back-to-operation-selection'); 
     const backToMainFromCompetitionModeButton = document.getElementById('back-to-main-from-competition-mode'); 
     const backToMainFromRankingButton = document.getElementById('back-to-main-from-ranking');
+    const rankingDonateButton = document.getElementById('ranking-donate-button'); // NOVO: Botão de Doar no Ranking
+
 
     // Elementos do Modal de Configurações
     const settingsIcon = document.getElementById('settings-icon');
@@ -1276,6 +1334,7 @@
 
     const settingsHomeButton = document.getElementById('settings-home-button');
     const settingsReplayButton = document.getElementById('settings-replay-button');
+    const settingsDonateButton = document.getElementById('settings-donate-button'); // NOVO: Botão de Doar nas configurações
     const settingsMoreButton = document.getElementById('settings-more-button');
 
     // Elementos do Modal de Explicação de Conceito
@@ -1534,7 +1593,7 @@
     function selectGameModeAndStart(mode) { 
         currentGameMode = mode;
         correctAnswersCount = 0; // Reseta o contador de respostas corretas ao mudar o modo
-        consecutiveCorrectAnswersCount = 0; // NOVO: Reseta o contador de acertos consecutivos
+        consecutiveCorrectAnswersCount = 0; // NOVO: Para o "Incrível!"
         
         if (mode.startsWith('practice_')) {
             modeKidsButton.classList.remove('active');
@@ -2102,10 +2161,18 @@
         }, 500); // Generate next question after 0.5 seconds
     }
 
+    // Função para abrir o link de doação
+    function openDonationLink() {
+        // Abre o link de pagamento do Nubank em uma nova aba
+        window.open('https://checkout.nubank.com.br/KVCHaD4Xahm39l1', '_blank'); 
+    }
+
 
     // --- Event Listeners ---
     practiceButton.addEventListener('click', showOperationSelection); 
     competitionButton.addEventListener('click', showCompetitionModeSelection); 
+    donateButton.addEventListener('click', openDonationLink); // NOVO: Event listener para o botão de Doar no menu principal
+    rankingDonateButton.addEventListener('click', openDonationLink); // NOVO: Event listener para o botão de Doar no Ranking
 
     backToMainFromOperationButton.addEventListener('click', showMainMenu); 
     backToOperationSelectionButton.addEventListener('click', showOperationSelection); 
@@ -2224,6 +2291,11 @@
                 endGame();
             }
         }, 1000);
+    });
+
+    settingsDonateButton.addEventListener('click', () => { // NOVO: Event listener para o botão de Doar nas configurações
+        openDonationLink();
+        hideSettingsModal(); // Fecha o modal de configurações após clicar em doar
     });
 
     settingsMoreButton.addEventListener('click', () => {
