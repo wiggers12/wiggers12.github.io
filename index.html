@@ -103,9 +103,9 @@
         position: relative; /* Para posicionamento interno, como o ícone de configurações */
         overflow: hidden;
         display: none; /* Por padrão, oculto */
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        flex-direction: column; /* Sempre em coluna */
+        align-items: center; /* Centraliza os itens */
+        justify-content: space-between; /* Espaço entre os itens (listas e botão) */
         box-sizing: border-box;
         text-align: center; /* Centraliza o texto dentro dos cards */
     }
@@ -272,6 +272,7 @@
         gap: 20px; /* Espaço entre os rankings */
         width: 100%; /* Ocupa a largura total do container pai */
         margin-top: 25px; /* Espaço acima dos rankings */
+        align-items: center; /* Centraliza os itens */
     }
 
     #embedded-rankings-area .ranking-section {
@@ -458,24 +459,17 @@
     #message {
       margin-top: 15px;
       font-weight: bold;
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      opacity: 0; /* Sempre invisível */
+      transition: none; /* Sem transição */
       font-size: 1.1em;
     }
 
-    #message.show {
-        opacity: 1;
+    /* Remove todas as classes que controlam visibilidade e cor de mensagem */
+    #message.show, #message.correct-text, #message.incorrect-text, #message.speed-bonus-text {
+        opacity: 0;
+        display: none; /* Garante que não ocupa espaço */
     }
-    #message.correct-text {
-        color: #28a745;
-    }
-    #message.incorrect-text {
-        color: #d9534f;
-    }
-    #message.speed-bonus-text {
-        color: #007bff;
-        animation: fadeInOut 1.5s forwards;
-    }
+
 
     #timer, #score {
       font-size: 1.3em; /* Um pouco maior */
@@ -850,16 +844,39 @@
         box-shadow: 0 8px 15px rgba(0,0,0,0.3);
     }
 
+    /* Wrapper para as duas listas de ranking */
+    .ranking-lists-wrapper {
+        display: flex;
+        flex-direction: column; /* Padrão em coluna para telas pequenas */
+        width: 100%; /* Ocupa a largura total do pai */
+        gap: 20px; /* Espaço entre as seções de ranking */
+        margin-bottom: 20px; /* Espaço acima do botão de voltar */
+        align-items: center; /* Centraliza as seções de ranking horizontalmente */
+    }
+
+    /* Ajustes para as seções de ranking individuais dentro do wrapper */
+    #rankings-container .ranking-section {
+        width: 95%; /* Ocupa quase a largura total em telas pequenas */
+        max-width: 400px; /* Limita a largura da seção individual */
+        margin: 0; /* Reseta margens de regras anteriores */
+    }
+
     /* MEDIA QUERIES para layout responsivo */
     @media (min-width: 768px) { /* A partir de tablets e desktops */
-        #rankings-container, #embedded-rankings-area {
+        #embedded-rankings-area, .ranking-lists-wrapper { /* Aplica a ambos os wrappers de ranking */
             flex-direction: row; /* Coloca os rankings lado a lado */
             align-items: flex-start; /* Alinha os itens ao topo se tiverem alturas diferentes */
+            justify-content: center; /* Centraliza o par de listas */
+            flex-wrap: wrap; /* Permite que os itens quebrem se a tela for muito estreita */
         }
         #rankings-container .ranking-section, #embedded-rankings-area .ranking-section {
-            /* flex: 1; - já definido, mas pode ser repetido para clareza */
-            /* max-width: 49%; */ /* Ou algum valor percentual para um pequeno gap visual, se preferir */
+            flex: 1; /* Faz com que ocupem espaço igual */
+            max-width: 48%; /* Adiciona um pequeno espaçamento entre eles */
+            margin: 0 10px; /* Adiciona margem horizontal */
+            min-width: 300px; /* Garante que não fiquem muito pequenos */
         }
+        /* O botão de voltar já está no fluxo de coluna do #rankings-container */
+        /* e será centralizado por align-items: center no #rankings-container */
     }
 
     @media (max-width: 600px) {
@@ -1058,7 +1075,7 @@
       <p id="question">Selecione um modo e digite seu nome para começar!</p>
       <input type="text" id="player-name-input" placeholder="Seu nome" maxlength="20" pattern="[A-Za-zÀ-ú\s]+" title="Apenas letras e espaços são permitidos.">
       <input type="text" id="answer-input" placeholder="Digite a resposta" readonly>
-      <p id="message"></p>
+      <p id="message"></p> <!-- Mensagem de feedback (agora sempre vazia e invisível) -->
     </div>
 
     <button id="explain-concept-button" style="display: none;">✨ Explicar Conceito ✨</button> <!-- Novo botão -->
@@ -1083,17 +1100,19 @@
 
   <!-- Container de Rankings (Tela de Ranking Completo) -->
   <div id="rankings-container">
-    <div id="ranking-kids-area" class="ranking-section">
-      <h2>🏆 Ranking Kids (Top 10)</h2>
-      <ol id="ranking-kids-list" class="ranking-list">
-      </ol>
-    </div>
+    <div class="ranking-lists-wrapper"> <!-- NOVO WRAPPER -->
+        <div id="ranking-kids-area" class="ranking-section">
+          <h2>🏆 Ranking Kids (Top 10)</h2>
+          <ol id="ranking-kids-list" class="ranking-list">
+          </ol>
+        </div>
 
-    <div id="ranking-adults-area" class="ranking-section">
-      <h2>🏆 Ranking Adulto (Top 10)</h2>
-      <ol id="ranking-adults-list" class="ranking-list">
-      </ol>
-    </div>
+        <div id="ranking-adults-area" class="ranking-section">
+          <h2>🏆 Ranking Adulto (Top 10)</h2>
+          <ol id="ranking-adults-list" class="ranking-list">
+          </ol>
+        </div>
+    </div> <!-- FIM DO NOVO WRAPPER -->
     <button id="back-to-main-from-ranking" class="back-button">Voltar ao Menu Principal</button>
   </div>
 
@@ -1217,7 +1236,7 @@
     const questionElement = document.getElementById('question');
     const answerInput = document.getElementById('answer-input');
     const playerNameInput = document.getElementById('player-name-input');
-    const messageElement = document.getElementById('message');
+    const messageElement = document.getElementById('message'); // Agora será sempre vazio e invisível
     const timerValueElement = document.getElementById('timer-value');
     const scoreValueElement = document.getElementById('score-value');
     const startGameButton = document.getElementById('start-game-button');
@@ -1681,19 +1700,9 @@
                 [num1, num2] = [num2, num1];
             }
         } else if (operator === '÷') {
-            let validDivision = false;
-            while (!validDivision) {
-                num2 = randomInt(1, 10); 
-                num1 = randomInt(1, 10); 
-                if (num2 === 0) continue; 
-
-                let result = num1 / num2;
-                let resultString = result.toString();
-                
-                if (Number.isInteger(result) || (resultString.includes('.') && resultString.split('.')[1].length <= 2)) {
-                    validDivision = true;
-                }
-            }
+            // Garante que a divisão sempre resulte em um número inteiro
+            num2 = randomInt(1, 10); // Divisor entre 1 e 10
+            num1 = randomInt(1, 10) * num2; // num1 será um múltiplo de num2
         } else if (operator === '*') {
             if (currentGameMode.startsWith('practice_') || currentGameMode === 'competition_kids') {
                 num1 = randomInt(1, 9);
@@ -1721,7 +1730,8 @@
             finalAnswer = num1 / num2;
         }
 
-        correctAnswer = parseFloat(finalAnswer.toFixed(2));
+        // A resposta agora será sempre um número inteiro devido à lógica de divisão
+        correctAnswer = finalAnswer; 
 
         currentQuestion = { question: questionString, answer: correctAnswer };
         questionElement.textContent = currentQuestion.question;
@@ -1735,9 +1745,10 @@
         difficultyLevelElement.textContent = `Nível: ${currentLevelName} (${displayModeText})`; 
         
         answerInput.value = '';
-        messageElement.textContent = '';
+        // Garante que as classes de feedback visual estão limpas ao gerar nova pergunta
         answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
         questionElement.classList.remove('correct-animation', 'incorrect-animation');
+        messageElement.textContent = ''; // Limpa a mensagem
         messageElement.classList.remove('show', 'correct-text', 'incorrect-text', 'speed-bonus-text'); 
         
         questionStartTime = Date.now(); 
@@ -1826,8 +1837,9 @@
       gameActive = false;
       answerInput.disabled = true;
       playAgainButton.style.display = 'inline-block';
+      // Mensagem final de pontuação permanece
       messageElement.textContent = `Tempo esgotado! Você fez ${score} pontos.`;
-      messageElement.classList.add('show'); 
+      messageElement.classList.add('show'); // Pode mostrar apenas a mensagem final
       messageElement.classList.remove('correct-text', 'incorrect-text', 'speed-bonus-text'); 
       
       answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
@@ -1879,21 +1891,50 @@
                                         .orderBy("score", "desc")
                                         .get();
             
-            const allScores = snapshot.docs.map(doc => doc.data().score);
-            const uniqueSortedScores = [...new Set(allScores)].sort((a, b) => b - a); // Unique scores, descending
+            const allEntries = [];
+            snapshot.forEach(doc => allEntries.push(doc.data()));
 
             let playerRank = 1;
-            for (let i = 0; i < uniqueSortedScores.length; i++) {
-                if (playerScore >= uniqueSortedScores[i]) {
-                    playerRank = i + 1;
-                    break;
+            let currentRank = 1;
+            let lastScore = -1; // Initialize with a score lower than any possible score
+
+            // Sort entries by score in descending order to ensure correct ranking logic
+            allEntries.sort((a, b) => b.score - a.score);
+
+            for (let i = 0; i < allEntries.length; i++) {
+                const entryScore = allEntries[i].score;
+
+                // If the current entry's score is different from the last processed score,
+                // it means we've moved to a new rank group.
+                if (entryScore !== lastScore) {
+                    currentRank = i + 1; 
                 }
+                
+                // If the player's score is equal to the current entry's score,
+                // then the player's rank is the current rank.
+                // We break because we found the highest rank for this score.
+                if (playerScore === entryScore) {
+                    playerRank = currentRank;
+                    break; 
+                } 
+                // If the player's score is greater than the current entry's score,
+                // it means the player ranks above this entry. Their rank is the current rank.
+                // We break because we found the player's rank.
+                else if (playerScore > entryScore) {
+                    playerRank = currentRank;
+                    break; 
+                }
+                
+                lastScore = entryScore; // Update lastScore for the next iteration
             }
-            // If player's score is lower than all existing scores, their rank is after everyone.
-            if (playerScore < uniqueSortedScores[uniqueSortedScores.length - 1]) {
-                playerRank = uniqueSortedScores.length + 1;
+
+            // Edge case: If the player's score is lower than all existing scores,
+            // their rank is after everyone.
+            if (allEntries.length > 0 && playerScore < allEntries[allEntries.length - 1].score) {
+                playerRank = allEntries.length + 1;
             }
-            if (uniqueSortedScores.length === 0) { // First player
+            // Edge case: If there are no entries, the player is rank 1.
+            if (allEntries.length === 0) {
                 playerRank = 1;
             }
 
@@ -1906,97 +1947,76 @@
         }
     }
 
-    function checkAnswer() {
-      if (!gameActive) return;
+    // Função para processar uma resposta correta
+    function processCorrectAnswer() {
+        score++;
+        correctAnswersCount++; 
+        scoreValueElement.textContent = score;
+        scoreValueElement.classList.add('pulse-effect');
+        scoreValueElement.addEventListener('animationend', function handler() {
+            scoreValueElement.classList.remove('pulse-effect');
+            scoreValueElement.removeEventListener('animationend', handler);
+        });
 
-      const userAnswer = parseInt(answerInput.value); 
-      
-      const correctAnswerLength = String(currentQuestion.answer).length;
-      const userAnswerString = answerInput.value;
+        answerInput.classList.add('correct-input-anim'); 
+        questionElement.classList.add('correct-animation'); 
+        if (isSoundOn) correctSound.play();
 
-      if (!isNaN(userAnswer) && userAnswerString.length === correctAnswerLength) {
-        if (userAnswer === currentQuestion.answer) {
-            score++;
-            correctAnswersCount++; 
-            scoreValueElement.textContent = score;
-            scoreValueElement.classList.add('pulse-effect');
-            scoreValueElement.addEventListener('animationend', function handler() {
-                scoreValueElement.classList.remove('pulse-effect');
-                scoreValueElement.removeEventListener('animationend', handler);
-            });
+        const timeTaken = (Date.now() - questionStartTime) / 1000; 
+        const speedBonusThreshold = 1.5; 
+        const bonusTime = 0.5; 
 
-            messageElement.textContent = 'Correto!';
-            messageElement.classList.add('show', 'correct-text'); 
-            answerInput.classList.add('correct-input-anim'); 
-            questionElement.classList.add('correct-animation'); 
-            correctSound.play();
-
-            const timeTaken = (Date.now() - questionStartTime) / 1000; 
-            const speedBonusThreshold = 1.5; 
-            const bonusTime = 0.5; 
-
-            if (timeTaken <= speedBonusThreshold) {
-                timeLeft = Math.min(60, timeLeft + bonusTime); 
-                timerValueElement.textContent = Math.ceil(timeLeft) + 's'; 
-                messageElement.textContent += " (WOW! Rápido! +0.5s)";
-                messageElement.classList.add('speed-bonus-text'); 
-            }
-            
-            answerInput.addEventListener('animationend', function handler() {
-                answerInput.classList.remove('correct-input-anim');
-                answerInput.removeEventListener('animationend', handler);
-            });
-            questionElement.addEventListener('animationend', function handler() {
-                questionElement.classList.remove('correct-animation');
-                questionElement.removeEventListener('animationend', handler);
-            });
-            messageElement.addEventListener('animationend', function handler() { 
-                messageElement.classList.remove('speed-bonus-text');
-                messageElement.removeEventListener('animationend', handler);
-            });
-
-            explainConceptButton.style.display = 'inline-block';
-
-            setTimeout(() => {
-                generateQuestion();
-            }, 300); 
-            
-        } else { 
-            scoreValueElement.textContent = score;
-            scoreValueElement.classList.add('pulse-effect');
-            scoreValueElement.addEventListener('animationend', function handler() {
-                scoreValueElement.classList.remove('pulse-effect');
-                scoreValueElement.removeEventListener('animationend', handler);
-            });
-
-            messageElement.textContent = 'Errado. Próxima pergunta.';
-            messageElement.classList.add('show', 'incorrect-text'); 
-            answerInput.classList.add('incorrect-input-anim'); 
-            questionElement.classList.add('incorrect-animation'); 
-            incorrectSound.play();
-            
-            answerInput.addEventListener('animationend', function handler() {
-                answerInput.classList.remove('incorrect-input-anim');
-                answerInput.removeEventListener('animationend', handler);
-            });
-            questionElement.addEventListener('animationend', function handler() {
-                questionElement.classList.remove('incorrect-animation');
-                questionElement.removeEventListener('animationend', handler);
-            });
-
-            explainConceptButton.style.display = 'inline-block';
-
-            setTimeout(() => {
-                generateQuestion();
-            }, 300);
+        if (timeTaken <= speedBonusThreshold) {
+            timeLeft = Math.min(60, timeLeft + bonusTime); 
+            timerValueElement.textContent = Math.ceil(timeLeft) + 's'; 
         }
-      } else if (!isNaN(userAnswer) && userAnswerString.length < correctAnswerLength) {
-        messageElement.textContent = '';
-        messageElement.classList.remove('show', 'correct-text', 'incorrect-text', 'speed-bonus-text');
-        answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
-        questionElement.classList.remove('correct-animation', 'incorrect-animation');
-      }
+        
+        answerInput.addEventListener('animationend', function handler() {
+            answerInput.classList.remove('correct-input-anim');
+            answerInput.removeEventListener('animationend', handler);
+        });
+        questionElement.addEventListener('animationend', function handler() {
+            questionElement.classList.remove('correct-animation');
+            questionElement.removeEventListener('animationend', handler);
+        });
+
+        explainConceptButton.style.display = 'inline-block';
+
+        setTimeout(() => {
+            generateQuestion();
+        }, 300); 
     }
+
+    // Função para processar uma resposta incorreta (apenas feedback visual, sem avanço)
+    function processIncorrectAnswer() {
+        scoreValueElement.textContent = score; // Atualiza para garantir que não pulsa se o score não mudou
+        scoreValueElement.classList.add('pulse-effect');
+        scoreValueElement.addEventListener('animationend', function handler() {
+            scoreValueElement.classList.remove('pulse-effect');
+            scoreValueElement.removeEventListener('animationend', handler);
+        });
+
+        answerInput.classList.add('incorrect-input-anim'); 
+        questionElement.classList.add('incorrect-animation'); 
+        if (isSoundOn) incorrectSound.play();
+        
+        answerInput.addEventListener('animationend', function handler() {
+            answerInput.classList.remove('incorrect-input-anim');
+            answerInput.removeEventListener('animationend', handler);
+        });
+        questionElement.addEventListener('animationend', function handler() {
+            questionElement.classList.remove('incorrect-animation');
+            questionElement.removeEventListener('animationend', handler);
+        });
+
+        explainConceptButton.style.display = 'inline-block';
+
+        // Não gera nova pergunta aqui, o usuário precisa apagar e corrigir
+        // setTimeout(() => {
+        //     generateQuestion();
+        // }, 300);
+    }
+
 
     // --- Event Listeners ---
     practiceButton.addEventListener('click', showOperationSelection); 
@@ -2055,6 +2075,10 @@
 
             if (value === 'clear') {
                 answerInput.value = '';
+                // Limpa quaisquer animações ou estilos de feedback visual
+                answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
+                questionElement.classList.remove('correct-animation', 'incorrect-animation');
+                messageElement.textContent = ''; // Garante que a mensagem está vazia
             } else {
                 // Para evitar múltiplos zeros no início (e.g. 005)
                 // Se o input está vazio e o primeiro dígito é zero, apenas define como '0'
@@ -2068,8 +2092,39 @@
                 else {
                     answerInput.value += value;
                 }
+                
+                const userAnswer = Number(answerInput.value);
+                const correctAnswer = currentQuestion.answer;
+
+                // Se a resposta do usuário é exatamente igual à resposta correta, processa como correto
+                if (userAnswer === correctAnswer) {
+                    processCorrectAnswer();
+                } else {
+                    // Se o usuário digitou algo, mas não é a resposta correta,
+                    // aplica a animação de incorreto, mas NÃO avança a pergunta.
+                    // O usuário terá que apagar e corrigir.
+                    // Limpa quaisquer animações ou estilos de feedback visual anteriores
+                    answerInput.classList.remove('correct', 'incorrect', 'correct-input-anim', 'incorrect-input-anim');
+                    questionElement.classList.remove('correct-animation', 'incorrect-animation');
+                    messageElement.textContent = ''; // Garante que a mensagem está vazia
+
+                    // Aplica a animação de "incorreto" para feedback visual imediato
+                    // sem avançar a pergunta.
+                    answerInput.classList.add('incorrect-input-anim');
+                    questionElement.classList.add('incorrect-animation');
+                    if (isSoundOn) incorrectSound.play();
+
+                    // Remove as classes de animação após a conclusão para que possam ser reativadas
+                    answerInput.addEventListener('animationend', function handler() {
+                        answerInput.classList.remove('incorrect-input-anim');
+                        answerInput.removeEventListener('animationend', handler);
+                    });
+                    questionElement.addEventListener('animationend', function handler() {
+                        questionElement.classList.remove('incorrect-animation');
+                        questionElement.removeEventListener('animationend', handler);
+                    });
+                }
             }
-            checkAnswer();
         }
     });
 
