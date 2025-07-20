@@ -2,6 +2,15 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N4PWJ72YCJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-N4PWJ72YCJ'); // Seu ID de Medição do Google Analytics
+  </script>
   <title>Desafio dos 60 Segundos 🧠</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
@@ -565,7 +574,7 @@
         display: flex; /* Alterado para flex para layout horizontal */
         flex-wrap: wrap; /* Permite que os botões quebrem a linha em telas menores */
         justify-content: space-around; /* Distribui espaço uniformemente entre os botões */
-        gap: 15px; /* Espaçamento entre os botões */
+        gap: 15px;
         width: 100%;
         max-width: 450px; /* Limita a largura do grupo de botões para caberem 3 */
         margin-top: 20px; /* Espaço acima dos botões */
