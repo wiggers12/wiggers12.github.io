@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9968425306160320"
+          crossorigin="anonymous"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-N4PWJ72YCJ"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -662,12 +664,12 @@
     }
     #my-progress-container .player-stats-grid {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Padrão para uma coluna em mobile */
         gap: 15px;
         width: 100%;
         max-width: 350px;
         margin-top: 20px;
-        text-align: left;
+        /* Removido text-align: left; para permitir alinhamento interno */
     }
     #my-progress-container .stat-item {
         background-color: var(--bg-light-gray);
@@ -675,18 +677,33 @@
         border-radius: var(--border-radius-medium);
         box-shadow: 0 2px 5px var(--shadow-light);
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column; /* Alinha label e value verticalmente */
+        align-items: flex-start; /* Alinha o conteúdo à esquerda */
         font-size: 1.1em;
         font-weight: 600; 
         color: var(--text-dark);
+        position: relative; /* Para posicionar o ícone */
+        overflow: hidden; /* Garante que o ícone não vaze */
     }
     #my-progress-container .stat-item .stat-label {
         color: var(--text-medium);
         font-weight: 400; /* Regular */
+        margin-bottom: 5px; /* Espaço entre label e value */
+        font-size: 0.9em; /* Tamanho menor para o label */
     }
     #my-progress-container .stat-item .stat-value {
         color: var(--primary-blue);
+        font-size: 1.3em; /* Tamanho maior para o valor */
+        font-weight: 700; /* Bold */
+    }
+    /* Ícone flutuante para cada stat-item */
+    #my-progress-container .stat-item .stat-icon {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 2em;
+        color: rgba(0, 0, 0, 0.1); /* Ícone sutil */
+        z-index: 1;
     }
     #my-progress-container .stat-item.highlight-stat {
         background: linear-gradient(45deg, var(--accent-orange) 0%, var(--dark-orange) 100%);
@@ -696,6 +713,13 @@
     #my-progress-container .stat-item.highlight-stat .stat-value {
         color: var(--text-light); /* Cor do valor no highlight */
     }
+    #my-progress-container .stat-item.highlight-stat .stat-label {
+        color: rgba(255, 255, 255, 0.8);
+    }
+    #my-progress-container .stat-item.highlight-stat .stat-icon {
+        color: rgba(255, 255, 255, 0.2); /* Ícone sutil no highlight */
+    }
+
 
     /* NOVO: Seção de Conquistas na tela de Meu Progresso */
     #my-progress-container .achievements-section {
@@ -729,6 +753,7 @@
         cursor: help; 
         color: var(--text-dark); /* Cor do texto para itens bloqueados */
         font-weight: 500;
+        position: relative; /* Para o overlay de bloqueado */
     }
     #my-progress-container .achievement-item.unlocked {
         opacity: 1; 
@@ -747,11 +772,15 @@
         font-size: 2.5em;
         margin-bottom: 8px;
         color: var(--text-medium); 
+        position: relative; /* Para z-index sobre o overlay */
+        z-index: 2;
     }
     #my-progress-container .achievement-name {
         font-weight: 600; 
         font-size: 0.9em;
         line-height: 1.2;
+        position: relative;
+        z-index: 2;
     }
     #my-progress-container .achievement-description {
         font-size: 0.8em;
@@ -762,6 +791,20 @@
     #my-progress-container .achievement-item.unlocked .achievement-description {
         color: rgba(255, 255, 255, 0.8); 
     }
+    /* Overlay para conquistas bloqueadas */
+    #my-progress-container .achievement-item:not(.unlocked)::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* Escurece o item */
+        border-radius: var(--border-radius-medium);
+        z-index: 1;
+    }
+    #my-progress-container .achievement-item:not(.unlocked) .achievement-icon,
+    #my-progress-container .achievement-item:not(.unlocked) .achievement-name {
+        filter: grayscale(100%) brightness(0.7); /* Deixa ícone e texto monocromáticos e mais escuros */
+    }
+
 
     /* NOVO: Notificação de Conquista Desbloqueada */
     #achievement-notification {
@@ -851,10 +894,12 @@
             margin-top: 20px;
         }
         #my-progress-container .player-stats-grid {
-            grid-template-columns: repeat(2, 1fr); 
+            grid-template-columns: repeat(2, 1fr); /* 2 colunas no desktop */
+            max-width: 600px; /* Aumenta a largura máxima para 2 colunas */
         }
         #my-progress-container .achievements-grid {
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Mais colunas no desktop */
+            max-width: 600px; /* Aumenta a largura máxima para mais colunas */
         }
     }
     @media (max-width: 600px) {
@@ -1031,30 +1076,37 @@
     <h3><i class="fas fa-chart-line"></i> Meu Progresso</h3>
     <div class="player-stats-grid">
         <div class="stat-item">
+            <span class="stat-icon"><i class="fas fa-user"></i></span>
             <span class="stat-label">Nome:</span>
             <span id="stat-player-name" class="stat-value">N/A</span>
         </div>
         <div class="stat-item highlight-stat">
+            <span class="stat-icon"><i class="fas fa-star"></i></span>
             <span class="stat-label">Maior Pontuação:</span>
             <span id="stat-highest-score" class="stat-value">0</span>
         </div>
         <div class="stat-item">
+            <span class="stat-icon"><i class="fas fa-gamepad"></i></span>
             <span class="stat-label">Total de Jogos:</span>
             <span id="stat-total-games" class="stat-value">0</span>
         </div>
         <div class="stat-item">
+            <span class="stat-icon"><i class="fas fa-question-circle"></i></span>
             <span class="stat-label">Perguntas Respondidas:</span>
             <span id="stat-total-questions" class="stat-value">0</span>
         </div>
         <div class="stat-item highlight-stat">
+            <span class="stat-icon"><i class="fas fa-check-circle"></i></span>
             <span class="stat-label">Respostas Corretas:</span>
             <span id="stat-total-correct" class="stat-value">0</span>
         </div>
         <div class="stat-item">
+            <span class="stat-icon"><i class="fas fa-percent"></i></span>
             <span class="stat-label">Taxa de Acerto:</span>
             <span id="stat-accuracy" class="stat-value">0%</span>
         </div>
         <div class="stat-item">
+            <span class="stat-icon"><i class="fas fa-clock"></i></span>
             <span class="stat-label">Última Partida:</span>
             <span id="stat-last-played" class="stat-value">N/A</span>
         </div>
@@ -1844,8 +1896,23 @@
             }
             item.setAttribute('title', `${achievement.name}: ${achievement.description}`);
 
+            // Adiciona o ícone Font Awesome para a conquista
+            let iconHtml = '';
+            if (achievement.id === 'first_correct') {
+                iconHtml = '<i class="fas fa-bullseye"></i>';
+            } else if (achievement.id === 'calc_master') {
+                iconHtml = '<i class="fas fa-brain"></i>';
+            } else if (achievement.id === 'game_veteran') {
+                iconHtml = '<i class="fas fa-gamepad"></i>';
+            } else if (achievement.id === 'accuracy_master') {
+                iconHtml = '<i class="fas fa-check-double"></i>';
+            } else {
+                iconHtml = achievement.icon; // Fallback para ícone padrão se não for Font Awesome
+            }
+
+
             item.innerHTML = `
-                <span class="achievement-icon">${achievement.icon}</span>
+                <span class="achievement-icon">${iconHtml}</span>
                 <span class="achievement-name">${achievement.name}</span>
             `;
             elements.achievementsGrid.appendChild(item);
@@ -2122,7 +2189,7 @@
       }
       if (elements.timeBar) {
           elements.timeBar.style.width = '100%';
-          elements.timeBar.style.backgroundColor = 'var(--primary-green)'; /* CORRIGIDO */
+          elements.timeBar.style.backgroundColor = 'var(--primary-green)'; 
           elements.timeBar.classList.remove('time-bar-shaking');
       }
       if (elements.streakIndicator) {
@@ -2139,12 +2206,12 @@
           if (elements.timeBar) {
               elements.timeBar.style.width = percentage + '%';
 
-              if (percentage > 50) elements.timeBar.style.backgroundColor = 'var(--primary-green)'; /* CORRIGIDO */
+              if (percentage > 50) elements.timeBar.style.backgroundColor = 'var(--primary-green)'; 
               else if (percentage > 20) {
-                  elements.timeBar.style.backgroundColor = 'var(--accent-orange)'; /* CORRIGIDO */
+                  elements.timeBar.style.backgroundColor = 'var(--accent-orange)'; 
                   if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) elements.timeBar.classList.add('time-bar-shaking');
               } else {
-                  elements.timeBar.style.backgroundColor = 'var(--danger-red)'; /* CORRIGIDO */
+                  elements.timeBar.style.backgroundColor = 'var(--danger-red)'; 
                   if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) {
                       elements.timeBar.classList.add('time-bar-shaking');
                       void elements.timeBar.offsetWidth; 
@@ -2425,7 +2492,7 @@
         elements.answerButtons.forEach(button => { if (button) button.disabled = false; }); 
         if (elements.timeBar) {
             elements.timeBar.style.width = '100%';
-            elements.timeBar.style.backgroundColor = 'var(--primary-green)'; /* CORRIGIDO */
+            elements.timeBar.style.backgroundColor = 'var(--primary-green)';
             elements.timeBar.classList.remove('time-bar-shaking');
         }
         if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
@@ -2444,12 +2511,12 @@
             const percentage = (timeLeft / 60) * 100;
             if (elements.timeBar) {
                 elements.timeBar.style.width = percentage + '%';
-                if (percentage > 50) elements.timeBar.style.backgroundColor = 'var(--primary-green)'; /* CORRIGIDO */
+                if (percentage > 50) elements.timeBar.style.backgroundColor = 'var(--primary-green)';
                 else if (percentage > 20) {
-                    elements.timeBar.style.backgroundColor = 'var(--accent-orange)'; /* CORRIGIDO */
+                    elements.timeBar.style.backgroundColor = 'var(--accent-orange)';
                     if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) elements.timeBar.classList.add('time-bar-shaking');
                 } else {
-                    elements.timeBar.style.backgroundColor = 'var(--danger-red)'; /* CORRIGIDO */
+                    elements.timeBar.style.backgroundColor = 'var(--danger-red)';
                     if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) {
                         elements.timeBar.classList.add('time-bar-shaking');
                         void elements.timeBar.offsetWidth;
