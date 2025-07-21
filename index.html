@@ -14,51 +14,58 @@
   <title>Desafio dos 60 Segundos 🧠</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
+  <!-- Font Awesome para Ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0V4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Google Fonts: Inter (para uma tipografia moderna) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <!-- Script principal do Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9968425306160320"
           crossorigin="anonymous"></script>
   
   <style>
-    /* Variáveis CSS para cores e tamanhos */
+    /* Variáveis CSS para cores e tamanhos (NOVA PALETA) */
     :root {
-      --primary-green: #4CAF50;
-      --dark-green: #28a745;
-      --light-blue: #7ed6df;
-      --dark-blue: #1976D2;
-      --light-blue-accent: #2196F3;
-      --orange-main: #FF6F00;
-      --orange-accent: #FF9100;
-      --red-main: #DC3545;
-      --dark-red: #C62828;
-      --yellow-highlight: #ffeb3b;
-      --yellow-accent: #ffc107;
-      --purple-main: #6c5ce7;
-      --dark-purple: #483d8b;
-      --text-dark: #333;
-      --text-medium: #555;
-      --text-light: #777;
+      --primary-green: #2ecc71; /* Um verde vibrante para sucesso/positivo */
+      --dark-green: #27ae60;
+      --primary-blue: #3498db; /* Um azul forte para elementos interativos */
+      --dark-blue: #2980b9;
+      --accent-orange: #f39c12; /* Um laranja quente para ações principais */
+      --dark-orange: #e67e22;
+      --danger-red: #e74c3c; /* Um vermelho claro para perigo/erro */
+      --dark-red: #c0392b;
+      --purple-main: #9b59b6; /* Um roxo para destaque/explicação */
+      --dark-purple: #8e44ad;
+      
+      --text-dark: #2c3e50; /* Carvão escuro para texto principal */
+      --text-medium: #7f8c8d; /* Cinza médio para texto secundário */
+      --text-light: #ecf0f1; /* Cinza claro para texto em fundos escuros */
+      
       --bg-white: #ffffff;
-      --bg-light-gray: #f9f9f9;
-      --border-light: #ddd;
-      --shadow-light: rgba(0, 0, 0, 0.1);
-      --shadow-medium: rgba(0, 0, 0, 0.2);
-      --shadow-strong: rgba(0, 0, 0, 0.3);
-      --shadow-stronger: rgba(0, 0, 0, 0.4);
-      --border-radius-small: 8px;
+      --bg-light-gray: #f8f9fa; /* Um cinza muito claro para fundos */
+      --border-light: #e0e0e0; /* Borda sutil */
+      
+      --shadow-light: rgba(0, 0, 0, 0.08); /* Sombra mais suave */
+      --shadow-medium: rgba(0, 0, 0, 0.15);
+      --shadow-strong: rgba(0, 0, 0, 0.25);
+      
+      --border-radius-small: 6px;
       --border-radius-medium: 10px;
       --border-radius-large: 15px;
-      --border-radius-xl: 20px;
+      --border-radius-xl: 25px;
     }
 
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Inter', sans-serif; /* NOVA FONTE */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
       min-height: 100vh;
       margin: 0;
-      background: linear-gradient(135deg, var(--light-blue) 0%, var(--primary-green) 100%);
+      /* NOVO GRADIENTE DE FUNDO */
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-green) 100%);
       color: var(--text-dark);
       padding: 15px;
       box-sizing: border-box;
@@ -97,19 +104,19 @@
         to { opacity: 1; transform: translateY(0) scale(1); }
     }
     @keyframes neonGlow {
-        0% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--orange-main), 0 0 20px var(--orange-main); transform: scale(1); }
-        33% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--orange-accent), 0 0 20px var(--orange-accent); transform: scale(1.02); }
-        66% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--yellow-accent), 0 0 20px var(--yellow-accent); transform: scale(1); }
-        100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--orange-main), 0 0 20px var(--orange-main); transform: scale(1.02); }
+        0% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--accent-orange), 0 0 20px var(--accent-orange); transform: scale(1); }
+        33% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--dark-orange), 0 0 20px var(--dark-orange); transform: scale(1.02); }
+        66% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--accent-orange), 0 0 20px var(--accent-orange); transform: scale(1); }
+        100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--accent-orange), 0 0 20px var(--accent-orange); transform: scale(1.02); }
     }
 
     /* Animação para a frase "Prepare-se para a aventura!" */
     @keyframes prepareTextPopColor {
         0% { opacity: 0; transform: scale(0.8); color: var(--text-dark); }
-        25% { opacity: 1; transform: scale(1.1); color: var(--yellow-highlight); }
-        50% { transform: scale(0.95); color: var(--orange-main); }
-        75% { transform: scale(1.05); color: var(--light-blue-accent); }
-        100% { opacity: 1; transform: scale(1); color: var(--dark-blue); } /* Settle on a vibrant blue */
+        25% { opacity: 1; transform: scale(1.1); color: var(--accent-orange); }
+        50% { transform: scale(0.95); color: var(--danger-red); }
+        75% { transform: scale(1.05); color: var(--primary-blue); }
+        100% { opacity: 1; transform: scale(1); color: var(--text-dark); }
     }
 
     /* NOVO: Animação para texto flutuante de pontos/tempo */
@@ -126,9 +133,9 @@
     }
     /* NOVO: Animação para o brilho do erro */
     @keyframes incorrectGlow {
-        0% { box-shadow: 0 0 0px var(--red-main); }
-        50% { box-shadow: 0 0 20px var(--red-main), 0 0 30px var(--red-main); }
-        100% { box-shadow: 0 0 0px var(--red-main); }
+        0% { box-shadow: 0 0 0px var(--danger-red); }
+        50% { box-shadow: 0 0 20px var(--danger-red), 0 0 30px var(--danger-red); }
+        100% { box-shadow: 0 0 0px var(--danger-red); }
     }
     /* NOVO: Animação para a notificação de conquista */
     @keyframes achievementPopIn {
@@ -172,7 +179,7 @@
         width: 100vw; height: 100vh;
         background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%);
         color: white; font-size: 4em; font-weight: bold;
-        text-shadow: 3px 3px 6px var(--shadow-stronger);
+        text-shadow: 3px 3px 6px var(--shadow-strong);
         display: none; flex-direction: column; align-items: center; justify-content: center;
         z-index: 1000;
     }
@@ -186,8 +193,8 @@
         background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%);
         border-radius: var(--border-radius-xl); padding: 20px 30px; margin-bottom: 40px;
         display: flex; flex-direction: column; align-items: center;
-        box-shadow: 0 8px 16px var(--shadow-strong); color: white;
-        text-shadow: 2px 2px 4px var(--shadow-strong);
+        box-shadow: 0 8px 16px var(--shadow-strong); color: var(--text-light); /* Texto claro */
+        text-shadow: 2px 2px 4px var(--shadow-medium);
         width: 90%; max-width: 300px;
     }
     .main-title-box .brain-icon-title { font-size: 4em; margin-bottom: 10px; }
@@ -195,7 +202,7 @@
 
     /* Símbolos Matemáticos no Menu Principal */
     #main-menu .math-symbols {
-        font-size: 5.5em; color: var(--yellow-highlight); margin-bottom: 50px;
+        font-size: 5.5em; color: var(--accent-orange); margin-bottom: 50px;
         font-weight: bold; letter-spacing: 10px; text-shadow: 3px 3px 6px var(--shadow-stronger);
         display: flex; gap: 15px;
     }
@@ -208,53 +215,64 @@
     /* Estilos Base dos Botões */
     .base-button {
         padding: 18px 35px; font-size: 1.5em; border-radius: var(--border-radius-large);
-        box-shadow: 0 6px 12px var(--shadow-medium); border: none; color: white; cursor: pointer;
+        box-shadow: 0 6px 12px var(--shadow-medium); border: none; color: var(--text-light); /* Texto claro */
+        cursor: pointer;
         transition: all 0.3s ease;
         width: 100%; /* Padrão para largura total para consistência */
+        display: flex; /* Para alinhar ícones e texto */
+        align-items: center;
+        justify-content: center;
+        gap: 10px; /* Espaço entre ícone e texto */
     }
-    .base-button:hover:not(:disabled) { transform: translateY(-5px); box-shadow: 0 10px 20px var(--shadow-stronger); }
+    .base-button:hover:not(:disabled) { transform: translateY(-5px); box-shadow: 0 10px 20px var(--shadow-strong); }
     .base-button:active:not(:disabled) { transform: translateY(0); box-shadow: 0 4px 8px var(--shadow-medium); }
     .base-button:disabled { opacity: 0.6; cursor: not-allowed; }
 
     /* Cores/Tamanhos Específicos dos Botões */
     .main-menu-button {
-        padding: 20px 40px; font-size: 2em; border-radius: var(--border-radius-large);
-        background: linear-gradient(45deg, var(--orange-main) 0%, var(--orange-accent) 100%);
+        padding: 20px 40px; font-size: 1.8em; /* Ajuste de tamanho para ícones */
+        border-radius: var(--border-radius-large);
+        background: linear-gradient(45deg, var(--accent-orange) 0%, var(--dark-orange) 100%);
     }
-    .main-menu-button:hover { background: linear-gradient(45deg, var(--orange-accent) 0%, var(--orange-main) 100%); }
+    .main-menu-button:hover { background: linear-gradient(45deg, var(--dark-orange) 0%, var(--accent-orange) 100%); }
+    .main-menu-button .fas { font-size: 1.2em; } /* Tamanho do ícone dentro do botão */
     
     /* NOVO: Ajuste para o botão "Meu Progresso" */
     #my-progress-button {
-        padding: 20px 40px; /* Igual aos outros botões do menu principal */
-        font-size: 2em; /* Igual aos outros botões do menu principal */
+        padding: 20px 40px; 
+        font-size: 1.8em; 
         border-radius: var(--border-radius-large);
-        background: linear-gradient(45deg, var(--orange-main) 0%, var(--orange-accent) 100%);
+        background: linear-gradient(45deg, var(--accent-orange) 0%, var(--dark-orange) 100%);
     }
     #my-progress-button:hover {
-        background: linear-gradient(45deg, var(--orange-accent) 0%, var(--orange-main) 100%);
+        background: linear-gradient(45deg, var(--dark-orange) 0%, var(--accent-orange) 100%);
     }
+    #my-progress-button .fas { font-size: 1.2em; }
 
 
     .operation-button, .competition-mode-button, .mode-button {
         padding: 15px 20px; font-size: 1.2em; border-radius: var(--border-radius-medium);
-        background: linear-gradient(45deg, var(--dark-blue) 0%, var(--light-blue-accent) 100%);
+        background: linear-gradient(45deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
         box-shadow: 0 4px 8px var(--shadow-medium);
     }
     .operation-button:hover, .competition-mode-button:hover, .mode-button:hover {
-        background: linear-gradient(45deg, var(--light-blue-accent) 0%, var(--dark-blue) 100%);
+        background: linear-gradient(45deg, var(--dark-blue) 0%, var(--primary-blue) 100%);
         transform: translateY(-3px); box-shadow: 0 6px 12px var(--shadow-strong);
     }
     .operation-button.active, .competition-mode-button.active, .mode-button.active {
         background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%);
-        box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.6);
+        box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.6); /* Sombra verde mais suave */
     }
+    .operation-button .fas, .competition-mode-button .fas, .mode-button .fas { font-size: 1.1em; }
+
 
     .back-button {
-        background: linear-gradient(45deg, var(--red-main) 0%, var(--dark-red) 100%);
+        background: linear-gradient(45deg, var(--danger-red) 0%, var(--dark-red) 100%);
         margin-top: 30px !important; padding: 15px 30px; font-size: 1.2em;
         border-radius: var(--border-radius-medium);
     }
-    .back-button:hover { background: linear-gradient(45deg, var(--dark-red) 0%, var(--red-main) 100%); }
+    .back-button:hover { background: linear-gradient(45deg, var(--dark-red) 0%, var(--danger-red) 100%); }
+    .back-button .fas { font-size: 1.1em; }
 
     .settings-action-button {
         width: 100%; padding: 12px 20px; font-size: 1.2em; border-radius: var(--border-radius-small);
@@ -262,8 +280,9 @@
     }
     .settings-action-button.green-button { background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%); }
     .settings-action-button.green-button:hover { background: linear-gradient(45deg, var(--dark-green) 0%, var(--primary-green) 100%); }
-    .settings-action-button.blue-button { background: linear-gradient(45deg, var(--dark-blue) 0%, var(--light-blue-accent) 100%); }
-    .settings-action-button.blue-button:hover { background: linear-gradient(45deg, var(--light-blue-accent) 0%, var(--dark-blue) 100%); }
+    .settings-action-button.blue-button { background: linear-gradient(45deg, var(--primary-blue) 0%, var(--dark-blue) 100%); }
+    .settings-action-button.blue-button:hover { background: linear-gradient(45deg, var(--dark-blue) 0%, var(--primary-blue) 100%); }
+    .settings-action-button .fas { font-size: 1.1em; }
 
     /* CORREÇÃO: Estilo para o botão Começar Jogo (mais específico para garantir aplicação) */
     #start-game-button.base-button.green-button {
@@ -272,14 +291,16 @@
     #start-game-button.base-button.green-button:hover {
       background: linear-gradient(45deg, var(--dark-green) 0%, var(--primary-green) 100%);
     }
+    #start-game-button .fas { font-size: 1.2em; }
 
 
     #explain-concept-button {
         margin-top: 20px; background: linear-gradient(45deg, var(--purple-main) 0%, var(--dark-purple) 100%);
-        color: white; padding: 15px 30px; font-size: 1.2em; border-radius: var(--border-radius-medium);
+        color: var(--text-light); padding: 15px 30px; font-size: 1.2em; border-radius: var(--border-radius-medium);
         box-shadow: 0 5px 10px var(--shadow-medium);
     }
     #explain-concept-button:hover { background: linear-gradient(45deg, var(--dark-purple) 0%, var(--purple-main) 100%); }
+    #explain-concept-button .fas { font-size: 1.1em; }
 
     /* Contêiner de Botões do Menu Principal */
     #main-menu .menu-buttons {
@@ -294,8 +315,8 @@
 
     /* NOVO: Estilos para os botões de alternância de ranking na tela de competição */
     .ranking-toggle-button {
-        background: linear-gradient(45deg, #007bff 0%, #0056b3 100%) !important; /* Azul mais escuro */
-        color: white;
+        background: linear-gradient(45deg, var(--primary-blue) 0%, var(--dark-blue) 100%) !important; 
+        color: var(--text-light);
         padding: 15px 20px;
         font-size: 1.2em;
         border-radius: var(--border-radius-medium);
@@ -303,79 +324,76 @@
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0 4px 8px var(--shadow-medium);
-        margin-top: 15px; /* Espaçamento entre os botões de modo e esses */
-        display: flex; /* Para alinhar o troféu e o texto */
+        margin-top: 15px; 
+        display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px; /* Espaço entre o troféu e o texto */
+        gap: 10px;
     }
     .ranking-toggle-button:hover {
-        background: linear-gradient(45deg, #0056b3 0%, #007bff 100%) !important;
+        background: linear-gradient(45deg, var(--dark-blue) 0%, var(--primary-blue) 100%) !important;
         transform: translateY(-3px);
         box-shadow: 0 6px 12px var(--shadow-strong);
     }
-    .ranking-toggle-button .trophy-icon {
-        font-size: 1.5em; /* Tamanho do ícone do troféu */
+    .ranking-toggle-button .fas {
+        font-size: 1.5em; 
     }
 
     /* NOVO: Contêiner para o ranking dinâmico na tela de competição */
     #dynamic-competition-ranking-display {
         width: 100%;
-        margin-top: 25px; /* Espaço acima do ranking exibido */
-        display: flex; /* Para centralizar o ranking */
+        margin-top: 25px; 
+        display: flex; 
         flex-direction: column;
         align-items: center;
-        /* O fundo e a borda serão aplicados à seção de ranking interna */
     }
     /* Estilos para as seções de ranking dentro do contêiner dinâmico */
     #dynamic-competition-ranking-display .ranking-section {
-        flex: 1; /* Permite que ocupe o espaço disponível */
-        margin-bottom: 0; /* Remove margem inferior individual */
-        max-width: none; /* Permite que se expanda */
-        width: 100%; /* Ocupa a largura total do contêiner pai */
-        /* CORREÇÃO: Fundo branco para o ranking na tela de competição */
+        flex: 1; 
+        margin-bottom: 0; 
+        max-width: none; 
+        width: 100%; 
         background-color: var(--bg-white);
         border-radius: var(--border-radius-large); padding: 20px; box-shadow: 0 4px 8px var(--shadow-medium);
-        color: var(--text-dark); /* Texto escuro para fundo claro */
+        color: var(--text-dark); 
     }
     #dynamic-competition-ranking-display .ranking-section h2 {
         font-size: 1.2em; margin-bottom: 10px; color: var(--primary-green); text-shadow: 1px 1px 2px var(--shadow-light);
     }
     #dynamic-competition-ranking-display .ranking-list {
-        background-color: transparent; /* Remove fundo extra */
+        background-color: transparent; 
         border-radius: var(--border-radius-medium); padding: 10px;
     }
     #dynamic-competition-ranking-display .ranking-list li {
-        padding: 8px 10px; border-bottom: 1px solid var(--border-light); /* Borda clara */
+        padding: 8px 10px; border-bottom: 1px solid var(--border-light); 
         background-color: transparent; transition: background-color 0.3s ease;
     }
     #dynamic-competition-ranking-display .ranking-list li:last-child { border-bottom: none; }
-    #dynamic-competition-ranking-display .ranking-list li:hover { background-color: var(--bg-light-gray); } /* Fundo claro no hover */
-    #dynamic-competition-ranking-display .ranking-list li.ranking-item-top { background-color: rgba(0, 123, 255, 0.1); border: 1px solid #007bff; }
-    #dynamic-competition-ranking-display .ranking-list li.ranking-item-top span { color: #007bff; font-weight: bold; } /* Cor do texto para top items */
-    #dynamic-competition-ranking-display .ranking-list li.ranking-item-bottom { background-color: rgba(220, 53, 69, 0.1); border: 1px solid #dc3545; }
-    #dynamic-competition-ranking-display .ranking-list li.ranking-item-bottom span { color: var(--red-main); font-weight: bold; } /* Cor do texto para bottom items */
+    #dynamic-competition-ranking-display .ranking-list li:hover { background-color: var(--bg-light-gray); } 
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-top { background-color: rgba(52, 152, 219, 0.1); border: 1px solid var(--primary-blue); }
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-top span { color: var(--primary-blue); font-weight: bold; } 
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-bottom { background-color: rgba(231, 76, 60, 0.1); border: 1px solid var(--danger-red); }
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-bottom span { color: var(--danger-red); font-weight: bold; } 
 
 
     /* Elementos da Tela de Jogo */
     #difficulty-level { 
-        font-size: 1em; /* Tamanho original */
+        font-size: 1em; 
         color: var(--text-medium);
         margin-bottom: 10px;
-        font-weight: bold;
-        /* Garante que o elemento não ocupe espaço se estiver vazio */
-        height: 1.2em; /* Altura para manter o layout */
-        line-height: 1.2em; /* Alinhamento de texto */
-        overflow: hidden; /* Esconde qualquer texto que possa aparecer inesperadamente */
+        font-weight: 500; /* Medium weight */
+        height: 1.2em; 
+        line-height: 1.2em; 
+        overflow: hidden; 
     }
     #question {
-      font-size: 2.5em; margin-bottom: 15px; color: var(--text-dark); font-weight: bold;
+      font-size: 2.5em; margin-bottom: 15px; color: var(--text-dark); font-weight: 700; /* Bold */
       text-shadow: 1px 1px 2px var(--shadow-light); transition: color 0.3s ease, transform 0.3s ease;
     }
     /* Classe para a animação da frase "Prepare-se para a aventura!" */
     #question.prepare-text-animated {
         animation: prepareTextPopColor 1.5s ease-out forwards;
-        display: inline-block; /* Essencial para que transform funcione no texto */
+        display: inline-block; 
     }
     /* Aprimoramento das animações de acerto/erro na pergunta */
     #question.correct-animation { animation: pulseGreen 0.5s ease-out, correctGlow 0.5s ease-out; }
@@ -386,45 +404,51 @@
       border: 2px solid var(--border-light); border-radius: var(--border-radius-medium);
       text-align: center; transition: border-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
       background-color: var(--bg-light-gray);
+      color: var(--text-dark);
       -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none;
       -moz-user-select: none; -ms-user-select: none; user-select: none;
     }
+    #player-name-input::placeholder {
+        color: var(--text-medium);
+        opacity: 0.7;
+    }
 
     #message {
-      margin-top: 15px; font-weight: bold; opacity: 0; font-size: 1.1em;
+      margin-top: 15px; font-weight: 600; /* Semi-bold */
+      opacity: 0; font-size: 1.1em;
       transition: opacity 0.5s ease-out, transform 0.5s ease-out; transform: translateY(10px);
       color: var(--text-dark); display: block;
     }
     #message.show { opacity: 1; transform: translateY(0); }
-    #message.success-message { color: var(--dark-green); }
-    #message.error-message { color: var(--red-main); }
-    #message.incredible-message { color: var(--yellow-accent); font-size: 1.3em; }
+    #message.success-message { color: var(--primary-green); }
+    #message.error-message { color: var(--danger-red); }
+    #message.incredible-message { color: var(--accent-orange); font-size: 1.3em; }
 
-    #timer, #score { font-size: 1.3em; margin: 10px 0; color: var(--text-medium); position: relative; } /* Adicionado position: relative */
-    #timer-value, #score-value { font-weight: bold; color: var(--primary-green); transition: color 0.3s ease; }
+    #timer, #score { font-size: 1.3em; margin: 10px 0; color: var(--text-medium); position: relative; } 
+    #timer-value, #score-value { font-weight: 700; /* Bold */ color: var(--primary-green); transition: color 0.3s ease; }
     #timer-value.pulse-effect, #score-value.pulse-effect { animation: pulseEffect 0.3s ease-out; }
 
     /* NOVO: Estilo para o texto flutuante de feedback */
     .floating-feedback-text {
         position: absolute;
         font-size: 1.2em;
-        font-weight: bold;
-        color: var(--yellow-highlight); /* Cor para bônus */
+        font-weight: 700; /* Bold */
+        color: var(--accent-orange); 
         text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         animation: floatUpFadeOut 1s ease-out forwards;
-        pointer-events: none; /* Garante que não interfira com cliques */
+        pointer-events: none; 
         z-index: 100;
         white-space: nowrap;
-        opacity: 0; /* Inicia oculto, animação o revela */
+        opacity: 0; 
     }
     .floating-feedback-text.score-bonus {
-        color: var(--primary-green); /* Cor para bônus de pontos */
-        left: 50%; /* Centraliza horizontalmente */
+        color: var(--primary-green); 
+        left: 50%; 
         transform: translateX(-50%);
     }
     .floating-feedback-text.time-bonus {
-        color: var(--light-blue-accent); /* Cor para bônus de tempo */
-        left: 50%; /* Centraliza horizontalmente */
+        color: var(--primary-blue); 
+        left: 50%; 
         transform: translateX(-50%);
     }
 
@@ -448,21 +472,22 @@
     #answer-buttons-container button {
         flex: 1 1 auto; min-width: 100px; padding: 15px; font-size: 1.8em;
         border-radius: var(--border-radius-large);
-        background: linear-gradient(45deg, var(--dark-blue) 0%, var(--light-blue-accent) 100%);
-        color: white; border: none; cursor: pointer; transition: all 0.3s ease;
+        background: linear-gradient(45deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+        color: var(--text-light); border: none; cursor: pointer; transition: all 0.3s ease;
         box-shadow: 0 6px 12px var(--shadow-medium);
         display: flex; align-items: center; justify-content: center;
+        font-weight: 600; /* Semi-bold */
     }
     /* Aprimoramento das animações de acerto/erro nos botões */
     #answer-buttons-container button.correct-feedback { 
         background: linear-gradient(45deg, var(--dark-green) 0%, var(--primary-green) 100%); 
-        box-shadow: 0 0 15px rgba(40, 167, 69, 0.8);
-        animation: correctGlow 0.5s ease-out; /* Adiciona animação de brilho */
+        box-shadow: 0 0 15px rgba(46, 204, 113, 0.8);
+        animation: correctGlow 0.5s ease-out; 
     }
     #answer-buttons-container button.incorrect-feedback { 
-        background: linear-gradient(45deg, var(--red-main) 0%, var(--dark-red) 100%); 
-        box-shadow: 0 0 15px rgba(220, 53, 69, 0.8);
-        animation: incorrectGlow 0.5s ease-out; /* Adiciona animação de brilho */
+        background: linear-gradient(45deg, var(--danger-red) 0%, var(--dark-red) 100%); 
+        box-shadow: 0 0 15px rgba(231, 76, 60, 0.8);
+        animation: incorrectGlow 0.5s ease-out; 
     }
 
     /* Ícone de Configurações */
@@ -470,8 +495,9 @@
         position: absolute; top: 15px; right: 15px; background: none; border: none;
         font-size: 2.5em; cursor: pointer; color: var(--text-medium); transition: transform 0.2s ease;
         padding: 0; box-shadow: none; z-index: 10;
+        display: flex; align-items: center; justify-content: center; /* Para centralizar o ícone */
     }
-    .settings-icon:hover { transform: rotate(30deg); color: var(--dark-blue); }
+    .settings-icon:hover { transform: rotate(30deg); color: var(--primary-blue); }
 
     /* Overlay do Modal */
     .modal-overlay {
@@ -484,18 +510,19 @@
 
     /* Conteúdo do Modal */
     .modal-content {
-        background-color: #2c3e50; padding: 30px; border-radius: var(--border-radius-large);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); width: 90%; max-width: 400px;
-        position: relative; color: white; text-align: center;
+        background-color: var(--text-dark); /* Fundo mais escuro para modal */
+        padding: 30px; border-radius: var(--border-radius-large);
+        box-shadow: 0 10px 20px var(--shadow-strong); width: 90%; max-width: 400px;
+        position: relative; color: var(--text-light); text-align: center;
         transform: scale(0.9); transition: transform 0.3s ease;
     }
     .modal-overlay.show .modal-content { transform: scale(1); }
-    .modal-content h3 { color: #fff; font-size: 1.8em; margin-bottom: 25px; }
+    .modal-content h3 { color: var(--text-light); font-size: 1.8em; margin-bottom: 25px; }
 
     /* Botão de Fechar */
     .close-button {
         position: absolute; top: 10px; right: 10px; background: none; border: none;
-        color: #fff; font-size: 1.8em; cursor: pointer; padding: 5px; line-height: 1;
+        color: var(--text-light); font-size: 1.8em; cursor: pointer; padding: 5px; line-height: 1;
         border-radius: 50%; width: 40px; height: 40px; display: flex;
         align-items: center; justify-content: center; transition: background-color 0.2s ease;
     }
@@ -506,19 +533,20 @@
         display: flex; justify-content: space-between; align-items: center;
         padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         font-size: 1.2em;
+        font-weight: 500;
     }
     .setting-item:last-of-type { border-bottom: none; }
     .setting-item span { flex-grow: 1; text-align: left; padding-left: 10px; }
 
     /* Chave Seletora (Toggle Switch) */
     .toggle-switch {
-        width: 60px; height: 30px; background-color: #ccc; border-radius: 15px;
+        width: 60px; height: 30px; background-color: var(--text-medium); border-radius: 15px; /* Cinza para off */
         position: relative; cursor: pointer; transition: background-color 0.3s ease;
         flex-shrink: 0;
     }
     .toggle-switch.active { background-color: var(--primary-green); }
     .toggle-button {
-        width: 26px; height: 26px; background-color: white; border-radius: 50%;
+        width: 26px; height: 26px; background-color: var(--bg-white); border-radius: 50%;
         position: absolute; top: 2px; left: 2px; transition: transform 0.3s ease;
         box-shadow: 0 2px 5px var(--shadow-medium);
     }
@@ -533,95 +561,95 @@
         width: 95%; max-width: 400px; margin: 0;
     }
     .ranking-section h2 { color: var(--primary-green); margin-bottom: 15px; text-shadow: 1px 1px 2px var(--shadow-light); }
-    .ranking-list { list-style: none; padding: 0; text-align: left; width: 100%; font-size: 0.9em; }
+    .ranking-list { list-style: none; padding: 0; text-align: left; width: 100%; font-size: 0.95em; } /* Ajuste de fonte */
     .ranking-list li {
-      padding: 8px 0; border-bottom: 1px solid #eee; display: flex;
-      justify-content: space-between; align-items: center; flex-wrap: nowrap;
+      padding: 10px 0; border-bottom: 1px solid var(--border-light); display: flex;
+      align-items: center; flex-wrap: nowrap;
+      font-weight: 500; /* Medium weight */
     }
     .ranking-list li:last-child { border-bottom: none; }
     /* Ajuste de alinhamento para o número da posição */
     .ranking-position { 
-        font-weight: bold; 
-        color: #007bff; 
-        min-width: 25px; 
-        margin-left: 5px; /* Espaço à esquerda da posição */
-        margin-right: 5px; /* Espaço à direita da posição */
-        text-align: left; /* Alinha o número à esquerda */
+        font-weight: 700; /* Bold */
+        color: var(--primary-blue); 
+        min-width: 30px; /* Aumenta um pouco para acomodar o ícone */
+        margin-right: 8px; /* Espaço à direita da posição */
+        text-align: right; /* Alinha o número à direita */
     }
-    .ranking-name { flex-grow: 1; margin-right: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #444; }
+    .ranking-name { flex-grow: 1; margin-right: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-dark); }
     
     /* NOVO: Estilo para o indicador de ranking com fundo */
     .ranking-indicator {
-        display: inline-flex; /* Para que o fundo e o padding funcionem */
+        display: inline-flex; 
         align-items: center;
         justify-content: center;
-        width: 20px; /* Largura do quadrado */
-        height: 20px; /* Altura do quadrado */
-        border-radius: 4px; /* Cantos levemente arredondados */
-        font-size: 0.7em; /* Tamanho da seta dentro do quadrado */
-        font-weight: bold;
-        margin-right: 5px; /* Espaçamento à direita do indicador */
-        color: white; /* Cor da seta */
-        text-shadow: 0 0 2px rgba(0,0,0,0.3); /* Sombra para destaque */
-        box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Sombra para o quadrado */
+        width: 24px; /* Largura do quadrado */
+        height: 24px; /* Altura do quadrado */
+        border-radius: 4px; 
+        font-size: 0.9em; /* Tamanho da seta/quadrado */
+        font-weight: 700; /* Bold */
+        margin-right: 8px; /* Espaçamento à direita do indicador */
+        color: var(--text-light); /* Cor da seta/quadrado */
+        text-shadow: 0 0 2px rgba(0,0,0,0.3); 
+        box-shadow: 0 1px 3px var(--shadow-light); 
     }
-    .ranking-indicator.up { background-color: #007bff; } /* Azul para cima */
-    .ranking-indicator.down { background-color: #dc3545; } /* Vermelho para baixo */
-    .ranking-indicator.stable { background-color: #4CAF50; } /* Verde para estável */
+    .ranking-indicator.up { background-color: var(--primary-blue); } 
+    .ranking-indicator.down { background-color: var(--danger-red); } 
+    .ranking-indicator.stable { background-color: var(--primary-green); } 
 
 
-    .ranking-score { font-weight: bold; color: var(--text-dark); min-width: 45px; text-align: right; flex-shrink: 0; }
+    .ranking-score { font-weight: 700; /* Bold */ color: var(--text-dark); min-width: 50px; text-align: right; flex-shrink: 0; }
     .ranking-list li.current-player-highlight {
-        background: linear-gradient(90deg, var(--yellow-highlight) 0%, var(--yellow-accent) 100%);
-        color: var(--text-dark); font-weight: bold; box-shadow: 0 0 10px rgba(255, 235, 59, 0.7);
+        background: linear-gradient(90deg, var(--accent-orange) 0%, var(--dark-orange) 100%);
+        color: var(--text-light); font-weight: 700; box-shadow: 0 0 10px rgba(243, 156, 18, 0.7);
         animation: slideInPop 0.7s ease-out forwards; transform-origin: center;
     }
-    .ranking-list li.current-player-highlight span { color: var(--text-dark); }
-    .ranking-list li.ranking-item-top { background-color: rgba(0, 123, 255, 0.1); border: 1px solid #007bff; }
-    .ranking-list li.ranking-item-top span { color: #007bff; font-weight: bold; }
-    .ranking-list li.ranking-item-bottom { background-color: rgba(220, 53, 69, 0.1); border: 1px solid #dc3545; }
-    .ranking-list li.ranking-item-bottom span { color: var(--red-main); font-weight: bold; }
+    .ranking-list li.current-player-highlight span { color: var(--text-light); } /* Garante cor do texto no highlight */
+    .ranking-list li.ranking-item-top { background-color: rgba(52, 152, 219, 0.1); border: 1px solid var(--primary-blue); }
+    .ranking-list li.ranking-item-top span { color: var(--primary-blue); font-weight: 700; }
+    .ranking-list li.ranking-item-bottom { background-color: rgba(231, 76, 60, 0.1); border: 1px solid var(--danger-red); }
+    .ranking-list li.ranking-item-bottom span { color: var(--danger-red); font-weight: 700; }
 
     /* Estilos específicos do botão de doação (para texto animado) */
     .animated-donate-text {
-        display: inline-block; font-size: 1em; font-weight: bold; color: white;
+        display: inline-block; font-size: 1em; font-weight: 700; color: var(--text-light);
         text-shadow: 0 0 5px rgba(255, 255, 255, 0.7), 0 0 10px rgba(255, 255, 255, 0.5);
         animation: neonGlow 2s infinite alternate ease-in-out;
     }
     #ranking-donate-button, #settings-modal .modal-content button#settings-donate-button {
-        background: linear-gradient(45deg, var(--orange-main) 0%, var(--orange-accent) 100%) !important;
+        background: linear-gradient(45deg, var(--accent-orange) 0%, var(--dark-orange) 100%) !important;
     }
     #ranking-donate-button:hover, #settings-modal .modal-content button#settings-donate-button:hover {
-        background: linear-gradient(45deg, var(--orange-accent) 0%, var(--orange-main) 100%) !important;
+        background: linear-gradient(45deg, var(--dark-orange) 0%, var(--accent-orange) 100%) !important;
     }
 
     /* NOVO: Estilo para o indicador de sequência de acertos */
     #streak-indicator {
         position: absolute;
-        top: 5px; /* Ajuste a posição conforme necessário */
-        right: 15px; /* Ajuste a posição para não colidir com o ícone de configurações */
-        background-color: rgba(255, 215, 0, 0.8); /* Ouro com transparência */
-        color: #333;
+        top: 5px; 
+        right: 15px; 
+        background-color: var(--accent-orange); /* Ouro com transparência */
+        color: var(--text-light);
         padding: 5px 10px;
         border-radius: 15px;
         font-size: 0.9em;
-        font-weight: bold;
+        font-weight: 600; 
         display: flex;
         align-items: center;
         gap: 5px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 5px var(--shadow-medium);
         opacity: 0;
         transform: scale(0.8);
         transition: opacity 0.3s ease, transform 0.3s ease;
         z-index: 50;
-        pointer-events: none; /* CORREÇÃO: Impede que o clique passe por ele */
+        pointer-events: none; 
     }
     #streak-indicator.show {
         opacity: 1;
         transform: scale(1);
     }
-    #streak-indicator .star-icon {
-        color: #FFD700; /* Estrela dourada */
+    #streak-indicator .fas {
+        color: var(--text-light); 
         text-shadow: 0 0 5px rgba(255,255,0,0.5);
     }
 
@@ -650,23 +678,23 @@
         justify-content: space-between;
         align-items: center;
         font-size: 1.1em;
-        font-weight: bold;
+        font-weight: 600; 
         color: var(--text-dark);
     }
     #my-progress-container .stat-item .stat-label {
         color: var(--text-medium);
-        font-weight: normal;
+        font-weight: 400; /* Regular */
     }
     #my-progress-container .stat-item .stat-value {
-        color: var(--dark-blue);
+        color: var(--primary-blue);
     }
     #my-progress-container .stat-item.highlight-stat {
-        background: linear-gradient(45deg, var(--yellow-highlight) 0%, var(--yellow-accent) 100%);
-        color: var(--text-dark);
-        box-shadow: 0 0 10px rgba(255, 235, 59, 0.7);
+        background: linear-gradient(45deg, var(--accent-orange) 0%, var(--dark-orange) 100%);
+        color: var(--text-light);
+        box-shadow: 0 0 10px rgba(243, 156, 18, 0.7);
     }
     #my-progress-container .stat-item.highlight-stat .stat-value {
-        color: var(--dark-green);
+        color: var(--text-light); /* Cor do valor no highlight */
     }
 
     /* NOVO: Seção de Conquistas na tela de Meu Progresso */
@@ -676,14 +704,14 @@
         max-width: 350px;
     }
     #my-progress-container .achievements-section h4 {
-        color: var(--dark-blue);
+        color: var(--primary-blue);
         font-size: 1.5em;
         margin-bottom: 20px;
         text-shadow: 1px 1px 2px var(--shadow-light);
     }
     #my-progress-container .achievements-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsivo */
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
         gap: 15px;
         width: 100%;
     }
@@ -698,16 +726,18 @@
         text-align: center;
         opacity: 0.5; /* Bloqueado por padrão */
         transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: help; /* Indica que é clicável para mais info */
+        cursor: help; 
+        color: var(--text-dark); /* Cor do texto para itens bloqueados */
+        font-weight: 500;
     }
     #my-progress-container .achievement-item.unlocked {
-        opacity: 1; /* Desbloqueado */
+        opacity: 1; 
         background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%);
-        color: white;
-        box-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
+        color: var(--text-light);
+        box-shadow: 0 0 10px rgba(46, 204, 113, 0.7);
     }
     #my-progress-container .achievement-item.unlocked .achievement-icon {
-        color: var(--yellow-highlight); /* Ícone dourado quando desbloqueado */
+        color: var(--accent-orange); 
     }
     #my-progress-container .achievement-item:hover {
         transform: translateY(-3px);
@@ -716,21 +746,21 @@
     #my-progress-container .achievement-icon {
         font-size: 2.5em;
         margin-bottom: 8px;
-        color: var(--text-medium); /* Cor padrão para ícones bloqueados */
+        color: var(--text-medium); 
     }
     #my-progress-container .achievement-name {
-        font-weight: bold;
+        font-weight: 600; 
         font-size: 0.9em;
         line-height: 1.2;
     }
     #my-progress-container .achievement-description {
         font-size: 0.8em;
-        color: var(--text-light); /* Cor padrão para descrição bloqueada */
+        color: var(--text-light); 
         margin-top: 5px;
-        display: none; /* Escondido por padrão, mostra no hover/modal */
+        display: none; 
     }
     #my-progress-container .achievement-item.unlocked .achievement-description {
-        color: rgba(255, 255, 255, 0.8); /* Cor da descrição quando desbloqueado */
+        color: rgba(255, 255, 255, 0.8); 
     }
 
     /* NOVO: Notificação de Conquista Desbloqueada */
@@ -740,12 +770,12 @@
         left: 50%;
         transform: translateX(-50%);
         background: linear-gradient(45deg, var(--purple-main) 0%, var(--dark-purple) 100%);
-        color: white;
+        color: var(--text-light);
         padding: 15px 25px;
         border-radius: var(--border-radius-large);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        box-shadow: 0 5px 15px var(--shadow-strong);
         font-size: 1.2em;
-        font-weight: bold;
+        font-weight: 600; 
         display: flex;
         align-items: center;
         gap: 10px;
@@ -763,7 +793,7 @@
     }
     #achievement-notification .achievement-icon {
         font-size: 1.8em;
-        color: var(--yellow-highlight);
+        color: var(--accent-orange);
     }
 
     /* NOVO: Container para botões de compartilhamento */
@@ -781,7 +811,7 @@
         border-radius: var(--border-radius-medium);
         box-shadow: 0 4px 8px var(--shadow-medium);
         border: none;
-        color: white;
+        color: var(--text-light);
         cursor: pointer;
         transition: all 0.3s ease;
         display: flex;
@@ -794,12 +824,12 @@
         box-shadow: 0 6px 12px var(--shadow-strong);
     }
     .share-button.whatsapp-button {
-        background: linear-gradient(45deg, #25D366 0%, #128C7E 100%); /* Cores do WhatsApp */
+        background: linear-gradient(45deg, #25D366 0%, #128C7E 100%); 
     }
     .share-button.whatsapp-button:hover {
         background: linear-gradient(45deg, #128C7E 0%, #25D366 100%);
     }
-    .share-button .share-icon {
+    .share-button .fas {
         font-size: 1.5em;
     }
 
@@ -815,16 +845,16 @@
         /* Ajuste para 2 colunas de botões de ranking na tela de competição */
         #competition-mode-selection-container .ranking-toggle-buttons-group {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+            grid-template-columns: repeat(2, 1fr); 
             gap: 15px;
             width: 100%;
             margin-top: 20px;
         }
         #my-progress-container .player-stats-grid {
-            grid-template-columns: repeat(2, 1fr); /* 2 colunas no desktop */
+            grid-template-columns: repeat(2, 1fr); 
         }
         #my-progress-container .achievements-grid {
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Mais colunas no desktop */
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
         }
     }
     @media (max-width: 600px) {
@@ -853,7 +883,7 @@
       .settings-action-button { font-size: 1em; padding: 10px 15px; }
       /* Ajuste para 1 coluna de botões de ranking na tela de competição em mobile */
       #competition-mode-selection-container .ranking-toggle-buttons-group {
-            grid-template-columns: 1fr; /* 1 coluna */
+            grid-template-columns: 1fr; 
             gap: 10px;
         }
     }
@@ -881,9 +911,9 @@
         <span>+</span><span>-</span><span>×</span><span>÷</span>
     </div>
     <div class="menu-buttons">
-      <button id="practice-button" class="base-button main-menu-button">Praticar</button>
-      <button id="competition-button" class="base-button main-menu-button">Desafie-se</button>
-      <button id="my-progress-button" class="base-button main-menu-button">Meu Progresso</button>
+      <button id="practice-button" class="base-button main-menu-button"><i class="fas fa-pencil-alt"></i> Praticar</button>
+      <button id="competition-button" class="base-button main-menu-button"><i class="fas fa-trophy"></i> Desafie-se</button>
+      <button id="my-progress-button" class="base-button main-menu-button"><i class="fas fa-chart-line"></i> Meu Progresso</button>
     </div>
   </div>
 
@@ -891,37 +921,37 @@
   <div id="operation-selection-container" class="card-container">
     <h3>Escolha a Operação para Praticar:</h3>
     <div class="operation-buttons">
-        <button data-op="+" class="base-button operation-button">Adição (+)</button>
-        <button data-op="-" class="base-button operation-button">Subtração (-)</button>
-        <button data-op="*" class="base-button operation-button">Multiplicação (×)</button>
-        <button data-op="÷" class="base-button operation-button">Divisão (÷)</button>
-        <button data-op="all" class="base-button operation-button">Todos Juntos</button>
+        <button data-op="+" class="base-button operation-button"><i class="fas fa-plus"></i> Adição</button>
+        <button data-op="-" class="base-button operation-button"><i class="fas fa-minus"></i> Subtração</button>
+        <button data-op="*" class="base-button operation-button"><i class="fas fa-times"></i> Multiplicação</button>
+        <button data-op="÷" class="base-button operation-button"><i class="fas fa-divide"></i> Divisão</button>
+        <button data-op="all" class="base-button operation-button"><i class="fas fa-random"></i> Todos Juntos</button>
     </div>
-    <button id="back-to-main-from-operation" class="base-button back-button">Voltar ao Menu Principal</button>
+    <button id="back-to-main-from-operation" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
   </div>
 
   <!-- Seleção de Modo (Modo Praticar) -->
   <div id="mode-selection-container" class="card-container">
     <h3>Escolha o Modo de Jogo:</h3>
-    <button id="mode-kids-button" class="base-button mode-button" data-mode="practice_kids">Modo Kids</button>
-    <button id="mode-adults-button" class="base-button mode-button" data-mode="practice_adults">Modo Adulto</button>
-    <button id="back-to-operation-selection" class="base-button back-button">Voltar para Seleção de Operação</button>
+    <button id="mode-kids-button" class="base-button mode-button" data-mode="practice_kids"><i class="fas fa-child"></i> Modo Kids</button>
+    <button id="mode-adults-button" class="base-button mode-button" data-mode="practice_adults"><i class="fas fa-user-graduate"></i> Modo Adulto</button>
+    <button id="back-to-operation-selection" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar para Seleção de Operação</button>
   </div>
 
   <!-- Seleção de Modo Competição (com Botões de Ranking) -->
   <div id="competition-mode-selection-container" class="card-container">
     <h3>Modo Competição:</h3>
     <div class="competition-buttons">
-        <button data-mode="competition_kids" class="base-button competition-mode-button">Kids</button>
-        <button data-mode="competition_adults" class="base-button competition-mode-button">Adulto</button>
+        <button data-mode="competition_kids" class="base-button competition-mode-button"><i class="fas fa-child"></i> Kids</button>
+        <button data-mode="competition_adults" class="base-button competition-mode-button"><i class="fas fa-user-graduate"></i> Adulto</button>
     </div>
     <!-- NOVOS BOTÕES PARA EXIBIR RANKING -->
     <div class="ranking-toggle-buttons-group">
         <button id="show-kids-ranking-button" class="base-button ranking-toggle-button">
-            <span class="trophy-icon">🏆</span> Top 50 Kids
+            <i class="fas fa-trophy"></i> Top 50 Kids
         </button>
         <button id="show-adults-ranking-button" class="base-button ranking-toggle-button">
-            <span class="trophy-icon">🏆</span> Top 50 Adulto
+            <i class="fas fa-trophy"></i> Top 50 Adulto
         </button>
     </div>
 
@@ -929,27 +959,27 @@
     <div id="dynamic-competition-ranking-display" style="display: none;">
         <!-- O ranking Kids ou Adulto será carregado aqui -->
         <div id="ranking-kids-area-dynamic" class="ranking-section">
-            <h2>🏆 Ranking Kids (Top 50)</h2>
+            <h2><i class="fas fa-trophy"></i> Ranking Kids (Top 50)</h2>
             <ol id="ranking-kids-list-dynamic" class="ranking-list"></ol>
         </div>
         <div id="ranking-adults-area-dynamic" class="ranking-section" style="display: none;">
-            <h2>🏆 Ranking Adulto (Top 50)</h2>
+            <h2><i class="fas fa-trophy"></i> Ranking Adulto (Top 50)</h2>
             <ol id="ranking-adults-list-dynamic" class="ranking-list"></ol>
         </div>
     </div>
 
-    <button id="back-to-main-from-competition-mode" class="base-button back-button">Voltar ao Menu Principal</button>
+    <button id="back-to-main-from-competition-mode" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
   </div>
 
   <!-- Conteúdo do Jogo -->
   <div id="game-container" class="card-container">
-    <button id="settings-icon" class="settings-icon" data-target-screen="game">⚙️</button>
+    <button id="settings-icon" class="settings-icon" data-target-screen="game"><i class="fas fa-cog"></i></button>
     <div id="status">
       <p id="timer">Tempo: <span id="timer-value">60s</span></p>
       <div id="time-bar-container"><div id="time-bar"></div></div>
       <p id="score">Pontos: <span id="score-value">0</span></p>
       <div id="streak-indicator" style="display: none;">
-          <span class="star-icon">⭐</span>
+          <i class="fas fa-star"></i>
           <span id="streak-count"></span>
       </div>
     </div>
@@ -964,21 +994,21 @@
         <button class="answer-button base-button" data-value="0"></button>
         <button class="answer-button base-button" data-value="0"></button>
     </div>
-    <button id="explain-concept-button" class="base-button" style="display: none;">✨ Explicar Conceito ✨</button>
-    <button id="start-game-button" class="base-button green-button">Começar Jogo</button>
-    <button id="play-again" class="base-button" style="display: none;">Jogar Novamente</button>
+    <button id="explain-concept-button" class="base-button" style="display: none;"><i class="fas fa-lightbulb"></i> Explicar Conceito</button>
+    <button id="start-game-button" class="base-button green-button"><i class="fas fa-play"></i> Começar Jogo</button>
+    <button id="play-again" class="base-button" style="display: none;"><i class="fas fa-redo-alt"></i> Jogar Novamente</button>
   </div>
 
   <!-- Contêiner de Rankings (Tela de Ranking Completo Pós-Quiz) -->
   <div id="rankings-container" class="card-container">
-    <button class="settings-icon" data-target-screen="rankings">⚙️</button>
+    <button class="settings-icon" data-target-screen="rankings"><i class="fas fa-cog"></i></button>
     <div class="ranking-lists-wrapper">
         <div id="ranking-kids-area" class="ranking-section" style="display: none;">
-          <h2>🏆 Ranking Kids (Top 50)</h2>
+          <h2><i class="fas fa-trophy"></i> Ranking Kids (Top 50)</h2>
           <ol id="ranking-kids-list" class="ranking-list"></ol>
         </div>
         <div id="ranking-adults-area" class="ranking-section" style="display: none;">
-          <h2>🏆 Ranking Adulto (Top 50)</h2>
+          <h2><i class="fas fa-trophy"></i> Ranking Adulto (Top 50)</h2>
           <ol id="ranking-adults-list" class="ranking-list"></ol>
         </div>
     </div>
@@ -986,19 +1016,19 @@
     <!-- NOVO: Container para botões de compartilhamento -->
     <div class="share-buttons-container">
         <button id="share-score-whatsapp" class="base-button share-button whatsapp-button">
-            <span class="share-icon">💬</span> Compartilhar Pontuação
+            <i class="fab fa-whatsapp"></i> Compartilhar Pontuação
         </button>
         <!-- Outros botões de compartilhamento podem ser adicionados aqui -->
     </div>
 
-    <button id="ranking-donate-button" class="base-button back-button"><span class="animated-donate-text">$ Incentive o App $</span></button>
-    <button id="back-to-main-from-ranking" class="base-button back-button">Voltar ao Menu Principal</button>
+    <button id="ranking-donate-button" class="base-button back-button"><span class="animated-donate-text"><i class="fas fa-dollar-sign"></i> Incentive o App <i class="fas fa-heart"></i></span></button>
+    <button id="back-to-main-from-ranking" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
   </div>
 
   <!-- NOVO: Tela de Meu Progresso / Estatísticas Detalhadas -->
   <div id="my-progress-container" class="card-container">
-    <button class="settings-icon" data-target-screen="my-progress">⚙️</button>
-    <h3>Meu Progresso</h3>
+    <button class="settings-icon" data-target-screen="my-progress"><i class="fas fa-cog"></i></button>
+    <h3><i class="fas fa-chart-line"></i> Meu Progresso</h3>
     <div class="player-stats-grid">
         <div class="stat-item">
             <span class="stat-label">Nome:</span>
@@ -1031,43 +1061,43 @@
     </div>
 
     <div class="achievements-section">
-        <h4>🏅 Minhas Conquistas</h4>
+        <h4><i class="fas fa-medal"></i> Minhas Conquistas</h4>
         <div id="achievements-grid" class="achievements-grid">
             <!-- Conquistas serão carregadas aqui dinamicamente -->
         </div>
     </div>
 
-    <button id="back-to-main-from-progress" class="base-button back-button">Voltar ao Menu Principal</button>
+    <button id="back-to-main-from-progress" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
   </div>
 
   <!-- Modal de Configurações -->
   <div id="settings-modal" class="modal-overlay">
     <div class="modal-content">
-      <button class="close-button" id="close-settings-modal">X</button>
-      <h3>Configurações</h3>
+      <button class="close-button" id="close-settings-modal"><i class="fas fa-times"></i></button>
+      <h3><i class="fas fa-cog"></i> Configurações</h3>
       <div class="setting-item">
-        <span>🔊 Som</span>
+        <span><i class="fas fa-volume-up"></i> Som</span>
         <div class="toggle-switch" id="toggle-sound"><div class="toggle-button"></div></div>
       </div>
       <div class="setting-item">
-        <span>🎵 Música de Fundo</span>
+        <span><i class="fas fa-music"></i> Música de Fundo</span>
         <div class="toggle-switch" id="toggle-bgm"><div class="toggle-button"></div></div>
       </div>
       <div class="setting-item">
-        <span>📳 Vibração</span>
+        <span><i class="fas fa-vial"></i> Vibração</span>
         <div class="toggle-switch" id="toggle-vibration"><div class="toggle-button"></div></div>
       </div>
       <div class="setting-item button-item">
-        <button id="settings-home-button" class="base-button settings-action-button green-button">🏠 Início</button>
+        <button id="settings-home-button" class="base-button settings-action-button green-button"><i class="fas fa-home"></i> Início</button>
       </div>
       <div class="setting-item button-item">
-        <button id="settings-replay-button" class="base-button settings-action-button green-button">🔄 Jogar Novamente</button>
+        <button id="settings-replay-button" class="base-button settings-action-button green-button"><i class="fas fa-redo-alt"></i> Jogar Novamente</button>
       </div>
       <div class="setting-item button-item">
-        <button id="settings-donate-button" class="base-button settings-action-button blue-button"><span class="animated-donate-text">$ Incentive o App $</span></button>
+        <button id="settings-donate-button" class="base-button settings-action-button blue-button"><span class="animated-donate-text"><i class="fas fa-dollar-sign"></i> Incentive o App <i class="fas fa-heart"></i></span></button>
       </div>
       <div class="setting-item button-item">
-        <button id="settings-more-button" class="base-button settings-action-button blue-button">⚙️ Mais Opções</button>
+        <button id="settings-more-button" class="base-button settings-action-button blue-button"><i class="fas fa-ellipsis-h"></i> Mais Opções</button>
       </div>
     </div>
   </div>
@@ -1075,10 +1105,10 @@
   <!-- Modal de Explicação -->
   <div id="explanation-modal" class="modal-overlay">
     <div class="modal-content">
-      <button class="close-button" id="close-explanation-modal">X</button>
-      <h3>✨ Explicação do Conceito ✨</h3>
+      <button class="close-button" id="close-explanation-modal"><i class="fas fa-times"></i></button>
+      <h3><i class="fas fa-lightbulb"></i> Explicação do Conceito</h3>
       <p id="explanation-text">Carregando explicação...</p>
-      <button class="base-button settings-action-button blue-button" id="explanation-ok-button">Entendi!</button>
+      <button class="base-button settings-action-button blue-button" id="explanation-ok-button"><i class="fas fa-check-circle"></i> Entendi!</button>
     </div>
   </div>
 
@@ -1266,7 +1296,7 @@
         'first_correct': {
             name: 'Primeiro Acerto',
             description: 'Acerte sua primeira pergunta!',
-            icon: ' ',
+            icon: '🎯',
             check: (stats) => stats.totalCorrectAnswers >= 1
         },
         'calc_master': {
@@ -1362,7 +1392,7 @@
         } catch (e) {
             console.error("Erro ao exibir o menu principal:", e);
             document.body.innerHTML = `
-                <div style="text-align: center; color: red; margin-top: 50px;">
+                <div style="text-align: center; color: var(--danger-red); margin-top: 50px;">
                     <h1>Erro ao carregar o menu!</h1>
                     <p>Por favor, tente novamente.</p>
                     <p>Detalhes do erro: ${e.message}</p>
@@ -1385,7 +1415,7 @@
     function selectOperation(operation) { 
         selectedOperationType = operation;
         document.querySelectorAll('#operation-selection-container .operation-buttons button').forEach(btn => {
-            if (btn) { // Adicionado verificação de existência do botão
+            if (btn) { 
                 if (btn.dataset.op === operation) btn.classList.add('active');
                 else btn.classList.remove('active');
             }
@@ -1408,7 +1438,6 @@
     function showCompetitionModeSelection() { 
         showScreen(elements.competitionModeSelectionContainer);
         currentGameMode = null;
-        // CORREÇÃO: Esconde ambos os rankings dinâmicos ao entrar na tela de seleção de competição
         if (elements.dynamicCompetitionRankingDisplay) elements.dynamicCompetitionRankingDisplay.style.display = 'none';
         if (elements.rankingKidsAreaDynamic) elements.rankingKidsAreaDynamic.style.display = 'none';
         if (elements.rankingAdultsAreaDynamic) elements.rankingAdultsAreaDynamic.style.display = 'none';
@@ -1461,7 +1490,7 @@
         } else if (currentGameMode === 'competition_adults') {
             if (elements.rankingAdultsArea) elements.rankingAdultsArea.style.display = 'block';
             displayRanking('adults', elements.rankingAdultsList, highlightPlayer, 50);
-        } else { // Se não for um modo de competição específico, mostra ambos os rankings principais
+        } else { 
             if (elements.rankingKidsArea) elements.rankingKidsArea.style.display = 'block';
             if (elements.rankingAdultsArea) elements.rankingAdultsArea.style.display = 'block';
             displayRanking('kids', elements.rankingKidsList, highlightPlayer, 50);
@@ -1642,10 +1671,10 @@
                 };
                 // Armazenar a primeira posição no ranking para Kids e Adults
                 if (gameMode === 'competition_kids') {
-                    dataToUpdate.previousRankKids = null; // Primeira vez jogando
+                    dataToUpdate.previousRankKids = null; 
                     dataToUpdate.lastRankKids = await getPlayerRank(normalizedPlayerName, 'kids');
                 } else if (gameMode === 'competition_adults') {
-                    dataToUpdate.previousRankAdults = null; // Primeira vez jogando
+                    dataToUpdate.previousRankAdults = null; 
                     dataToUpdate.lastRankAdults = await getPlayerRank(normalizedPlayerName, 'adults');
                 }
                 await playerStatsDocRef.set(dataToUpdate);
@@ -1666,13 +1695,13 @@
         try {
             const docSnap = await playerDocRef.get();
             if (!docSnap.exists) {
-                return null; // Jogador não está no ranking
+                return null; 
             }
             const playerScore = docSnap.data().score;
 
             // Contar quantos jogadores têm pontuação maior
             const higherScoresSnapshot = await collectionRef.where('score', '>', playerScore).get();
-            const rank = higherScoresSnapshot.size + 1; // Rank é (número de scores maiores) + 1
+            const rank = higherScoresSnapshot.size + 1; 
             return rank;
         } catch (error) {
             console.error(`Erro ao obter rank do jogador para o modo ${mode}:`, error);
@@ -1836,8 +1865,8 @@
         rankingListElements.forEach(listElement => {
             // Verifica se o elemento existe e se tem uma função de unsubscribe armazenada
             if (listElement && typeof listElement.dataset.unsubscribe === 'function') { 
-                listElement.dataset.unsubscribe(); // Chama a função para cancelar a inscrição
-                delete listElement.dataset.unsubscribe; // Remove a referência
+                listElement.dataset.unsubscribe(); 
+                delete listElement.dataset.unsubscribe; 
                 console.log(`Unsubscribed from ${listElement.id}`);
             }
         });
@@ -1868,7 +1897,7 @@
         const currentUnsubscribe = db.collection(collectionName)
             .orderBy("score", "desc")
             .limit(limit)
-            .onSnapshot(async snapshot => { // Make the callback async
+            .onSnapshot(async snapshot => { 
                 targetListElement.innerHTML = '';
                 if (snapshot.empty) {
                     targetListElement.innerHTML = '<li>Nenhum recorde ainda. Seja o primeiro!</li>';
@@ -1893,21 +1922,18 @@
                     const li = document.createElement('li');
                     const rankingPosition = index + 1;
                     const normalizedPlayerName = data.player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
-                    const playerStats = playerStatsMap.get(normalizedPlayerName); // Get stats for this specific player
+                    const playerStats = playerStatsMap.get(normalizedPlayerName); 
                     
                     let indicatorHtml = '';
-                    if (playerStats) { // Check if stats exist for this player
+                    if (playerStats) { 
                         let previousRank = null;
                         
                         // Determinar o rank anterior com base no modo
                         if (mode === 'kids') {
-                            // Usar lastRankKids como previousRank para comparação, mas apenas se a última partida foi kids
-                            // E se o jogador está na lista atual, para evitar comparações com ranks de modos diferentes
                             if (playerStats.lastGameMode === 'competition_kids' && playerStats.lastRankKids !== null) {
                                 previousRank = playerStats.lastRankKids;
                             }
                         } else if (mode === 'adults') {
-                            // Usar lastRankAdults como previousRank para comparação, mas apenas se a última partida foi adults
                             if (playerStats.lastGameMode === 'competition_adults' && playerStats.lastRankAdults !== null) {
                                 previousRank = playerStats.lastRankAdults;
                             }
@@ -1915,20 +1941,19 @@
 
                         // Apenas mostra o indicador se houver um rank anterior para comparação
                         if (previousRank !== null) { 
-                            if (rankingPosition < previousRank) { // Improved rank (lower number is better)
-                                indicatorHtml = '<span class="ranking-indicator up">▲</span>'; // Blue up arrow
-                            } else if (rankingPosition > previousRank) { // Dropped rank (higher number is worse)
-                                indicatorHtml = '<span class="ranking-indicator down">▼</span>'; // Red down arrow
-                            } else { // Same rank
-                                indicatorHtml = '<span class="ranking-indicator stable">■</span>'; // Green stable square
+                            if (rankingPosition < previousRank) { 
+                                indicatorHtml = '<span class="ranking-indicator up"><i class="fas fa-caret-up"></i></span>'; // Blue up arrow
+                            } else if (rankingPosition > previousRank) { 
+                                indicatorHtml = '<span class="ranking-indicator down"><i class="fas fa-caret-down"></i></span>'; // Red down arrow
+                            } else { 
+                                indicatorHtml = '<span class="ranking-indicator stable"><i class="fas fa-square"></i></span>'; // Green stable square
                             }
                         }
                     }
 
-                    // CORREÇÃO: Ordem dos elementos para indicador à esquerda do número
+                    // Ordem dos elementos: indicador, número, nome, pontuação
                     li.innerHTML = `${indicatorHtml}<span class="ranking-position">${rankingPosition}º</span><span class="ranking-name">${data.player}</span><span class="ranking-score">${data.score}</span>`; 
                     
-                    // Highlight current player if highlightPlayer is true AND this is the current player
                     if (highlightPlayer && normalizedPlayerName === normalizedCurrentPlayerName) {
                         li.classList.add('current-player-highlight');
                         li.id = `player-rank-${data.id}`; 
@@ -2097,7 +2122,7 @@
       }
       if (elements.timeBar) {
           elements.timeBar.style.width = '100%';
-          elements.timeBar.style.backgroundColor = '#2ecc71';
+          elements.timeBar.style.backgroundColor = 'var(--primary-green)'; /* CORRIGIDO */
           elements.timeBar.classList.remove('time-bar-shaking');
       }
       if (elements.streakIndicator) {
@@ -2114,12 +2139,12 @@
           if (elements.timeBar) {
               elements.timeBar.style.width = percentage + '%';
 
-              if (percentage > 50) elements.timeBar.style.backgroundColor = '#2ecc71';
+              if (percentage > 50) elements.timeBar.style.backgroundColor = 'var(--primary-green)'; /* CORRIGIDO */
               else if (percentage > 20) {
-                  elements.timeBar.style.backgroundColor = '#f39c12';
+                  elements.timeBar.style.backgroundColor = 'var(--accent-orange)'; /* CORRIGIDO */
                   if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) elements.timeBar.classList.add('time-bar-shaking');
               } else {
-                  elements.timeBar.style.backgroundColor = '#e74c3c';
+                  elements.timeBar.style.backgroundColor = 'var(--danger-red)'; /* CORRIGIDO */
                   if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) {
                       elements.timeBar.classList.add('time-bar-shaking');
                       void elements.timeBar.offsetWidth; 
@@ -2154,7 +2179,6 @@
       // Salva as estatísticas do jogador ao final de CADA jogo
       await saveUserStats(currentPlayerName, score, correctAnswersCount, totalQuestionsAnsweredCurrentGame, currentGameMode); 
 
-      // CORREÇÃO: Remove o setTimeout para que o ranking apareça imediatamente e fique fixo
       if (currentGameMode.startsWith('competition_')) {
           let finalDifficultyLevelName;
           if (currentGameMode === 'competition_kids') finalDifficultyLevelName = difficultyNames["kids_easy"];
@@ -2166,9 +2190,9 @@
           }
           
           saveRanking(currentPlayerName, score, currentGameMode, finalDifficultyLevelName);
-          showRankingsScreen(true); // Exibe a tela de ranking e a mantém
+          showRankingsScreen(true); 
           
-      } else { // Para modos de prática, volta ao menu principal
+      } else { 
           if (elements.playerNameInput) elements.playerNameInput.value = '';
           if (elements.playerNameInput) elements.playerNameInput.style.display = 'inline-block';
           if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none';
@@ -2245,7 +2269,7 @@
 
         // Bônus de Tempo por Sequência (a cada 5 acertos consecutivos)
         if (consecutiveCorrectAnswersCount > 0 && consecutiveCorrectAnswersCount % 5 === 0) {
-            const streakBonusTime = 5; // +5 segundos para cada 5 acertos consecutivos
+            const streakBonusTime = 5; 
             timeLeft += streakBonusTime;
             if (elements.timerValueElement) elements.timerValueElement.textContent = Math.ceil(timeLeft) + 's';
             displayFloatingFeedback(elements.timerValueElement, `+${streakBonusTime}s`, 'time-bonus');
@@ -2298,7 +2322,7 @@
 
     // Função para gerar a mensagem de compartilhamento
     function generateShareMessage(playerName, finalScore, gameMode) {
-        const gameUrl = "https://wiggers12.github.io/"; // URL do seu jogo no GitHub Pages
+        const gameUrl = "https://wiggers12.github.io/"; 
         let modeText = '';
         if (gameMode === 'competition_kids') modeText = 'no modo Competição Kids';
         else if (gameMode === 'competition_adults') modeText = 'no modo Competição Adulto';
@@ -2339,7 +2363,6 @@
 
     if (elements.showKidsRankingButton) elements.showKidsRankingButton.addEventListener('click', () => {
         if (elements.dynamicCompetitionRankingDisplay) elements.dynamicCompetitionRankingDisplay.style.display = 'flex';
-        // CORREÇÃO: Apenas exibe a área de ranking Kids e esconde a de Adultos
         if (elements.rankingKidsAreaDynamic) elements.rankingKidsAreaDynamic.style.display = 'block';
         if (elements.rankingAdultsAreaDynamic) elements.rankingAdultsAreaDynamic.style.display = 'none';
         displayRanking('kids', elements.rankingKidsListDynamic, false, 50);
@@ -2347,7 +2370,6 @@
 
     if (elements.showAdultsRankingButton) elements.showAdultsRankingButton.addEventListener('click', () => {
         if (elements.dynamicCompetitionRankingDisplay) elements.dynamicCompetitionRankingDisplay.style.display = 'flex';
-        // CORREÇÃO: Apenas exibe a área de ranking Adultos e esconde a de Kids
         if (elements.rankingKidsAreaDynamic) elements.rankingKidsAreaDynamic.style.display = 'none';
         if (elements.rankingAdultsAreaDynamic) elements.rankingAdultsAreaDynamic.style.display = 'block';
         displayRanking('adults', elements.rankingAdultsListDynamic, false, 50);
@@ -2403,7 +2425,7 @@
         elements.answerButtons.forEach(button => { if (button) button.disabled = false; }); 
         if (elements.timeBar) {
             elements.timeBar.style.width = '100%';
-            elements.timeBar.style.backgroundColor = '#4CAF50';
+            elements.timeBar.style.backgroundColor = 'var(--primary-green)'; /* CORRIGIDO */
             elements.timeBar.classList.remove('time-bar-shaking');
         }
         if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
@@ -2422,12 +2444,12 @@
             const percentage = (timeLeft / 60) * 100;
             if (elements.timeBar) {
                 elements.timeBar.style.width = percentage + '%';
-                if (percentage > 50) elements.timeBar.style.backgroundColor = '#4CAF50';
+                if (percentage > 50) elements.timeBar.style.backgroundColor = 'var(--primary-green)'; /* CORRIGIDO */
                 else if (percentage > 20) {
-                    elements.timeBar.style.backgroundColor = '#FFC107';
+                    elements.timeBar.style.backgroundColor = 'var(--accent-orange)'; /* CORRIGIDO */
                     if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) elements.timeBar.classList.add('time-bar-shaking');
                 } else {
-                    elements.timeBar.style.backgroundColor = '#DC3545';
+                    elements.timeBar.style.backgroundColor = 'var(--danger-red)'; /* CORRIGIDO */
                     if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) {
                         elements.timeBar.classList.add('time-bar-shaking');
                         void elements.timeBar.offsetWidth;
@@ -2457,12 +2479,13 @@
 
     window.onload = () => {
         try {
+            console.log("window.onload disparado.");
             if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none'; 
             showSplashScreen();
         } catch (e) {
             console.error("Erro durante a inicialização do aplicativo:", e);
             document.body.innerHTML = `
-                <div style="text-align: center; color: red; margin-top: 50px;">
+                <div style="text-align: center; color: var(--danger-red); margin-top: 50px;">
                     <h1>Erro ao carregar o jogo!</h1>
                     <p>Por favor, tente novamente ou entre em contato com o suporte.</p>
                     <p>Detalhes do erro: ${e.message}</p>
@@ -2474,4 +2497,3 @@
   </script>
 </body>
 </html>
- 
