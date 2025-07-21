@@ -14,7 +14,7 @@
   <title>Desafio dos 60 Segundos 🧠</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <!-- Script principal do Google AdSense -->
+  <!-- Script principal do Google AdSense (RESTAURADO) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9968425306160320"
           crossorigin="anonymous"></script>
   
@@ -103,7 +103,7 @@
         100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--orange-main), 0 0 20px var(--orange-main); transform: scale(1.02); }
     }
 
-    /* NOVA ANIMAÇÃO PARA A FRASE "PREPARE-SE PARA A AVENTURA!" */
+    /* Animação para a frase "Prepare-se para a aventura!" */
     @keyframes prepareTextPopColor {
         0% { opacity: 0; transform: scale(0.8); color: var(--text-dark); }
         25% { opacity: 1; transform: scale(1.1); color: var(--yellow-highlight); }
@@ -111,6 +111,36 @@
         75% { transform: scale(1.05); color: var(--light-blue-accent); }
         100% { opacity: 1; transform: scale(1); color: var(--dark-blue); } /* Settle on a vibrant blue */
     }
+
+    /* NOVO: Animação para texto flutuante de pontos/tempo */
+    @keyframes floatUpFadeOut {
+        0% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-50px); }
+    }
+
+    /* NOVO: Animação para o brilho do acerto */
+    @keyframes correctGlow {
+        0% { box-shadow: 0 0 0px var(--primary-green); }
+        50% { box-shadow: 0 0 20px var(--primary-green), 0 0 30px var(--primary-green); }
+        100% { box-shadow: 0 0 0px var(--primary-green); }
+    }
+    /* NOVO: Animação para o brilho do erro */
+    @keyframes incorrectGlow {
+        0% { box-shadow: 0 0 0px var(--red-main); }
+        50% { box-shadow: 0 0 20px var(--red-main), 0 0 30px var(--red-main); }
+        100% { box-shadow: 0 0 0px var(--red-main); }
+    }
+    /* NOVO: Animação para a notificação de conquista */
+    @keyframes achievementPopIn {
+        0% { opacity: 0; transform: translateY(50px) scale(0.7); }
+        80% { opacity: 1; transform: translateY(-10px) scale(1.1); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes achievementFadeOut {
+        0% { opacity: 1; }
+        100% { opacity: 0; }
+    }
+
 
     /* Estilos base para os cards das telas principais */
     .card-container {
@@ -130,7 +160,7 @@
         text-align: center;
     }
     /* Largura específica para cards menores */
-    #main-menu, #operation-selection-container, #mode-selection-container, #game-container { max-width: 400px; }
+    #main-menu, #operation-selection-container, #mode-selection-container, #game-container, #my-progress-container { max-width: 400px; }
     /* Largura específica para cards maiores */
     #rankings-container, #competition-mode-selection-container { max-width: 800px; }
     /* Estado ativo para animação */
@@ -333,8 +363,9 @@
         animation: prepareTextPopColor 1.5s ease-out forwards;
         display: inline-block; /* Essencial para que transform funcione no texto */
     }
-    #question.correct-animation { animation: pulseGreen 0.5s ease-out; }
-    #question.incorrect-animation { animation: shakeRed 0.5s ease-out; }
+    /* Aprimoramento das animações de acerto/erro na pergunta */
+    #question.correct-animation { animation: pulseGreen 0.5s ease-out, correctGlow 0.5s ease-out; }
+    #question.incorrect-animation { animation: shakeRed 0.5s ease-out, incorrectGlow 0.5s ease-out; }
 
     #player-name-input {
       padding: 15px; font-size: 1.5em; width: calc(100% - 30px); margin-bottom: 20px;
@@ -355,9 +386,34 @@
     #message.error-message { color: var(--red-main); }
     #message.incredible-message { color: var(--yellow-accent); font-size: 1.3em; }
 
-    #timer, #score { font-size: 1.3em; margin: 10px 0; color: var(--text-medium); }
+    #timer, #score { font-size: 1.3em; margin: 10px 0; color: var(--text-medium); position: relative; } /* Adicionado position: relative */
     #timer-value, #score-value { font-weight: bold; color: var(--primary-green); transition: color 0.3s ease; }
     #timer-value.pulse-effect, #score-value.pulse-effect { animation: pulseEffect 0.3s ease-out; }
+
+    /* NOVO: Estilo para o texto flutuante de feedback */
+    .floating-feedback-text {
+        position: absolute;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: var(--yellow-highlight); /* Cor para bônus */
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        animation: floatUpFadeOut 1s ease-out forwards;
+        pointer-events: none; /* Garante que não interfira com cliques */
+        z-index: 100;
+        white-space: nowrap;
+        opacity: 0; /* Inicia oculto, animação o revela */
+    }
+    .floating-feedback-text.score-bonus {
+        color: var(--primary-green); /* Cor para bônus de pontos */
+        left: 50%; /* Centraliza horizontalmente */
+        transform: translateX(-50%);
+    }
+    .floating-feedback-text.time-bonus {
+        color: var(--light-blue-accent); /* Cor para bônus de tempo */
+        left: 50%; /* Centraliza horizontalmente */
+        transform: translateX(-50%);
+    }
+
 
     #time-bar-container {
       width: 100%; height: 15px; background-color: var(--border-light);
@@ -383,8 +439,17 @@
         box-shadow: 0 6px 12px var(--shadow-medium);
         display: flex; align-items: center; justify-content: center;
     }
-    #answer-buttons-container button.correct-feedback { background: linear-gradient(45deg, var(--dark-green) 0%, var(--primary-green) 100%); box-shadow: 0 0 15px rgba(40, 167, 69, 0.8); }
-    #answer-buttons-container button.incorrect-feedback { background: linear-gradient(45deg, var(--red-main) 0%, var(--dark-red) 100%); box-shadow: 0 0 15px rgba(220, 53, 69, 0.8); }
+    /* Aprimoramento das animações de acerto/erro nos botões */
+    #answer-buttons-container button.correct-feedback { 
+        background: linear-gradient(45deg, var(--dark-green) 0%, var(--primary-green) 100%); 
+        box-shadow: 0 0 15px rgba(40, 167, 69, 0.8);
+        animation: correctGlow 0.5s ease-out; /* Adiciona animação de brilho */
+    }
+    #answer-buttons-container button.incorrect-feedback { 
+        background: linear-gradient(45deg, var(--red-main) 0%, var(--dark-red) 100%); 
+        box-shadow: 0 0 15px rgba(220, 53, 69, 0.8);
+        animation: incorrectGlow 0.5s ease-out; /* Adiciona animação de brilho */
+    }
 
     /* Ícone de Configurações */
     .settings-icon {
@@ -462,7 +527,15 @@
     .ranking-list li:last-child { border-bottom: none; }
     .ranking-position { font-weight: bold; color: #007bff; min-width: 25px; margin-right: 5px; text-align: right; }
     .ranking-name { flex-grow: 1; margin-right: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #444; }
-    /* REMOVIDO: .ranking-level */
+    /* NOVO: Estilo para o indicador de ranking */
+    .ranking-indicator {
+        font-size: 0.9em; /* Ajuste o tamanho conforme necessário */
+        font-weight: bold;
+        margin-right: 5px; /* Espaçamento entre o indicador e o nome */
+        display: inline-block; /* Para garantir que as transformações funcionem */
+        width: 1em; /* Largura fixa para manter alinhamento */
+        text-align: center;
+    }
     .ranking-score { font-weight: bold; color: var(--text-dark); min-width: 45px; text-align: right; flex-shrink: 0; }
     .ranking-list li.current-player-highlight {
         background: linear-gradient(90deg, var(--yellow-highlight) 0%, var(--yellow-accent) 100%);
@@ -488,6 +561,214 @@
         background: linear-gradient(45deg, var(--orange-accent) 0%, var(--orange-main) 100%) !important;
     }
 
+    /* NOVO: Estilo para o indicador de sequência de acertos */
+    #streak-indicator {
+        position: absolute;
+        top: 5px; /* Ajuste a posição conforme necessário */
+        right: 5px; /* Ajuste a posição conforme necessário */
+        background-color: rgba(255, 215, 0, 0.8); /* Ouro com transparência */
+        color: #333;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.9em;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        opacity: 0;
+        transform: scale(0.8);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        z-index: 50;
+    }
+    #streak-indicator.show {
+        opacity: 1;
+        transform: scale(1);
+    }
+    #streak-indicator .star-icon {
+        color: #FFD700; /* Estrela dourada */
+        text-shadow: 0 0 5px rgba(255,255,0,0.5);
+    }
+
+    /* NOVO: Estilos para a tela de Meu Progresso */
+    #my-progress-container h3 {
+        color: var(--primary-green);
+        font-size: 1.8em;
+        margin-bottom: 25px;
+        text-shadow: 1px 1px 2px var(--shadow-light);
+    }
+    #my-progress-container .player-stats-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        width: 100%;
+        max-width: 350px;
+        margin-top: 20px;
+        text-align: left;
+    }
+    #my-progress-container .stat-item {
+        background-color: var(--bg-light-gray);
+        padding: 15px 20px;
+        border-radius: var(--border-radius-medium);
+        box-shadow: 0 2px 5px var(--shadow-light);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.1em;
+        font-weight: bold;
+        color: var(--text-dark);
+    }
+    #my-progress-container .stat-item .stat-label {
+        color: var(--text-medium);
+        font-weight: normal;
+    }
+    #my-progress-container .stat-item .stat-value {
+        color: var(--dark-blue);
+    }
+    #my-progress-container .stat-item.highlight-stat {
+        background: linear-gradient(45deg, var(--yellow-highlight) 0%, var(--yellow-accent) 100%);
+        color: var(--text-dark);
+        box-shadow: 0 0 10px rgba(255, 235, 59, 0.7);
+    }
+    #my-progress-container .stat-item.highlight-stat .stat-value {
+        color: var(--dark-green);
+    }
+
+    /* NOVO: Seção de Conquistas na tela de Meu Progresso */
+    #my-progress-container .achievements-section {
+        margin-top: 40px;
+        width: 100%;
+        max-width: 350px;
+    }
+    #my-progress-container .achievements-section h4 {
+        color: var(--dark-blue);
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 2px var(--shadow-light);
+    }
+    #my-progress-container .achievements-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsivo */
+        gap: 15px;
+        width: 100%;
+    }
+    #my-progress-container .achievement-item {
+        background-color: var(--bg-light-gray);
+        border-radius: var(--border-radius-medium);
+        padding: 15px;
+        box-shadow: 0 2px 5px var(--shadow-light);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        opacity: 0.5; /* Bloqueado por padrão */
+        transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: help; /* Indica que é clicável para mais info */
+    }
+    #my-progress-container .achievement-item.unlocked {
+        opacity: 1; /* Desbloqueado */
+        background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%);
+        color: white;
+        box-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
+    }
+    #my-progress-container .achievement-item.unlocked .achievement-icon {
+        color: var(--yellow-highlight); /* Ícone dourado quando desbloqueado */
+    }
+    #my-progress-container .achievement-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px var(--shadow-medium);
+    }
+    #my-progress-container .achievement-icon {
+        font-size: 2.5em;
+        margin-bottom: 8px;
+        color: var(--text-medium); /* Cor padrão para ícones bloqueados */
+    }
+    #my-progress-container .achievement-name {
+        font-weight: bold;
+        font-size: 0.9em;
+        line-height: 1.2;
+    }
+    #my-progress-container .achievement-description {
+        font-size: 0.8em;
+        color: var(--text-light); /* Cor padrão para descrição bloqueada */
+        margin-top: 5px;
+        display: none; /* Escondido por padrão, mostra no hover/modal */
+    }
+    #my-progress-container .achievement-item.unlocked .achievement-description {
+        color: rgba(255, 255, 255, 0.8); /* Cor da descrição quando desbloqueado */
+    }
+
+    /* NOVO: Notificação de Conquista Desbloqueada */
+    #achievement-notification {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(45deg, var(--purple-main) 0%, var(--dark-purple) 100%);
+        color: white;
+        padding: 15px 25px;
+        border-radius: var(--border-radius-large);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        font-size: 1.2em;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 3000;
+        opacity: 0;
+        visibility: hidden;
+        animation: achievementPopIn 0.5s ease-out forwards;
+    }
+    #achievement-notification.show {
+        visibility: visible;
+        animation: achievementPopIn 0.5s ease-out forwards;
+    }
+    #achievement-notification.hide {
+        animation: achievementFadeOut 0.5s ease-out forwards;
+    }
+    #achievement-notification .achievement-icon {
+        font-size: 1.8em;
+        color: var(--yellow-highlight);
+    }
+
+    /* NOVO: Container para botões de compartilhamento */
+    .share-buttons-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        max-width: 350px;
+        margin-top: 25px;
+    }
+    .share-button {
+        padding: 15px 20px;
+        font-size: 1.2em;
+        border-radius: var(--border-radius-medium);
+        box-shadow: 0 4px 8px var(--shadow-medium);
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .share-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px var(--shadow-strong);
+    }
+    .share-button.whatsapp-button {
+        background: linear-gradient(45deg, #25D366 0%, #128C7E 100%); /* Cores do WhatsApp */
+    }
+    .share-button.whatsapp-button:hover {
+        background: linear-gradient(45deg, #128C7E 0%, #25D366 100%);
+    }
+    .share-button .share-icon {
+        font-size: 1.5em;
+    }
+
+
     /* Media Queries */
     @media (min-width: 768px) {
         #embedded-rankings-area, .ranking-lists-wrapper {
@@ -495,6 +776,20 @@
         }
         #rankings-container .ranking-section, #dynamic-competition-ranking-display .ranking-section {
             flex: 1; max-width: 48%; margin: 0 10px; min-width: 300px;
+        }
+        /* Ajuste para 2 colunas de botões de ranking na tela de competição */
+        #competition-mode-selection-container .ranking-toggle-buttons-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+            gap: 15px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        #my-progress-container .player-stats-grid {
+            grid-template-columns: repeat(2, 1fr); /* 2 colunas no desktop */
+        }
+        #my-progress-container .achievements-grid {
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Mais colunas no desktop */
         }
     }
     @media (max-width: 600px) {
@@ -521,6 +816,11 @@
       .toggle-button { width: 21px; height: 21px; top: 2px; left: 2px; }
       .toggle-switch.active .toggle-button { transform: translateX(25px); }
       .settings-action-button { font-size: 1em; padding: 10px 15px; }
+      /* Ajuste para 1 coluna de botões de ranking na tela de competição em mobile */
+      #competition-mode-selection-container .ranking-toggle-buttons-group {
+            grid-template-columns: 1fr; /* 1 coluna */
+            gap: 10px;
+        }
     }
   </style>
 
@@ -547,7 +847,8 @@
     </div>
     <div class="menu-buttons">
       <button id="practice-button" class="base-button main-menu-button">Praticar</button>
-      <button id="competition-button" class="base-button main-menu-button">Competição</button>
+      <button id="competition-button" class="base-button main-menu-button">Desafie-se</button>
+      <button id="my-progress-button" class="base-button main-menu-button">Meu Progresso</button>
     </div>
   </div>
 
@@ -580,12 +881,14 @@
         <button data-mode="competition_adults" class="base-button competition-mode-button">Adulto</button>
     </div>
     <!-- NOVOS BOTÕES PARA EXIBIR RANKING -->
-    <button id="show-kids-ranking-button" class="base-button ranking-toggle-button">
-        <span class="trophy-icon">🏆</span> Top 50 Kids
-    </button>
-    <button id="show-adults-ranking-button" class="base-button ranking-toggle-button">
-        <span class="trophy-icon">🏆</span> Top 50 Adulto
-    </button>
+    <div class="ranking-toggle-buttons-group">
+        <button id="show-kids-ranking-button" class="base-button ranking-toggle-button">
+            <span class="trophy-icon">🏆</span> Top 50 Kids
+        </button>
+        <button id="show-adults-ranking-button" class="base-button ranking-toggle-button">
+            <span class="trophy-icon">🏆</span> Top 50 Adulto
+        </button>
+    </div>
 
     <!-- NOVO CONTÊINER PARA EXIBIR O RANKING DINÂMICAMENTE -->
     <div id="dynamic-competition-ranking-display" style="display: none;">
@@ -610,10 +913,14 @@
       <p id="timer">Tempo: <span id="timer-value">60s</span></p>
       <div id="time-bar-container"><div id="time-bar"></div></div>
       <p id="score">Pontos: <span id="score-value">0</span></p>
+      <div id="streak-indicator" style="display: none;">
+          <span class="star-icon">⭐</span>
+          <span id="streak-count"></span>
+      </div>
     </div>
     <div id="question-area">
-      <p id="difficulty-level"></p> <!-- Este elemento ficará vazio -->
-      <p id="question">Prepare-se para a aventura!</p> <!-- Texto atualizado e animado -->
+      <p id="difficulty-level"></p>
+      <p id="question">Prepare-se para a aventura!</p>
       <input type="text" id="player-name-input" placeholder="Nome e Sobrenome (ex: João Silva)" maxlength="40" pattern="[A-Za-zÀ-ú\s]+" title="Por favor, digite seu nome e sobrenome (ex: João Silva).">
       <p id="message"></p>
     </div>
@@ -631,17 +938,71 @@
   <div id="rankings-container" class="card-container">
     <button class="settings-icon" data-target-screen="rankings">⚙️</button>
     <div class="ranking-lists-wrapper">
-        <div id="ranking-kids-area" class="ranking-section" style="display: none;"> <!-- Inicialmente oculto -->
+        <div id="ranking-kids-area" class="ranking-section" style="display: none;">
           <h2>🏆 Ranking Kids (Top 50)</h2>
           <ol id="ranking-kids-list" class="ranking-list"></ol>
         </div>
-        <div id="ranking-adults-area" class="ranking-section" style="display: none;"> <!-- Inicialmente oculto -->
+        <div id="ranking-adults-area" class="ranking-section" style="display: none;">
           <h2>🏆 Ranking Adulto (Top 50)</h2>
           <ol id="ranking-adults-list" class="ranking-list"></ol>
         </div>
     </div>
+    
+    <!-- NOVO: Container para botões de compartilhamento -->
+    <div class="share-buttons-container">
+        <button id="share-score-whatsapp" class="base-button share-button whatsapp-button">
+            <span class="share-icon">💬</span> Compartilhar Pontuação
+        </button>
+        <!-- Outros botões de compartilhamento podem ser adicionados aqui -->
+    </div>
+
     <button id="ranking-donate-button" class="base-button back-button"><span class="animated-donate-text">$ Incentive o App $</span></button>
     <button id="back-to-main-from-ranking" class="base-button back-button">Voltar ao Menu Principal</button>
+  </div>
+
+  <!-- NOVO: Tela de Meu Progresso / Estatísticas Detalhadas -->
+  <div id="my-progress-container" class="card-container">
+    <button class="settings-icon" data-target-screen="my-progress">⚙️</button>
+    <h3>Meu Progresso</h3>
+    <div class="player-stats-grid">
+        <div class="stat-item">
+            <span class="stat-label">Nome:</span>
+            <span id="stat-player-name" class="stat-value">N/A</span>
+        </div>
+        <div class="stat-item highlight-stat">
+            <span class="stat-label">Maior Pontuação:</span>
+            <span id="stat-highest-score" class="stat-value">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Total de Jogos:</span>
+            <span id="stat-total-games" class="stat-value">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Perguntas Respondidas:</span>
+            <span id="stat-total-questions" class="stat-value">0</span>
+        </div>
+        <div class="stat-item highlight-stat">
+            <span class="stat-label">Respostas Corretas:</span>
+            <span id="stat-total-correct" class="stat-value">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Taxa de Acerto:</span>
+            <span id="stat-accuracy" class="stat-value">0%</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Última Partida:</span>
+            <span id="stat-last-played" class="stat-value">N/A</span>
+        </div>
+    </div>
+
+    <div class="achievements-section">
+        <h4>🏅 Minhas Conquistas</h4>
+        <div id="achievements-grid" class="achievements-grid">
+            <!-- Conquistas serão carregadas aqui dinamicamente -->
+        </div>
+    </div>
+
+    <button id="back-to-main-from-progress" class="base-button back-button">Voltar ao Menu Principal</button>
   </div>
 
   <!-- Modal de Configurações -->
@@ -686,7 +1047,13 @@
     </div>
   </div>
 
-  <!-- Blocos de Anúncio AdSense -->
+  <!-- NOVO: Notificação de Conquista Desbloqueada -->
+  <div id="achievement-notification" style="display: none;">
+      <span id="achievement-notification-icon" class="achievement-icon"></span>
+      <span id="achievement-notification-text"></span>
+  </div>
+
+  <!-- Blocos de Anúncio AdSense (RESTAURADOS) -->
   <div style="width: 100%; max-width: 728px; margin: 20px auto; text-align: center;">
     <ins class="adsbygoogle"
          style="display:block; width:100%; height:auto; min-height:90px;"
@@ -716,6 +1083,8 @@
   </div>
 
   <script>
+    console.log("Aplicativo iniciado com sucesso!"); // Log para confirmar a inicialização do script
+
     // Configuração do Firebase para o "Desafio dos 60 Segundos"
     const firebaseConfig = {
       apiKey: "AIzaSyA4PWRt-22S8HGc6GS1m-4Wa9hYsh5Zbo",
@@ -739,6 +1108,7 @@
       competitionModeSelectionContainer: document.getElementById('competition-mode-selection-container'),
       gameContainer: document.getElementById('game-container'),
       rankingsContainer: document.getElementById('rankings-container'),
+      myProgressContainer: document.getElementById('my-progress-container'),
 
       questionElement: document.getElementById('question'),
       playerNameInput: document.getElementById('player-name-input'),
@@ -766,7 +1136,7 @@
       // Áreas de ranking para o display dinâmico na tela de competição
       rankingKidsAreaDynamic: document.getElementById('ranking-kids-area-dynamic'),
       rankingAdultsAreaDynamic: document.getElementById('ranking-adults-area-dynamic'),
-      dynamicCompetitionRankingDisplay: document.getElementById('dynamic-competition-ranking-display'), // Novo contêiner
+      dynamicCompetitionRankingDisplay: document.getElementById('dynamic-competition-ranking-display'),
 
 
       answerButtonsContainer: document.getElementById('answer-buttons-container'),
@@ -774,11 +1144,13 @@
 
       practiceButton: document.getElementById('practice-button'),
       competitionButton: document.getElementById('competition-button'),
+      myProgressButton: document.getElementById('my-progress-button'),
       rankingDonateButton: document.getElementById('ranking-donate-button'),
       backToMainFromOperationButton: document.getElementById('back-to-main-from-operation'),
       backToOperationSelectionButton: document.getElementById('back-to-operation-selection'),
       backToMainFromCompetitionModeButton: document.getElementById('back-to-main-from-competition-mode'),
       backToMainFromRankingButton: document.getElementById('back-to-main-from-ranking'),
+      backToMainFromProgressButton: document.getElementById('back-to-main-from-progress'),
 
       // Novos botões para alternar ranking na tela de competição
       showKidsRankingButton: document.getElementById('show-kids-ranking-button'),
@@ -800,12 +1172,34 @@
       explanationModal: document.getElementById('explanation-modal'),
       closeExplanationModalButton: document.getElementById('close-explanation-modal'),
       explanationText: document.getElementById('explanation-text'),
-      explanationOkButton: document.getElementById('explanation-ok-button')
+      explanationOkButton: document.getElementById('explanation-ok-button'),
+
+      streakIndicator: document.getElementById('streak-indicator'),
+      streakCount: document.getElementById('streak-count'),
+
+      // Elementos da tela de Meu Progresso
+      statPlayerName: document.getElementById('stat-player-name'),
+      statHighestScore: document.getElementById('stat-highest-score'),
+      statTotalGames: document.getElementById('stat-total-games'),
+      statTotalQuestions: document.getElementById('stat-total-questions'),
+      statTotalCorrect: document.getElementById('stat-total-correct'),
+      statAccuracy: document.getElementById('stat-accuracy'),
+      statLastPlayed: document.getElementById('stat-last-played'),
+      achievementsGrid: document.getElementById('achievements-grid'),
+
+      // Elementos da notificação de conquista
+      achievementNotification: document.getElementById('achievement-notification'),
+      achievementNotificationIcon: document.getElementById('achievement-notification-icon'),
+      achievementNotificationText: document.getElementById('achievement-notification-text'),
+
+      // Botão de Compartilhamento
+      shareScoreWhatsappButton: document.getElementById('share-score-whatsapp')
     };
 
     // Variáveis de Estado do Jogo
     let currentGameMode = null; // 'practice_kids', 'practice_adults', 'competition_kids', 'competition_adults'
-    let correctAnswersCount = 0;
+    let correctAnswersCount = 0; // Acertos na partida atual
+    let totalQuestionsAnsweredCurrentGame = 0; // Perguntas respondidas na partida atual
     let consecutiveCorrectAnswersCount = 0;
     let isSoundOn = true;
     let isBGMOn = true;
@@ -829,66 +1223,127 @@
         2: "Amador",   
         3: "Desafiador", 
         4: "Mestre",    
-        "kids_easy": "Fácil" 
+        "kids_easy": "Fácil",
+    };
+
+    // Definição das Conquistas
+    const achievements = {
+        'first_correct': {
+            name: 'Primeiro Acerto',
+            description: 'Acerte sua primeira pergunta!',
+            icon: '🎯',
+            check: (stats) => stats.totalCorrectAnswers >= 1
+        },
+        'calc_master': {
+            name: 'Mestre dos Cálculos',
+            description: 'Acerte 50 perguntas no total.',
+            icon: '🧠',
+            check: (stats) => stats.totalCorrectAnswers >= 50
+        },
+        'game_veteran': {
+            name: 'Veterano do Jogo',
+            description: 'Jogue 10 partidas no total.',
+            icon: '🎮',
+            check: (stats) => stats.totalGamesPlayed >= 10
+        },
+        'accuracy_master': {
+            name: 'Mestre da Precisão',
+            description: 'Mantenha 80% de acerto em 20 ou mais perguntas.',
+            icon: '✅',
+            check: (stats) => stats.totalQuestionsAnswered >= 20 && (stats.totalCorrectAnswers / stats.totalQuestionsAnswered) >= 0.8
+        }
     };
 
     // --- Funções de Navegação de Tela ---
     function hideAllScreens() {
         Object.values(elements).forEach(el => {
-            if (el && el.classList && el.classList.contains('card-container')) {
+            if (el && el.classList && el.classList.contains('card-container')) { 
                 el.classList.remove('active');
                 el.style.display = 'none';
             }
         });
-        elements.splashScreen.classList.remove('active', 'fade-out');
-        elements.splashScreen.style.display = 'none';
-        elements.answerButtonsContainer.style.display = 'none';
+        if (elements.splashScreen) { 
+            elements.splashScreen.classList.remove('active', 'fade-out');
+            elements.splashScreen.style.display = 'none';
+        }
+        if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none'; 
         hideSettingsModal();
         hideExplanationModal();
+        hideAchievementNotification();
     }
 
     function showScreen(screenElement, animationDelay = 0) {
         hideAllScreens();
         setTimeout(() => {
-            screenElement.style.display = 'flex';
-            screenElement.classList.add('active');
+            if (screenElement) { 
+                screenElement.style.display = 'flex';
+                screenElement.classList.add('active');
+            }
         }, animationDelay);
     }
 
     function showSplashScreen() {
-        elements.splashScreen.style.display = 'flex';
-        elements.splashScreen.classList.add('active');
-        elements.splashScreen.classList.remove('fade-out');
-        setTimeout(() => {
-            elements.splashScreen.classList.add('fade-out');
-            setTimeout(() => showMainMenu(), 500);
-        }, 2000);
+        if (elements.splashScreen) { 
+            elements.splashScreen.style.display = 'flex';
+            elements.splashScreen.classList.add('active');
+            elements.splashScreen.classList.remove('fade-out');
+            setTimeout(() => {
+                if (elements.splashScreen) elements.splashScreen.classList.add('fade-out'); 
+                setTimeout(() => showMainMenu(), 500); 
+            }, 2000);
+        } else {
+            console.error("Elemento splashScreen não encontrado. Indo direto para o menu principal.");
+            showMainMenu();
+        }
     }
 
     function showMainMenu() {
-        showScreen(elements.mainMenu);
-        elements.modeKidsButton.classList.remove('active');
-        elements.modeAdultsButton.classList.remove('active');
-        elements.questionElement.textContent = 'Prepare-se para a aventura!'; // Texto atualizado
-        elements.questionElement.classList.add('prepare-text-animated'); // Adiciona animação
-        elements.questionElement.addEventListener('animationend', function handler() {
-            elements.questionElement.classList.remove('prepare-text-animated'); // Remove a classe após a animação
-            elements.questionElement.removeEventListener('animationend', handler);
-        });
-        elements.difficultyLevelElement.textContent = ''; // Vazio, como solicitado
-        elements.playerNameInput.style.display = 'none';
-        elements.startGameButton.style.display = 'none';
-        elements.playAgainButton.style.display = 'none';
-        elements.explainConceptButton.style.display = 'none';
-        elements.messageElement.textContent = '';
-        elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
-        unsubscribeAllRankings();
+        try {
+            showScreen(elements.mainMenu);
+            if (elements.modeKidsButton) elements.modeKidsButton.classList.remove('active');
+            if (elements.modeAdultsButton) elements.modeAdultsButton.classList.remove('active');
+            if (elements.questionElement) {
+                elements.questionElement.textContent = 'Prepare-se para a aventura!';
+                elements.questionElement.classList.add('prepare-text-animated');
+                elements.questionElement.addEventListener('animationend', function handler() {
+                    elements.questionElement.classList.remove('prepare-text-animated');
+                    elements.questionElement.removeEventListener('animationend', handler);
+                });
+            }
+            if (elements.difficultyLevelElement) elements.difficultyLevelElement.textContent = '';
+            if (elements.playerNameInput) elements.playerNameInput.style.display = 'none';
+            if (elements.startGameButton) elements.startGameButton.style.display = 'none';
+            if (elements.playAgainButton) elements.playAgainButton.style.display = 'none';
+            if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
+            if (elements.messageElement) {
+                elements.messageElement.textContent = '';
+                elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+            }
+            if (elements.streakIndicator) {
+                elements.streakIndicator.classList.remove('show');
+                elements.streakIndicator.style.display = 'none';
+            }
+            unsubscribeAllRankings();
+        } catch (e) {
+            console.error("Erro ao exibir o menu principal:", e);
+            document.body.innerHTML = `
+                <div style="text-align: center; color: red; margin-top: 50px;">
+                    <h1>Erro ao carregar o menu!</h1>
+                    <p>Por favor, tente novamente.</p>
+                    <p>Detalhes do erro: ${e.message}</p>
+                </div>
+            `;
+        }
     }
 
     function showOperationSelection() { 
         showScreen(elements.operationSelectionContainer);
         selectedOperationType = null;
         document.querySelectorAll('#operation-selection-container .operation-buttons button').forEach(btn => btn.classList.remove('active'));
+        if (elements.streakIndicator) {
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
         unsubscribeAllRankings();
     }
 
@@ -904,76 +1359,109 @@
     function showModeSelectionForPractice() { 
         showScreen(elements.modeSelectionContainer);
         currentGameMode = 'practice'; 
-        elements.modeKidsButton.classList.remove('active');
-        elements.modeAdultsButton.classList.remove('active');
+        if (elements.modeKidsButton) elements.modeKidsButton.classList.remove('active');
+        if (elements.modeAdultsButton) elements.modeAdultsButton.classList.remove('active');
+        if (elements.streakIndicator) {
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
         unsubscribeAllRankings();
     }
 
     function showCompetitionModeSelection() { 
         showScreen(elements.competitionModeSelectionContainer);
-        currentGameMode = null; // Reseta o modo de jogo atual para esta tela
-        // Esconde o contêiner dinâmico de ranking inicialmente
-        elements.dynamicCompetitionRankingDisplay.style.display = 'none';
-        elements.rankingKidsAreaDynamic.style.display = 'none';
-        elements.rankingAdultsAreaDynamic.style.display = 'none';
-        unsubscribeAllRankings(); // Desinscreve listeners de rankings embutidos anteriores
+        currentGameMode = null;
+        if (elements.dynamicCompetitionRankingDisplay) elements.dynamicCompetitionRankingDisplay.style.display = 'none';
+        if (elements.rankingKidsAreaDynamic) elements.rankingKidsAreaDynamic.style.display = 'none';
+        if (elements.rankingAdultsAreaDynamic) elements.rankingAdultsAreaDynamic.style.display = 'none';
+        if (elements.streakIndicator) {
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
+        unsubscribeAllRankings();
     }
 
     function showGameScreen() {
         showScreen(elements.gameContainer);
-        elements.playerNameInput.style.display = 'inline-block';
-        elements.startGameButton.style.display = 'inline-block';
-        elements.answerButtonsContainer.style.display = 'none';
-        elements.playAgainButton.style.display = 'none';
-        elements.explainConceptButton.style.display = 'none';
-        elements.messageElement.textContent = '';
-        elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
-        elements.playerNameInput.value = ''; 
-        elements.playerNameInput.focus(); 
-        elements.questionElement.textContent = 'Prepare-se para a aventura!'; // Texto atualizado
-        elements.questionElement.classList.add('prepare-text-animated'); // Adiciona animação
-        elements.questionElement.addEventListener('animationend', function handler() {
-            elements.questionElement.classList.remove('prepare-text-animated'); // Remove a classe após a animação
-            elements.questionElement.removeEventListener('animationend', handler);
-        });
-        elements.difficultyLevelElement.textContent = ''; // Vazio, como solicitado
+        if (elements.playerNameInput) elements.playerNameInput.style.display = 'inline-block';
+        if (elements.startGameButton) elements.startGameButton.style.display = 'inline-block';
+        if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none';
+        if (elements.playAgainButton) elements.playAgainButton.style.display = 'none';
+        if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
+        if (elements.messageElement) {
+            elements.messageElement.textContent = '';
+            elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+        }
+        if (elements.playerNameInput) {
+            elements.playerNameInput.value = ''; 
+            elements.playerNameInput.focus(); 
+        }
+        if (elements.questionElement) {
+            elements.questionElement.textContent = 'Prepare-se para a aventura!';
+            elements.questionElement.classList.add('prepare-text-animated');
+            elements.questionElement.addEventListener('animationend', function handler() {
+                elements.questionElement.classList.remove('prepare-text-animated');
+                elements.questionElement.removeEventListener('animationend', handler);
+            });
+        }
+        if (elements.difficultyLevelElement) elements.difficultyLevelElement.textContent = '';
+        if (elements.streakIndicator) {
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
         unsubscribeAllRankings();
     }
 
     function showRankingsScreen(highlightPlayer = false) { 
         showScreen(elements.rankingsContainer);
-        // Exibe dinamicamente apenas a seção de ranking relevante
+        if (elements.rankingKidsArea) elements.rankingKidsArea.style.display = 'none';
+        if (elements.rankingAdultsArea) elements.rankingAdultsArea.style.display = 'none';
+
         if (currentGameMode === 'competition_kids') {
-            elements.rankingKidsArea.style.display = 'block';
-            elements.rankingAdultsArea.style.display = 'none';
-            displayRanking('kids', elements.rankingKidsList, highlightPlayer, 50); // Limite para 50 para ranking completo
+            if (elements.rankingKidsArea) elements.rankingKidsArea.style.display = 'block';
+            displayRanking('kids', elements.rankingKidsList, highlightPlayer, 50);
         } else if (currentGameMode === 'competition_adults') {
-            elements.rankingKidsArea.style.display = 'none';
-            elements.rankingAdultsArea.style.display = 'block';
-            displayRanking('adults', elements.rankingAdultsList, highlightPlayer, 50); // Limite para 50 para ranking completo
-        } else {
-            // Se navegou para cá sem um modo de competição, mostra ambos ou padrão
-            elements.rankingKidsArea.style.display = 'block';
-            elements.rankingAdultsArea.style.display = 'block';
+            if (elements.rankingAdultsArea) elements.rankingAdultsArea.style.display = 'block';
+            displayRanking('adults', elements.rankingAdultsList, highlightPlayer, 50);
+        } else { // Se não for um modo de competição específico, mostra ambos os rankings principais
+            if (elements.rankingKidsArea) elements.rankingKidsArea.style.display = 'block';
+            if (elements.rankingAdultsArea) elements.rankingAdultsArea.style.display = 'block';
             displayRanking('kids', elements.rankingKidsList, highlightPlayer, 50);
             displayRanking('adults', elements.rankingAdultsList, highlightPlayer, 50);
         }
+        if (elements.streakIndicator) {
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
+    }
+
+    function showMyProgressScreen() {
+        showScreen(elements.myProgressContainer);
+        if (elements.streakIndicator) {
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
+        displayUserStats();
     }
 
     // --- Funções do Modal ---
     function showSettingsModal(sourceScreenId) {
-        elements.settingsModal.classList.add('show');
-        elements.settingsModal.dataset.sourceScreen = sourceScreenId;
-        elements.toggleSound.classList.toggle('active', isSoundOn);
-        elements.toggleBGM.classList.toggle('active', isBGMOn);
-        elements.toggleVibration.classList.toggle('active', isVibrationOn);
+        if (elements.settingsModal) { 
+            elements.settingsModal.classList.add('show');
+            elements.settingsModal.dataset.sourceScreen = sourceScreenId;
+        }
+        if (elements.toggleSound) elements.toggleSound.classList.toggle('active', isSoundOn);
+        if (elements.toggleBGM) elements.toggleBGM.classList.toggle('active', isBGMOn);
+        if (elements.toggleVibration) elements.toggleVibration.classList.toggle('active', isVibrationOn);
     }
 
-    function hideSettingsModal() { elements.settingsModal.classList.remove('show'); }
+    function hideSettingsModal() { 
+        if (elements.settingsModal) elements.settingsModal.classList.remove('show'); 
+    }
 
     async function showExplanationModal() {
-        elements.explanationModal.classList.add('show');
-        elements.explanationText.textContent = 'Carregando explicação...';
+        if (elements.explanationModal) elements.explanationModal.classList.add('show');
+        if (elements.explanationText) elements.explanationText.textContent = 'Carregando explicação...';
         const prompt = `Explique o conceito matemático por trás da operação "${currentQuestion.question}" de forma simples e didática, como se estivesse a ensinar a uma criança. Foco no conceito e não apenas no cálculo. Seja conciso.`;
         
         try {
@@ -987,95 +1475,327 @@
             });
             const result = await response.json();
             if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
-                elements.explanationText.textContent = result.candidates[0].content.parts[0].text;
+                if (elements.explanationText) elements.explanationText.textContent = result.candidates[0].content.parts[0].text;
             } else {
-                elements.explanationText.textContent = 'Não foi possível gerar a explicação. Tente novamente.';
+                if (elements.explanationText) elements.explanationText.textContent = 'Não foi possível gerar a explicação. Tente novamente.';
                 console.error('Estrutura de resposta inesperada da API Gemini:', result);
             }
         } catch (error) {
-            elements.explanationText.textContent = 'Erro ao conectar com a IA. Verifique sua conexão ou tente mais tarde.';
+            if (elements.explanationText) elements.explanationText.textContent = 'Erro ao conectar com a IA. Verifique sua conexão ou tente mais tarde.';
             console.error('Erro ao chamar a API Gemini:', error);
         }
     }
 
-    function hideExplanationModal() { elements.explanationModal.classList.remove('show'); }
+    function hideExplanationModal() { 
+        if (elements.explanationModal) elements.explanationModal.classList.remove('show'); 
+    }
 
     function handleToggle(element, stateVar) {
-        element.classList.toggle('active');
-        return element.classList.contains('active');
+        if (element) { 
+            element.classList.toggle('active');
+            return element.classList.contains('active');
+        }
+        return stateVar; 
     }
 
     // --- Funções de Lógica do Jogo ---
     function selectGameModeAndStart(mode) { 
         currentGameMode = mode;
         correctAnswersCount = 0;
+        totalQuestionsAnsweredCurrentGame = 0;
         consecutiveCorrectAnswersCount = 0;
         
         if (mode.startsWith('practice_')) {
-            elements.modeKidsButton.classList.remove('active');
-            elements.modeAdultsButton.classList.remove('active');
-            if (mode === 'practice_kids') elements.modeKidsButton.classList.add('active');
-            else if (mode === 'practice_adults') elements.modeAdultsButton.classList.add('active');
+            if (elements.modeKidsButton) elements.modeKidsButton.classList.remove('active');
+            if (elements.modeAdultsButton) elements.modeAdultsButton.classList.remove('active');
+            if (mode === 'practice_kids' && elements.modeKidsButton) elements.modeKidsButton.classList.add('active');
+            else if (mode === 'practice_adults' && elements.modeAdultsButton) elements.modeAdultsButton.classList.add('active');
         }
         showGameScreen();
     }
 
-    // NOVA LÓGICA: Salvar/Atualizar Ranking com Nome Único e Maior Pontuação
+    // Lógica: Salvar/Atualizar Ranking com Nome Único e Maior Pontuação
     async function saveRanking(player, score, mode, difficultyLevelPlayed) {
-        const baseMode = mode.includes('kids') ? 'kids' : 'adults';
-        const collectionRef = db.collection(`ranking_${baseMode}`);
-        // Cria um ID de documento único baseado no nome normalizado do jogador
-        // (minúsculas, espaços por hífens, remove caracteres especiais)
+        let collectionName;
+        if (mode.startsWith('competition_')) {
+            collectionName = `ranking_${mode.includes('kids') ? 'kids' : 'adults'}`;
+        } else {
+            console.warn("Modo de jogo não reconhecido para salvar ranking:", mode);
+            return;
+        }
+        
+        const collectionRef = db.collection(collectionName);
         const normalizedPlayerName = player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
         const playerDocRef = collectionRef.doc(normalizedPlayerName);
-
-        console.log(`saveRanking: Nome original: '${player}', Nome normalizado (ID do documento): '${normalizedPlayerName}'`); // LOG DE DEPURACAO
 
         try {
             const docSnap = await playerDocRef.get();
 
             if (docSnap.exists) {
-                // Jogador já existe, verifica se a nova pontuação é maior
                 const existingScore = docSnap.data().score;
                 if (score > existingScore) {
                     await playerDocRef.update({
-                        player: player, // Mantém a capitalização original para exibição
+                        player: player,
                         score: score,
                         difficulty: difficultyLevelPlayed,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp() // Atualiza o timestamp na nova pontuação mais alta
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
-                    console.log(`Ranking atualizado para ${player}: Nova pontuação (${score}) é maior que a anterior (${existingScore}).`);
-                } else {
-                    console.log(`Pontuação de ${player} (${score}) não é maior que a existente (${existingScore}). Ranking não atualizado.`);
                 }
             } else {
-                // Novo jogador, adiciona ao ranking
                 await playerDocRef.set({
                     player: player,
                     score: score,
                     difficulty: difficultyLevelPlayed,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                console.log(`Novo jogador adicionado ao ranking: ${player} com ${score} pontos.`);
             }
         } catch (error) {
             console.error("Erro ao salvar/atualizar ranking: ", error);
         }
     }
 
+    // Função para salvar/atualizar estatísticas do jogador
+    async function saveUserStats(player, currentScore, currentCorrectAnswers, currentTotalQuestions, gameMode) {
+        if (!player || player.trim() === '' || !player.includes(' ')) {
+            console.warn("Nome do jogador inválido para salvar estatísticas.");
+            return;
+        }
+
+        const statsCollectionRef = db.collection('user_stats');
+        const normalizedPlayerName = player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+        const playerStatsDocRef = statsCollectionRef.doc(normalizedPlayerName);
+
+        try {
+            const docSnap = await playerStatsDocRef.get();
+            let dataToUpdate = {};
+            let existingUnlockedAchievements = [];
+
+            if (docSnap.exists) {
+                const existingStats = docSnap.data();
+                existingUnlockedAchievements = existingStats.unlockedAchievements || [];
+                dataToUpdate = {
+                    totalGamesPlayed: (existingStats.totalGamesPlayed || 0) + 1,
+                    totalCorrectAnswers: (existingStats.totalCorrectAnswers || 0) + currentCorrectAnswers,
+                    totalQuestionsAnswered: (existingStats.totalQuestionsAnswered || 0) + currentTotalQuestions,
+                    highestScore: Math.max(existingStats.highestScore || 0, currentScore),
+                    lastPlayedTimestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastGameMode: gameMode,
+                    unlockedAchievements: existingUnlockedAchievements
+                };
+                // Armazenar a última posição no ranking para Kids e Adults
+                if (gameMode === 'competition_kids') {
+                    dataToUpdate.previousRankKids = existingStats.lastRankKids || null;
+                    dataToUpdate.lastRankKids = await getPlayerRank(normalizedPlayerName, 'kids');
+                } else if (gameMode === 'competition_adults') {
+                    dataToUpdate.previousRankAdults = existingStats.lastRankAdults || null;
+                    dataToUpdate.lastRankAdults = await getPlayerRank(normalizedPlayerName, 'adults');
+                }
+                await playerStatsDocRef.update(dataToUpdate);
+            } else {
+                dataToUpdate = {
+                    player: player,
+                    totalGamesPlayed: 1,
+                    totalCorrectAnswers: currentCorrectAnswers,
+                    totalQuestionsAnswered: currentTotalQuestions,
+                    highestScore: currentScore,
+                    lastPlayedTimestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastGameMode: gameMode,
+                    unlockedAchievements: []
+                };
+                // Armazenar a primeira posição no ranking para Kids e Adults
+                if (gameMode === 'competition_kids') {
+                    dataToUpdate.previousRankKids = null; // Primeira vez jogando
+                    dataToUpdate.lastRankKids = await getPlayerRank(normalizedPlayerName, 'kids');
+                } else if (gameMode === 'competition_adults') {
+                    dataToUpdate.previousRankAdults = null; // Primeira vez jogando
+                    dataToUpdate.lastRankAdults = await getPlayerRank(normalizedPlayerName, 'adults');
+                }
+                await playerStatsDocRef.set(dataToUpdate);
+            }
+            checkAndDisplayAchievements(normalizedPlayerName, dataToUpdate, existingUnlockedAchievements);
+
+        } catch (error) {
+            console.error("Erro ao salvar/atualizar estatísticas do jogador: ", error);
+        }
+    }
+
+    // Função para obter a posição atual do jogador no ranking
+    async function getPlayerRank(normalizedPlayerName, mode) {
+        const collectionName = `ranking_${mode}`;
+        const collectionRef = db.collection(collectionName);
+        const playerDocRef = collectionRef.doc(normalizedPlayerName);
+
+        try {
+            const docSnap = await playerDocRef.get();
+            if (!docSnap.exists) {
+                return null; // Jogador não está no ranking
+            }
+            const playerScore = docSnap.data().score;
+
+            // Contar quantos jogadores têm pontuação maior
+            const higherScoresSnapshot = await collectionRef.where('score', '>', playerScore).get();
+            const rank = higherScoresSnapshot.size + 1; // Rank é (número de scores maiores) + 1
+            return rank;
+        } catch (error) {
+            console.error(`Erro ao obter rank do jogador para o modo ${mode}:`, error);
+            return null;
+        }
+    }
+
+    // Função para verificar e exibir conquistas
+    async function checkAndDisplayAchievements(normalizedPlayerName, currentStats, previouslyUnlockedAchievements) {
+        const playerStatsDocRef = db.collection('user_stats').doc(normalizedPlayerName);
+        let newUnlockedAchievements = [];
+
+        for (const achievementId in achievements) {
+            const achievement = achievements[achievementId];
+            if (!previouslyUnlockedAchievements.includes(achievementId) && achievement.check(currentStats)) {
+                newUnlockedAchievements.push(achievementId);
+                showAchievementNotification(achievement.icon, achievement.name);
+            }
+        }
+
+        if (newUnlockedAchievements.length > 0) {
+            const updatedAchievements = [...previouslyUnlockedAchievements, ...newUnlockedAchievements];
+            await playerStatsDocRef.update({
+                unlockedAchievements: updatedAchievements
+            });
+        }
+    }
+
+    // Função para exibir a notificação de conquista
+    function showAchievementNotification(icon, name) {
+        if (elements.achievementNotificationIcon) elements.achievementNotificationIcon.textContent = icon;
+        if (elements.achievementNotificationText) elements.achievementNotificationText.textContent = `Conquista Desbloqueada: ${name}!`;
+        if (elements.achievementNotification) {
+            elements.achievementNotification.style.display = 'flex';
+            elements.achievementNotification.classList.remove('hide');
+            elements.achievementNotification.classList.add('show');
+
+            setTimeout(() => {
+                if (elements.achievementNotification) {
+                    elements.achievementNotification.classList.remove('show');
+                    elements.achievementNotification.classList.add('hide');
+                    elements.achievementNotification.addEventListener('animationend', function handler() {
+                        if (elements.achievementNotification) elements.achievementNotification.style.display = 'none';
+                        elements.achievementNotification.removeEventListener('animationend', handler);
+                    }, { once: true });
+                }
+            }, 3000);
+        }
+    }
+
+    // Função para esconder a notificação de conquista
+    function hideAchievementNotification() {
+        if (elements.achievementNotification) {
+            elements.achievementNotification.style.display = 'none';
+            elements.achievementNotification.classList.remove('show', 'hide');
+        }
+    }
+
+
+    // Função para exibir as estatísticas do jogador na tela "Meu Progresso"
+    async function displayUserStats() {
+        if (!db) {
+            console.error("Firebase Firestore não inicializado.");
+            return;
+        }
+
+        const storedPlayerName = localStorage.getItem('lastPlayerName');
+        if (!storedPlayerName || storedPlayerName.trim() === '' || !storedPlayerName.includes(' ')) {
+            if (elements.statPlayerName) elements.statPlayerName.textContent = 'Nenhum jogador registrado';
+            if (elements.statHighestScore) elements.statHighestScore.textContent = '0';
+            if (elements.statTotalGames) elements.statTotalGames.textContent = '0';
+            if (elements.statTotalQuestions) elements.statTotalQuestions.textContent = '0';
+            if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = '0';
+            if (elements.statAccuracy) elements.statAccuracy.textContent = '0%';
+            if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'N/A';
+            if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Jogue para desbloquear conquistas!</li>';
+            renderAchievements([]);
+            return;
+        }
+
+        const normalizedPlayerName = storedPlayerName.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+        const playerStatsDocRef = db.collection('user_stats').doc(normalizedPlayerName);
+
+        try {
+            const docSnap = await playerStatsDocRef.get();
+            if (docSnap.exists) {
+                const stats = docSnap.data();
+                if (elements.statPlayerName) elements.statPlayerName.textContent = stats.player || storedPlayerName;
+                if (elements.statHighestScore) elements.statHighestScore.textContent = stats.highestScore || 0;
+                if (elements.statTotalGames) elements.statTotalGames.textContent = stats.totalGamesPlayed || 0;
+                if (elements.statTotalQuestions) elements.statTotalQuestions.textContent = stats.totalQuestionsAnswered || 0;
+                if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = stats.totalCorrectAnswers || 0;
+
+                const accuracy = stats.totalQuestionsAnswered > 0 
+                    ? ((stats.totalCorrectAnswers / stats.totalQuestionsAnswered) * 100).toFixed(2) 
+                    : 0;
+                if (elements.statAccuracy) elements.statAccuracy.textContent = `${accuracy}%`;
+
+                if (stats.lastPlayedTimestamp) {
+                    const date = stats.lastPlayedTimestamp.toDate();
+                    if (elements.statLastPlayed) elements.statLastPlayed.textContent = date.toLocaleString('pt-BR');
+                } else {
+                    if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'N/A';
+                }
+                renderAchievements(stats.unlockedAchievements || []);
+            } else {
+                if (elements.statPlayerName) elements.statPlayerName.textContent = storedPlayerName;
+                if (elements.statHighestScore) elements.statHighestScore.textContent = '0';
+                if (elements.statTotalGames) elements.statTotalGames.textContent = '0';
+                if (elements.statTotalQuestions) elements.statTotalQuestions.textContent = '0';
+                if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = '0';
+                if (elements.statAccuracy) elements.statAccuracy.textContent = '0%';
+                if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'N/A';
+                if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Jogue para desbloquear conquistas!</li>';
+                renderAchievements([]);
+            }
+        } catch (error) {
+            console.error("Erro ao carregar estatísticas do jogador: ", error);
+            if (elements.statPlayerName) elements.statPlayerName.textContent = 'Erro ao carregar';
+            if (elements.statHighestScore) elements.statHighestScore.textContent = 'Erro';
+            if (elements.statTotalGames) elements.statTotalGames.textContent = 'Erro';
+            if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = 'Erro';
+            if (elements.statAccuracy) elements.statAccuracy.textContent = 'Erro';
+            if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'Erro';
+            if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Erro ao carregar conquistas.</li>';
+        }
+    }
+
+    // Função para renderizar as conquistas na grade
+    function renderAchievements(unlockedIds) {
+        if (!elements.achievementsGrid) return;
+        elements.achievementsGrid.innerHTML = '';
+        for (const id in achievements) {
+            const achievement = achievements[id];
+            const item = document.createElement('div');
+            item.classList.add('achievement-item');
+            if (unlockedIds.includes(id)) {
+                item.classList.add('unlocked');
+            }
+            item.setAttribute('title', `${achievement.name}: ${achievement.description}`);
+
+            item.innerHTML = `
+                <span class="achievement-icon">${achievement.icon}</span>
+                <span class="achievement-name">${achievement.name}</span>
+            `;
+            elements.achievementsGrid.appendChild(item);
+        }
+    }
+
+
     function unsubscribeAllRankings() {
-        // Desinscreve listeners das listas de ranking da tela de ranking completo
         ['rankingKidsList', 'rankingAdultsList'].forEach(listId => {
             const listElement = elements[listId];
-            if (listElement && listElement.dataset.unsubscribe) {
+            if (listElement && listElement.dataset && listElement.dataset.unsubscribe) { 
                 listElement.dataset.unsubscribe();
                 delete listElement.dataset.unsubscribe;
             }
         });
-        // Desinscreve listeners das listas de ranking dinâmicas da tela de competição
         ['rankingKidsListDynamic', 'rankingAdultsListDynamic'].forEach(listId => {
             const listElement = elements[listId];
-            if (listElement && listElement.dataset.unsubscribe) {
+            if (listElement && listElement.dataset && listElement.dataset.unsubscribe) { 
                 listElement.dataset.unsubscribe();
                 delete listElement.dataset.unsubscribe;
             }
@@ -1086,14 +1806,17 @@
     async function displayRanking(mode, targetListElement, highlightPlayer = false, limit = 10) {
         if (!db) { 
             console.error("Firebase Firestore não inicializado.");
-            targetListElement.innerHTML = '<li>Erro: Firestore não está pronto.</li>';
+            if (targetListElement) targetListElement.innerHTML = '<li>Erro: Firestore não está pronto.</li>';
+            return;
+        }
+        if (!targetListElement) {
+            console.error("Elemento de lista de ranking alvo não encontrado.");
             return;
         }
 
         const collectionName = `ranking_${mode}`;
         targetListElement.innerHTML = '<li>Carregando ranking...</li>';
 
-        // Desinscreve o listener anterior para a lista específica se houver
         if (targetListElement.dataset.unsubscribe) {
             targetListElement.dataset.unsubscribe();
             delete targetListElement.dataset.unsubscribe;
@@ -1102,8 +1825,7 @@
         const currentUnsubscribe = db.collection(collectionName)
             .orderBy("score", "desc")
             .limit(limit)
-            .onSnapshot(snapshot => {
-                console.log(`displayRanking: Recebidos ${snapshot.size} documentos para o ranking ${mode} (limite: ${limit}).`); // LOG DE DEPURACAO
+            .onSnapshot(async snapshot => {
                 targetListElement.innerHTML = '';
                 if (snapshot.empty) {
                     targetListElement.innerHTML = '<li>Nenhum recorde ainda. Seja o primeiro!</li>';
@@ -1111,14 +1833,47 @@
                 }
 
                 const rankings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                const normalizedPlayerName = currentPlayerName.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+                let playerStats = null;
+                if (highlightPlayer && normalizedPlayerName) {
+                    const statsSnap = await db.collection('user_stats').doc(normalizedPlayerName).get();
+                    if (statsSnap.exists) {
+                        playerStats = statsSnap.data();
+                    }
+                }
 
                 rankings.forEach((data, index) => {
                     const li = document.createElement('li');
                     const rankingPosition = index + 1;
-                    // REMOVIDO: data.difficulty da exibição
-                    li.innerHTML = `<span class="ranking-position">${rankingPosition}º</span><span class="ranking-name">${data.player}</span><span class="ranking-score">${data.score}</span>`; 
                     
-                    if (highlightPlayer && data.player === currentPlayerName && data.score === score) {
+                    let indicatorHtml = '';
+                    if (highlightPlayer && data.player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-') === normalizedPlayerName && playerStats) {
+                        let previousRank = null;
+                        let lastRank = null;
+
+                        if (mode === 'kids') {
+                            previousRank = playerStats.previousRankKids;
+                            lastRank = playerStats.lastRankKids;
+                        } else if (mode === 'adults') {
+                            previousRank = playerStats.previousRankAdults;
+                            lastRank = playerStats.lastRankAdults;
+                        }
+
+                        // Apenas mostra o indicador se houver um rank anterior para comparação E se a posição atual na lista for a mesma que a última registrada.
+                        if (previousRank !== null && lastRank === rankingPosition) { 
+                            if (lastRank < previousRank) {
+                                indicatorHtml = '<span class="ranking-indicator" style="color: #007bff;">▲</span>'; // Seta para cima azul
+                            } else if (lastRank > previousRank) {
+                                indicatorHtml = '<span class="ranking-indicator" style="color: #dc3545;">▼</span>'; // Seta para baixo vermelha
+                            } else {
+                                indicatorHtml = '<span class="ranking-indicator" style="color: #4CAF50;">■</span>'; // Quadrado verde
+                            }
+                        }
+                    }
+
+                    li.innerHTML = `<span class="ranking-position">${rankingPosition}º</span>${indicatorHtml}<span class="ranking-name">${data.player}</span><span class="ranking-score">${data.score}</span>`; 
+                    
+                    if (highlightPlayer && data.player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-') === normalizedPlayerName) {
                         li.classList.add('current-player-highlight');
                         li.id = `player-rank-${data.id}`; 
                     }
@@ -1134,7 +1889,7 @@
                 }
             }, error => {
                 console.error(`Erro ao carregar ranking ${mode}: `, error);
-                targetListElement.innerHTML = '<li>Erro ao carregar ranking. Verifique sua conexão.</li>'; // Mensagem de erro mais clara
+                if (targetListElement) targetListElement.innerHTML = '<li>Erro ao carregar ranking. Verifique sua conexão.</li>';
             });
         
         targetListElement.dataset.unsubscribe = currentUnsubscribe;
@@ -1145,9 +1900,11 @@
     function generateQuestion() {
         let num1, num2, operatorsToUse, operator, correctAnswer, currentLevelName; 
 
-        elements.explainConceptButton.style.display = 'none'; 
-        elements.messageElement.textContent = '';
-        elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+        if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none'; 
+        if (elements.messageElement) {
+            elements.messageElement.textContent = '';
+            elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+        }
 
         if (currentGameMode.startsWith('practice_')) {
             operatorsToUse = (selectedOperationType === 'all') ? ['+', '-', '*', '÷'] : [selectedOperationType];
@@ -1196,10 +1953,10 @@
         else { questionString = `${num1} ÷ ${num2}`; correctAnswer = num1 / num2; }
 
         currentQuestion = { question: questionString, answer: correctAnswer };
-        elements.questionElement.textContent = currentQuestion.question;
-        elements.difficultyLevelElement.textContent = ''; // Vazio, como solicitado
+        if (elements.questionElement) elements.questionElement.textContent = currentQuestion.question;
+        if (elements.difficultyLevelElement) elements.difficultyLevelElement.textContent = '';
         
-        elements.questionElement.classList.remove('correct-animation', 'incorrect-animation');
+        if (elements.questionElement) elements.questionElement.classList.remove('correct-animation', 'incorrect-animation');
         questionStartTime = Date.now(); 
 
         let answers = [correctAnswer];
@@ -1226,51 +1983,91 @@
         }
 
         elements.answerButtons.forEach((button, index) => {
-            button.textContent = answers[index];
-            button.dataset.value = answers[index];
-            button.classList.remove('correct-feedback', 'incorrect-feedback');
-            button.disabled = false;
+            if (button) { 
+                button.textContent = answers[index];
+                button.dataset.value = answers[index];
+                button.classList.remove('correct-feedback', 'incorrect-feedback');
+                button.disabled = false;
+            }
         });
     }
 
-    function startGame() {
+    // Função para exibir texto flutuante de feedback
+    function displayFloatingFeedback(targetElement, text, type) {
+        if (!targetElement) return; 
+        const feedbackText = document.createElement('span');
+        feedbackText.textContent = text;
+        feedbackText.classList.add('floating-feedback-text', type);
+        
+        const rect = targetElement.getBoundingClientRect();
+        feedbackText.style.left = `${rect.left + rect.width / 2}px`;
+        feedbackText.style.top = `${rect.top}px`;
+        
+        document.body.appendChild(feedbackText);
+
+        void feedbackText.offsetWidth; 
+        feedbackText.style.opacity = 1;
+
+        feedbackText.addEventListener('animationend', () => {
+            feedbackText.remove();
+        });
+    }
+
+
+    async function startGame() { 
       if (!currentGameMode || (currentGameMode.startsWith('practice_') && selectedOperationType === null)) {
           console.warn("Por favor, selecione um modo e/ou operação de jogo antes de começar.");
           return;
       }
       currentPlayerName = elements.playerNameInput.value.trim();
-      // NOVA VALIDAÇÃO: Verifica se há pelo menos um espaço (indicando nome e sobrenome)
       if (!elements.playerNameInput.checkValidity() || currentPlayerName === '' || !currentPlayerName.includes(' ')) {
         console.warn("Por favor, digite seu nome e sobrenome (ex: João Silva) para começar o jogo!");
-        elements.playerNameInput.focus();
+        if (elements.playerNameInput) elements.playerNameInput.focus();
         return;
       }
+      localStorage.setItem('lastPlayerName', currentPlayerName);
 
-      score = 0; timeLeft = 60; gameActive = true; correctAnswersCount = 0; consecutiveCorrectAnswersCount = 0;
-      elements.scoreValueElement.textContent = score; elements.timerValueElement.textContent = timeLeft + 's';
-      elements.playerNameInput.style.display = 'none'; elements.startGameButton.style.display = 'none';
-      elements.answerButtonsContainer.style.display = 'flex';
-      elements.playAgainButton.style.display = 'none'; elements.explainConceptButton.style.display = 'none';
-      elements.messageElement.textContent = ''; elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
-      elements.timeBar.style.width = '100%'; elements.timeBar.style.backgroundColor = '#2ecc71'; elements.timeBar.classList.remove('time-bar-shaking');
+      score = 0; timeLeft = 60; gameActive = true; correctAnswersCount = 0; totalQuestionsAnsweredCurrentGame = 0; consecutiveCorrectAnswersCount = 0;
+      if (elements.scoreValueElement) elements.scoreValueElement.textContent = score;
+      if (elements.timerValueElement) elements.timerValueElement.textContent = timeLeft + 's';
+      if (elements.playerNameInput) elements.playerNameInput.style.display = 'none';
+      if (elements.startGameButton) elements.startGameButton.style.display = 'none';
+      if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'flex';
+      if (elements.playAgainButton) elements.playAgainButton.style.display = 'none';
+      if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
+      if (elements.messageElement) {
+          elements.messageElement.textContent = '';
+          elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+      }
+      if (elements.timeBar) {
+          elements.timeBar.style.width = '100%';
+          elements.timeBar.style.backgroundColor = '#2ecc71';
+          elements.timeBar.classList.remove('time-bar-shaking');
+      }
+      if (elements.streakIndicator) {
+          elements.streakIndicator.classList.remove('show');
+          elements.streakIndicator.style.display = 'none';
+      }
 
       setTimeout(() => {
         generateQuestion();
         timerInterval = setInterval(() => {
           timeLeft--;
-          elements.timerValueElement.textContent = timeLeft + 's';
+          if (elements.timerValueElement) elements.timerValueElement.textContent = timeLeft + 's';
           const percentage = (timeLeft / 60) * 100;
-          elements.timeBar.style.width = percentage + '%';
+          if (elements.timeBar) {
+              elements.timeBar.style.width = percentage + '%';
 
-          if (percentage > 50) elements.timeBar.style.backgroundColor = '#2ecc71';
-          else if (percentage > 20) {
-              elements.timeBar.style.backgroundColor = '#f39c12';
-              if (timeLeft <= 10 && !elements.timeBar.classList.contains('time-bar-shaking')) elements.timeBar.classList.add('time-bar-shaking');
-          } else {
-              elements.timeBar.style.backgroundColor = '#e74c3c';
-              if (timeLeft <= 10 && !elements.timeBar.classList.contains('time-bar-shaking')) {
-                  elements.timeBar.classList.add('time-bar-shaking');
-                  void elements.timeBar.offsetWidth; 
+              if (percentage > 50) elements.timeBar.style.backgroundColor = '#2ecc71';
+              else if (percentage > 20) {
+                  elements.timeBar.style.backgroundColor = '#f39c12';
+                  if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) elements.timeBar.classList.add('time-bar-shaking');
+              } else {
+                  elements.timeBar.style.backgroundColor = '#e74c3c';
+                  if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) {
+                      elements.timeBar.classList.add('time-bar-shaking');
+                      void elements.timeBar.offsetWidth; 
+                  }
               }
           }
           if (timeLeft <= 0) endGame();
@@ -1278,167 +2075,239 @@
       }, 1000);
     }
 
-    function endGame() {
+    async function endGame() { 
       clearInterval(timerInterval); 
       gameActive = false;
-      elements.answerButtons.forEach(button => button.disabled = true);
+      elements.answerButtons.forEach(button => { if (button) button.disabled = true; }); 
       
-      // Exibe a pontuação final por 2 segundos
-      elements.messageElement.textContent = `Tempo esgotado! Você fez ${score} pontos.`;
-      elements.messageElement.classList.add('show');
-      elements.messageElement.classList.remove('success-message', 'error-message', 'incredible-message');
+      if (elements.messageElement) {
+          elements.messageElement.textContent = `Tempo esgotado! Você fez ${score} pontos.`;
+          elements.messageElement.classList.add('show');
+          elements.messageElement.classList.remove('success-message', 'error-message', 'incredible-message');
+      }
       
-      elements.answerButtons.forEach(button => button.classList.remove('correct-feedback', 'incorrect-feedback'));
-      elements.questionElement.classList.remove('correct-animation', 'incorrect-animation');
-      elements.timeBar.classList.remove('time-bar-shaking');
-      elements.explainConceptButton.style.display = 'none'; 
+      elements.answerButtons.forEach(button => { if (button) button.classList.remove('correct-feedback', 'incorrect-feedback'); }); 
+      if (elements.questionElement) elements.questionElement.classList.remove('correct-animation', 'incorrect-animation');
+      if (elements.timeBar) elements.timeBar.classList.remove('time-bar-shaking');
+      if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none'; 
+      if (elements.streakIndicator) {
+          elements.streakIndicator.classList.remove('show');
+          elements.streakIndicator.style.display = 'none';
+      }
+
+      // Salva as estatísticas do jogador ao final de CADA jogo
+      await saveUserStats(currentPlayerName, score, correctAnswersCount, totalQuestionsAnsweredCurrentGame, currentGameMode); 
 
       setTimeout(() => {
-          elements.messageElement.classList.remove('show'); // Esconde a mensagem de pontuação
-          elements.messageElement.textContent = ''; // Limpa o texto da mensagem
+          if (elements.messageElement) {
+              elements.messageElement.classList.remove('show');
+              elements.messageElement.textContent = '';
+          }
 
           if (currentGameMode.startsWith('competition_')) {
-              const baseMode = currentGameMode.includes('kids') ? 'kids' : 'adults';
               let finalDifficultyLevelName;
-              if (correctAnswersCount >= 16) finalDifficultyLevelName = difficultyNames[4];
-              else if (correctAnswersCount >= 10) finalDifficultyLevelName = difficultyNames[3];
-              else if (correctAnswersCount >= 5) finalDifficultyLevelName = difficultyNames[2];
-              else finalDifficultyLevelName = difficultyNames[1];
+              if (currentGameMode === 'competition_kids') finalDifficultyLevelName = difficultyNames["kids_easy"];
+              else {
+                  if (correctAnswersCount >= 16) finalDifficultyLevelName = difficultyNames[4];
+                  else if (correctAnswersCount >= 10) finalDifficultyLevelName = difficultyNames[3];
+                  else if (correctAnswersCount >= 5) finalDifficultyLevelName = difficultyNames[2];
+                  else finalDifficultyLevelName = difficultyNames[1];
+              }
               
               saveRanking(currentPlayerName, score, currentGameMode, finalDifficultyLevelName);
-              showRankingsScreen(true); // Destaca o jogador e mostra o ranking relevante
-              // O usuário agora precisa clicar em "Voltar ao Menu Principal" para sair do ranking.
+              showRankingsScreen(true); 
               
-          } else { // Modo Praticar
-              elements.playerNameInput.value = '';
-              elements.playerNameInput.style.display = 'inline-block';
-              elements.answerButtonsContainer.style.display = 'none';
+          } else {
+              if (elements.playerNameInput) elements.playerNameInput.value = '';
+              if (elements.playerNameInput) elements.playerNameInput.style.display = 'inline-block';
+              if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none';
               currentGameMode = null; selectedOperationType = 'all';
-              elements.questionElement.textContent = 'Prepare-se para a aventura!'; // Texto atualizado
-              elements.questionElement.classList.add('prepare-text-animated'); // Adiciona animação
-              elements.questionElement.addEventListener('animationend', function handler() {
-                  elements.questionElement.classList.remove('prepare-text-animated'); // Remove a classe após a animação
-                  elements.questionElement.removeEventListener('animationend', handler);
-              });
-              elements.difficultyLevelElement.textContent = ''; // Vazio, como solicitado
-              showMainMenu(); // Retorna ao Menu Principal
+              if (elements.questionElement) {
+                  elements.questionElement.textContent = 'Prepare-se para a aventura!';
+                  elements.questionElement.classList.add('prepare-text-animated');
+                  elements.questionElement.addEventListener('animationend', function handler() {
+                      if (elements.questionElement) elements.questionElement.classList.remove('prepare-text-animated');
+                      elements.questionElement.removeEventListener('animationend', handler);
+                  });
+              }
+              if (elements.difficultyLevelElement) elements.difficultyLevelElement.textContent = '';
+              showMainMenu();
           }
-      }, 2000); // Exibe a pontuação por 2 segundos antes da próxima ação
+      }, 2000);
     }
 
     function showFeedbackMessage(text, type) {
-        elements.messageElement.textContent = text;
-        elements.messageElement.classList.remove('success-message', 'error-message', 'incredible-message');
-        elements.messageElement.classList.add(type, 'show');
-        setTimeout(() => {
-            elements.messageElement.classList.remove('show');
-            setTimeout(() => elements.messageElement.textContent = '', 500);
-        }, 1500);
+        if (elements.messageElement) { 
+            elements.messageElement.textContent = text;
+            elements.messageElement.classList.remove('success-message', 'error-message', 'incredible-message');
+            elements.messageElement.classList.add(type, 'show');
+            setTimeout(() => {
+                if (elements.messageElement) elements.messageElement.classList.remove('show');
+                setTimeout(() => { if (elements.messageElement) elements.messageElement.textContent = ''; }, 500);
+            }, 1500);
+        }
     }
 
     function processCorrectAnswer(clickedButton) {
-        score++; correctAnswersCount++; 
-        elements.scoreValueElement.textContent = score;
-        elements.scoreValueElement.classList.add('pulse-effect');
-        elements.scoreValueElement.addEventListener('animationend', function handler() {
-            elements.scoreValueElement.classList.remove('pulse-effect');
-            elements.scoreValueElement.removeEventListener('animationend', handler);
-        });
+        score++; correctAnswersCount++; totalQuestionsAnsweredCurrentGame++;
+        if (elements.scoreValueElement) { 
+            elements.scoreValueElement.textContent = score;
+            elements.scoreValueElement.classList.add('pulse-effect');
+            elements.scoreValueElement.addEventListener('animationend', function handler() {
+                if (elements.scoreValueElement) elements.scoreValueElement.classList.remove('pulse-effect');
+                elements.scoreValueElement.removeEventListener('animationend', handler);
+            });
+        }
+        
+        displayFloatingFeedback(elements.scoreValueElement, '+1', 'score-bonus');
 
-        clickedButton.classList.add('correct-feedback'); 
-        elements.questionElement.classList.add('correct-animation'); 
-        if (isSoundOn) correctSound.play();
+        if (clickedButton) clickedButton.classList.add('correct-feedback'); 
+        if (elements.questionElement) elements.questionElement.classList.add('correct-animation'); 
+        if (isSoundOn && correctSound) correctSound.play();
         if (isVibrationOn && navigator.vibrate) navigator.vibrate(50);
 
         const timeTaken = (Date.now() - questionStartTime) / 1000; 
-        const speedBonusThreshold = 1.5; const bonusTime = 0.5; 
+        const speedBonusThreshold = 1.5; 
+        
+        const bonusTimeSpeed = 0.5; 
         if (timeTaken <= speedBonusThreshold) {
-            timeLeft = Math.min(60, timeLeft + bonusTime); 
-            elements.timerValueElement.textContent = Math.ceil(timeLeft) + 's'; 
+            timeLeft = Math.min(60, timeLeft + bonusTimeSpeed); 
+            if (elements.timerValueElement) elements.timerValueElement.textContent = Math.ceil(timeLeft) + 's'; 
+            displayFloatingFeedback(elements.timerValueElement, `+${bonusTimeSpeed}s`, 'time-bonus');
         }
         
-        elements.questionElement.addEventListener('animationend', function handler() {
-            elements.questionElement.classList.remove('correct-animation');
-            elements.questionElement.removeEventListener('animationend', handler);
-        });
+        if (elements.questionElement) { 
+            elements.questionElement.addEventListener('animationend', function handler() {
+                if (elements.questionElement) elements.questionElement.classList.remove('correct-animation');
+                elements.questionElement.removeEventListener('animationend', handler);
+            });
+        }
 
         consecutiveCorrectAnswersCount++;
-        if (consecutiveCorrectAnswersCount === 10) {
-            showFeedbackMessage("Incrível!", 'incredible-message');
-            consecutiveCorrectAnswersCount = 0;
-        } else {
-            showFeedbackMessage("Parabéns!", 'success-message');
+        if (elements.streakCount) elements.streakCount.textContent = consecutiveCorrectAnswersCount;
+        if (elements.streakIndicator) { 
+            elements.streakIndicator.style.display = 'flex';
+            elements.streakIndicator.classList.add('show');
         }
-        elements.explainConceptButton.style.display = 'none';
-        elements.answerButtons.forEach(button => button.disabled = true);
+
+        let messageToShow = "Parabéns!";
+        let messageType = 'success-message';
+
+        // Bônus de Tempo por Sequência (a cada 5 acertos consecutivos)
+        if (consecutiveCorrectAnswersCount > 0 && consecutiveCorrectAnswersCount % 5 === 0) {
+            const streakBonusTime = 5; // +5 segundos para cada 5 acertos consecutivos
+            timeLeft += streakBonusTime;
+            if (elements.timerValueElement) elements.timerValueElement.textContent = Math.ceil(timeLeft) + 's';
+            displayFloatingFeedback(elements.timerValueElement, `+${streakBonusTime}s`, 'time-bonus');
+            messageToShow = "Bônus de Tempo!";
+            messageType = 'incredible-message';
+        }
+
+        // Mensagem "Incrível!" (a cada 10 acertos consecutivos)
+        if (consecutiveCorrectAnswersCount > 0 && consecutiveCorrectAnswersCount % 10 === 0) {
+            messageToShow = "Incrível!";
+            messageType = 'incredible-message';
+        }
+
+        showFeedbackMessage(messageToShow, messageType);
+        
+        if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
+        elements.answerButtons.forEach(button => { if (button) button.disabled = true; }); 
         setTimeout(() => generateQuestion(), 500);
     }
 
     function processIncorrectAnswer(clickedButton) {
-        elements.scoreValueElement.textContent = score;
-        elements.scoreValueElement.classList.add('pulse-effect');
-        elements.scoreValueElement.addEventListener('animationend', function handler() {
-            elements.scoreValueElement.classList.remove('pulse-effect');
-            elements.scoreValueElement.removeEventListener('animationend', handler);
-        });
+        totalQuestionsAnsweredCurrentGame++;
+        if (elements.scoreValueElement) { 
+            elements.scoreValueElement.textContent = score;
+            elements.scoreValueElement.classList.add('pulse-effect');
+            elements.scoreValueElement.addEventListener('animationend', function handler() {
+                if (elements.scoreValueElement) elements.scoreValueElement.classList.remove('pulse-effect');
+                elements.scoreValueElement.removeEventListener('animationend', handler);
+            });
+        }
 
-        clickedButton.classList.add('incorrect-feedback'); 
-        elements.questionElement.classList.add('incorrect-animation'); 
-        if (isSoundOn) incorrectSound.play();
+        if (clickedButton) clickedButton.classList.add('incorrect-feedback'); 
+        if (elements.questionElement) elements.questionElement.classList.add('incorrect-animation'); 
+        if (isSoundOn && incorrectSound) incorrectSound.play();
         if (isVibrationOn && navigator.vibrate) navigator.vibrate([100, 30, 100]);
 
         consecutiveCorrectAnswersCount = 0;
+        if (elements.streakIndicator) { 
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
+
         showFeedbackMessage("Errou!", 'error-message');
-        elements.explainConceptButton.style.display = 'none';
-        elements.answerButtons.forEach(button => button.disabled = true);
+        if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
+        elements.answerButtons.forEach(button => { if (button) button.disabled = true; }); 
         setTimeout(() => generateQuestion(), 500);
     }
 
     function openDonationLink() { window.open('https://checkout.nubank.com.br/KVCHaD4Xahm39l1', '_blank'); }
 
-    // --- Event Listeners ---
-    elements.practiceButton.addEventListener('click', showOperationSelection); 
-    elements.competitionButton.addEventListener('click', showCompetitionModeSelection); 
-    elements.rankingDonateButton.addEventListener('click', openDonationLink);
+    // Função para gerar a mensagem de compartilhamento
+    function generateShareMessage(playerName, finalScore, gameMode) {
+        const gameUrl = "https://wiggers12.github.io/"; // URL do seu jogo no GitHub Pages
+        let modeText = '';
+        if (gameMode === 'competition_kids') modeText = 'no modo Competição Kids';
+        else if (gameMode === 'competition_adults') modeText = 'no modo Competição Adulto';
+        else if (gameMode && gameMode.startsWith('practice_')) modeText = 'no modo Praticar';
 
-    elements.backToMainFromOperationButton.addEventListener('click', showMainMenu); 
-    elements.backToOperationSelectionButton.addEventListener('click', showOperationSelection); 
-    elements.backToMainFromCompetitionModeButton.addEventListener('click', showMainMenu); 
-    elements.backToMainFromRankingButton.addEventListener('click', showMainMenu);
+        return `Acabei de fazer ${finalScore} pontos ${modeText} no Desafio dos 60 Segundos! Você consegue me superar? Jogue agora: ${gameUrl} #Desafio60Segundos #Matemática`;
+    }
+
+    // Função para compartilhar no WhatsApp
+    function shareOnWhatsApp() {
+        const message = generateShareMessage(currentPlayerName, score, currentGameMode);
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    }
+
+    // --- Event Listeners ---
+    if (elements.practiceButton) elements.practiceButton.addEventListener('click', showOperationSelection); 
+    if (elements.competitionButton) elements.competitionButton.addEventListener('click', showCompetitionModeSelection); 
+    if (elements.myProgressButton) elements.myProgressButton.addEventListener('click', showMyProgressScreen);
+    if (elements.rankingDonateButton) elements.rankingDonateButton.addEventListener('click', openDonationLink);
+
+    if (elements.backToMainFromOperationButton) elements.backToMainFromOperationButton.addEventListener('click', showMainMenu); 
+    if (elements.backToOperationSelectionButton) elements.backToOperationSelectionButton.addEventListener('click', showOperationSelection); 
+    if (elements.backToMainFromCompetitionModeButton) elements.backToMainFromCompetitionModeButton.addEventListener('click', showMainMenu); 
+    if (elements.backToMainFromRankingButton) elements.backToMainFromRankingButton.addEventListener('click', showMainMenu);
+    if (elements.backToMainFromProgressButton) elements.backToMainFromProgressButton.addEventListener('click', showMainMenu);
 
     document.querySelectorAll('#operation-selection-container .operation-buttons button').forEach(button => {
-        button.addEventListener('click', (e) => selectOperation(e.target.dataset.op));
+        if (button) button.addEventListener('click', (e) => selectOperation(e.target.dataset.op));
     });
 
-    elements.modeKidsButton.addEventListener('click', (e) => selectGameModeAndStart(e.target.dataset.mode));
-    elements.modeAdultsButton.addEventListener('click', (e) => selectGameModeAndStart(e.target.dataset.mode));
+    if (elements.modeKidsButton) elements.modeKidsButton.addEventListener('click', (e) => selectGameModeAndStart(e.target.dataset.mode));
+    if (elements.modeAdultsButton) elements.modeAdultsButton.addEventListener('click', (e) => selectGameModeAndStart(e.target.dataset.mode));
 
     document.querySelectorAll('#competition-mode-selection-container .competition-buttons button[data-mode^="competition_"]').forEach(button => {
-        button.addEventListener('click', (e) => selectGameModeAndStart(e.target.dataset.mode));
+        if (button) button.addEventListener('click', (e) => selectGameModeAndStart(e.target.dataset.mode));
     });
 
-    // Event listeners para os novos botões de alternância de ranking
-    elements.showKidsRankingButton.addEventListener('click', () => {
-        elements.dynamicCompetitionRankingDisplay.style.display = 'flex'; // Mostra o contêiner dinâmico
-        elements.rankingKidsAreaDynamic.style.display = 'block'; // Mostra o ranking Kids
-        elements.rankingAdultsAreaDynamic.style.display = 'none'; // Esconde o ranking Adulto
-        displayRanking('kids', elements.rankingKidsListDynamic, false, 50); // Carrega o ranking Kids (Top 50)
+    if (elements.showKidsRankingButton) elements.showKidsRankingButton.addEventListener('click', () => {
+        if (elements.dynamicCompetitionRankingDisplay) elements.dynamicCompetitionRankingDisplay.style.display = 'flex';
+        if (elements.rankingKidsAreaDynamic) elements.rankingKidsAreaDynamic.style.display = 'block';
+        if (elements.rankingAdultsAreaDynamic) elements.rankingAdultsAreaDynamic.style.display = 'none';
+        displayRanking('kids', elements.rankingKidsListDynamic, false, 50);
     });
 
-    elements.showAdultsRankingButton.addEventListener('click', () => {
-        elements.dynamicCompetitionRankingDisplay.style.display = 'flex'; // Mostra o contêiner dinâmico
-        elements.rankingKidsAreaDynamic.style.display = 'none'; // Esconde o ranking Kids
-        elements.rankingAdultsAreaDynamic.style.display = 'block'; // Mostra o ranking Adulto
-        displayRanking('adults', elements.rankingAdultsListDynamic, false, 50); // Carrega o ranking Adulto (Top 50)
+    if (elements.showAdultsRankingButton) elements.showAdultsRankingButton.addEventListener('click', () => {
+        if (elements.dynamicCompetitionRankingDisplay) elements.dynamicCompetitionRankingDisplay.style.display = 'flex';
+        if (elements.rankingKidsAreaDynamic) elements.rankingKidsAreaDynamic.style.display = 'none';
+        if (elements.rankingAdultsAreaDynamic) elements.rankingAdultsAreaDynamic.style.display = 'block';
+        displayRanking('adults', elements.rankingAdultsListDynamic, false, 50);
     });
 
 
-    elements.startGameButton.addEventListener('click', startGame);
-    elements.playAgainButton.addEventListener('click', startGame);
+    if (elements.startGameButton) elements.startGameButton.addEventListener('click', startGame);
+    if (elements.playAgainButton) elements.playAgainButton.addEventListener('click', startGame);
 
-    elements.playerNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') startGame(); });
+    if (elements.playerNameInput) elements.playerNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') startGame(); });
 
-    elements.answerButtonsContainer.addEventListener('click', (e) => {
+    if (elements.answerButtonsContainer) elements.answerButtonsContainer.addEventListener('click', (e) => {
         if (!gameActive || !e.target.classList.contains('answer-button')) return;
         const userAnswer = Number(e.target.dataset.value);
         const correctAnswer = currentQuestion.answer;
@@ -1447,75 +2316,107 @@
     });
 
     elements.settingsIcons.forEach(icon => {
-        icon.addEventListener('click', (e) => showSettingsModal(e.currentTarget.dataset.targetScreen));
+        if (icon) icon.addEventListener('click', (e) => showSettingsModal(e.currentTarget.dataset.targetScreen));
     });
 
-    elements.closeSettingsModalButton.addEventListener('click', () => {
+    if (elements.closeSettingsModalButton) elements.closeSettingsModalButton.addEventListener('click', () => {
         hideSettingsModal();
-        const sourceScreen = elements.settingsModal.dataset.sourceScreen;
+        const sourceScreen = elements.settingsModal ? elements.settingsModal.dataset.sourceScreen : null; 
         if (sourceScreen === 'operation-selection') showOperationSelection();
         else if (sourceScreen === 'mode-selection') showModeSelectionForPractice();
         else if (sourceScreen === 'competition-mode-selection') showCompetitionModeSelection();
         else if (sourceScreen === 'game') showGameScreen();
         else if (sourceScreen === 'rankings') showRankingsScreen();
+        else if (sourceScreen === 'my-progress') showMyProgressScreen();
     });
 
-    elements.toggleSound.addEventListener('click', () => { isSoundOn = handleToggle(elements.toggleSound, isSoundOn); });
-    elements.toggleBGM.addEventListener('click', () => { isBGMOn = handleToggle(elements.toggleBGM, isBGMOn); });
-    elements.toggleVibration.addEventListener('click', () => { isVibrationOn = handleToggle(elements.toggleVibration, isVibrationOn); });
+    if (elements.toggleSound) elements.toggleSound.addEventListener('click', () => { isSoundOn = handleToggle(elements.toggleSound, isSoundOn); });
+    if (elements.toggleBGM) elements.toggleBGM.addEventListener('click', () => { isBGMOn = handleToggle(elements.toggleBGM, isBGMOn); });
+    if (elements.toggleVibration) elements.toggleVibration.addEventListener('click', () => { isVibrationOn = handleToggle(elements.toggleVibration, isVibrationOn); });
 
-    elements.settingsHomeButton.addEventListener('click', () => {
+    if (elements.settingsHomeButton) elements.settingsHomeButton.addEventListener('click', () => {
         hideSettingsModal();
-        endGame(); // Isso irá lidar com o reset do estado do jogo e navegar para o menu principal
+        endGame();
         unsubscribeAllRankings();
     });
 
-    elements.settingsReplayButton.addEventListener('click', () => {
+    if (elements.settingsReplayButton) elements.settingsReplayButton.addEventListener('click', () => {
         hideSettingsModal();
         clearInterval(timerInterval); 
-        gameActive = false; score = 0; timeLeft = 60; correctAnswersCount = 0; consecutiveCorrectAnswersCount = 0;
-        elements.scoreValueElement.textContent = score; elements.timerValueElement.textContent = timeLeft + 's';
-        elements.playerNameInput.style.display = 'none'; elements.answerButtonsContainer.style.display = 'flex';
-        elements.answerButtons.forEach(button => button.disabled = false);
-        elements.timeBar.style.width = '100%'; elements.timeBar.style.backgroundColor = '#4CAF50'; elements.timeBar.classList.remove('time-bar-shaking');
-        elements.explainConceptButton.style.display = 'none'; elements.messageElement.textContent = '';
-        elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+        gameActive = false; score = 0; timeLeft = 60; correctAnswersCount = 0; totalQuestionsAnsweredCurrentGame = 0; consecutiveCorrectAnswersCount = 0;
+        if (elements.scoreValueElement) elements.scoreValueElement.textContent = score;
+        if (elements.timerValueElement) elements.timerValueElement.textContent = timeLeft + 's';
+        if (elements.playerNameInput) elements.playerNameInput.style.display = 'none';
+        if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'flex';
+        elements.answerButtons.forEach(button => { if (button) button.disabled = false; }); 
+        if (elements.timeBar) {
+            elements.timeBar.style.width = '100%';
+            elements.timeBar.style.backgroundColor = '#4CAF50';
+            elements.timeBar.classList.remove('time-bar-shaking');
+        }
+        if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
+        if (elements.messageElement) {
+            elements.messageElement.textContent = '';
+            elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+        }
+        if (elements.streakIndicator) {
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
         generateQuestion(); 
         timerInterval = setInterval(() => { 
-            timeLeft--; elements.timerValueElement.textContent = timeLeft + 's';
-            const percentage = (timeLeft / 60) * 100; elements.timeBar.style.width = percentage + '%';
-            if (percentage > 50) elements.timeBar.style.backgroundColor = '#4CAF50';
-            else if (percentage > 20) {
-                elements.timeBar.style.backgroundColor = '#FFC107';
-                if (timeLeft <= 10 && !elements.timeBar.classList.contains('time-bar-shaking')) elements.timeBar.classList.add('time-bar-shaking');
-            } else {
-                elements.timeBar.style.backgroundColor = '#DC3545';
-                if (timeLeft <= 10 && !elements.timeBar.classList.contains('time-bar-shaking')) {
-                    elements.timeBar.classList.add('time-bar-shaking');
-                    void elements.timeBar.offsetWidth;
+            timeLeft--;
+            if (elements.timerValueElement) elements.timerValueElement.textContent = timeLeft + 's';
+            const percentage = (timeLeft / 60) * 100;
+            if (elements.timeBar) {
+                elements.timeBar.style.width = percentage + '%';
+                if (percentage > 50) elements.timeBar.style.backgroundColor = '#4CAF50';
+                else if (percentage > 20) {
+                    elements.timeBar.style.backgroundColor = '#FFC107';
+                    if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) elements.timeBar.classList.add('time-bar-shaking');
+                } else {
+                    elements.timeBar.style.backgroundColor = '#DC3545';
+                    if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) {
+                        elements.timeBar.classList.add('time-bar-shaking');
+                        void elements.timeBar.offsetWidth;
+                    }
                 }
             }
             if (timeLeft <= 0) endGame();
         }, 1000);
     });
 
-    elements.settingsDonateButton.addEventListener('click', () => {
+    if (elements.settingsDonateButton) elements.settingsDonateButton.addEventListener('click', () => {
         openDonationLink();
         hideSettingsModal();
     });
 
-    elements.settingsMoreButton.addEventListener('click', () => {
+    if (elements.settingsMoreButton) elements.settingsMoreButton.addEventListener('click', () => {
         console.info("Funcionalidade 'Mais Opções' em desenvolvimento!");
         hideSettingsModal();
     });
 
-    elements.explainConceptButton.addEventListener('click', showExplanationModal);
-    elements.closeExplanationModalButton.addEventListener('click', hideExplanationModal);
-    elements.explanationOkButton.addEventListener('click', hideExplanationModal);
+    if (elements.explainConceptButton) elements.explainConceptButton.addEventListener('click', showExplanationModal);
+    if (elements.closeExplanationModalButton) elements.closeExplanationModalButton.addEventListener('click', hideExplanationModal);
+    if (elements.explanationOkButton) elements.explanationOkButton.addEventListener('click', hideExplanationModal);
+
+    // Event Listener para o botão de compartilhamento do WhatsApp
+    if (elements.shareScoreWhatsappButton) elements.shareScoreWhatsappButton.addEventListener('click', shareOnWhatsApp);
 
     window.onload = () => {
-        elements.answerButtonsContainer.style.display = 'none'; 
-        showSplashScreen();
+        try {
+            if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none'; 
+            showSplashScreen();
+        } catch (e) {
+            console.error("Erro durante a inicialização do aplicativo:", e);
+            document.body.innerHTML = `
+                <div style="text-align: center; color: red; margin-top: 50px;">
+                    <h1>Erro ao carregar o jogo!</h1>
+                    <p>Por favor, tente novamente ou entre em contato com o suporte.</p>
+                    <p>Detalhes do erro: ${e.message}</p>
+                </div>
+            `;
+        }
     };
 
   </script>
