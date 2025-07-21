@@ -222,6 +222,18 @@
         background: linear-gradient(45deg, var(--orange-main) 0%, var(--orange-accent) 100%);
     }
     .main-menu-button:hover { background: linear-gradient(45deg, var(--orange-accent) 0%, var(--orange-main) 100%); }
+    
+    /* NOVO: Ajuste para o botão "Meu Progresso" */
+    #my-progress-button {
+        padding: 20px 40px; /* Igual aos outros botões do menu principal */
+        font-size: 2em; /* Igual aos outros botões do menu principal */
+        border-radius: var(--border-radius-large);
+        background: linear-gradient(45deg, var(--orange-main) 0%, var(--orange-accent) 100%);
+    }
+    #my-progress-button:hover {
+        background: linear-gradient(45deg, var(--orange-accent) 0%, var(--orange-main) 100%);
+    }
+
 
     .operation-button, .competition-mode-button, .mode-button {
         padding: 15px 20px; font-size: 1.2em; border-radius: var(--border-radius-medium);
@@ -321,26 +333,28 @@
         margin-bottom: 0; /* Remove margem inferior individual */
         max-width: none; /* Permite que se expanda */
         width: 100%; /* Ocupa a largura total do contêiner pai */
-        background: linear-gradient(45deg, var(--dark-green) 0%, var(--primary-green) 100%);
+        /* CORREÇÃO: Fundo branco para o ranking na tela de competição */
+        background-color: var(--bg-white);
         border-radius: var(--border-radius-large); padding: 20px; box-shadow: 0 4px 8px var(--shadow-medium);
-        color: white;
+        color: var(--text-dark); /* Texto escuro para fundo claro */
     }
     #dynamic-competition-ranking-display .ranking-section h2 {
-        font-size: 1.2em; margin-bottom: 10px; color: white; text-shadow: 1px 1px 2px var(--shadow-strong);
+        font-size: 1.2em; margin-bottom: 10px; color: var(--primary-green); text-shadow: 1px 1px 2px var(--shadow-light);
     }
     #dynamic-competition-ranking-display .ranking-list {
-        background-color: rgba(255, 255, 255, 0.1); border-radius: var(--border-radius-medium); padding: 10px;
+        background-color: transparent; /* Remove fundo extra */
+        border-radius: var(--border-radius-medium); padding: 10px;
     }
     #dynamic-competition-ranking-display .ranking-list li {
-        padding: 8px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 10px; border-bottom: 1px solid var(--border-light); /* Borda clara */
         background-color: transparent; transition: background-color 0.3s ease;
     }
     #dynamic-competition-ranking-display .ranking-list li:last-child { border-bottom: none; }
-    #dynamic-competition-ranking-display .ranking-list li:hover { background-color: rgba(255, 255, 255, 0.15); }
-    #dynamic-competition-ranking-display .ranking-list li.ranking-item-top { background-color: rgba(0, 123, 255, 0.3); border: 1px solid #007bff; }
-    #dynamic-competition-ranking-display .ranking-list li.ranking-item-top span { color: white; font-weight: bold; }
-    #dynamic-competition-ranking-display .ranking-list li.ranking-item-bottom { background-color: rgba(220, 53, 69, 0.3); border: 1px solid #dc3545; }
-    #dynamic-competition-ranking-display .ranking-list li.ranking-item-bottom span { color: white; font-weight: bold; }
+    #dynamic-competition-ranking-display .ranking-list li:hover { background-color: var(--bg-light-gray); } /* Fundo claro no hover */
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-top { background-color: rgba(0, 123, 255, 0.1); border: 1px solid #007bff; }
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-top span { color: #007bff; font-weight: bold; } /* Cor do texto para top items */
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-bottom { background-color: rgba(220, 53, 69, 0.1); border: 1px solid #dc3545; }
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-bottom span { color: var(--red-main); font-weight: bold; } /* Cor do texto para bottom items */
 
 
     /* Elementos da Tela de Jogo */
@@ -525,17 +539,37 @@
       justify-content: space-between; align-items: center; flex-wrap: nowrap;
     }
     .ranking-list li:last-child { border-bottom: none; }
-    .ranking-position { font-weight: bold; color: #007bff; min-width: 25px; margin-right: 5px; text-align: right; }
-    .ranking-name { flex-grow: 1; margin-right: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #444; }
-    /* NOVO: Estilo para o indicador de ranking */
-    .ranking-indicator {
-        font-size: 0.9em; /* Ajuste o tamanho conforme necessário */
-        font-weight: bold;
-        margin-right: 5px; /* Espaçamento entre o indicador e o nome */
-        display: inline-block; /* Para garantir que as transformações funcionem */
-        width: 1em; /* Largura fixa para manter alinhamento */
-        text-align: center;
+    /* Ajuste de alinhamento para o número da posição */
+    .ranking-position { 
+        font-weight: bold; 
+        color: #007bff; 
+        min-width: 25px; 
+        margin-left: 5px; /* Espaço à esquerda da posição */
+        margin-right: 5px; /* Espaço à direita da posição */
+        text-align: left; /* Alinha o número à esquerda */
     }
+    .ranking-name { flex-grow: 1; margin-right: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #444; }
+    
+    /* NOVO: Estilo para o indicador de ranking com fundo */
+    .ranking-indicator {
+        display: inline-flex; /* Para que o fundo e o padding funcionem */
+        align-items: center;
+        justify-content: center;
+        width: 20px; /* Largura do quadrado */
+        height: 20px; /* Altura do quadrado */
+        border-radius: 4px; /* Cantos levemente arredondados */
+        font-size: 0.7em; /* Tamanho da seta dentro do quadrado */
+        font-weight: bold;
+        margin-right: 5px; /* Espaçamento à direita do indicador */
+        color: white; /* Cor da seta */
+        text-shadow: 0 0 2px rgba(0,0,0,0.3); /* Sombra para destaque */
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Sombra para o quadrado */
+    }
+    .ranking-indicator.up { background-color: #007bff; } /* Azul para cima */
+    .ranking-indicator.down { background-color: #dc3545; } /* Vermelho para baixo */
+    .ranking-indicator.stable { background-color: #4CAF50; } /* Verde para estável */
+
+
     .ranking-score { font-weight: bold; color: var(--text-dark); min-width: 45px; text-align: right; flex-shrink: 0; }
     .ranking-list li.current-player-highlight {
         background: linear-gradient(90deg, var(--yellow-highlight) 0%, var(--yellow-accent) 100%);
@@ -565,7 +599,7 @@
     #streak-indicator {
         position: absolute;
         top: 5px; /* Ajuste a posição conforme necessário */
-        right: 5px; /* Ajuste a posição conforme necessário */
+        right: 15px; /* Ajuste a posição para não colidir com o ícone de configurações */
         background-color: rgba(255, 215, 0, 0.8); /* Ouro com transparência */
         color: #333;
         padding: 5px 10px;
@@ -580,6 +614,7 @@
         transform: scale(0.8);
         transition: opacity 0.3s ease, transform 0.3s ease;
         z-index: 50;
+        pointer-events: none; /* CORREÇÃO: Impede que o clique passe por ele */
     }
     #streak-indicator.show {
         opacity: 1;
@@ -893,7 +928,7 @@
     <!-- NOVO CONTÊINER PARA EXIBIR O RANKING DINÂMICAMENTE -->
     <div id="dynamic-competition-ranking-display" style="display: none;">
         <!-- O ranking Kids ou Adulto será carregado aqui -->
-        <div id="ranking-kids-area-dynamic" class="ranking-section" style="display: none;">
+        <div id="ranking-kids-area-dynamic" class="ranking-section">
             <h2>🏆 Ranking Kids (Top 50)</h2>
             <ol id="ranking-kids-list-dynamic" class="ranking-list"></ol>
         </div>
@@ -1231,7 +1266,7 @@
         'first_correct': {
             name: 'Primeiro Acerto',
             description: 'Acerte sua primeira pergunta!',
-            icon: '🎯',
+            icon: ' ',
             check: (stats) => stats.totalCorrectAnswers >= 1
         },
         'calc_master': {
@@ -1373,6 +1408,7 @@
     function showCompetitionModeSelection() { 
         showScreen(elements.competitionModeSelectionContainer);
         currentGameMode = null;
+        // CORREÇÃO: Esconde ambos os rankings dinâmicos ao entrar na tela de seleção de competição
         if (elements.dynamicCompetitionRankingDisplay) elements.dynamicCompetitionRankingDisplay.style.display = 'none';
         if (elements.rankingKidsAreaDynamic) elements.rankingKidsAreaDynamic.style.display = 'none';
         if (elements.rankingAdultsAreaDynamic) elements.rankingAdultsAreaDynamic.style.display = 'none';
@@ -1832,7 +1868,7 @@
         const currentUnsubscribe = db.collection(collectionName)
             .orderBy("score", "desc")
             .limit(limit)
-            .onSnapshot(async snapshot => {
+            .onSnapshot(async snapshot => { // Make the callback async
                 targetListElement.innerHTML = '';
                 if (snapshot.empty) {
                     targetListElement.innerHTML = '<li>Nenhum recorde ainda. Seja o primeiro!</li>';
@@ -1840,49 +1876,60 @@
                 }
 
                 const rankings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                const normalizedPlayerName = currentPlayerName.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
-                let playerStats = null;
-                if (highlightPlayer && normalizedPlayerName) {
+                const normalizedCurrentPlayerName = currentPlayerName.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+
+                // Create an array of promises for fetching all user stats for players in the current ranking
+                const userStatsPromises = rankings.map(async (data) => {
+                    const normalizedPlayerName = data.player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
                     const statsSnap = await db.collection('user_stats').doc(normalizedPlayerName).get();
-                    if (statsSnap.exists) {
-                        playerStats = statsSnap.data();
-                    }
-                }
+                    return { playerName: normalizedPlayerName, stats: statsSnap.exists ? statsSnap.data() : null };
+                });
+
+                // Wait for all user stats to be fetched
+                const allPlayerStats = await Promise.all(userStatsPromises);
+                const playerStatsMap = new Map(allPlayerStats.map(item => [item.playerName, item.stats]));
 
                 rankings.forEach((data, index) => {
                     const li = document.createElement('li');
                     const rankingPosition = index + 1;
+                    const normalizedPlayerName = data.player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+                    const playerStats = playerStatsMap.get(normalizedPlayerName); // Get stats for this specific player
                     
                     let indicatorHtml = '';
-                    // Verifica se o jogador atual está na lista e se há dados de rank anteriores para comparação
-                    if (highlightPlayer && data.player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-') === normalizedPlayerName && playerStats) {
+                    if (playerStats) { // Check if stats exist for this player
                         let previousRank = null;
-                        let lastRank = null;
-
+                        
+                        // Determinar o rank anterior com base no modo
                         if (mode === 'kids') {
-                            previousRank = playerStats.previousRankKids;
-                            lastRank = playerStats.lastRankKids;
+                            // Usar lastRankKids como previousRank para comparação, mas apenas se a última partida foi kids
+                            // E se o jogador está na lista atual, para evitar comparações com ranks de modos diferentes
+                            if (playerStats.lastGameMode === 'competition_kids' && playerStats.lastRankKids !== null) {
+                                previousRank = playerStats.lastRankKids;
+                            }
                         } else if (mode === 'adults') {
-                            previousRank = playerStats.previousRankAdults;
-                            lastRank = playerStats.lastRankAdults;
+                            // Usar lastRankAdults como previousRank para comparação, mas apenas se a última partida foi adults
+                            if (playerStats.lastGameMode === 'competition_adults' && playerStats.lastRankAdults !== null) {
+                                previousRank = playerStats.lastRankAdults;
+                            }
                         }
 
-                        // Apenas mostra o indicador se houver um rank anterior para comparação E se a posição atual na lista for a mesma que a última registrada.
-                        // A comparação 'lastRank === rankingPosition' é crucial para garantir que o indicador se refira à posição atual do jogador na lista exibida.
-                        if (previousRank !== null && lastRank === rankingPosition) { 
-                            if (lastRank < previousRank) {
-                                indicatorHtml = '<span class="ranking-indicator" style="color: #007bff;">▲</span>'; // Seta para cima azul
-                            } else if (lastRank > previousRank) {
-                                indicatorHtml = '<span class="ranking-indicator" style="color: #dc3545;">▼</span>'; // Seta para baixo vermelha
-                            } else {
-                                indicatorHtml = '<span class="ranking-indicator" style="color: #4CAF50;">■</span>'; // Quadrado verde
+                        // Apenas mostra o indicador se houver um rank anterior para comparação
+                        if (previousRank !== null) { 
+                            if (rankingPosition < previousRank) { // Improved rank (lower number is better)
+                                indicatorHtml = '<span class="ranking-indicator up">▲</span>'; // Blue up arrow
+                            } else if (rankingPosition > previousRank) { // Dropped rank (higher number is worse)
+                                indicatorHtml = '<span class="ranking-indicator down">▼</span>'; // Red down arrow
+                            } else { // Same rank
+                                indicatorHtml = '<span class="ranking-indicator stable">■</span>'; // Green stable square
                             }
                         }
                     }
 
-                    li.innerHTML = `<span class="ranking-position">${rankingPosition}º</span>${indicatorHtml}<span class="ranking-name">${data.player}</span><span class="ranking-score">${data.score}</span>`; 
+                    // CORREÇÃO: Ordem dos elementos para indicador à esquerda do número
+                    li.innerHTML = `${indicatorHtml}<span class="ranking-position">${rankingPosition}º</span><span class="ranking-name">${data.player}</span><span class="ranking-score">${data.score}</span>`; 
                     
-                    if (highlightPlayer && data.player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-') === normalizedPlayerName) {
+                    // Highlight current player if highlightPlayer is true AND this is the current player
+                    if (highlightPlayer && normalizedPlayerName === normalizedCurrentPlayerName) {
                         li.classList.add('current-player-highlight');
                         li.id = `player-rank-${data.id}`; 
                     }
@@ -1892,7 +1939,7 @@
                     targetListElement.appendChild(li);
                 });
 
-                if (highlightPlayer) {
+                if (highlightPlayer && normalizedCurrentPlayerName) {
                     const playerElement = document.querySelector(`.current-player-highlight`);
                     if (playerElement) playerElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
@@ -2107,42 +2154,36 @@
       // Salva as estatísticas do jogador ao final de CADA jogo
       await saveUserStats(currentPlayerName, score, correctAnswersCount, totalQuestionsAnsweredCurrentGame, currentGameMode); 
 
-      setTimeout(() => {
-          if (elements.messageElement) {
-              elements.messageElement.classList.remove('show');
-              elements.messageElement.textContent = '';
+      // CORREÇÃO: Remove o setTimeout para que o ranking apareça imediatamente e fique fixo
+      if (currentGameMode.startsWith('competition_')) {
+          let finalDifficultyLevelName;
+          if (currentGameMode === 'competition_kids') finalDifficultyLevelName = difficultyNames["kids_easy"];
+          else {
+              if (correctAnswersCount >= 16) finalDifficultyLevelName = difficultyNames[4];
+              else if (correctAnswersCount >= 10) finalDifficultyLevelName = difficultyNames[3];
+              else if (correctAnswersCount >= 5) finalDifficultyLevelName = difficultyNames[2];
+              else finalDifficultyLevelName = difficultyNames[1];
           }
-
-          if (currentGameMode.startsWith('competition_')) {
-              let finalDifficultyLevelName;
-              if (currentGameMode === 'competition_kids') finalDifficultyLevelName = difficultyNames["kids_easy"];
-              else {
-                  if (correctAnswersCount >= 16) finalDifficultyLevelName = difficultyNames[4];
-                  else if (correctAnswersCount >= 10) finalDifficultyLevelName = difficultyNames[3];
-                  else if (correctAnswersCount >= 5) finalDifficultyLevelName = difficultyNames[2];
-                  else finalDifficultyLevelName = difficultyNames[1];
-              }
-              
-              saveRanking(currentPlayerName, score, currentGameMode, finalDifficultyLevelName);
-              showRankingsScreen(true); 
-              
-          } else {
-              if (elements.playerNameInput) elements.playerNameInput.value = '';
-              if (elements.playerNameInput) elements.playerNameInput.style.display = 'inline-block';
-              if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none';
-              currentGameMode = null; selectedOperationType = 'all';
-              if (elements.questionElement) {
-                  elements.questionElement.textContent = 'Prepare-se para a aventura!';
-                  elements.questionElement.classList.add('prepare-text-animated');
-                  elements.questionElement.addEventListener('animationend', function handler() {
-                      if (elements.questionElement) elements.questionElement.classList.remove('prepare-text-animated');
-                      elements.questionElement.removeEventListener('animationend', handler);
-                  });
-              }
-              if (elements.difficultyLevelElement) elements.difficultyLevelElement.textContent = '';
-              showMainMenu();
+          
+          saveRanking(currentPlayerName, score, currentGameMode, finalDifficultyLevelName);
+          showRankingsScreen(true); // Exibe a tela de ranking e a mantém
+          
+      } else { // Para modos de prática, volta ao menu principal
+          if (elements.playerNameInput) elements.playerNameInput.value = '';
+          if (elements.playerNameInput) elements.playerNameInput.style.display = 'inline-block';
+          if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none';
+          currentGameMode = null; selectedOperationType = 'all';
+          if (elements.questionElement) {
+              elements.questionElement.textContent = 'Prepare-se para a aventura!';
+              elements.questionElement.classList.add('prepare-text-animated');
+              elements.questionElement.addEventListener('animationend', function handler() {
+                  if (elements.questionElement) elements.questionElement.classList.remove('prepare-text-animated');
+                  elements.questionElement.removeEventListener('animationend', handler);
+              });
           }
-      }, 2000);
+          if (elements.difficultyLevelElement) elements.difficultyLevelElement.textContent = '';
+          showMainMenu();
+      }
     }
 
     function showFeedbackMessage(text, type) {
@@ -2298,6 +2339,7 @@
 
     if (elements.showKidsRankingButton) elements.showKidsRankingButton.addEventListener('click', () => {
         if (elements.dynamicCompetitionRankingDisplay) elements.dynamicCompetitionRankingDisplay.style.display = 'flex';
+        // CORREÇÃO: Apenas exibe a área de ranking Kids e esconde a de Adultos
         if (elements.rankingKidsAreaDynamic) elements.rankingKidsAreaDynamic.style.display = 'block';
         if (elements.rankingAdultsAreaDynamic) elements.rankingAdultsAreaDynamic.style.display = 'none';
         displayRanking('kids', elements.rankingKidsListDynamic, false, 50);
@@ -2305,6 +2347,7 @@
 
     if (elements.showAdultsRankingButton) elements.showAdultsRankingButton.addEventListener('click', () => {
         if (elements.dynamicCompetitionRankingDisplay) elements.dynamicCompetitionRankingDisplay.style.display = 'flex';
+        // CORREÇÃO: Apenas exibe a área de ranking Adultos e esconde a de Kids
         if (elements.rankingKidsAreaDynamic) elements.rankingKidsAreaDynamic.style.display = 'none';
         if (elements.rankingAdultsAreaDynamic) elements.rankingAdultsAreaDynamic.style.display = 'block';
         displayRanking('adults', elements.rankingAdultsListDynamic, false, 50);
@@ -2431,3 +2474,4 @@
   </script>
 </body>
 </html>
+ 
