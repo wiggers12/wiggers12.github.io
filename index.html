@@ -14,7 +14,7 @@
   <title>Desafio dos 60 Segundos 🧠</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <!-- Script principal do Google AdSense (RESTAURADO) -->
+  <!-- Script principal do Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9968425306160320"
           crossorigin="anonymous"></script>
   
@@ -1053,7 +1053,7 @@
       <span id="achievement-notification-text"></span>
   </div>
 
-  <!-- Blocos de Anúncio AdSense (RESTAURADOS) -->
+  <!-- Blocos de Anúncio AdSense -->
   <div style="width: 100%; max-width: 728px; margin: 20px auto; text-align: center;">
     <ins class="adsbygoogle"
          style="display:block; width:100%; height:auto; min-height:90px;"
@@ -1323,7 +1323,7 @@
                 elements.streakIndicator.classList.remove('show');
                 elements.streakIndicator.style.display = 'none';
             }
-            unsubscribeAllRankings();
+            unsubscribeAllRankings(); // Garante que observadores de ranking anteriores sejam limpos
         } catch (e) {
             console.error("Erro ao exibir o menu principal:", e);
             document.body.innerHTML = `
@@ -1350,8 +1350,10 @@
     function selectOperation(operation) { 
         selectedOperationType = operation;
         document.querySelectorAll('#operation-selection-container .operation-buttons button').forEach(btn => {
-            if (btn.dataset.op === operation) btn.classList.add('active');
-            else btn.classList.remove('active');
+            if (btn) { // Adicionado verificação de existência do botão
+                if (btn.dataset.op === operation) btn.classList.add('active');
+                else btn.classList.remove('active');
+            }
         });
         showModeSelectionForPractice();
     }
@@ -1756,6 +1758,7 @@
             if (elements.statPlayerName) elements.statPlayerName.textContent = 'Erro ao carregar';
             if (elements.statHighestScore) elements.statHighestScore.textContent = 'Erro';
             if (elements.statTotalGames) elements.statTotalGames.textContent = 'Erro';
+            if (elements.statTotalQuestions) elements.statTotalQuestions.textContent = 'Erro';
             if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = 'Erro';
             if (elements.statAccuracy) elements.statAccuracy.textContent = 'Erro';
             if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'Erro';
@@ -1784,23 +1787,26 @@
         }
     }
 
-
+    // Função para cancelar todas as inscrições de ranking do Firestore
     function unsubscribeAllRankings() {
-        ['rankingKidsList', 'rankingAdultsList'].forEach(listId => {
-            const listElement = elements[listId];
-            if (listElement && listElement.dataset && listElement.dataset.unsubscribe) { 
-                listElement.dataset.unsubscribe();
-                delete listElement.dataset.unsubscribe;
-            }
-        });
-        ['rankingKidsListDynamic', 'rankingAdultsListDynamic'].forEach(listId => {
-            const listElement = elements[listId];
-            if (listElement && listElement.dataset && listElement.dataset.unsubscribe) { 
-                listElement.dataset.unsubscribe();
-                delete listElement.dataset.unsubscribe;
+        // Lista de elementos de ranking que podem ter observadores
+        const rankingListElements = [
+            elements.rankingKidsList,
+            elements.rankingAdultsList,
+            elements.rankingKidsListDynamic,
+            elements.rankingAdultsListDynamic
+        ];
+
+        rankingListElements.forEach(listElement => {
+            // Verifica se o elemento existe e se tem uma função de unsubscribe armazenada
+            if (listElement && typeof listElement.dataset.unsubscribe === 'function') { 
+                listElement.dataset.unsubscribe(); // Chama a função para cancelar a inscrição
+                delete listElement.dataset.unsubscribe; // Remove a referência
+                console.log(`Unsubscribed from ${listElement.id}`);
             }
         });
     }
+
 
     // Função para exibir rankings (agora mais flexível para diferentes alvos)
     async function displayRanking(mode, targetListElement, highlightPlayer = false, limit = 10) {
@@ -1817,7 +1823,8 @@
         const collectionName = `ranking_${mode}`;
         targetListElement.innerHTML = '<li>Carregando ranking...</li>';
 
-        if (targetListElement.dataset.unsubscribe) {
+        // Cancela a inscrição anterior para este elemento específico, se existir
+        if (typeof targetListElement.dataset.unsubscribe === 'function') {
             targetListElement.dataset.unsubscribe();
             delete targetListElement.dataset.unsubscribe;
         }
@@ -1847,6 +1854,7 @@
                     const rankingPosition = index + 1;
                     
                     let indicatorHtml = '';
+                    // Verifica se o jogador atual está na lista e se há dados de rank anteriores para comparação
                     if (highlightPlayer && data.player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-') === normalizedPlayerName && playerStats) {
                         let previousRank = null;
                         let lastRank = null;
@@ -1860,6 +1868,7 @@
                         }
 
                         // Apenas mostra o indicador se houver um rank anterior para comparação E se a posição atual na lista for a mesma que a última registrada.
+                        // A comparação 'lastRank === rankingPosition' é crucial para garantir que o indicador se refira à posição atual do jogador na lista exibida.
                         if (previousRank !== null && lastRank === rankingPosition) { 
                             if (lastRank < previousRank) {
                                 indicatorHtml = '<span class="ranking-indicator" style="color: #007bff;">▲</span>'; // Seta para cima azul
