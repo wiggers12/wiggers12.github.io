@@ -19,1024 +19,509 @@
           crossorigin="anonymous"></script>
   
   <style>
+    /* Variáveis CSS para cores e tamanhos */
+    :root {
+      --primary-green: #4CAF50;
+      --dark-green: #28a745;
+      --light-blue: #7ed6df;
+      --dark-blue: #1976D2;
+      --light-blue-accent: #2196F3;
+      --orange-main: #FF6F00;
+      --orange-accent: #FF9100;
+      --red-main: #DC3545;
+      --dark-red: #C62828;
+      --yellow-highlight: #ffeb3b;
+      --yellow-accent: #ffc107;
+      --purple-main: #6c5ce7;
+      --dark-purple: #483d8b;
+      --text-dark: #333;
+      --text-medium: #555;
+      --text-light: #777;
+      --bg-white: #ffffff;
+      --bg-light-gray: #f9f9f9;
+      --border-light: #ddd;
+      --shadow-light: rgba(0, 0, 0, 0.1);
+      --shadow-medium: rgba(0, 0, 0, 0.2);
+      --shadow-strong: rgba(0, 0, 0, 0.3);
+      --shadow-stronger: rgba(0, 0, 0, 0.4);
+      --border-radius-small: 8px;
+      --border-radius-medium: 10px;
+      --border-radius-large: 15px;
+      --border-radius-xl: 20px;
+    }
+
     body {
-      font-family: 'Arial', sans-serif; /* Fonte mais comum e limpa */
+      font-family: 'Arial', sans-serif;
       display: flex;
       flex-direction: column;
-      align-items: center; /* Centraliza o conteúdo horizontalmente */
-      justify-content: flex-start; /* Alinha o conteúdo ao topo, permitindo que ele flua */
+      align-items: center;
+      justify-content: flex-start;
       min-height: 100vh;
       margin: 0;
-      /* Fundo com gradiente vibrante que ficará atrás dos "cards" */
-      background: linear-gradient(135deg, #7ed6df 0%, #4CAF50 100%); /* Azul claro para verde */
-      color: #333;
-      padding: 15px; /* Padding geral para o body, para que o conteúdo não cole nas bordas */
+      background: linear-gradient(135deg, var(--light-blue) 0%, var(--primary-green) 100%);
+      color: var(--text-dark);
+      padding: 15px;
       box-sizing: border-box;
-      overflow-x: hidden; /* Evita rolagem horizontal */
+      overflow-x: hidden;
     }
 
-    h1 { /* Este H1 não será mais usado, o título estará no menu principal */
-      display: none; 
-    }
+    h1 { display: none; } /* Oculta o H1, pois o título está no menu principal */
 
-    /* Animação de entrada para os contêineres principais */
+    /* Animações Keyframe */
     @keyframes fadeInScale {
-      from {
-        opacity: 0;
-        transform: scale(0.95) translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
+      from { opacity: 0; transform: scale(0.95) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
     }
-
-    /* Animação de pulso para feedback de score/tempo */
     @keyframes pulseEffect {
       0% { transform: scale(1); }
       50% { transform: scale(1.05); }
       100% { transform: scale(1); }
     }
-
-    /* Animação de shake para barra de tempo */
     @keyframes timeShake {
         0%, 100% { transform: translateX(0); }
         10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
         20%, 40%, 60%, 80% { transform: translateX(2px); }
     }
-
-    /* Animação de fade para splash screen */
     @keyframes fadeOut {
         from { opacity: 1; }
         to { opacity: 0; display: none; }
     }
-
-    /* Animação para os símbolos matemáticos (dançando) */
     @keyframes danceSymbols {
         0%, 100% { transform: translateY(0) rotate(0deg); }
         25% { transform: translateY(-5px) rotate(5deg); }
         50% { transform: translateY(0) rotate(-5deg); }
         75% { transform: translateY(-3px) rotate(3deg); }
     }
+    @keyframes slideInPop {
+        from { opacity: 0; transform: translateY(20px) scale(0.9); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes neonGlow {
+        0% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--orange-main), 0 0 20px var(--orange-main); transform: scale(1); }
+        33% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--orange-accent), 0 0 20px var(--orange-accent); transform: scale(1.02); }
+        66% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--yellow-accent), 0 0 20px var(--yellow-accent); transform: scale(1); }
+        100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--orange-main), 0 0 20px var(--orange-main); transform: scale(1.02); }
+    }
 
+    /* NOVA ANIMAÇÃO PARA A FRASE "PREPARE-SE PARA A AVENTURA!" */
+    @keyframes prepareTextPopColor {
+        0% { opacity: 0; transform: scale(0.8); color: var(--text-dark); }
+        25% { opacity: 1; transform: scale(1.1); color: var(--yellow-highlight); }
+        50% { transform: scale(0.95); color: var(--orange-main); }
+        75% { transform: scale(1.05); color: var(--light-blue-accent); }
+        100% { opacity: 1; transform: scale(1); color: var(--dark-blue); } /* Settle on a vibrant blue */
+    }
 
-    /* Telas principais: Splash, Menu, Seleção de Modo, Jogo, Rankings */
-    /* Agora usam flexbox e margin: auto para centralização e respeitar o padding do body */
-    #main-menu, #operation-selection-container, #mode-selection-container, #game-container {
-        background-color: #ffffff; /* Fundo branco limpo para os cards */
+    /* Estilos base para os cards das telas principais */
+    .card-container {
+        background-color: var(--bg-white);
         padding: 30px;
-        border-radius: 15px; /* Cantos mais arredondados */
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra mais pronunciada */
-        width: 95%; /* Ocupa 95% da largura disponível */
-        max-width: 400px; /* Limita a largura em telas grandes para a maioria dos cards */
-        margin: 15px auto; /* Centraliza horizontalmente e dá margem vertical */
-        position: relative; /* Para posicionamento interno, como o ícone de configurações */
+        border-radius: var(--border-radius-large);
+        box-shadow: 0 8px 16px var(--shadow-medium);
+        width: 95%;
+        margin: 15px auto;
+        position: relative;
         overflow: hidden;
-        display: none; /* Por padrão, oculto */
+        display: none; /* Oculto por padrão */
         flex-direction: column;
         align-items: center;
         justify-content: center;
         box-sizing: border-box;
-        text-align: center; /* Centraliza o texto dentro dos cards */
+        text-align: center;
     }
+    /* Largura específica para cards menores */
+    #main-menu, #operation-selection-container, #mode-selection-container, #game-container { max-width: 400px; }
+    /* Largura específica para cards maiores */
+    #rankings-container, #competition-mode-selection-container { max-width: 800px; }
+    /* Estado ativo para animação */
+    .card-container.active { display: flex; animation: fadeInScale 0.7s ease-out forwards; }
 
-    /* Ranking container principal e Competição Mode container tem uma max-width maior */
-    #rankings-container, #competition-mode-selection-container {
-        background-color: #ffffff; /* Fundo branco limpo para os cards */
-        padding: 30px;
-        border-radius: 15px; /* Cantos mais arredondados */
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra mais pronunciada */
-        width: 95%; /* Ocupa 95% da largura disponível */
-        max-width: 800px; /* Maior largura para o ranking e competição */
-        margin: 15px auto; /* Centraliza horizontalmente e dá margem vertical */
-        position: relative; /* Para posicionamento interno, como o ícone de configurações */
-        overflow: hidden;
-        display: none; /* Por padrão, oculto */
-        flex-direction: column; /* Sempre em coluna */
-        align-items: center;
-        justify-content: space-between; /* Espaço entre os itens (listas e botão) */
-        box-sizing: border-box;
-        text-align: center; /* Centraliza o texto dentro dos cards */
-    }
-
-
-    /* Splash screen permanece fixa para cobrir tudo inicialmente */
+    /* Tela de Splash */
     #splash-screen {
-        position: fixed; /* Usa fixed para garantir que cobre toda a viewport */
-        top: 0;
-        left: 0;
-        width: 100vw; /* Usa a largura da viewport */
-        height: 100vh; /* Usa a altura da viewport */
-        background: linear-gradient(45deg, #4CAF50 0%, #28a745 100%); /* Gradiente verde vibrante */
-        color: white;
-        font-size: 4em; /* Fonte maior */
-        font-weight: bold;
-        text-shadow: 3px 3px 6px rgba(0,0,0,0.4); /* Sombra mais forte */
-        display: none; /* Inicia oculto, JS ativa */
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000; /* Alto z-index para garantir que esteja no topo */
+        position: fixed; top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%);
+        color: white; font-size: 4em; font-weight: bold;
+        text-shadow: 3px 3px 6px var(--shadow-stronger);
+        display: none; flex-direction: column; align-items: center; justify-content: center;
+        z-index: 1000;
     }
-    #splash-screen.active {
-        display: flex; /* Mostra a splash screen */
-        opacity: 1; /* Garante opacidade 1 quando ativa */
-    }
-    #splash-screen.fade-out {
-        animation: fadeOut 0.5s forwards;
-    }
+    #splash-screen.active { display: flex; opacity: 1; }
+    #splash-screen.fade-out { animation: fadeOut 0.5s forwards; }
+    #splash-screen .brain-icon { font-size: 5em; margin-bottom: 10px; animation: pulseEffect 1.5s infinite alternate; }
+    #splash-screen .splash-text { font-size: 1.5em; font-weight: normal; text-align: center; line-height: 1.2; }
 
-    /* Classe 'active' para as outras telas */
-    #main-menu.active, #operation-selection-container.active, #mode-selection-container.active, #game-container.active, #rankings-container.active, #competition-mode-selection-container.active {
-        display: flex; /* Mostra como flex quando ativa */
-        animation: fadeInScale 0.7s ease-out forwards; /* Animação de entrada */
-    }
-    
-    /* Estilo específico da Splash Screen */
-    #splash-screen .brain-icon {
-        font-size: 5em; /* Tamanho do cérebro */
-        margin-bottom: 10px;
-        animation: pulseEffect 1.5s infinite alternate; /* Animação de pulso para o cérebro */
-    }
-    #splash-screen .splash-text {
-        font-size: 1.5em; /* Tamanho do texto "60 Segundos" */
-        font-weight: normal;
-        text-align: center; /* Centraliza o texto */
-        line-height: 1.2; /* Ajusta o espaçamento entre linhas */
-    }
-
-    /* Novo estilo para o título do menu principal */
+    /* Caixa de Título do Menu Principal */
     .main-title-box {
-        background: linear-gradient(45deg, #4CAF50 0%, #28a745 100%); /* Fundo verde */
-        border-radius: 20px; /* Cantos arredondados */
-        padding: 20px 30px;
-        margin-bottom: 40px; /* Espaço abaixo do título */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.3); /* Sombra para destacar */
-        color: white;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        width: 90%; /* Ajusta a largura */
-        max-width: 300px; /* Limita a largura */
+        background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%);
+        border-radius: var(--border-radius-xl); padding: 20px 30px; margin-bottom: 40px;
+        display: flex; flex-direction: column; align-items: center;
+        box-shadow: 0 8px 16px var(--shadow-strong); color: white;
+        text-shadow: 2px 2px 4px var(--shadow-strong);
+        width: 90%; max-width: 300px;
     }
+    .main-title-box .brain-icon-title { font-size: 4em; margin-bottom: 10px; }
+    .main-title-box .title-text { font-size: 2em; font-weight: bold; line-height: 1.2; }
 
-    .main-title-box .brain-icon-title {
-        font-size: 4em; /* Tamanho do cérebro no título */
-        margin-bottom: 10px;
-    }
-
-    .main-title-box .title-text {
-        font-size: 2em; /* Tamanho do texto */
-        font-weight: bold;
-        line-height: 1.2; /* Espaçamento entre linhas */
-    }
-
-
+    /* Símbolos Matemáticos no Menu Principal */
     #main-menu .math-symbols {
-        font-size: 5.5em; /* Símbolos ainda maiores */
-        color: #ffeb3b; /* Amarelo vibrante */
-        margin-bottom: 50px;
-        font-weight: bold;
-        letter-spacing: 10px; /* Mais espaçamento */
-        text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
-        display: flex;
-        gap: 15px; /* Espaçamento entre os símbolos */
+        font-size: 5.5em; color: var(--yellow-highlight); margin-bottom: 50px;
+        font-weight: bold; letter-spacing: 10px; text-shadow: 3px 3px 6px var(--shadow-stronger);
+        display: flex; gap: 15px;
     }
-    #main-menu .math-symbols span {
-        display: inline-block;
-        animation: danceSymbols 2s infinite ease-in-out alternate; /* Animação de dança */
-    }
+    #main-menu .math-symbols span { display: inline-block; animation: danceSymbols 2s infinite ease-in-out alternate; }
     #main-menu .math-symbols span:nth-child(1) { animation-delay: 0s; }
     #main-menu .math-symbols span:nth-child(2) { animation-delay: 0.2s; }
     #main-menu .math-symbols span:nth-child(3) { animation-delay: 0.4s; }
     #main-menu .math-symbols span:nth-child(4) { animation-delay: 0.6s; }
 
-    #main-menu .menu-buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 25px; /* Mais espaçamento entre os botões */
-        width: 80%; /* Botões um pouco mais largos */
-        max-width: 350px; /* Limite de largura para os botões */
-    }
-    #main-menu .menu-buttons button {
-        padding: 20px 40px; /* Padding maior */
-        font-size: 2em; /* Fonte maior */
-        border-radius: 15px; /* Cantos mais arredondados */
-        background: linear-gradient(45deg, #FF6F00 0%, #FF9100 100%); /* Laranja vibrante (melhorado) */
-        color: white;
-        border: none;
-        cursor: pointer;
+    /* Estilos Base dos Botões */
+    .base-button {
+        padding: 18px 35px; font-size: 1.5em; border-radius: var(--border-radius-large);
+        box-shadow: 0 6px 12px var(--shadow-medium); border: none; color: white; cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.3); /* Sombra mais forte */
+        width: 100%; /* Padrão para largura total para consistência */
     }
-    #main-menu .menu-buttons button:hover {
-        transform: translateY(-7px); /* Efeito de elevação maior */
-        box-shadow: 0 12px 25px rgba(0,0,0,0.4); /* Sombra maior no hover */
-        background: linear-gradient(45deg, #FF9100 0%, #FF6F00 100%); /* Gradiente invertido no hover */
+    .base-button:hover:not(:disabled) { transform: translateY(-5px); box-shadow: 0 10px 20px var(--shadow-stronger); }
+    .base-button:active:not(:disabled) { transform: translateY(0); box-shadow: 0 4px 8px var(--shadow-medium); }
+    .base-button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Cores/Tamanhos Específicos dos Botões */
+    .main-menu-button {
+        padding: 20px 40px; font-size: 2em; border-radius: var(--border-radius-large);
+        background: linear-gradient(45deg, var(--orange-main) 0%, var(--orange-accent) 100%);
     }
-    #main-menu .menu-buttons button:active {
-        transform: translateY(0);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    .main-menu-button:hover { background: linear-gradient(45deg, var(--orange-accent) 0%, var(--orange-main) 100%); }
+
+    .operation-button, .competition-mode-button, .mode-button {
+        padding: 15px 20px; font-size: 1.2em; border-radius: var(--border-radius-medium);
+        background: linear-gradient(45deg, var(--dark-blue) 0%, var(--light-blue-accent) 100%);
+        box-shadow: 0 4px 8px var(--shadow-medium);
+    }
+    .operation-button:hover, .competition-mode-button:hover, .mode-button:hover {
+        background: linear-gradient(45deg, var(--light-blue-accent) 0%, var(--dark-blue) 100%);
+        transform: translateY(-3px); box-shadow: 0 6px 12px var(--shadow-strong);
+    }
+    .operation-button.active, .competition-mode-button.active, .mode-button.active {
+        background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%);
+        box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.6);
     }
 
-    /* Estilos para a seleção de operação e competição */
-    #operation-selection-container h3, #competition-mode-selection-container h3 {
-        color: #333;
-        font-size: 1.8em;
-        margin-bottom: 25px;
+    .back-button {
+        background: linear-gradient(45deg, var(--red-main) 0%, var(--dark-red) 100%);
+        margin-top: 30px !important; padding: 15px 30px; font-size: 1.2em;
+        border-radius: var(--border-radius-medium);
     }
-    #operation-selection-container .operation-buttons, #competition-mode-selection-container .competition-buttons {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* Duas colunas */
-        gap: 15px;
-        width: 100%;
-        margin-bottom: 20px;
+    .back-button:hover { background: linear-gradient(45deg, var(--dark-red) 0%, var(--red-main) 100%); }
+
+    .settings-action-button {
+        width: 100%; padding: 12px 20px; font-size: 1.2em; border-radius: var(--border-radius-small);
+        margin-top: 15px; box-shadow: 0 4px 8px var(--shadow-medium);
     }
-    #operation-selection-container .operation-buttons button, #competition-mode-selection-container .competition-buttons button {
+    .settings-action-button.green-button { background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%); }
+    .settings-action-button.green-button:hover { background: linear-gradient(45deg, var(--dark-green) 0%, var(--primary-green) 100%); }
+    .settings-action-button.blue-button { background: linear-gradient(45deg, var(--dark-blue) 0%, var(--light-blue-accent) 100%); }
+    .settings-action-button.blue-button:hover { background: linear-gradient(45deg, var(--light-blue-accent) 0%, var(--dark-blue) 100%); }
+
+    /* CORREÇÃO: Estilo para o botão Começar Jogo (mais específico para garantir aplicação) */
+    #start-game-button.base-button.green-button {
+      background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%);
+    }
+    #start-game-button.base-button.green-button:hover {
+      background: linear-gradient(45deg, var(--dark-green) 0%, var(--primary-green) 100%);
+    }
+
+
+    #explain-concept-button {
+        margin-top: 20px; background: linear-gradient(45deg, var(--purple-main) 0%, var(--dark-purple) 100%);
+        color: white; padding: 15px 30px; font-size: 1.2em; border-radius: var(--border-radius-medium);
+        box-shadow: 0 5px 10px var(--shadow-medium);
+    }
+    #explain-concept-button:hover { background: linear-gradient(45deg, var(--dark-purple) 0%, var(--purple-main) 100%); }
+
+    /* Contêiner de Botões do Menu Principal */
+    #main-menu .menu-buttons {
+        display: flex; flex-direction: column; gap: 25px; width: 80%; max-width: 350px;
+    }
+
+    /* Grade de Botões de Operação e Competição */
+    #operation-selection-container .operation-buttons,
+    #competition-mode-selection-container .competition-buttons {
+        display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; margin-bottom: 20px;
+    }
+
+    /* NOVO: Estilos para os botões de alternância de ranking na tela de competição */
+    .ranking-toggle-button {
+        background: linear-gradient(45deg, #007bff 0%, #0056b3 100%) !important; /* Azul mais escuro */
+        color: white;
         padding: 15px 20px;
         font-size: 1.2em;
-        border-radius: 10px;
-        background: linear-gradient(45deg, #1976D2 0%, #2196F3 100%); /* Azul vibrante (melhorado) */
-        color: white;
+        border-radius: var(--border-radius-medium);
         border: none;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 8px var(--shadow-medium);
+        margin-top: 15px; /* Espaçamento entre os botões de modo e esses */
+        display: flex; /* Para alinhar o troféu e o texto */
+        align-items: center;
+        justify-content: center;
+        gap: 10px; /* Espaço entre o troféu e o texto */
     }
-    #operation-selection-container .operation-buttons button:hover, #competition-mode-selection-container .competition-buttons button:hover {
-        background: linear-gradient(45deg, #2196F3 0%, #1976D2 100%);
+    .ranking-toggle-button:hover {
+        background: linear-gradient(45deg, #0056b3 0%, #007bff 100%) !important;
         transform: translateY(-3px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        box-shadow: 0 6px 12px var(--shadow-strong);
     }
-    #operation-selection-container .operation-buttons button.active, #competition-mode-selection-container .competition-buttons button.active {
-        background: linear-gradient(45deg, #4CAF50 0%, #218838 100%); /* Verde quando ativo */
-        box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.6); /* Anel verde mais forte */
-    }
-
-    /* CONTAINER PARA OS RANKINGS EMBUTIDOS NA TELA DE COMPETIÇÃO */
-    #embedded-rankings-area {
-        display: flex; /* Habilita flexbox */
-        flex-direction: column; /* Colunas por padrão (para mobile) */
-        gap: 20px; /* Espaço entre os rankings */
-        width: 100%; /* Ocupa a largura total do container pai */
-        margin-top: 25px; /* Espaço acima dos rankings */
-        align-items: center; /* Centraliza os itens */
+    .ranking-toggle-button .trophy-icon {
+        font-size: 1.5em; /* Tamanho do ícone do troféu */
     }
 
-    #embedded-rankings-area .ranking-section {
-        flex: 1; /* Faz com que cada ranking ocupe o mesmo espaço disponível */
-        margin-bottom: 0; /* Remove margem inferior individual, a margem está no gap do container */
-        max-width: none; /* Remove a max-width individual para que possam se expandir */
-        width: auto; /* Permite que o flexbox controle a largura */
-        
-        /* NOVO: Fundo verde e cantos arredondados para os rankings embutidos */
-        background: linear-gradient(45deg, #28a745 0%, #218838 100%); /* Verde mais escuro */
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        color: white; /* Texto branco para contraste */
+    /* NOVO: Contêiner para o ranking dinâmico na tela de competição */
+    #dynamic-competition-ranking-display {
+        width: 100%;
+        margin-top: 25px; /* Espaço acima do ranking exibido */
+        display: flex; /* Para centralizar o ranking */
+        flex-direction: column;
+        align-items: center;
+        /* O fundo e a borda serão aplicados à seção de ranking interna */
     }
-
-    #embedded-rankings-area .ranking-section h2 {
-        font-size: 1.2em; /* Fonte menor para títulos de ranking embutido */
-        margin-bottom: 10px;
-        color: white; /* Garante que o título é branco */
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    /* Estilos para as seções de ranking dentro do contêiner dinâmico */
+    #dynamic-competition-ranking-display .ranking-section {
+        flex: 1; /* Permite que ocupe o espaço disponível */
+        margin-bottom: 0; /* Remove margem inferior individual */
+        max-width: none; /* Permite que se expanda */
+        width: 100%; /* Ocupa a largura total do contêiner pai */
+        background: linear-gradient(45deg, var(--dark-green) 0%, var(--primary-green) 100%);
+        border-radius: var(--border-radius-large); padding: 20px; box-shadow: 0 4px 8px var(--shadow-medium);
+        color: white;
     }
-
-    /* Ajustes para os itens da lista de ranking embutido */
-    #embedded-rankings-area .ranking-list {
-        background-color: rgba(255, 255, 255, 0.1); /* Fundo sutil para as listas */
-        border-radius: 10px;
-        padding: 10px;
+    #dynamic-competition-ranking-display .ranking-section h2 {
+        font-size: 1.2em; margin-bottom: 10px; color: white; text-shadow: 1px 1px 2px var(--shadow-strong);
     }
-    #embedded-rankings-area .ranking-list li {
-        padding: 8px 10px; /* Padding interno para as linhas */
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Borda mais clara */
-        background-color: transparent; /* Garante que a cor de fundo da li não sobreponha a do ranking-list */
-        transition: background-color 0.3s ease; /* Transição suave para hover */
+    #dynamic-competition-ranking-display .ranking-list {
+        background-color: rgba(255, 255, 255, 0.1); border-radius: var(--border-radius-medium); padding: 10px;
     }
-    #embedded-rankings-area .ranking-list li:last-child {
-        border-bottom: none;
+    #dynamic-competition-ranking-display .ranking-list li {
+        padding: 8px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: transparent; transition: background-color 0.3s ease;
     }
-    #embedded-rankings-area .ranking-list li:hover {
-        background-color: rgba(255, 255, 255, 0.15); /* Efeito de hover */
-    }
-
-    /* Cores para os Top 3 no ranking embutido (fundo da linha e texto) */
-    #embedded-rankings-area .ranking-list li.ranking-item-top {
-        background-color: rgba(0, 123, 255, 0.3); /* Azul com transparência */
-        border: 1px solid #007bff; /* Borda azul */
-    }
-    #embedded-rankings-area .ranking-list li.ranking-item-top .ranking-position,
-    #embedded-rankings-area .ranking-list li.ranking-item-top .ranking-name,
-    #embedded-rankings-area .ranking-list li.ranking-item-top .ranking-level,
-    #embedded-rankings-area .ranking-list li.ranking-item-top .ranking-score {
-        color: white; /* Texto branco para contraste */
-        font-weight: bold;
-    }
-
-    /* Cores para os 3 Últimos no ranking embutido (fundo da linha e texto) */
-    #embedded-rankings-area .ranking-list li.ranking-item-bottom {
-        background-color: rgba(220, 53, 69, 0.3); /* Vermelho com transparência */
-        border: 1px solid #dc3545; /* Borda vermelha */
-    }
-    #embedded-rankings-area .ranking-list li.ranking-item-bottom .ranking-position,
-    #embedded-rankings-area .ranking-list li.ranking-item-bottom .ranking-name,
-    #embedded-rankings-area .ranking-list li.ranking-item-bottom .ranking-level,
-    #embedded-rankings-area .ranking-list li.ranking-item-bottom .ranking-score {
-        color: white; /* Texto branco para contraste */
-        font-weight: bold;
-    }
+    #dynamic-competition-ranking-display .ranking-list li:last-child { border-bottom: none; }
+    #dynamic-competition-ranking-display .ranking-list li:hover { background-color: rgba(255, 255, 255, 0.15); }
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-top { background-color: rgba(0, 123, 255, 0.3); border: 1px solid #007bff; }
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-top span { color: white; font-weight: bold; }
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-bottom { background-color: rgba(220, 53, 69, 0.3); border: 1px solid #dc3545; }
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-bottom span { color: white; font-weight: bold; }
 
 
-    #question-area {
-      margin-bottom: 20px;
-    }
-
-    #difficulty-level {
-        font-size: 1em; /* Um pouco maior */
-        color: #555; /* Cor mais escura */
+    /* Elementos da Tela de Jogo */
+    #difficulty-level { 
+        font-size: 1em; /* Tamanho original */
+        color: var(--text-medium);
         margin-bottom: 10px;
         font-weight: bold;
+        /* Garante que o elemento não ocupe espaço se estiver vazio */
+        height: 1.2em; /* Altura para manter o layout */
+        line-height: 1.2em; /* Alinhamento de texto */
+        overflow: hidden; /* Esconde qualquer texto que possa aparecer inesperadamente */
     }
-
     #question {
-      font-size: 2.5em; /* Pergunta maior */
-      margin-bottom: 15px;
-      color: #333; /* Cor mais escura */
-      font-weight: bold;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-      transition: color 0.3s ease, transform 0.3s ease; /* Transição para cor e posição */
+      font-size: 2.5em; margin-bottom: 15px; color: var(--text-dark); font-weight: bold;
+      text-shadow: 1px 1px 2px var(--shadow-light); transition: color 0.3s ease, transform 0.3s ease;
     }
-
-    #question.correct-animation {
-        animation: pulseGreen 0.5s ease-out;
+    /* Classe para a animação da frase "Prepare-se para a aventura!" */
+    #question.prepare-text-animated {
+        animation: prepareTextPopColor 1.5s ease-out forwards;
+        display: inline-block; /* Essencial para que transform funcione no texto */
     }
-    #question.incorrect-animation {
-        animation: shakeRed 0.5s ease-out;
-    }
+    #question.correct-animation { animation: pulseGreen 0.5s ease-out; }
+    #question.incorrect-animation { animation: shakeRed 0.5s ease-out; }
 
     #player-name-input {
-      padding: 15px; /* Padding maior */
-      font-size: 1.5em; /* Fonte maior */
-      width: calc(100% - 30px); /* Ajuste para padding */
-      margin-bottom: 20px;
-      border: 2px solid #ddd; /* Borda mais visível */
-      border-radius: 10px; /* Cantos mais arredondados */
-      text-align: center;
-      transition: border-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
-      background-color: #f9f9f9; /* Fundo levemente cinza */
-      /* Impede que o teclado virtual do sistema apareça */
-      -webkit-touch-callout: none; /* iOS Safari */
-      -webkit-user-select: none; /* Safari */
-      -khtml-user-select: none; /* Konqueror HTML */
-      -moz-user-select: none; /* Old versions of Firefox */
-      -ms-user-select: none; /* Internet Explorer/Edge */
-      user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+      padding: 15px; font-size: 1.5em; width: calc(100% - 30px); margin-bottom: 20px;
+      border: 2px solid var(--border-light); border-radius: var(--border-radius-medium);
+      text-align: center; transition: border-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+      background-color: var(--bg-light-gray);
+      -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none;
+      -moz-user-select: none; -ms-user-select: none; user-select: none;
     }
 
     #message {
-      margin-top: 15px;
-      font-weight: bold;
-      opacity: 0; /* Começa invisível */
-      font-size: 1.1em;
-      transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Transição para aparecer/desaparecer */
-      transform: translateY(10px); /* Começa ligeiramente abaixo */
-      color: #333; /* Cor padrão, será sobrescrita pelas classes de tipo */
-      display: block; /* Garante que ocupa espaço para a transição de transform */
+      margin-top: 15px; font-weight: bold; opacity: 0; font-size: 1.1em;
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out; transform: translateY(10px);
+      color: var(--text-dark); display: block;
     }
+    #message.show { opacity: 1; transform: translateY(0); }
+    #message.success-message { color: var(--dark-green); }
+    #message.error-message { color: var(--red-main); }
+    #message.incredible-message { color: var(--yellow-accent); font-size: 1.3em; }
 
-    #message.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Cores específicas para as mensagens de feedback */
-    #message.success-message {
-        color: #28a745; /* Verde para sucesso */
-    }
-
-    #message.error-message {
-        color: #dc3545; /* Vermelho para erro */
-    }
-
-    #message.incredible-message {
-        color: #ffc107; /* Amarelo/Laranja para incrível */
-        font-size: 1.3em; /* Ligeiramente maior para ênfase */
-    }
-
-
-    #timer, #score {
-      font-size: 1.3em; /* Um pouco maior */
-      margin: 10px 0;
-      color: #555; /* Cor mais escura */
-    }
-
-    #timer-value, #score-value {
-      font-weight: bold;
-      color: #4CAF50;
-      transition: color 0.3s ease; /* Transição para mudança de cor */
-    }
-    #timer-value.pulse-effect, #score-value.pulse-effect {
-        animation: pulseEffect 0.3s ease-out;
-    }
-
-
-    #start-game-button, #play-again { /* Aplicado a ambos os botões */
-      background: linear-gradient(45deg, #28a745 0%, #218838 100%); /* Gradiente verde */
-      padding: 18px 35px; /* Padding maior */
-      font-size: 1.5em; /* Fonte maior */
-      border-radius: 12px; /* Cantos mais arredondados */
-      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-      border: none; /* Garante que não há borda padrão */
-      color: white; /* Cor do texto */
-      cursor: pointer; /* Cursor de ponteiro */
-      transition: all 0.3s ease; /* Transição suave */
-    }
-
-    #start-game-button:hover, #play-again:hover {
-      background: linear-gradient(45deg, #218838 0%, #28a745 100%);
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.35);
-    }
-
-    .ranking-section h2 {
-      color: #4CAF50;
-      margin-bottom: 15px;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-    }
-
-    .ranking-list {
-      list-style: none;
-      padding: 0;
-      text-align: left;
-      width: 100%; /* Ocupa a largura total do container */
-      font-size: 0.9em; /* Fonte um pouco menor para o ranking */
-    }
-
-    .ranking-list li {
-      padding: 8px 0; /* Menos padding */
-      border-bottom: 1px solid #eee;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: nowrap; /* Impede quebra de linha para melhor alinhamento */
-    }
-
-    .ranking-list li:last-child {
-      border-bottom: none;
-    }
-
-    .ranking-position {
-      font-weight: bold;
-      color: #007bff;
-      min-width: 25px; /* Largura mínima para posição */
-      margin-right: 5px; /* Espaço entre a posição e o nome */
-      text-align: right; /* Alinha a posição à direita */
-    }
-
-    .ranking-name {
-      flex-grow: 1;
-      margin-right: 5px; /* Espaço entre nome e score */
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: #444;
-    }
-
-    .ranking-level {
-        font-size: 0.8em; /* Um pouco menor */
-        color: #777;
-        margin-left: 5px; /* Espaço após o nome */
-        white-space: nowrap;
-        flex-shrink: 0; /* Impede que o nível encolha */
-    }
-
-    .ranking-score {
-        font-weight: bold;
-        color: #333;
-        min-width: 45px; /* Largura mínima para score */
-        text-align: right;
-        flex-shrink: 0; /* Impede que o score encolha */
-    }
+    #timer, #score { font-size: 1.3em; margin: 10px 0; color: var(--text-medium); }
+    #timer-value, #score-value { font-weight: bold; color: var(--primary-green); transition: color 0.3s ease; }
+    #timer-value.pulse-effect, #score-value.pulse-effect { animation: pulseEffect 0.3s ease-out; }
 
     #time-bar-container {
-      width: 100%;
-      height: 15px; /* Barra mais grossa */
-      background-color: #ddd;
-      border-radius: 8px; /* Cantos arredondados */
-      margin-bottom: 15px;
-      overflow: hidden;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); /* Sombra interna */
+      width: 100%; height: 15px; background-color: var(--border-light);
+      border-radius: var(--border-radius-small); margin-bottom: 15px; overflow: hidden;
+      box-shadow: inset 0 1px 3px var(--shadow-light);
     }
-
     #time-bar {
-      height: 100%;
-      width: 100%;
-      background-color: #4CAF50;
-      border-radius: 8px;
-      transition: width 0.9s linear, background-color 0.9s linear, transform 0.1s ease;
+      height: 100%; width: 100%; background-color: var(--primary-green);
+      border-radius: var(--border-radius-small); transition: width 0.9s linear, background-color 0.9s linear, transform 0.1s ease;
     }
-    .time-bar-shaking {
-        animation: timeShake 0.5s ease-out infinite;
-    }
+    .time-bar-shaking { animation: timeShake 0.5s ease-out infinite; }
 
-    /* Cores para os Top 3 no ranking principal (fundo da linha e texto) */
-    .ranking-list li.ranking-item-top {
-        background-color: rgba(0, 123, 255, 0.1); /* Azul claro com transparência */
-        border: 1px solid #007bff; /* Borda azul */
-    }
-    .ranking-list li.ranking-item-top .ranking-position,
-    .ranking-list li.ranking-item-top .ranking-name,
-    .ranking-list li.ranking-item-top .ranking-level,
-    .ranking-list li.ranking-item-top .ranking-score {
-        color: #007bff; /* Azul vibrante para o top 3 */
-        font-weight: bold;
-    }
-
-    /* Cores para os 3 Últimos no ranking principal (fundo da linha e texto) */
-    .ranking-list li.ranking-item-bottom {
-        background-color: rgba(220, 53, 69, 0.1); /* Vermelho claro com transparência */
-        border: 1px solid #dc3545; /* Borda vermelha */
-    }
-    .ranking-list li.ranking-item-bottom .ranking-position,
-    .ranking-list li.ranking-item-bottom .ranking-name,
-    .ranking-list li.ranking-item-bottom .ranking-level,
-    .ranking-list li.ranking-item-bottom .ranking-score {
-        color: #dc3545; /* Vermelho forte para o bottom 3 */
-        font-weight: bold;
-    }
-
-    /* NOVO: Estilos para os botões de resposta */
+    /* Contêiner de Botões de Resposta */
     #answer-buttons-container {
-        display: flex; /* Alterado para flex para layout horizontal */
-        flex-wrap: wrap; /* Permite que os botões quebrem a linha em telas menores */
-        justify-content: space-around; /* Distribui espaço uniformemente entre os botões */
-        gap: 15px;
-        width: 100%;
-        max-width: 450px; /* Limita a largura do grupo de botões para caberem 3 */
-        margin-top: 20px; /* Espaço acima dos botões */
-        margin-bottom: 20px; /* Espaço abaixo dos botões */
+        display: flex; flex-wrap: wrap; justify-content: space-around; gap: 15px;
+        width: 100%; max-width: 450px; margin-top: 20px; margin-bottom: 20px;
     }
-
     #answer-buttons-container button {
-        flex: 1 1 auto; /* Permite que os botões cresçam e encolham, mas mantêm um tamanho base */
-        min-width: 100px; /* Largura mínima para cada botão */
-        padding: 15px; /* Padding generoso */
-        font-size: 1.8em; /* Fonte grande para as respostas */
-        border-radius: 12px; /* Cantos arredondados */
-        background: linear-gradient(45deg, #1976D2 0%, #2196F3 100%); /* Azul vibrante (melhorado) */
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-        display: flex; /* Para centralizar o texto verticalmente */
-        align-items: center;
-        justify-content: center;
+        flex: 1 1 auto; min-width: 100px; padding: 15px; font-size: 1.8em;
+        border-radius: var(--border-radius-large);
+        background: linear-gradient(45deg, var(--dark-blue) 0%, var(--light-blue-accent) 100%);
+        color: white; border: none; cursor: pointer; transition: all 0.3s ease;
+        box-shadow: 0 6px 12px var(--shadow-medium);
+        display: flex; align-items: center; justify-content: center;
     }
+    #answer-buttons-container button.correct-feedback { background: linear-gradient(45deg, var(--dark-green) 0%, var(--primary-green) 100%); box-shadow: 0 0 15px rgba(40, 167, 69, 0.8); }
+    #answer-buttons-container button.incorrect-feedback { background: linear-gradient(45deg, var(--red-main) 0%, var(--dark-red) 100%); box-shadow: 0 0 15px rgba(220, 53, 69, 0.8); }
 
-    #answer-buttons-container button:hover:not(:disabled) {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.35);
-    }
-
-    #answer-buttons-container button:active:not(:disabled) {
-        transform: translateY(0);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-
-    /* Feedback visual para os botões de resposta */
-    #answer-buttons-container button.correct-feedback {
-        background: linear-gradient(45deg, #28a745 0%, #218838 100%); /* Verde */
-        box-shadow: 0 0 15px rgba(40, 167, 69, 0.8);
-    }
-
-    #answer-buttons-container button.incorrect-feedback {
-        background: linear-gradient(45deg, #DC3545 0%, #C62828 100%); /* Vermelho (melhorado) */
-        box-shadow: 0 0 15px rgba(220, 53, 69, 0.8);
-    }
-
-    #answer-buttons-container button:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-
-    /* Settings Icon */
+    /* Ícone de Configurações */
     .settings-icon {
-        position: absolute;
-        top: 15px; /* Ajustar conforme necessário */
-        right: 15px; /* Ajustar conforme necessário */
-        background: none;
-        border: none;
-        font-size: 2.5em; /* Tamanho do ícone */
-        cursor: pointer;
-        color: #555; /* Cor do ícone */
-        transition: transform 0.2s ease;
-        padding: 0; /* Remover padding padrão do botão */
-        box-shadow: none; /* Remover sombra padrão do botão */
-        z-index: 10; /* Garante que o ícone esteja acima dos outros elementos do container */
+        position: absolute; top: 15px; right: 15px; background: none; border: none;
+        font-size: 2.5em; cursor: pointer; color: var(--text-medium); transition: transform 0.2s ease;
+        padding: 0; box-shadow: none; z-index: 10;
     }
-    .settings-icon:hover {
-        transform: rotate(30deg);
-        color: #1976D2; /* Azul vibrante */
-    }
+    .settings-icon:hover { transform: rotate(30deg); color: var(--dark-blue); }
 
-    /* Modal Overlay */
+    /* Overlay do Modal */
     .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.7); /* Fundo semi-transparente */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 2000; /* Acima de tudo */
-        opacity: 0;
-        visibility: hidden;
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background-color: rgba(0, 0, 0, 0.7); display: flex; align-items: center;
+        justify-content: center; z-index: 2000; opacity: 0; visibility: hidden;
         transition: opacity 0.3s ease, visibility 0.3s ease;
     }
+    .modal-overlay.show { opacity: 1; visibility: visible; }
 
-    .modal-overlay.show {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    /* Modal Content */
+    /* Conteúdo do Modal */
     .modal-content {
-        background-color: #2c3e50; /* Azul escuro, como na imagem */
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-        width: 90%;
-        max-width: 400px;
-        position: relative;
-        color: white;
-        text-align: center;
-        transform: scale(0.9);
-        transition: transform 0.3s ease;
+        background-color: #2c3e50; padding: 30px; border-radius: var(--border-radius-large);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); width: 90%; max-width: 400px;
+        position: relative; color: white; text-align: center;
+        transform: scale(0.9); transition: transform 0.3s ease;
     }
+    .modal-overlay.show .modal-content { transform: scale(1); }
+    .modal-content h3 { color: #fff; font-size: 1.8em; margin-bottom: 25px; }
 
-    .modal-overlay.show .modal-content {
-        transform: scale(1);
-    }
-
-    .modal-content h3 {
-        color: #fff;
-        font-size: 1.8em;
-        margin-bottom: 25px;
-    }
-
-    /* Close Button */
+    /* Botão de Fechar */
     .close-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: none;
-        border: none;
-        color: #fff;
-        font-size: 1.8em;
-        cursor: pointer;
-        padding: 5px;
-        line-height: 1;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background-color 0.2s ease;
+        position: absolute; top: 10px; right: 10px; background: none; border: none;
+        color: #fff; font-size: 1.8em; cursor: pointer; padding: 5px; line-height: 1;
+        border-radius: 50%; width: 40px; height: 40px; display: flex;
+        align-items: center; justify-content: center; transition: background-color 0.2s ease;
     }
-    .close-button:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-    }
+    .close-button:hover { background-color: rgba(255, 255, 255, 0.2); }
 
-    /* Setting Item */
+    /* Item de Configuração */
     .setting-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         font-size: 1.2em;
     }
-    .setting-item:last-of-type {
-        border-bottom: none;
-    }
-    .setting-item span {
-        flex-grow: 1;
-        text-align: left;
-        padding-left: 10px;
-    }
+    .setting-item:last-of-type { border-bottom: none; }
+    .setting-item span { flex-grow: 1; text-align: left; padding-left: 10px; }
 
-    /* Toggle Switch */
+    /* Chave Seletora (Toggle Switch) */
     .toggle-switch {
-        width: 60px;
-        height: 30px;
-        background-color: #ccc;
-        border-radius: 15px;
-        position: relative;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        flex-shrink: 0; /* Não permite que o switch encolha */
+        width: 60px; height: 30px; background-color: #ccc; border-radius: 15px;
+        position: relative; cursor: pointer; transition: background-color 0.3s ease;
+        flex-shrink: 0;
     }
-
-    .toggle-switch.active {
-        background-color: #4CAF50; /* Verde quando ativo */
-    }
-
+    .toggle-switch.active { background-color: var(--primary-green); }
     .toggle-button {
-        width: 26px;
-        height: 26px;
-        background-color: white;
-        border-radius: 50%;
-        position: absolute;
-        top: 2px;
-        left: 2px;
-        transition: transform 0.3s ease;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        width: 26px; height: 26px; background-color: white; border-radius: 50%;
+        position: absolute; top: 2px; left: 2px; transition: transform 0.3s ease;
+        box-shadow: 0 2px 5px var(--shadow-medium);
     }
+    .toggle-switch.active .toggle-button { transform: translateX(30px); }
 
-    .toggle-switch.active .toggle-button {
-        transform: translateX(30px); /* Move para a direita quando ativo */
-    }
-
-    /* Action Buttons in Settings */
-    .settings-action-button {
-        width: 100%;
-        padding: 12px 20px;
-        font-size: 1.2em;
-        border-radius: 8px;
-        margin-top: 15px; /* Espaçamento entre os botões de ação */
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        transition: all 0.3s ease;
-        color: white; /* Garante que o texto/ícone é branco */
-    }
-
-    .settings-action-button.green-button {
-        background: linear-gradient(45deg, #4CAF50 0%, #218838 100%);
-    }
-    .settings-action-button.green-button:hover {
-        background: linear-gradient(45deg, #218838 0%, #4CAF50 100%);
-        transform: translateY(-3px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-    }
-
-    .settings-action-button.blue-button {
-        background: linear-gradient(45deg, #1976D2 0%, #2196F3 100%); /* Azul vibrante (melhorado) */
-    }
-    .settings-action-button.blue-button:hover {
-        background: linear-gradient(45deg, #2196F3 0%, #1976D2 100%);
-        transform: translateY(-3px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-    }
-
-    /* New button for explaining concept */
-    #explain-concept-button {
-        margin-top: 20px;
-        background: linear-gradient(45deg, #6c5ce7 0%, #483d8b 100%); /* Um roxo/azul escuro */
-        color: white;
-        padding: 15px 30px;
-        font-size: 1.2em;
-        border-radius: 10px;
-        box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-    }
-    #explain-concept-button:hover {
-        background: linear-gradient(45deg, #483d8b 0%, #6c5ce7 100%);
-        transform: translateY(-3px);
-        box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-    }
-
-    /* Wrapper para as duas listas de ranking */
+    /* Estilização das Listas de Ranking */
     .ranking-lists-wrapper {
-        display: flex;
-        flex-direction: column; /* Padrão em coluna para telas pequenas */
-        width: 100%; /* Ocupa a largura total do pai */
-        gap: 20px; /* Espaço entre as seções de ranking */
-        margin-bottom: 20px; /* Espaço acima do botão de voltar */
-        align-items: center; /* Centraliza as seções de ranking horizontalmente */
+        display: flex; flex-direction: column; width: 100%; gap: 20px;
+        margin-bottom: 20px; align-items: center;
     }
-
-    /* Ajustes para as seções de ranking individuais dentro do wrapper */
     #rankings-container .ranking-section {
-        width: 95%; /* Ocupa quase a largura total em telas pequenas */
-        max-width: 400px; /* Limita a largura da seção individual */
-        margin: 0; /* Reseta margens de regras anteriores */
+        width: 95%; max-width: 400px; margin: 0;
     }
+    .ranking-section h2 { color: var(--primary-green); margin-bottom: 15px; text-shadow: 1px 1px 2px var(--shadow-light); }
+    .ranking-list { list-style: none; padding: 0; text-align: left; width: 100%; font-size: 0.9em; }
+    .ranking-list li {
+      padding: 8px 0; border-bottom: 1px solid #eee; display: flex;
+      justify-content: space-between; align-items: center; flex-wrap: nowrap;
+    }
+    .ranking-list li:last-child { border-bottom: none; }
+    .ranking-position { font-weight: bold; color: #007bff; min-width: 25px; margin-right: 5px; text-align: right; }
+    .ranking-name { flex-grow: 1; margin-right: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #444; }
+    /* REMOVIDO: .ranking-level */
+    .ranking-score { font-weight: bold; color: var(--text-dark); min-width: 45px; text-align: right; flex-shrink: 0; }
+    .ranking-list li.current-player-highlight {
+        background: linear-gradient(90deg, var(--yellow-highlight) 0%, var(--yellow-accent) 100%);
+        color: var(--text-dark); font-weight: bold; box-shadow: 0 0 10px rgba(255, 235, 59, 0.7);
+        animation: slideInPop 0.7s ease-out forwards; transform-origin: center;
+    }
+    .ranking-list li.current-player-highlight span { color: var(--text-dark); }
+    .ranking-list li.ranking-item-top { background-color: rgba(0, 123, 255, 0.1); border: 1px solid #007bff; }
+    .ranking-list li.ranking-item-top span { color: #007bff; font-weight: bold; }
+    .ranking-list li.ranking-item-bottom { background-color: rgba(220, 53, 69, 0.1); border: 1px solid #dc3545; }
+    .ranking-list li.ranking-item-bottom span { color: var(--red-main); font-weight: bold; }
 
-    /* Estilos para os botões de modo (Kids/Adulto) */
-    .mode-button {
-        background: linear-gradient(45deg, #1976D2 0%, #2196F3 100%) !important; /* Azul vibrante (melhorado) */
-        color: white;
-        padding: 15px 25px;
-        font-size: 1.5em;
-        border-radius: 10px;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-        width: 100%; /* Ocupa a largura total do container */
-        margin-bottom: 15px; /* Espaço entre os botões de modo */
-    }
-    .mode-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-        background: linear-gradient(45deg, #2196F3 0%, #1976D2 100%) !important; /* Gradiente invertido no hover */
-    }
-    .mode-button.active {
-        background: linear-gradient(45deg, #4CAF50 0%, #218838 100%) !important; /* Verde quando ativo */
-        box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.6), 0 5px 10px rgba(0,0,0,0.3) !important; /* Anel verde mais forte e sombra */
-    }
-
-    /* Botão Voltar */
-    .back-button {
-        background: linear-gradient(45deg, #DC3545 0%, #C62828 100%) !important; /* Gradiente vermelho vibrante (melhorado) */
-        margin-top: 30px !important; /* Mais espaço acima */
-        padding: 15px 30px;
-        font-size: 1.2em;
-        border-radius: 10px;
-        border: none;
-        color: white;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-    }
-    .back-button:hover {
-        background: linear-gradient(45deg, #C62828 0%, #DC3545 100%) !important;
-        transform: translateY(-3px);
-        box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-    }
-
-    /* Estilos para o texto animado dentro dos botões de doação */
+    /* Estilos específicos do botão de doação (para texto animado) */
     .animated-donate-text {
-        display: inline-block; /* Permite transformações e animações */
-        font-size: 1em; /* Herda o tamanho da fonte do botão pai */
-        font-weight: bold;
-        color: white; /* Cor base do texto */
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.7), /* Brilho branco */
-                     0 0 10px rgba(255, 255, 255, 0.5); /* Brilho branco maior */
-        animation: neonGlow 2s infinite alternate ease-in-out; /* Animação mais longa e suave */
+        display: inline-block; font-size: 1em; font-weight: bold; color: white;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.7), 0 0 10px rgba(255, 255, 255, 0.5);
+        animation: neonGlow 2s infinite alternate ease-in-out;
+    }
+    #ranking-donate-button, #settings-modal .modal-content button#settings-donate-button {
+        background: linear-gradient(45deg, var(--orange-main) 0%, var(--orange-accent) 100%) !important;
+    }
+    #ranking-donate-button:hover, #settings-modal .modal-content button#settings-donate-button:hover {
+        background: linear-gradient(45deg, var(--orange-accent) 0%, var(--orange-main) 100%) !important;
     }
 
-    @keyframes neonGlow {
-        0% {
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #FF6F00, 0 0 20px #FF6F00; /* Brilho laranja */
-            transform: scale(1);
+    /* Media Queries */
+    @media (min-width: 768px) {
+        #embedded-rankings-area, .ranking-lists-wrapper {
+            flex-direction: row; align-items: flex-start; justify-content: center; flex-wrap: wrap;
         }
-        33% {
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #FF9100, 0 0 20px #FF9100; /* Brilho laranja mais claro */
-            transform: scale(1.02); /* Leve pulso */
-        }
-        66% {
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #FFC107, 0 0 20px #FFC107; /* Brilho amarelo */
-            transform: scale(1);
-        }
-        100% {
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #FF6F00, 0 0 20px #FF6F00; /* Volta ao brilho laranja */
-            transform: scale(1.02); /* Leve pulso */
+        #rankings-container .ranking-section, #dynamic-competition-ranking-display .ranking-section {
+            flex: 1; max-width: 48%; margin: 0 10px; min-width: 300px;
         }
     }
-
-    /* Override dos backgrounds dos botões de doação para o gradiente amarelo/laranja */
-    #donate-button, #ranking-donate-button {
-        background: linear-gradient(45deg, #FF6F00 0%, #FF9100 100%) !important; /* Laranja vibrante (melhorado) */
-    }
-    #donate-button:hover, #ranking-donate-button:hover {
-        background: linear-gradient(45deg, #FF9100 0%, #FF6F00 100%) !important;
-    }
-
-    /* Estilo específico para o botão de doação no modal de configurações */
-    #settings-modal .modal-content button#settings-donate-button {
-        background: linear-gradient(45deg, #FF6F00 0%, #FF9100 100%) !important; /* Sobrescreve o fundo azul */
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important; /* Garante consistência da sombra */
-        color: white !important; /* Garante que a cor do texto seja branca */
-    }
-    #settings-modal .modal-content button#settings-donate-button:hover {
-        background: linear-gradient(45deg, #FF9100 0%, #FF6F00 100%) !important;
-        transform: translateY(-3px) !important;
-        box-shadow: 0 6px 12px rgba(0,0,0,0.3) !important;
-    }
-
-
-    /* MEDIA QUERIES para layout responsivo */
-    @media (min-width: 768px) { /* A partir de tablets e desktops */
-        #embedded-rankings-area, .ranking-lists-wrapper { /* Aplica a ambos os wrappers de ranking */
-            flex-direction: row; /* Coloca os rankings lado a lado */
-            align-items: flex-start; /* Alinha os itens ao topo se tiverem alturas diferentes */
-            justify-content: center; /* Centraliza o par de listas */
-            flex-wrap: wrap; /* Permite que os itens quebrem se a tela for muito estreita */
-        }
-        #rankings-container .ranking-section, #embedded-rankings-area .ranking-section {
-            flex: 1; /* Faz com que ocupem espaço igual */
-            max-width: 48%; /* Adiciona um pequeno espaçamento entre eles */
-            margin: 0 10px; /* Adiciona margem horizontal */
-            min-width: 300px; /* Garante que não fiquem muito pequenos */
-        }
-        /* O botão de voltar já está no fluxo de coluna do #rankings-container */
-        /* e será centralizado por align-items: center no #rankings-container */
-    }
-
     @media (max-width: 600px) {
-      body {
-        padding: 10px; /* Reduz o padding do body em telas muito pequenas */
-      }
-      #game-container, .ranking-section, #mode-selection-container, #main-menu, #operation-selection-container, #competition-mode-selection-container {
-        padding: 20px; /* Mantém padding interno dos containers */
-        border-radius: 10px; /* Cantos um pouco menos arredondados em telas pequenas */
-      }
-      #splash-screen {
-        font-size: 2.5em; /* Fonte menor na splash para telas pequenas */
-      }
-      #splash-screen .brain-icon {
-        font-size: 4em;
-      }
-      #splash-screen .splash-text {
-        font-size: 1.2em;
-      }
-
-      .main-title-box {
-        padding: 15px 20px;
-        max-width: 250px;
-      }
-      .main-title-box .brain-icon-title {
-        font-size: 3em;
-      }
-      .main-title-box .title-text {
-        font-size: 1.5em;
-      }
-
-      #main-menu .math-symbols {
-        font-size: 4em; /* Símbolos menores em telas pequenas */
-        letter-spacing: 8px;
-        gap: 10px;
-      }
-      #main-menu .menu-buttons {
-        width: 90%;
-        gap: 15px;
-      }
-      #main-menu .menu-buttons button {
-        font-size: 1.5em; /* Botões de menu menores */
-        padding: 15px 25px;
-      }
-      #question {
-        font-size: 1.8em; /* Fonte menor para perguntas e títulos */
-      }
-      #player-name-input { /* Mantém o input de nome visível */
-        font-size: 1.2em; /* Inputs menores */
-        padding: 12px;
-      }
-      /* Remove o display: none para o #answer-buttons-container em telas pequenas */
-      #answer-buttons-container {
-        max-width: 280px; /* Ajusta a largura dos botões de resposta em telas menores */
-        gap: 10px;
-        flex-direction: column; /* Força empilhamento em telas muito pequenas */
-      }
-      #answer-buttons-container button {
-        font-size: 1.5em;
-        padding: 15px;
-        min-width: auto; /* Remove min-width quando empilhado */
-      }
-      .settings-icon {
-            font-size: 2em;
-            top: 10px;
-            right: 10px;
-        }
-        .modal-content {
-            padding: 20px;
-            max-width: 95%;
-        }
-        .modal-content h3 {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-        }
-        .setting-item {
-            font-size: 1em;
-            padding: 10px 0;
-        }
-        .toggle-switch {
-            width: 50px;
-            height: 25px;
-            border-radius: 12.5px;
-        }
-        .toggle-button {
-            width: 21px;
-            height: 21px;
-            top: 2px;
-            left: 2px;
-        }
-        .toggle-switch.active .toggle-button {
-            transform: translateX(25px);
-        }
-        .settings-action-button {
-            font-size: 1em;
-            padding: 10px 15px;
-        }
+      body { padding: 10px; }
+      .card-container { padding: 20px; border-radius: var(--border-radius-medium); }
+      #splash-screen { font-size: 2.5em; }
+      #splash-screen .brain-icon { font-size: 4em; }
+      #splash-screen .splash-text { font-size: 1.2em; }
+      .main-title-box { padding: 15px 20px; max-width: 250px; }
+      .main-title-box .brain-icon-title { font-size: 3em; }
+      .main-title-box .title-text { font-size: 1.5em; }
+      #main-menu .math-symbols { font-size: 4em; letter-spacing: 8px; gap: 10px; }
+      #main-menu .menu-buttons { width: 90%; gap: 15px; }
+      .main-menu-button { font-size: 1.5em; padding: 15px 25px; }
+      #question { font-size: 1.8em; }
+      #player-name-input { font-size: 1.2em; padding: 12px; }
+      #answer-buttons-container { max-width: 280px; gap: 10px; flex-direction: column; }
+      #answer-buttons-container button { font-size: 1.5em; padding: 15px; min-width: auto; }
+      .settings-icon { font-size: 2em; top: 10px; right: 10px; }
+      .modal-content { padding: 20px; max-width: 95%; }
+      .modal-content h3 { font-size: 1.5em; margin-bottom: 20px; }
+      .setting-item { font-size: 1em; padding: 10px 0; }
+      .toggle-switch { width: 50px; height: 25px; border-radius: 12.5px; }
+      .toggle-button { width: 21px; height: 21px; top: 2px; left: 2px; }
+      .toggle-switch.active .toggle-button { transform: translateX(25px); }
+      .settings-action-button { font-size: 1em; padding: 10px 15px; }
     }
-
   </style>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -1044,193 +529,164 @@
 
 </head>
 <body>
-  <!-- Splash Screen -->
+  <!-- Tela de Splash -->
   <div id="splash-screen">
     <span class="brain-icon">🧠</span>
     <span class="splash-text">Desafio dos<br>60 Segundos</span>
   </div>
 
   <!-- Menu Principal -->
-  <div id="main-menu">
-    <!-- Novo Título do Jogo -->
+  <div id="main-menu" class="card-container">
     <div class="main-title-box">
         <span class="brain-icon-title">🧠</span>
         <span class="title-text">Matemática em</span>
         <span class="title-text">60 Segundos</span>
     </div>
-
     <div class="math-symbols">
-        <span>+</span>
-        <span>-</span>
-        <span>×</span>
-        <span>÷</span>
+        <span>+</span><span>-</span><span>×</span><span>÷</span>
     </div>
     <div class="menu-buttons">
-      <button id="practice-button">Praticar</button>
-      <button id="competition-button">Competição</button> <!-- Botão renomeado -->
-      <button id="donate-button" class="menu-buttons"><span class="animated-donate-text">$ Incentive o App $</span></button> <!-- NOVO: Botão de Doar com texto animado -->
+      <button id="practice-button" class="base-button main-menu-button">Praticar</button>
+      <button id="competition-button" class="base-button main-menu-button">Competição</button>
     </div>
   </div>
 
-  <!-- Conteúdo da Seleção de Operação (NOVA TELA) -->
-  <div id="operation-selection-container">
+  <!-- Seleção de Operação (Modo Praticar) -->
+  <div id="operation-selection-container" class="card-container">
     <h3>Escolha a Operação para Praticar:</h3>
     <div class="operation-buttons">
-        <button data-op="+">Adição (+)</button>
-        <button data-op="-">Subtração (-)</button>
-        <button data-op="*">Multiplicação (×)</button>
-        <button data-op="÷">Divisão (÷)</button>
-        <button data-op="all">Todos Juntos</button>
+        <button data-op="+" class="base-button operation-button">Adição (+)</button>
+        <button data-op="-" class="base-button operation-button">Subtração (-)</button>
+        <button data-op="*" class="base-button operation-button">Multiplicação (×)</button>
+        <button data-op="÷" class="base-button operation-button">Divisão (÷)</button>
+        <button data-op="all" class="base-button operation-button">Todos Juntos</button>
     </div>
-    <button id="back-to-main-from-operation" class="back-button">Voltar ao Menu Principal</button>
+    <button id="back-to-main-from-operation" class="base-button back-button">Voltar ao Menu Principal</button>
   </div>
 
-  <!-- Conteúdo da Seleção de Modo (Para o modo Praticar) -->
-  <div id="mode-selection-container">
+  <!-- Seleção de Modo (Modo Praticar) -->
+  <div id="mode-selection-container" class="card-container">
     <h3>Escolha o Modo de Jogo:</h3>
-    <button id="mode-kids-button" class="mode-button" data-mode="practice_kids">Modo Kids</button>
-    <button id="mode-adults-button" class="mode-button" data-mode="practice_adults">Modo Adulto</button>
-    <button id="back-to-operation-selection" class="back-button">Voltar para Seleção de Operação</button> <!-- Botão de voltar atualizado -->
+    <button id="mode-kids-button" class="base-button mode-button" data-mode="practice_kids">Modo Kids</button>
+    <button id="mode-adults-button" class="base-button mode-button" data-mode="practice_adults">Modo Adulto</button>
+    <button id="back-to-operation-selection" class="base-button back-button">Voltar para Seleção de Operação</button>
   </div>
 
-  <!-- Conteúdo da Seleção de Modo de Competição (NOVA TELA) -->
-  <div id="competition-mode-selection-container">
+  <!-- Seleção de Modo Competição (com Botões de Ranking) -->
+  <div id="competition-mode-selection-container" class="card-container">
     <h3>Modo Competição:</h3>
     <div class="competition-buttons">
-        <button data-mode="competition_kids">Kids</button>
-        <button data-mode="competition_adults">Adulto</button>
+        <button data-mode="competition_kids" class="base-button competition-mode-button">Kids</button>
+        <button data-mode="competition_adults" class="base-button competition-mode-button">Adulto</button>
     </div>
-    <!-- Rankings visíveis diretamente aqui -->
-    <div id="embedded-rankings-area">
-        <div id="ranking-kids-area-comp" class="ranking-section">
-            <h2>🏆 Ranking Kids (Top 10)</h2>
-            <ol id="ranking-kids-list-comp" class="ranking-list">
-            </ol>
-        </div>
+    <!-- NOVOS BOTÕES PARA EXIBIR RANKING -->
+    <button id="show-kids-ranking-button" class="base-button ranking-toggle-button">
+        <span class="trophy-icon">🏆</span> Top 50 Kids
+    </button>
+    <button id="show-adults-ranking-button" class="base-button ranking-toggle-button">
+        <span class="trophy-icon">🏆</span> Top 50 Adulto
+    </button>
 
-        <div id="ranking-adults-area-comp" class="ranking-section">
-            <h2>🏆 Ranking Adulto (Top 10)</h2>
-            <ol id="ranking-adults-list-comp" class="ranking-list">
-            </ol>
+    <!-- NOVO CONTÊINER PARA EXIBIR O RANKING DINÂMICAMENTE -->
+    <div id="dynamic-competition-ranking-display" style="display: none;">
+        <!-- O ranking Kids ou Adulto será carregado aqui -->
+        <div id="ranking-kids-area-dynamic" class="ranking-section" style="display: none;">
+            <h2>🏆 Ranking Kids (Top 50)</h2>
+            <ol id="ranking-kids-list-dynamic" class="ranking-list"></ol>
+        </div>
+        <div id="ranking-adults-area-dynamic" class="ranking-section" style="display: none;">
+            <h2>🏆 Ranking Adulto (Top 50)</h2>
+            <ol id="ranking-adults-list-dynamic" class="ranking-list"></ol>
         </div>
     </div>
-    <button id="back-to-main-from-competition-mode" class="back-button">Voltar ao Menu Principal</button>
+
+    <button id="back-to-main-from-competition-mode" class="base-button back-button">Voltar ao Menu Principal</button>
   </div>
 
   <!-- Conteúdo do Jogo -->
-  <div id="game-container">
-    <!-- Ícone de Configurações -->
-    <button id="settings-icon" class="settings-icon">⚙️</button>
-
+  <div id="game-container" class="card-container">
+    <button id="settings-icon" class="settings-icon" data-target-screen="game">⚙️</button>
     <div id="status">
       <p id="timer">Tempo: <span id="timer-value">60s</span></p>
-      <div id="time-bar-container">
-          <div id="time-bar"></div>
-      </div>
+      <div id="time-bar-container"><div id="time-bar"></div></div>
       <p id="score">Pontos: <span id="score-value">0</span></p>
     </div>
-
     <div id="question-area">
-      <p id="difficulty-level"></p> 
-      <p id="question">Selecione um modo e digite seu nome para começar!</p>
-      <input type="text" id="player-name-input" placeholder="Seu nome" maxlength="20" pattern="[A-Za-zÀ-ú\s]+" title="Apenas letras e espaços são permitidos.">
-      <!-- O input de resposta foi removido -->
-      <p id="message"></p> <!-- Mensagem de feedback (agora controlada por JS) -->
+      <p id="difficulty-level"></p> <!-- Este elemento ficará vazio -->
+      <p id="question">Prepare-se para a aventura!</p> <!-- Texto atualizado e animado -->
+      <input type="text" id="player-name-input" placeholder="Nome e Sobrenome (ex: João Silva)" maxlength="40" pattern="[A-Za-zÀ-ú\s]+" title="Por favor, digite seu nome e sobrenome (ex: João Silva).">
+      <p id="message"></p>
     </div>
-
-    <!-- NOVO: Container para os botões de resposta -->
     <div id="answer-buttons-container">
-        <button class="answer-button" data-value="0"></button>
-        <button class="answer-button" data-value="0"></button>
-        <button class="answer-button" data-value="0"></button>
+        <button class="answer-button base-button" data-value="0"></button>
+        <button class="answer-button base-button" data-value="0"></button>
+        <button class="answer-button base-button" data-value="0"></button>
     </div>
-
-    <button id="explain-concept-button" style="display: none;">✨ Explicar Conceito ✨</button> <!-- Novo botão -->
-    <button id="start-game-button" style="display: none;">Começar Jogo</button>
-    <button id="play-again" style="display: none;">Jogar Novamente</button>
+    <button id="explain-concept-button" class="base-button" style="display: none;">✨ Explicar Conceito ✨</button>
+    <button id="start-game-button" class="base-button green-button">Começar Jogo</button>
+    <button id="play-again" class="base-button" style="display: none;">Jogar Novamente</button>
   </div>
 
-  <!-- O Teclado Numérico foi removido -->
-
-  <!-- Container de Rankings (Tela de Ranking Completo) -->
-  <div id="rankings-container">
-    <div class="ranking-lists-wrapper"> <!-- NOVO WRAPPER -->
-        <div id="ranking-kids-area" class="ranking-section">
-          <h2>🏆 Ranking Kids (Top 10)</h2>
-          <ol id="ranking-kids-list" class="ranking-list">
-          </ol>
+  <!-- Contêiner de Rankings (Tela de Ranking Completo Pós-Quiz) -->
+  <div id="rankings-container" class="card-container">
+    <button class="settings-icon" data-target-screen="rankings">⚙️</button>
+    <div class="ranking-lists-wrapper">
+        <div id="ranking-kids-area" class="ranking-section" style="display: none;"> <!-- Inicialmente oculto -->
+          <h2>🏆 Ranking Kids (Top 50)</h2>
+          <ol id="ranking-kids-list" class="ranking-list"></ol>
         </div>
-
-        <div id="ranking-adults-area" class="ranking-section">
-          <h2>🏆 Ranking Adulto (Top 10)</h2>
-          <ol id="ranking-adults-list" class="ranking-list">
-          </ol>
+        <div id="ranking-adults-area" class="ranking-section" style="display: none;"> <!-- Inicialmente oculto -->
+          <h2>🏆 Ranking Adulto (Top 50)</h2>
+          <ol id="ranking-adults-list" class="ranking-list"></ol>
         </div>
-    </div> <!-- FIM DO NOVO WRAPPER -->
-    <button id="ranking-donate-button" class="back-button"><span class="animated-donate-text">$ Incentive o App $</span></button> <!-- NOVO: Botão de Doar no Ranking com texto animado -->
-    <button id="back-to-main-from-ranking" class="back-button">Voltar ao Menu Principal</button>
+    </div>
+    <button id="ranking-donate-button" class="base-button back-button"><span class="animated-donate-text">$ Incentive o App $</span></button>
+    <button id="back-to-main-from-ranking" class="base-button back-button">Voltar ao Menu Principal</button>
   </div>
 
-  <!-- Settings Modal -->
+  <!-- Modal de Configurações -->
   <div id="settings-modal" class="modal-overlay">
     <div class="modal-content">
       <button class="close-button" id="close-settings-modal">X</button>
       <h3>Configurações</h3>
       <div class="setting-item">
         <span>🔊 Som</span>
-        <div class="toggle-switch" id="toggle-sound">
-          <div class="toggle-button"></div>
-        </div>
+        <div class="toggle-switch" id="toggle-sound"><div class="toggle-button"></div></div>
       </div>
       <div class="setting-item">
         <span>🎵 Música de Fundo</span>
-        <div class="toggle-switch" id="toggle-bgm">
-          <div class="toggle-button"></div>
-        </div>
+        <div class="toggle-switch" id="toggle-bgm"><div class="toggle-button"></div></div>
       </div>
       <div class="setting-item">
         <span>📳 Vibração</span>
-        <div class="toggle-switch" id="toggle-vibration">
-          <div class="toggle-button"></div>
-        </div>
+        <div class="toggle-switch" id="toggle-vibration"><div class="toggle-button"></div></div>
       </div>
       <div class="setting-item button-item">
-        <button id="settings-home-button" class="settings-action-button green-button">🏠 Início</button>
+        <button id="settings-home-button" class="base-button settings-action-button green-button">🏠 Início</button>
       </div>
       <div class="setting-item button-item">
-        <button id="settings-replay-button" class="settings-action-button green-button">🔄 Jogar Novamente</button>
+        <button id="settings-replay-button" class="base-button settings-action-button green-button">🔄 Jogar Novamente</button>
       </div>
       <div class="setting-item button-item">
-        <button id="settings-donate-button" class="settings-action-button blue-button"><span class="animated-donate-text">$ Incentive o App $</span></button> <!-- NOVO: Botão de Doar nas configurações com texto animado -->
+        <button id="settings-donate-button" class="base-button settings-action-button blue-button"><span class="animated-donate-text">$ Incentive o App $</span></button>
       </div>
       <div class="setting-item button-item">
-        <button id="settings-more-button" class="settings-action-button blue-button">⚙️ Mais Opções</button>
+        <button id="settings-more-button" class="base-button settings-action-button blue-button">⚙️ Mais Opções</button>
       </div>
     </div>
   </div>
 
-  <!-- Explanation Modal -->
+  <!-- Modal de Explicação -->
   <div id="explanation-modal" class="modal-overlay">
     <div class="modal-content">
       <button class="close-button" id="close-explanation-modal">X</button>
       <h3>✨ Explicação do Conceito ✨</h3>
       <p id="explanation-text">Carregando explicação...</p>
-      <button class="settings-action-button blue-button" id="explanation-ok-button">Entendi!</button>
+      <button class="base-button settings-action-button blue-button" id="explanation-ok-button">Entendi!</button>
     </div>
   </div>
 
-  <!-- Game Over Modal (for Competition Mode) -->
-  <div id="game-over-modal" class="modal-overlay">
-    <div class="modal-content">
-      <h3>Fim de Jogo!</h3>
-      <p id="final-score-text"></p>
-      <p id="final-rank-text"></p>
-      <button id="view-full-ranking-button" class="settings-action-button blue-button">Ver Ranking Completo</button>
-      <button id="game-over-main-menu-button" class="settings-action-button green-button">Voltar ao Menu Principal</button>
-    </div>
-  </div>
-
-  <!-- Blocos de Anúncio (fora dos containers de tela para evitar interferência de layout) -->
+  <!-- Blocos de Anúncio AdSense -->
   <div style="width: 100%; max-width: 728px; margin: 20px auto; text-align: center;">
     <ins class="adsbygoogle"
          style="display:block; width:100%; height:auto; min-height:90px;"
@@ -1238,11 +694,8 @@
          data-ad-slot="9401721950"
          data-ad-format="auto"
          data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
   </div>
-
   <div style="width: 100%; max-width: 728px; margin: 20px auto; text-align: center;">
     <ins class="adsbygoogle"
          style="display:block; width:100%; height:auto; min-height:90px;"
@@ -1250,11 +703,8 @@
          data-ad-slot="SEU_SLOT_ID_2"
          data-ad-format="auto"
          data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
   </div>
-
   <div style="width: 100%; max-width: 728px; margin: 20px auto 0 auto; text-align: center;">
     <ins class="adsbygoogle"
          style="display:block; width:100%; height:auto; min-height:90px;"
@@ -1262,14 +712,11 @@
          data-ad-slot="SEU_SLOT_ID_3"
          data-ad-format="auto"
          data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
+    <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
   </div>
 
   <script>
     // Configuração do Firebase para o "Desafio dos 60 Segundos"
-    // Use as credenciais do projeto "desafio-dos-60-segundos"
     const firebaseConfig = {
       apiKey: "AIzaSyA4PWRt-22S8HGc6GS1m-4Wa9hYsh5Zbo",
       authDomain: "desafio-dos-60-segundos.firebaseapp.com",
@@ -1283,89 +730,86 @@
     const app = firebase.initializeApp(firebaseConfig);
     const db = app.firestore(); 
 
-    const splashScreen = document.getElementById('splash-screen');
-    const mainMenu = document.getElementById('main-menu');
-    const operationSelectionContainer = document.getElementById('operation-selection-container'); 
-    const modeSelectionContainer = document.getElementById('mode-selection-container'); 
-    const competitionModeSelectionContainer = document.getElementById('competition-mode-selection-container'); 
-    const gameContainer = document.getElementById('game-container');
-    const rankingsContainer = document.getElementById('rankings-container');
+    // Elementos DOM (centralizados para fácil acesso)
+    const elements = {
+      splashScreen: document.getElementById('splash-screen'),
+      mainMenu: document.getElementById('main-menu'),
+      operationSelectionContainer: document.getElementById('operation-selection-container'),
+      modeSelectionContainer: document.getElementById('mode-selection-container'),
+      competitionModeSelectionContainer: document.getElementById('competition-mode-selection-container'),
+      gameContainer: document.getElementById('game-container'),
+      rankingsContainer: document.getElementById('rankings-container'),
 
-    const questionElement = document.getElementById('question');
-    const playerNameInput = document.getElementById('player-name-input');
-    const messageElement = document.getElementById('message'); // Agora será sempre vazio e invisível
-    const timerValueElement = document.getElementById('timer-value');
-    const scoreValueElement = document.getElementById('score-value');
-    const startGameButton = document.getElementById('start-game-button');
-    const playAgainButton = document.getElementById('play-again');
-    const timeBar = document.getElementById('time-bar');
-    const difficultyLevelElement = document.getElementById('difficulty-level'); 
+      questionElement: document.getElementById('question'),
+      playerNameInput: document.getElementById('player-name-input'),
+      messageElement: document.getElementById('message'),
+      timerValueElement: document.getElementById('timer-value'),
+      scoreValueElement: document.getElementById('score-value'),
+      startGameButton: document.getElementById('start-game-button'),
+      playAgainButton: document.getElementById('play-again'),
+      timeBar: document.getElementById('time-bar'),
+      difficultyLevelElement: document.getElementById('difficulty-level'),
 
-    // Elementos de Modo de Jogo
-    const modeKidsButton = document.getElementById('mode-kids-button');
-    const modeAdultsButton = document.getElementById('mode-adults-button');
+      modeKidsButton: document.getElementById('mode-kids-button'),
+      modeAdultsButton: document.getElementById('mode-adults-button'),
+
+      // Listas de ranking para a tela de ranking completo (pós-quiz)
+      rankingKidsList: document.getElementById('ranking-kids-list'),
+      rankingAdultsList: document.getElementById('ranking-adults-list'),
+      // Áreas de ranking para a tela de ranking completo (pós-quiz)
+      rankingKidsArea: document.getElementById('ranking-kids-area'), 
+      rankingAdultsArea: document.getElementById('ranking-adults-area'), 
+
+      // Listas de ranking para o display dinâmico na tela de competição
+      rankingKidsListDynamic: document.getElementById('ranking-kids-list-dynamic'),
+      rankingAdultsListDynamic: document.getElementById('ranking-adults-list-dynamic'),
+      // Áreas de ranking para o display dinâmico na tela de competição
+      rankingKidsAreaDynamic: document.getElementById('ranking-kids-area-dynamic'),
+      rankingAdultsAreaDynamic: document.getElementById('ranking-adults-area-dynamic'),
+      dynamicCompetitionRankingDisplay: document.getElementById('dynamic-competition-ranking-display'), // Novo contêiner
+
+
+      answerButtonsContainer: document.getElementById('answer-buttons-container'),
+      answerButtons: document.querySelectorAll('#answer-buttons-container button'),
+
+      practiceButton: document.getElementById('practice-button'),
+      competitionButton: document.getElementById('competition-button'),
+      rankingDonateButton: document.getElementById('ranking-donate-button'),
+      backToMainFromOperationButton: document.getElementById('back-to-main-from-operation'),
+      backToOperationSelectionButton: document.getElementById('back-to-operation-selection'),
+      backToMainFromCompetitionModeButton: document.getElementById('back-to-main-from-competition-mode'),
+      backToMainFromRankingButton: document.getElementById('back-to-main-from-ranking'),
+
+      // Novos botões para alternar ranking na tela de competição
+      showKidsRankingButton: document.getElementById('show-kids-ranking-button'),
+      showAdultsRankingButton: document.getElementById('show-adults-ranking-button'),
+
+
+      settingsIcons: document.querySelectorAll('.settings-icon'),
+      settingsModal: document.getElementById('settings-modal'),
+      closeSettingsModalButton: document.getElementById('close-settings-modal'),
+      toggleSound: document.getElementById('toggle-sound'),
+      toggleBGM: document.getElementById('toggle-bgm'),
+      toggleVibration: document.getElementById('toggle-vibration'),
+      settingsHomeButton: document.getElementById('settings-home-button'),
+      settingsReplayButton: document.getElementById('settings-replay-button'),
+      settingsDonateButton: document.getElementById('settings-donate-button'),
+      settingsMoreButton: document.getElementById('settings-more-button'),
+
+      explainConceptButton: document.getElementById('explain-concept-button'),
+      explanationModal: document.getElementById('explanation-modal'),
+      closeExplanationModalButton: document.getElementById('close-explanation-modal'),
+      explanationText: document.getElementById('explanation-text'),
+      explanationOkButton: document.getElementById('explanation-ok-button')
+    };
+
+    // Variáveis de Estado do Jogo
     let currentGameMode = null; // 'practice_kids', 'practice_adults', 'competition_kids', 'competition_adults'
-
-    // Variáveis de controlo de dificuldade
-    let correctAnswersCount = 0; // Para controlo da dificuldade dinâmica no modo adulto
-    let consecutiveCorrectAnswersCount = 0; // NOVO: Para o "Incrível!"
-
-    // Elementos de Ranking
-    const rankingKidsList = document.getElementById('ranking-kids-list'); // Main ranking screen
-    const rankingAdultsList = document.getElementById('ranking-adults-list'); // Main ranking screen
-    const rankingKidsListComp = document.getElementById('ranking-kids-list-comp'); // Embedded in competition screen
-    const rankingAdultsListComp = document.getElementById('ranking-adults-list-comp'); // Embedded in competition screen
-
-
-    // Elemento dos Botões de Resposta
-    const answerButtonsContainer = document.getElementById('answer-buttons-container');
-    const answerButtons = document.querySelectorAll('#answer-buttons-container button');
-
-    // Botões do novo menu principal
-    const practiceButton = document.getElementById('practice-button');
-    const competitionButton = document.getElementById('competition-button'); 
-    const donateButton = document.getElementById('donate-button'); // NOVO: Botão de Doar no menu principal
-    const backToMainFromOperationButton = document.getElementById('back-to-main-from-operation'); 
-    const backToOperationSelectionButton = document.getElementById('back-to-operation-selection'); 
-    const backToMainFromCompetitionModeButton = document.getElementById('back-to-main-from-competition-mode'); 
-    const backToMainFromRankingButton = document.getElementById('back-to-main-from-ranking');
-    const rankingDonateButton = document.getElementById('ranking-donate-button'); // NOVO: Botão de Doar no Ranking
-
-
-    // Elementos do Modal de Configurações
-    const settingsIcon = document.getElementById('settings-icon');
-    const settingsModal = document.getElementById('settings-modal');
-    const closeSettingsModalButton = document.getElementById('close-settings-modal');
-
-    const toggleSound = document.getElementById('toggle-sound');
-    const toggleBGM = document.getElementById('toggle-bgm');
-    const toggleVibration = document.getElementById('toggle-vibration');
-
-    const settingsHomeButton = document.getElementById('settings-home-button');
-    const settingsReplayButton = document.getElementById('settings-replay-button');
-    const settingsDonateButton = document.getElementById('settings-donate-button'); // NOVO: Botão de Doar nas configurações
-    const settingsMoreButton = document.getElementById('settings-more-button');
-
-    // Elementos do Modal de Explicação de Conceito
-    const explainConceptButton = document.getElementById('explain-concept-button');
-    const explanationModal = document.getElementById('explanation-modal');
-    const closeExplanationModalButton = document.getElementById('close-explanation-modal');
-    const explanationText = document.getElementById('explanation-text');
-    const explanationOkButton = document.getElementById('explanation-ok-button');
-
-    // New elements for Game Over Modal
-    const gameOverModal = document.getElementById('game-over-modal');
-    const finalScoreText = document.getElementById('final-score-text');
-    const finalRankText = document.getElementById('final-rank-text');
-    const viewFullRankingButton = document.getElementById('view-full-ranking-button');
-    const gameOverMainMenuButton = document.getElementById('game-over-main-menu-button');
-
-
-    // Estados das configurações (iniciam como ativos)
+    let correctAnswersCount = 0;
+    let consecutiveCorrectAnswersCount = 0;
     let isSoundOn = true;
     let isBGMOn = true;
     let isVibrationOn = true;
-
     let currentQuestion;
     let score = 0;
     let timeLeft = 60;
@@ -1373,359 +817,340 @@
     let gameActive = false;
     let currentPlayerName = '';
     let questionStartTime; 
-    let selectedOperationType = 'all'; // Default para 'all' no modo prática, mas pode ser alterado
+    let selectedOperationType = 'all'; // Padrão para o modo prática
 
-    // Os ficheiros de áudio (correct.mp3, incorrect.mp3) devem estar na mesma pasta ou num caminho acessível
+    // Arquivos de Áudio (devem estar na mesma pasta ou em um caminho acessível)
     const correctSound = new Audio('correct.mp3'); 
     const incorrectSound = new Audio('incorrect.mp3');
 
-    // Nomes dos níveis de dificuldade (agora usados internamente para exibição)
+    // Nomes de Dificuldade
     const difficultyNames = {
-        1: "Iniciante", // 0-4 respostas corretas (Adultos)
-        2: "Amador",   // 5-9 respostas corretas (Adultos)
-        3: "Desafiador", // 10-15 respostas corretas (Adultos)
-        4: "Mestre",    // 16+ respostas corretas (Adultos)
-        "kids_easy": "Fácil" // Nível fixo para Kids
+        1: "Iniciante", 
+        2: "Amador",   
+        3: "Desafiador", 
+        4: "Mestre",    
+        "kids_easy": "Fácil" 
     };
 
     // --- Funções de Navegação de Tela ---
     function hideAllScreens() {
-        // Esconde todos os containers de conteúdo principal
-        splashScreen.classList.remove('active', 'fade-out');
-        splashScreen.style.display = 'none'; // Garante que está oculto
-
-        mainMenu.classList.remove('active');
-        mainMenu.style.display = 'none';
-
-        operationSelectionContainer.classList.remove('active'); 
-        operationSelectionContainer.style.display = 'none';
-
-        modeSelectionContainer.classList.remove('active');
-        modeSelectionContainer.style.display = 'none';
-
-        competitionModeSelectionContainer.classList.remove('active'); 
-        competitionModeSelectionContainer.style.display = 'none';
-
-        gameContainer.classList.remove('active');
-        gameContainer.style.display = 'none';
-
-        rankingsContainer.classList.remove('active');
-        rankingsContainer.style.display = 'none';
-
-        answerButtonsContainer.style.display = 'none'; // Sempre esconde os botões de resposta
-        
-        // Esconde os modais também
+        Object.values(elements).forEach(el => {
+            if (el && el.classList && el.classList.contains('card-container')) {
+                el.classList.remove('active');
+                el.style.display = 'none';
+            }
+        });
+        elements.splashScreen.classList.remove('active', 'fade-out');
+        elements.splashScreen.style.display = 'none';
+        elements.answerButtonsContainer.style.display = 'none';
         hideSettingsModal();
         hideExplanationModal();
-        hideGameOverModal(); // Esconde o modal de Game Over
+    }
+
+    function showScreen(screenElement, animationDelay = 0) {
+        hideAllScreens();
+        setTimeout(() => {
+            screenElement.style.display = 'flex';
+            screenElement.classList.add('active');
+        }, animationDelay);
     }
 
     function showSplashScreen() {
-        hideAllScreens(); // Esconde todas as outras telas primeiro
-        splashScreen.style.display = 'flex'; // Mostra a splash screen
-        splashScreen.classList.add('active'); // Ativa para transição de opacidade
-        splashScreen.classList.remove('fade-out'); // Garante que não está a desvanecer de uma execução anterior
-
+        elements.splashScreen.style.display = 'flex';
+        elements.splashScreen.classList.add('active');
+        elements.splashScreen.classList.remove('fade-out');
         setTimeout(() => {
-            splashScreen.classList.add('fade-out'); // Inicia animação de fade-out
-            setTimeout(() => {
-                splashScreen.style.display = 'none'; // Esconde após fade-out
-                showMainMenu();
-            }, 500); // Duração da animação de fade-out
-        }, 2000); // Duração que a splash screen é visível (2 segundos)
+            elements.splashScreen.classList.add('fade-out');
+            setTimeout(() => showMainMenu(), 500);
+        }, 2000);
     }
 
     function showMainMenu() {
-        hideAllScreens();
-        mainMenu.style.display = 'flex'; // Mostra como flex
-        mainMenu.classList.add('active'); // Ativa para animação
-        
-        // Resetar estado de botões de modo
-        modeKidsButton.classList.remove('active');
-        modeAdultsButton.classList.remove('active');
-        // Resetar texto da pergunta e dificuldade
-        questionElement.textContent = 'Selecione um modo e digite seu nome para começar!';
-        difficultyLevelElement.textContent = '';
-        // Esconder inputs e botões de jogo
-        playerNameInput.style.display = 'none';
-        startGameButton.style.display = 'none';
-        playAgainButton.style.display = 'none';
-        explainConceptButton.style.display = 'none'; // Esconde o botão de explicação
-        messageElement.textContent = ''; // Limpa a mensagem
-        messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message'); // Esconde e limpa classes
+        showScreen(elements.mainMenu);
+        elements.modeKidsButton.classList.remove('active');
+        elements.modeAdultsButton.classList.remove('active');
+        elements.questionElement.textContent = 'Prepare-se para a aventura!'; // Texto atualizado
+        elements.questionElement.classList.add('prepare-text-animated'); // Adiciona animação
+        elements.questionElement.addEventListener('animationend', function handler() {
+            elements.questionElement.classList.remove('prepare-text-animated'); // Remove a classe após a animação
+            elements.questionElement.removeEventListener('animationend', handler);
+        });
+        elements.difficultyLevelElement.textContent = ''; // Vazio, como solicitado
+        elements.playerNameInput.style.display = 'none';
+        elements.startGameButton.style.display = 'none';
+        elements.playAgainButton.style.display = 'none';
+        elements.explainConceptButton.style.display = 'none';
+        elements.messageElement.textContent = '';
+        elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+        unsubscribeAllRankings();
     }
 
     function showOperationSelection() { 
-        hideAllScreens();
-        operationSelectionContainer.style.display = 'flex';
-        operationSelectionContainer.classList.add('active');
-        // Desativa a seleção de operação inicial
-        selectedOperationType = null; // Reseta a operação selecionada
-        document.querySelectorAll('#operation-selection-container .operation-buttons button').forEach(btn => {
-            btn.classList.remove('active');
-        });
+        showScreen(elements.operationSelectionContainer);
+        selectedOperationType = null;
+        document.querySelectorAll('#operation-selection-container .operation-buttons button').forEach(btn => btn.classList.remove('active'));
+        unsubscribeAllRankings();
     }
 
     function selectOperation(operation) { 
         selectedOperationType = operation;
-        // Atualiza o estado visual dos botões de operação
         document.querySelectorAll('#operation-selection-container .operation-buttons button').forEach(btn => {
-            if (btn.dataset.op === operation) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
+            if (btn.dataset.op === operation) btn.classList.add('active');
+            else btn.classList.remove('active');
         });
-        // Após selecionar a operação, avança para a seleção de modo (para prática)
         showModeSelectionForPractice();
     }
 
-
-    function showModeSelectionForPractice() { // Função específica para seleção de modo no modo "Praticar"
-        hideAllScreens();
-        modeSelectionContainer.style.display = 'flex'; // Mostra como flex
-        modeSelectionContainer.classList.add('active'); // Ativa para animação
-        // Define o currentGameMode como "practice" para diferenciar na geração de perguntas
-        // O modo específico (kids/adults) será definido ao clicar nos botões de modo
+    function showModeSelectionForPractice() { 
+        showScreen(elements.modeSelectionContainer);
         currentGameMode = 'practice'; 
-        modeKidsButton.classList.remove('active');
-        modeAdultsButton.classList.remove('active');
+        elements.modeKidsButton.classList.remove('active');
+        elements.modeAdultsButton.classList.remove('active');
+        unsubscribeAllRankings();
     }
 
-    function showCompetitionModeSelection() { // Nova função para seleção de modo de competição
-        hideAllScreens();
-        competitionModeSelectionContainer.style.display = 'flex';
-        competitionModeSelectionContainer.classList.add('active');
-        // Resetar o modo de jogo ao entrar nesta tela
-        currentGameMode = null;
-        // Exibir rankings embutidos
-        displayRanking('kids', rankingKidsListComp);
-        displayRanking('adults', rankingAdultsListComp);
+    function showCompetitionModeSelection() { 
+        showScreen(elements.competitionModeSelectionContainer);
+        currentGameMode = null; // Reseta o modo de jogo atual para esta tela
+        // Esconde o contêiner dinâmico de ranking inicialmente
+        elements.dynamicCompetitionRankingDisplay.style.display = 'none';
+        elements.rankingKidsAreaDynamic.style.display = 'none';
+        elements.rankingAdultsAreaDynamic.style.display = 'none';
+        unsubscribeAllRankings(); // Desinscreve listeners de rankings embutidos anteriores
     }
 
     function showGameScreen() {
-        hideAllScreens(); // Esconde todas as telas
-        gameContainer.style.display = 'flex'; // Mostra a tela do jogo
-        gameContainer.classList.add('active'); // Ativa para animação
+        showScreen(elements.gameContainer);
+        elements.playerNameInput.style.display = 'inline-block';
+        elements.startGameButton.style.display = 'inline-block';
+        elements.answerButtonsContainer.style.display = 'none';
+        elements.playAgainButton.style.display = 'none';
+        elements.explainConceptButton.style.display = 'none';
+        elements.messageElement.textContent = '';
+        elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+        elements.playerNameInput.value = ''; 
+        elements.playerNameInput.focus(); 
+        elements.questionElement.textContent = 'Prepare-se para a aventura!'; // Texto atualizado
+        elements.questionElement.classList.add('prepare-text-animated'); // Adiciona animação
+        elements.questionElement.addEventListener('animationend', function handler() {
+            elements.questionElement.classList.remove('prepare-text-animated'); // Remove a classe após a animação
+            elements.questionElement.removeEventListener('animationend', handler);
+        });
+        elements.difficultyLevelElement.textContent = ''; // Vazio, como solicitado
+        unsubscribeAllRankings();
     }
 
-    function showRankingsScreen() {
-        hideAllScreens();
-        rankingsContainer.style.display = 'flex'; // Mostra como flex
-        rankingsContainer.classList.add('active'); // Ativa para animação
-        displayRanking('kids', rankingKidsList); // Atualiza rankings ao mostrar
-        displayRanking('adults', rankingAdultsList);
+    function showRankingsScreen(highlightPlayer = false) { 
+        showScreen(elements.rankingsContainer);
+        // Exibe dinamicamente apenas a seção de ranking relevante
+        if (currentGameMode === 'competition_kids') {
+            elements.rankingKidsArea.style.display = 'block';
+            elements.rankingAdultsArea.style.display = 'none';
+            displayRanking('kids', elements.rankingKidsList, highlightPlayer, 50); // Limite para 50 para ranking completo
+        } else if (currentGameMode === 'competition_adults') {
+            elements.rankingKidsArea.style.display = 'none';
+            elements.rankingAdultsArea.style.display = 'block';
+            displayRanking('adults', elements.rankingAdultsList, highlightPlayer, 50); // Limite para 50 para ranking completo
+        } else {
+            // Se navegou para cá sem um modo de competição, mostra ambos ou padrão
+            elements.rankingKidsArea.style.display = 'block';
+            elements.rankingAdultsArea.style.display = 'block';
+            displayRanking('kids', elements.rankingKidsList, highlightPlayer, 50);
+            displayRanking('adults', elements.rankingAdultsList, highlightPlayer, 50);
+        }
     }
 
-    // Funções do Modal de Configurações
-    function showSettingsModal() {
-        settingsModal.classList.add('show');
-        // Garante que o estado atual dos toggles é refletido ao abrir o modal
-        if (isSoundOn) toggleSound.classList.add('active'); else toggleSound.classList.remove('active');
-        if (isBGMOn) toggleBGM.classList.add('active'); else toggleBGM.classList.remove('active');
-        if (isVibrationOn) toggleVibration.classList.add('active'); else toggleVibration.classList.remove('active');
+    // --- Funções do Modal ---
+    function showSettingsModal(sourceScreenId) {
+        elements.settingsModal.classList.add('show');
+        elements.settingsModal.dataset.sourceScreen = sourceScreenId;
+        elements.toggleSound.classList.toggle('active', isSoundOn);
+        elements.toggleBGM.classList.toggle('active', isBGMOn);
+        elements.toggleVibration.classList.toggle('active', isVibrationOn);
     }
 
-    function hideSettingsModal() {
-        settingsModal.classList.remove('show');
-    }
+    function hideSettingsModal() { elements.settingsModal.classList.remove('show'); }
 
-    // Funções do Modal de Explicação
     async function showExplanationModal() {
-        explanationModal.classList.add('show');
-        explanationText.textContent = 'Carregando explicação...'; // Mensagem de carregamento
-
-        // Chamar a API Gemini para obter a explicação
+        elements.explanationModal.classList.add('show');
+        elements.explanationText.textContent = 'Carregando explicação...';
         const prompt = `Explique o conceito matemático por trás da operação "${currentQuestion.question}" de forma simples e didática, como se estivesse a ensinar a uma criança. Foco no conceito e não apenas no cálculo. Seja conciso.`;
         
         try {
-            let chatHistory = [];
-            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-            const payload = { contents: chatHistory };
-            const apiKey = ""; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+            const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+            const apiKey = ""; 
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-            
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
             const result = await response.json();
-
-            if (result.candidates && result.candidates.length > 0 &&
-                result.candidates[0].content && result.candidates[0].content.parts &&
-                result.candidates[0].content.parts.length > 0) {
-                const text = result.candidates[0].content.parts[0].text;
-                explanationText.textContent = text;
+            if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                elements.explanationText.textContent = result.candidates[0].content.parts[0].text;
             } else {
-                explanationText.textContent = 'Não foi possível gerar a explicação. Tente novamente.';
+                elements.explanationText.textContent = 'Não foi possível gerar a explicação. Tente novamente.';
                 console.error('Estrutura de resposta inesperada da API Gemini:', result);
             }
         } catch (error) {
-            explanationText.textContent = 'Erro ao conectar com a IA. Verifique sua conexão ou tente mais tarde.';
+            elements.explanationText.textContent = 'Erro ao conectar com a IA. Verifique sua conexão ou tente mais tarde.';
             console.error('Erro ao chamar a API Gemini:', error);
         }
     }
 
-    function hideExplanationModal() {
-        explanationModal.classList.remove('show');
-    }
+    function hideExplanationModal() { elements.explanationModal.classList.remove('show'); }
 
-    // Funções do Modal de Fim de Jogo
-    function showGameOverModal(score, rank, mode) {
-        finalScoreText.textContent = `Você fez ${score} pontos.`;
-        finalRankText.textContent = `Você ficou em ${rank}º lugar no ranking de ${mode.includes('kids') ? 'Kids' : 'Adulto'}!`;
-        gameOverModal.classList.add('show');
-    }
-
-    function hideGameOverModal() {
-        gameOverModal.classList.remove('show');
-    }
-
-
-    // Função para lidar com os toggles (som, BGM, vibração)
     function handleToggle(element, stateVar) {
-        if (element.classList.contains('active')) {
-            element.classList.remove('active');
-            stateVar = false;
-            // console.log(`${element.id} desligado.`); // Para debug
-        } else {
-            element.classList.add('active');
-            stateVar = true;
-            // console.log(`${element.id} ligado.`); // Para debug
-        }
-        return stateVar; // Retorna o estado atualizado
+        element.classList.toggle('active');
+        return element.classList.contains('active');
     }
 
-    // --- Funções do Jogo ---
-
+    // --- Funções de Lógica do Jogo ---
     function selectGameModeAndStart(mode) { 
         currentGameMode = mode;
-        correctAnswersCount = 0; // Reseta o contador de respostas corretas ao mudar o modo
-        consecutiveCorrectAnswersCount = 0; // NOVO: Para o "Incrível!"
+        correctAnswersCount = 0;
+        consecutiveCorrectAnswersCount = 0;
         
         if (mode.startsWith('practice_')) {
-            modeKidsButton.classList.remove('active');
-            modeAdultsButton.classList.remove('active');
-            if (mode === 'practice_kids') {
-                modeKidsButton.classList.add('active');
-            } else if (mode === 'practice_adults') {
-                modeAdultsButton.classList.add('active');
-            }
+            elements.modeKidsButton.classList.remove('active');
+            elements.modeAdultsButton.classList.remove('active');
+            if (mode === 'practice_kids') elements.modeKidsButton.classList.add('active');
+            else if (mode === 'practice_adults') elements.modeAdultsButton.classList.add('active');
         }
-
-        showGameScreen(); // Mostra a tela do jogo (para entrada de nome e início)
-
-        playerNameInput.style.display = 'inline-block';
-        startGameButton.style.display = 'inline-block';
-        answerButtonsContainer.style.display = 'none'; // Esconde os botões de resposta inicialmente
-        playAgainButton.style.display = 'none'; 
-        explainConceptButton.style.display = 'none'; 
-        messageElement.textContent = ''; // Limpa a mensagem
-        messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message'); // Esconde e limpa classes
-
-        playerNameInput.value = ''; 
-        playerNameInput.focus(); 
-        questionElement.textContent = 'Digite seu nome e clique em "Começar Jogo"!';
-        difficultyLevelElement.textContent = ''; 
+        showGameScreen();
     }
 
-    function saveRanking(player, score, mode, difficultyLevelPlayed) {
-        // Extrai 'kids' ou 'adults' do modo completo para salvar no ranking
+    // NOVA LÓGICA: Salvar/Atualizar Ranking com Nome Único e Maior Pontuação
+    async function saveRanking(player, score, mode, difficultyLevelPlayed) {
         const baseMode = mode.includes('kids') ? 'kids' : 'adults';
-        const collectionName = `ranking_${baseMode}`;
-        db.collection(collectionName).add({
-            player: player,
-            score: score,
-            difficulty: difficultyLevelPlayed, // Salva o nome do nível (string)
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        })
-        .then((docRef) => {
-            console.log("Documento escrito com ID: ", docRef.id);
-        })
-        .catch((error) => {
-            console.error("Erro ao adicionar documento: ", error);
-            alert("Erro ao salvar pontuação. Por favor, tente novamente mais tarde.");
+        const collectionRef = db.collection(`ranking_${baseMode}`);
+        // Cria um ID de documento único baseado no nome normalizado do jogador
+        // (minúsculas, espaços por hífens, remove caracteres especiais)
+        const normalizedPlayerName = player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+        const playerDocRef = collectionRef.doc(normalizedPlayerName);
+
+        console.log(`saveRanking: Nome original: '${player}', Nome normalizado (ID do documento): '${normalizedPlayerName}'`); // LOG DE DEPURACAO
+
+        try {
+            const docSnap = await playerDocRef.get();
+
+            if (docSnap.exists) {
+                // Jogador já existe, verifica se a nova pontuação é maior
+                const existingScore = docSnap.data().score;
+                if (score > existingScore) {
+                    await playerDocRef.update({
+                        player: player, // Mantém a capitalização original para exibição
+                        score: score,
+                        difficulty: difficultyLevelPlayed,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp() // Atualiza o timestamp na nova pontuação mais alta
+                    });
+                    console.log(`Ranking atualizado para ${player}: Nova pontuação (${score}) é maior que a anterior (${existingScore}).`);
+                } else {
+                    console.log(`Pontuação de ${player} (${score}) não é maior que a existente (${existingScore}). Ranking não atualizado.`);
+                }
+            } else {
+                // Novo jogador, adiciona ao ranking
+                await playerDocRef.set({
+                    player: player,
+                    score: score,
+                    difficulty: difficultyLevelPlayed,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                console.log(`Novo jogador adicionado ao ranking: ${player} com ${score} pontos.`);
+            }
+        } catch (error) {
+            console.error("Erro ao salvar/atualizar ranking: ", error);
+        }
+    }
+
+    function unsubscribeAllRankings() {
+        // Desinscreve listeners das listas de ranking da tela de ranking completo
+        ['rankingKidsList', 'rankingAdultsList'].forEach(listId => {
+            const listElement = elements[listId];
+            if (listElement && listElement.dataset.unsubscribe) {
+                listElement.dataset.unsubscribe();
+                delete listElement.dataset.unsubscribe;
+            }
+        });
+        // Desinscreve listeners das listas de ranking dinâmicas da tela de competição
+        ['rankingKidsListDynamic', 'rankingAdultsListDynamic'].forEach(listId => {
+            const listElement = elements[listId];
+            if (listElement && listElement.dataset.unsubscribe) {
+                listElement.dataset.unsubscribe();
+                delete listElement.dataset.unsubscribe;
+            }
         });
     }
 
-    async function displayRanking(mode, targetListElement) {
-        const rankingListElement = targetListElement; // Agora recebe o elemento diretamente
-        const collectionName = `ranking_${mode}`;
-
-        rankingListElement.innerHTML = '<li>Carregando ranking...</li>';
-
-        try {
-            const snapshot = await db.collection(collectionName)
-                                                .orderBy("score", "desc")
-                                                .limit(10) // Limitado a 10 resultados
-                                                .get();
-            rankingListElement.innerHTML = '';
-            if (snapshot.empty) {
-                rankingListElement.innerHTML = '<li>Nenhum recorde ainda. Seja o primeiro!</li>';
-                return;
-            }
-
-            const rankings = [];
-            snapshot.forEach((doc) => {
-                rankings.push(doc.data());
-            });
-
-            rankings.forEach((data, index) => {
-                const li = document.createElement('li');
-                const rankingPosition = index + 1;
-
-                const positionSpan = `<span class="ranking-position">${rankingPosition}º</span>`;
-                const nameSpan = `<span class="ranking-name">${data.player}</span>`;
-                const levelSpan = data.difficulty ? `<span class="ranking-level">(${data.difficulty})</span>` : ''; 
-                const scoreSpan = `<span class="ranking-score">${data.score}</span>`;
-                
-                li.innerHTML = `${positionSpan} ${nameSpan} ${levelSpan} ${scoreSpan}`; 
-                
-                if (rankingPosition <= 3) {
-                    li.classList.add('ranking-item-top'); 
-                }
-                if (rankings.length >= 4) {
-                    const startIndexForBottom = Math.max(0, rankings.length - 3); 
-                    if (index >= startIndexForBottom) {
-                        li.classList.add('ranking-item-bottom');
-                    }
-                }
-
-                rankingListElement.appendChild(li);
-            });
-
-        } catch (error) {
-            console.error(`Erro ao carregar ranking ${mode}: `, error);
-            rankingListElement.innerHTML = '<li>Erro ao carregar ranking.</li>';
+    // Função para exibir rankings (agora mais flexível para diferentes alvos)
+    async function displayRanking(mode, targetListElement, highlightPlayer = false, limit = 10) {
+        if (!db) { 
+            console.error("Firebase Firestore não inicializado.");
+            targetListElement.innerHTML = '<li>Erro: Firestore não está pronto.</li>';
+            return;
         }
+
+        const collectionName = `ranking_${mode}`;
+        targetListElement.innerHTML = '<li>Carregando ranking...</li>';
+
+        // Desinscreve o listener anterior para a lista específica se houver
+        if (targetListElement.dataset.unsubscribe) {
+            targetListElement.dataset.unsubscribe();
+            delete targetListElement.dataset.unsubscribe;
+        }
+
+        const currentUnsubscribe = db.collection(collectionName)
+            .orderBy("score", "desc")
+            .limit(limit)
+            .onSnapshot(snapshot => {
+                console.log(`displayRanking: Recebidos ${snapshot.size} documentos para o ranking ${mode} (limite: ${limit}).`); // LOG DE DEPURACAO
+                targetListElement.innerHTML = '';
+                if (snapshot.empty) {
+                    targetListElement.innerHTML = '<li>Nenhum recorde ainda. Seja o primeiro!</li>';
+                    return;
+                }
+
+                const rankings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                rankings.forEach((data, index) => {
+                    const li = document.createElement('li');
+                    const rankingPosition = index + 1;
+                    // REMOVIDO: data.difficulty da exibição
+                    li.innerHTML = `<span class="ranking-position">${rankingPosition}º</span><span class="ranking-name">${data.player}</span><span class="ranking-score">${data.score}</span>`; 
+                    
+                    if (highlightPlayer && data.player === currentPlayerName && data.score === score) {
+                        li.classList.add('current-player-highlight');
+                        li.id = `player-rank-${data.id}`; 
+                    }
+                    if (rankingPosition <= 3) li.classList.add('ranking-item-top'); 
+                    if (rankings.length >= 4 && index >= rankings.length - 3) li.classList.add('ranking-item-bottom');
+
+                    targetListElement.appendChild(li);
+                });
+
+                if (highlightPlayer) {
+                    const playerElement = document.querySelector(`.current-player-highlight`);
+                    if (playerElement) playerElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, error => {
+                console.error(`Erro ao carregar ranking ${mode}: `, error);
+                targetListElement.innerHTML = '<li>Erro ao carregar ranking. Verifique sua conexão.</li>'; // Mensagem de erro mais clara
+            });
+        
+        targetListElement.dataset.unsubscribe = currentUnsubscribe;
     }
 
-    function random() {
-        return Math.random();
-    }
-    function randomInt(min, max) {
-        return Math.floor(random() * (max - min + 1)) + min;
-    }
+    function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
     function generateQuestion() {
-        let num1, num2;
-        let operatorsToUse; 
-        let operator;
-        let correctAnswer;
-        let currentLevelName; 
+        let num1, num2, operatorsToUse, operator, correctAnswer, currentLevelName; 
 
-        explainConceptButton.style.display = 'none'; 
-        messageElement.textContent = ''; // Limpa a mensagem
-        messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message'); // Esconde e limpa classes
-
+        elements.explainConceptButton.style.display = 'none'; 
+        elements.messageElement.textContent = '';
+        elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
 
         if (currentGameMode.startsWith('practice_')) {
-            if (selectedOperationType === 'all') {
-                operatorsToUse = ['+', '-', '*', '÷'];
-            } else {
-                operatorsToUse = [selectedOperationType];
-            }
+            operatorsToUse = (selectedOperationType === 'all') ? ['+', '-', '*', '÷'] : [selectedOperationType];
             num1 = randomInt(1, 15);
             num2 = randomInt(1, 15);
             currentLevelName = difficultyNames["kids_easy"]; 
@@ -1738,587 +1163,358 @@
             } else { // 'competition_adults'
                 operatorsToUse = ['+', '-', '*', '÷']; 
                 if (correctAnswersCount < 5) {
-                    operatorsToUse = ['+']; 
-                    num1 = randomInt(1, 20);
-                    num2 = randomInt(1, 20);
-                    currentLevelName = difficultyNames[1];
+                    operatorsToUse = ['+']; num1 = randomInt(1, 20); num2 = randomInt(1, 20); currentLevelName = difficultyNames[1];
                 } else if (correctAnswersCount < 10) {
-                    operatorsToUse = ['+', '-'];
-                    num1 = randomInt(1, 30);
-                    num2 = randomInt(1, 30);
-                    currentLevelName = difficultyNames[2];
+                    operatorsToUse = ['+', '-']; num1 = randomInt(1, 30); num2 = randomInt(1, 30); currentLevelName = difficultyNames[2];
                 } else if (correctAnswersCount < 16) {
-                    operatorsToUse = ['+', '-', '*'];
-                    num1 = randomInt(1, 50);
-                    num2 = randomInt(1, 50);
-                    currentLevelName = difficultyNames[3];
+                    operatorsToUse = ['+', '-', '*']; num1 = randomInt(1, 50); num2 = randomInt(1, 50); currentLevelName = difficultyNames[3];
                 } else {
-                    operatorsToUse = ['+', '-', '*', '÷'];
-                    num1 = randomInt(1, 70);
-                    num2 = randomInt(1, 70);
-                    currentLevelName = difficultyNames[4];
+                    operatorsToUse = ['+', '-', '*', '÷']; num1 = randomInt(1, 70); num2 = randomInt(1, 70); currentLevelName = difficultyNames[4];
                 }
             }
         }
         
-        operator = operatorsToUse[Math.floor(random() * operatorsToUse.length)];
+        operator = operatorsToUse[Math.floor(Math.random() * operatorsToUse.length)];
 
         if (operator === '-') {
-            if (num1 < num2) { 
-                [num1, num2] = [num2, num1];
-            }
+            if (num1 < num2) [num1, num2] = [num2, num1];
         } else if (operator === '÷') {
-            // Garante que a divisão sempre resulte em um número inteiro
-            num2 = randomInt(1, 10); // Divisor entre 1 e 10
-            num1 = randomInt(1, 10) * num2; // num1 será um múltiplo de num2
+            num2 = randomInt(1, 10);
+            num1 = randomInt(1, 10) * num2;
         } else if (operator === '*') {
             if (currentGameMode.startsWith('practice_') || currentGameMode === 'competition_kids') {
-                num1 = randomInt(1, 9);
-                num2 = randomInt(1, 9);
+                num1 = randomInt(1, 9); num2 = randomInt(1, 9);
             } else { 
-                num1 = randomInt(1, 12);
-                num2 = randomInt(1, 12);
+                num1 = randomInt(1, 12); num2 = randomInt(1, 12);
             }
         }
 
         let questionString;
-        let finalAnswer;
-
-        if (operator === '+') {
-            questionString = `${num1} + ${num2}`;
-            finalAnswer = num1 + num2;
-        } else if (operator === '-') {
-            questionString = `${num1} - ${num2}`;
-            finalAnswer = num1 - num2;
-        } else if (operator === '*') {
-            questionString = `${num1} × ${num2}`; 
-            finalAnswer = num1 * num2;
-        } else { 
-            questionString = `${num1} ÷ ${num2}`;
-            finalAnswer = num1 / num2;
-        }
-
-        correctAnswer = finalAnswer; 
+        if (operator === '+') { questionString = `${num1} + ${num2}`; correctAnswer = num1 + num2; }
+        else if (operator === '-') { questionString = `${num1} - ${num2}`; correctAnswer = num1 - num2; }
+        else if (operator === '*') { questionString = `${num1} × ${num2}`; correctAnswer = num1 * num2; }
+        else { questionString = `${num1} ÷ ${num2}`; correctAnswer = num1 / num2; }
 
         currentQuestion = { question: questionString, answer: correctAnswer };
-        questionElement.textContent = currentQuestion.question;
+        elements.questionElement.textContent = currentQuestion.question;
+        elements.difficultyLevelElement.textContent = ''; // Vazio, como solicitado
         
-        let displayModeText = '';
-        if (currentGameMode.startsWith('practice_')) {
-            displayModeText = 'Praticar';
-        } else if (currentGameMode.startsWith('competition_')) {
-            displayModeText = 'Competição';
-        }
-        difficultyLevelElement.textContent = `Nível: ${currentLevelName} (${displayModeText})`; 
-        
-        // Limpa feedback visual da pergunta anterior
-        questionElement.classList.remove('correct-animation', 'incorrect-animation');
-        
+        elements.questionElement.classList.remove('correct-animation', 'incorrect-animation');
         questionStartTime = Date.now(); 
 
-        // --- Geração e atribuição dos botões de resposta ---
-        let answers = [];
-        answers.push(correctAnswer);
-
-        // Gerar duas respostas incorretas
+        let answers = [correctAnswer];
         while (answers.length < 3) {
             let incorrectAnswer;
             let attempts = 0;
-            const maxAttempts = 100; // Safety net to prevent infinite loops
-
+            const maxAttempts = 100;
             do {
-                let offset = randomInt(1, 10); // Use a reasonable offset
-                if (random() < 0.5) {
-                    incorrectAnswer = correctAnswer + offset;
-                } else {
-                    incorrectAnswer = correctAnswer - offset;
-                }
+                let offset = randomInt(1, 10);
+                incorrectAnswer = (Math.random() < 0.5) ? correctAnswer + offset : correctAnswer - offset;
                 attempts++;
-
-                // Ensure:
-                // 1. It's not the correct answer
-                // 2. It's not already in the answers array
-                // 3. It's not negative if the correct answer is non-negative (to avoid weird negative options for simple sums)
-                // 4. For division, avoid 0 as an incorrect answer if correct answer is not 0 (division by zero is undefined)
-                // 5. Ensure the incorrect answer is not 0 if the correct answer is not 0
             } while ((incorrectAnswer === correctAnswer || answers.includes(incorrectAnswer) || (correctAnswer >= 0 && incorrectAnswer < 0) || (incorrectAnswer === 0 && correctAnswer !== 0)) && attempts < maxAttempts);
-
-            // If after maxAttempts we still can't find a good incorrect answer,
-            // generate a simple fallback to prevent infinite loop or empty button
             if (attempts >= maxAttempts) {
-                let fallbackCandidate1 = correctAnswer + 10;
-                if (!answers.includes(fallbackCandidate1)) {
-                    incorrectAnswer = fallbackCandidate1;
-                } else {
-                    let fallbackCandidate2 = correctAnswer - 10;
-                    if (!answers.includes(fallbackCandidate2) && (correctAnswer >= 0 ? fallbackCandidate2 >= 0 : true)) {
-                        incorrectAnswer = fallbackCandidate2;
-                    } else {
-                        // Last resort: a very simple, distinct number like 1 or 100 if all else fails
-                        incorrectAnswer = answers.includes(1) ? 100 : 1;
-                        if (answers.includes(incorrectAnswer)) incorrectAnswer = answers.includes(2) ? 200 : 2; // Try another one
-                    }
-                }
+                incorrectAnswer = answers.includes(correctAnswer + 10) ? correctAnswer - 10 : correctAnswer + 10;
+                if (incorrectAnswer < 0 && correctAnswer >= 0) incorrectAnswer = correctAnswer + 5; 
+                if (answers.includes(incorrectAnswer)) incorrectAnswer = answers.includes(correctAnswer + 1) ? correctAnswer - 1 : correctAnswer + 1; 
             }
             answers.push(incorrectAnswer);
         }
 
-        // Embaralha o array de respostas
         for (let i = answers.length - 1; i > 0; i--) {
-            const j = Math.floor(random() * (i + 1));
+            const j = Math.floor(Math.random() * (i + 1));
             [answers[i], answers[j]] = [answers[j], answers[i]];
         }
 
-        // Atribui as respostas aos botões
-        answerButtons.forEach((button, index) => {
+        elements.answerButtons.forEach((button, index) => {
             button.textContent = answers[index];
-            button.dataset.value = answers[index]; // Armazena o valor no data-attribute
-            button.classList.remove('correct-feedback', 'incorrect-feedback'); // Limpa feedback anterior
-            button.disabled = false; // Habilita o botão
+            button.dataset.value = answers[index];
+            button.classList.remove('correct-feedback', 'incorrect-feedback');
+            button.disabled = false;
         });
     }
 
     function startGame() {
-      if (!currentGameMode) { 
-          alert("Por favor, selecione um modo de jogo antes de começar.");
+      if (!currentGameMode || (currentGameMode.startsWith('practice_') && selectedOperationType === null)) {
+          console.warn("Por favor, selecione um modo e/ou operação de jogo antes de começar.");
           return;
       }
-      if (currentGameMode.startsWith('practice_') && selectedOperationType === null) {
-          alert("Por favor, selecione uma operação para praticar.");
-          return;
-      }
-
-      currentPlayerName = playerNameInput.value.trim();
-      
-      if (!playerNameInput.checkValidity()) {
-        alert(playerNameInput.title);
-        playerNameInput.focus();
-        return;
-      }
-      if (currentPlayerName === '') {
-        alert("Por favor, digite seu nome para começar o jogo!");
-        playerNameInput.focus();
+      currentPlayerName = elements.playerNameInput.value.trim();
+      // NOVA VALIDAÇÃO: Verifica se há pelo menos um espaço (indicando nome e sobrenome)
+      if (!elements.playerNameInput.checkValidity() || currentPlayerName === '' || !currentPlayerName.includes(' ')) {
+        console.warn("Por favor, digite seu nome e sobrenome (ex: João Silva) para começar o jogo!");
+        elements.playerNameInput.focus();
         return;
       }
 
-      score = 0;
-      timeLeft = 60;
-      gameActive = true;
-      correctAnswersCount = 0; 
-      consecutiveCorrectAnswersCount = 0; // NOVO: Reseta o contador de acertos consecutivos
-      scoreValueElement.textContent = score;
-      timerValueElement.textContent = timeLeft + 's';
-      
-      playerNameInput.style.display = 'none';
-      startGameButton.style.display = 'none'; 
-      answerButtonsContainer.style.display = 'flex'; // Mostra os botões de resposta
-      
-      questionElement.textContent = 'Preparar...';
-      difficultyLevelElement.textContent = ''; 
-      
-      playAgainButton.style.display = 'none';
-      explainConceptButton.style.display = 'none'; 
-      messageElement.textContent = ''; // Limpa a mensagem
-      messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message'); // Esconde e limpa classes
-      
-      timeBar.style.width = '100%';
-      timeBar.style.backgroundColor = '#4CAF50';
-      timeBar.classList.remove('time-bar-shaking');
+      score = 0; timeLeft = 60; gameActive = true; correctAnswersCount = 0; consecutiveCorrectAnswersCount = 0;
+      elements.scoreValueElement.textContent = score; elements.timerValueElement.textContent = timeLeft + 's';
+      elements.playerNameInput.style.display = 'none'; elements.startGameButton.style.display = 'none';
+      elements.answerButtonsContainer.style.display = 'flex';
+      elements.playAgainButton.style.display = 'none'; elements.explainConceptButton.style.display = 'none';
+      elements.messageElement.textContent = ''; elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+      elements.timeBar.style.width = '100%'; elements.timeBar.style.backgroundColor = '#2ecc71'; elements.timeBar.classList.remove('time-bar-shaking');
 
       setTimeout(() => {
         generateQuestion();
         timerInterval = setInterval(() => {
           timeLeft--;
-          timerValueElement.textContent = timeLeft + 's';
-          
+          elements.timerValueElement.textContent = timeLeft + 's';
           const percentage = (timeLeft / 60) * 100;
-          timeBar.style.width = percentage + '%';
+          elements.timeBar.style.width = percentage + '%';
 
-          if (percentage > 50) {
-              timeBar.style.backgroundColor = '#4CAF50';
-          } else if (percentage > 20) {
-              timeBar.style.backgroundColor = '#FFC107';
-              if (timeLeft <= 10 && !timeBar.classList.contains('time-bar-shaking')) {
-                  timeBar.classList.add('time-bar-shaking');
-              }
+          if (percentage > 50) elements.timeBar.style.backgroundColor = '#2ecc71';
+          else if (percentage > 20) {
+              elements.timeBar.style.backgroundColor = '#f39c12';
+              if (timeLeft <= 10 && !elements.timeBar.classList.contains('time-bar-shaking')) elements.timeBar.classList.add('time-bar-shaking');
           } else {
-              timeBar.style.backgroundColor = '#DC3545';
-              if (timeLeft <= 10 && !timeBar.classList.contains('time-bar-shaking')) {
-                  timeBar.classList.add('time-bar-shaking');
-                  void timeBar.offsetWidth; 
+              elements.timeBar.style.backgroundColor = '#e74c3c';
+              if (timeLeft <= 10 && !elements.timeBar.classList.contains('time-bar-shaking')) {
+                  elements.timeBar.classList.add('time-bar-shaking');
+                  void elements.timeBar.offsetWidth; 
               }
           }
-
-          if (timeLeft <= 0) {
-            endGame();
-          }
+          if (timeLeft <= 0) endGame();
         }, 1000);
       }, 1000);
     }
 
     function endGame() {
-      clearInterval(timerInterval);
+      clearInterval(timerInterval); 
       gameActive = false;
-      answerButtons.forEach(button => button.disabled = true); // Desabilita os botões de resposta
-      playAgainButton.style.display = 'inline-block';
+      elements.answerButtons.forEach(button => button.disabled = true);
       
-      messageElement.textContent = `Tempo esgotado! Você fez ${score} pontos.`;
-      messageElement.classList.add('show'); // Mostra a mensagem final
-      messageElement.classList.remove('success-message', 'error-message', 'incredible-message'); // Limpa classes de feedback
+      // Exibe a pontuação final por 2 segundos
+      elements.messageElement.textContent = `Tempo esgotado! Você fez ${score} pontos.`;
+      elements.messageElement.classList.add('show');
+      elements.messageElement.classList.remove('success-message', 'error-message', 'incredible-message');
       
-      answerButtons.forEach(button => button.classList.remove('correct-feedback', 'incorrect-feedback')); // Limpa feedback visual
-      questionElement.classList.remove('correct-animation', 'incorrect-animation');
-      timeBar.classList.remove('time-bar-shaking');
-      explainConceptButton.style.display = 'none'; 
+      elements.answerButtons.forEach(button => button.classList.remove('correct-feedback', 'incorrect-feedback'));
+      elements.questionElement.classList.remove('correct-animation', 'incorrect-animation');
+      elements.timeBar.classList.remove('time-bar-shaking');
+      elements.explainConceptButton.style.display = 'none'; 
 
-      // Salva o ranking SOMENTE nos modos de competição
-      if (currentGameMode.startsWith('competition_')) {
-          let finalDifficultyLevelName;
-          const baseMode = currentGameMode.includes('kids') ? 'kids' : 'adults';
+      setTimeout(() => {
+          elements.messageElement.classList.remove('show'); // Esconde a mensagem de pontuação
+          elements.messageElement.textContent = ''; // Limpa o texto da mensagem
 
-          if (currentGameMode === 'competition_kids') {
-              finalDifficultyLevelName = difficultyNames["kids_easy"];
-          } else { // competition_adults
-              if (correctAnswersCount >= 16) {
-                  finalDifficultyLevelName = difficultyNames[4]; // Mestre
-              } else if (correctAnswersCount >= 10) {
-                  finalDifficultyLevelName = difficultyNames[3]; // Desafiador
-              } else if (correctAnswersCount >= 5) {
-                  finalDifficultyLevelName = difficultyNames[2]; // Amador
-              } else {
-                  finalDifficultyLevelName = difficultyNames[1]; // Iniciante
-              }
+          if (currentGameMode.startsWith('competition_')) {
+              const baseMode = currentGameMode.includes('kids') ? 'kids' : 'adults';
+              let finalDifficultyLevelName;
+              if (correctAnswersCount >= 16) finalDifficultyLevelName = difficultyNames[4];
+              else if (correctAnswersCount >= 10) finalDifficultyLevelName = difficultyNames[3];
+              else if (correctAnswersCount >= 5) finalDifficultyLevelName = difficultyNames[2];
+              else finalDifficultyLevelName = difficultyNames[1];
+              
+              saveRanking(currentPlayerName, score, currentGameMode, finalDifficultyLevelName);
+              showRankingsScreen(true); // Destaca o jogador e mostra o ranking relevante
+              // O usuário agora precisa clicar em "Voltar ao Menu Principal" para sair do ranking.
+              
+          } else { // Modo Praticar
+              elements.playerNameInput.value = '';
+              elements.playerNameInput.style.display = 'inline-block';
+              elements.answerButtonsContainer.style.display = 'none';
+              currentGameMode = null; selectedOperationType = 'all';
+              elements.questionElement.textContent = 'Prepare-se para a aventura!'; // Texto atualizado
+              elements.questionElement.classList.add('prepare-text-animated'); // Adiciona animação
+              elements.questionElement.addEventListener('animationend', function handler() {
+                  elements.questionElement.classList.remove('prepare-text-animated'); // Remove a classe após a animação
+                  elements.questionElement.removeEventListener('animationend', handler);
+              });
+              elements.difficultyLevelElement.textContent = ''; // Vazio, como solicitado
+              showMainMenu(); // Retorna ao Menu Principal
           }
-          saveRanking(currentPlayerName, score, currentGameMode, finalDifficultyLevelName);
-
-          // Calculate rank and show game over modal
-          calculateAndShowRank(score, baseMode);
-
-      } else { // Practice mode ends
-          playerNameInput.value = '';
-          playerNameInput.style.display = 'inline-block';
-          answerButtonsContainer.style.display = 'none'; // Esconde os botões de resposta
-          showMainMenu(); // Go back to main menu for practice mode
-          currentGameMode = null;
-          selectedOperationType = 'all';
-          questionElement.textContent = 'Selecione um modo e digite seu nome para começar!';
-          difficultyLevelElement.textContent = '';
-      }
+      }, 2000); // Exibe a pontuação por 2 segundos antes da próxima ação
     }
 
-    // New function to calculate rank and show modal
-    async function calculateAndShowRank(playerScore, mode) {
-        const collectionName = `ranking_${mode}`;
-        try {
-            const snapshot = await db.collection(collectionName)
-                                        .orderBy("score", "desc")
-                                        .get();
-            
-            const allEntries = [];
-            snapshot.forEach(doc => allEntries.push(doc.data()));
-
-            let playerRank = 1;
-            let currentRank = 1;
-            let lastScore = -1; // Initialize with a score lower than any possible score
-
-            // Sort entries by score in descending order to ensure correct ranking logic
-            allEntries.sort((a, b) => b.score - a.score);
-
-            for (let i = 0; i < allEntries.length; i++) {
-                const entryScore = allEntries[i].score;
-
-                // If the current entry's score is different from the last processed score,
-                // it means we've moved to a new rank group.
-                if (entryScore !== lastScore) {
-                    currentRank = i + 1; 
-                }
-                
-                // If the player's score is equal to the current entry's score,
-                // then the player's rank is the current rank.
-                // We break because we found the highest rank for this score.
-                if (playerScore === entryScore) {
-                    playerRank = currentRank;
-                    break; 
-                } 
-                // If the player's score is greater than the current entry's score,
-                // it means the player ranks above this entry. Their rank is the current rank.
-                // We break because we found the player's rank.
-                else if (playerScore > entryScore) {
-                    playerRank = currentRank;
-                    break; 
-                }
-                
-                lastScore = entryScore; // Update lastScore for the next iteration
-            }
-
-            // Edge case: If the player's score is lower than all existing scores,
-            // their rank is after everyone.
-            if (allEntries.length > 0 && playerScore < allEntries[allEntries.length - 1].score) {
-                playerRank = allEntries.length + 1;
-            }
-            // Edge case: If there are no entries, the player is rank 1.
-            if (allEntries.length === 0) {
-                playerRank = 1;
-            }
-
-            showGameOverModal(playerScore, playerRank, mode);
-
-        } catch (error) {
-            console.error("Erro ao calcular ranking: ", error);
-            alert("Erro ao calcular sua posição no ranking.");
-            showMainMenu(); // Fallback to main menu
-        }
-    }
-
-    // Function to show feedback message
     function showFeedbackMessage(text, type) {
-        messageElement.textContent = text;
-        messageElement.classList.remove('success-message', 'error-message', 'incredible-message'); // Clear previous types
-        messageElement.classList.add(type); // Add new type for styling
-        messageElement.classList.add('show'); // Make visible
-
-        // Hide message after a delay
+        elements.messageElement.textContent = text;
+        elements.messageElement.classList.remove('success-message', 'error-message', 'incredible-message');
+        elements.messageElement.classList.add(type, 'show');
         setTimeout(() => {
-            messageElement.classList.remove('show');
-            // Reset text after fading out to ensure clean state
-            setTimeout(() => {
-                messageElement.textContent = '';
-            }, 500); // Wait for transition to finish
-        }, 1500); // Message visible for 1.5 seconds
+            elements.messageElement.classList.remove('show');
+            setTimeout(() => elements.messageElement.textContent = '', 500);
+        }, 1500);
     }
 
-    // Função para processar uma resposta correta (feedback visual no botão)
     function processCorrectAnswer(clickedButton) {
-        score++;
-        correctAnswersCount++; 
-        scoreValueElement.textContent = score;
-        scoreValueElement.classList.add('pulse-effect');
-        scoreValueElement.addEventListener('animationend', function handler() {
-            scoreValueElement.classList.remove('pulse-effect');
-            scoreValueElement.removeEventListener('animationend', handler);
+        score++; correctAnswersCount++; 
+        elements.scoreValueElement.textContent = score;
+        elements.scoreValueElement.classList.add('pulse-effect');
+        elements.scoreValueElement.addEventListener('animationend', function handler() {
+            elements.scoreValueElement.classList.remove('pulse-effect');
+            elements.scoreValueElement.removeEventListener('animationend', handler);
         });
 
         clickedButton.classList.add('correct-feedback'); 
-        questionElement.classList.add('correct-animation'); 
+        elements.questionElement.classList.add('correct-animation'); 
         if (isSoundOn) correctSound.play();
+        if (isVibrationOn && navigator.vibrate) navigator.vibrate(50);
 
         const timeTaken = (Date.now() - questionStartTime) / 1000; 
-        const speedBonusThreshold = 1.5; 
-        const bonusTime = 0.5; 
-
+        const speedBonusThreshold = 1.5; const bonusTime = 0.5; 
         if (timeTaken <= speedBonusThreshold) {
             timeLeft = Math.min(60, timeLeft + bonusTime); 
-            timerValueElement.textContent = Math.ceil(timeLeft) + 's'; 
+            elements.timerValueElement.textContent = Math.ceil(timeLeft) + 's'; 
         }
         
-        questionElement.addEventListener('animationend', function handler() {
-            questionElement.classList.remove('correct-animation');
-            questionElement.removeEventListener('animationend', handler);
+        elements.questionElement.addEventListener('animationend', function handler() {
+            elements.questionElement.classList.remove('correct-animation');
+            elements.questionElement.removeEventListener('animationend', handler);
         });
 
-        // Handle consecutive correct answers and feedback message
         consecutiveCorrectAnswersCount++;
         if (consecutiveCorrectAnswersCount === 10) {
             showFeedbackMessage("Incrível!", 'incredible-message');
-            consecutiveCorrectAnswersCount = 0; // Reset after "Incrível!"
+            consecutiveCorrectAnswersCount = 0;
         } else {
             showFeedbackMessage("Parabéns!", 'success-message');
         }
-
-        // Hide explainConceptButton immediately, it will NOT be shown after feedback automatically
-        explainConceptButton.style.display = 'none';
-
-        // Desabilita todos os botões para evitar múltiplos cliques enquanto processa
-        answerButtons.forEach(button => button.disabled = true);
-
-        // Generate next question after a shorter delay
-        setTimeout(() => {
-            generateQuestion();
-        }, 500); // Generate next question after 0.5 seconds
+        elements.explainConceptButton.style.display = 'none';
+        elements.answerButtons.forEach(button => button.disabled = true);
+        setTimeout(() => generateQuestion(), 500);
     }
 
-    // Função para processar uma resposta incorreta (feedback visual no botão)
     function processIncorrectAnswer(clickedButton) {
-        scoreValueElement.textContent = score; // Atualiza para garantir que não pulsa se o score não mudou
-        scoreValueElement.classList.add('pulse-effect');
-        scoreValueElement.addEventListener('animationend', function handler() {
-            scoreValueElement.classList.remove('pulse-effect');
-            scoreValueElement.removeEventListener('animationend', handler);
+        elements.scoreValueElement.textContent = score;
+        elements.scoreValueElement.classList.add('pulse-effect');
+        elements.scoreValueElement.addEventListener('animationend', function handler() {
+            elements.scoreValueElement.classList.remove('pulse-effect');
+            elements.scoreValueElement.removeEventListener('animationend', handler);
         });
 
         clickedButton.classList.add('incorrect-feedback'); 
-        questionElement.classList.add('incorrect-animation'); 
+        elements.questionElement.classList.add('incorrect-animation'); 
         if (isSoundOn) incorrectSound.play();
-        
-        questionElement.addEventListener('animationend', function handler() {
-            questionElement.classList.remove('incorrect-animation');
-            questionElement.removeEventListener('animationend', handler);
-        });
+        if (isVibrationOn && navigator.vibrate) navigator.vibrate([100, 30, 100]);
 
-        // Reset consecutive correct answers on incorrect answer
         consecutiveCorrectAnswersCount = 0;
         showFeedbackMessage("Errou!", 'error-message');
-
-        // Hide explainConceptButton immediately
-        explainConceptButton.style.display = 'none';
-
-        // Desabilita todos os botões para evitar múltiplos cliques enquanto processa
-        answerButtons.forEach(button => button.disabled = true);
-
-        setTimeout(() => {
-            generateQuestion(); // Avança para a próxima pergunta mesmo se errar
-        }, 500); // Generate next question after 0.5 seconds
+        elements.explainConceptButton.style.display = 'none';
+        elements.answerButtons.forEach(button => button.disabled = true);
+        setTimeout(() => generateQuestion(), 500);
     }
 
-    // Função para abrir o link de doação
-    function openDonationLink() {
-        // Abre o link de pagamento do Nubank em uma nova aba
-        window.open('https://checkout.nubank.com.br/KVCHaD4Xahm39l1', '_blank'); 
-    }
-
+    function openDonationLink() { window.open('https://checkout.nubank.com.br/KVCHaD4Xahm39l1', '_blank'); }
 
     // --- Event Listeners ---
-    practiceButton.addEventListener('click', showOperationSelection); 
-    competitionButton.addEventListener('click', showCompetitionModeSelection); 
-    donateButton.addEventListener('click', openDonationLink); // NOVO: Event listener para o botão de Doar no menu principal
-    rankingDonateButton.addEventListener('click', openDonationLink); // NOVO: Event listener para o botão de Doar no Ranking
+    elements.practiceButton.addEventListener('click', showOperationSelection); 
+    elements.competitionButton.addEventListener('click', showCompetitionModeSelection); 
+    elements.rankingDonateButton.addEventListener('click', openDonationLink);
 
-    backToMainFromOperationButton.addEventListener('click', showMainMenu); 
-    backToOperationSelectionButton.addEventListener('click', showOperationSelection); 
-    backToMainFromCompetitionModeButton.addEventListener('click', showMainMenu); 
-    backToMainFromRankingButton.addEventListener('click', showMainMenu);
+    elements.backToMainFromOperationButton.addEventListener('click', showMainMenu); 
+    elements.backToOperationSelectionButton.addEventListener('click', showOperationSelection); 
+    elements.backToMainFromCompetitionModeButton.addEventListener('click', showMainMenu); 
+    elements.backToMainFromRankingButton.addEventListener('click', showMainMenu);
 
     document.querySelectorAll('#operation-selection-container .operation-buttons button').forEach(button => {
-        button.addEventListener('click', (e) => {
-            selectOperation(e.target.dataset.op);
-        });
+        button.addEventListener('click', (e) => selectOperation(e.target.dataset.op));
     });
 
-    modeKidsButton.addEventListener('click', (e) => selectGameModeAndStart(e.target.dataset.mode));
-    modeAdultsButton.addEventListener('click', (e) => selectGameModeAndStart(e.target.dataset.mode));
+    elements.modeKidsButton.addEventListener('click', (e) => selectGameModeAndStart(e.target.dataset.mode));
+    elements.modeAdultsButton.addEventListener('click', (e) => selectGameModeAndStart(e.target.dataset.mode));
 
     document.querySelectorAll('#competition-mode-selection-container .competition-buttons button[data-mode^="competition_"]').forEach(button => {
         button.addEventListener('click', (e) => selectGameModeAndStart(e.target.dataset.mode));
     });
 
-    // Event listeners para o modal de Game Over
-    viewFullRankingButton.addEventListener('click', () => {
-        hideGameOverModal();
-        showRankingsScreen();
+    // Event listeners para os novos botões de alternância de ranking
+    elements.showKidsRankingButton.addEventListener('click', () => {
+        elements.dynamicCompetitionRankingDisplay.style.display = 'flex'; // Mostra o contêiner dinâmico
+        elements.rankingKidsAreaDynamic.style.display = 'block'; // Mostra o ranking Kids
+        elements.rankingAdultsAreaDynamic.style.display = 'none'; // Esconde o ranking Adulto
+        displayRanking('kids', elements.rankingKidsListDynamic, false, 50); // Carrega o ranking Kids (Top 50)
     });
 
-    gameOverMainMenuButton.addEventListener('click', () => {
-        hideGameOverModal();
-        showMainMenu();
-        currentGameMode = null; // Reset mode
-        selectedOperationType = 'all'; // Reset operation
-        questionElement.textContent = 'Selecione um modo e digite seu nome para começar!';
-        difficultyLevelElement.textContent = '';
-        answerButtonsContainer.style.display = 'none'; // Esconde os botões de resposta
+    elements.showAdultsRankingButton.addEventListener('click', () => {
+        elements.dynamicCompetitionRankingDisplay.style.display = 'flex'; // Mostra o contêiner dinâmico
+        elements.rankingKidsAreaDynamic.style.display = 'none'; // Esconde o ranking Kids
+        elements.rankingAdultsAreaDynamic.style.display = 'block'; // Mostra o ranking Adulto
+        displayRanking('adults', elements.rankingAdultsListDynamic, false, 50); // Carrega o ranking Adulto (Top 50)
     });
 
 
-    startGameButton.addEventListener('click', () => startGame());
-    playAgainButton.addEventListener('click', () => startGame());
+    elements.startGameButton.addEventListener('click', startGame);
+    elements.playAgainButton.addEventListener('click', startGame);
 
-    playerNameInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            startGame();
-        }
+    elements.playerNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') startGame(); });
+
+    elements.answerButtonsContainer.addEventListener('click', (e) => {
+        if (!gameActive || !e.target.classList.contains('answer-button')) return;
+        const userAnswer = Number(e.target.dataset.value);
+        const correctAnswer = currentQuestion.answer;
+        if (userAnswer === correctAnswer) processCorrectAnswer(e.target);
+        else processIncorrectAnswer(e.target);
     });
 
-    // NOVO: Event listener para os botões de resposta
-    answerButtonsContainer.addEventListener('click', (e) => {
-        if (!gameActive) return;
-
-        const clickedButton = e.target;
-        // Garante que o clique foi em um botão de resposta e não no container
-        if (clickedButton.classList.contains('answer-button')) {
-            const userAnswer = Number(clickedButton.dataset.value);
-            const correctAnswer = currentQuestion.answer;
-
-            if (userAnswer === correctAnswer) {
-                processCorrectAnswer(clickedButton);
-            } else {
-                processIncorrectAnswer(clickedButton);
-            }
-        }
+    elements.settingsIcons.forEach(icon => {
+        icon.addEventListener('click', (e) => showSettingsModal(e.currentTarget.dataset.targetScreen));
     });
 
-    settingsIcon.addEventListener('click', showSettingsModal);
-    closeSettingsModalButton.addEventListener('click', hideSettingsModal);
-
-    toggleSound.addEventListener('click', () => { isSoundOn = handleToggle(toggleSound, isSoundOn); });
-    toggleBGM.addEventListener('click', () => { isBGMOn = handleToggle(toggleBGM, isBGMOn); });
-    toggleVibration.addEventListener('click', () => { isVibrationOn = handleToggle(toggleVibration, isVibrationOn); });
-
-    settingsHomeButton.addEventListener('click', () => {
+    elements.closeSettingsModalButton.addEventListener('click', () => {
         hideSettingsModal();
-        endGame(); 
+        const sourceScreen = elements.settingsModal.dataset.sourceScreen;
+        if (sourceScreen === 'operation-selection') showOperationSelection();
+        else if (sourceScreen === 'mode-selection') showModeSelectionForPractice();
+        else if (sourceScreen === 'competition-mode-selection') showCompetitionModeSelection();
+        else if (sourceScreen === 'game') showGameScreen();
+        else if (sourceScreen === 'rankings') showRankingsScreen();
     });
 
-    settingsReplayButton.addEventListener('click', () => {
+    elements.toggleSound.addEventListener('click', () => { isSoundOn = handleToggle(elements.toggleSound, isSoundOn); });
+    elements.toggleBGM.addEventListener('click', () => { isBGMOn = handleToggle(elements.toggleBGM, isBGMOn); });
+    elements.toggleVibration.addEventListener('click', () => { isVibrationOn = handleToggle(elements.toggleVibration, isVibrationOn); });
+
+    elements.settingsHomeButton.addEventListener('click', () => {
+        hideSettingsModal();
+        endGame(); // Isso irá lidar com o reset do estado do jogo e navegar para o menu principal
+        unsubscribeAllRankings();
+    });
+
+    elements.settingsReplayButton.addEventListener('click', () => {
         hideSettingsModal();
         clearInterval(timerInterval); 
-        gameActive = false; 
-        score = 0;
-        timeLeft = 60;
-        correctAnswersCount = 0;
-        consecutiveCorrectAnswersCount = 0; // NOVO: Reseta o contador de acertos consecutivos
-        scoreValueElement.textContent = score;
-        timerValueElement.textContent = timeLeft + 's';
-        playerNameInput.style.display = 'none'; 
-        answerButtonsContainer.style.display = 'flex'; // Mostra os botões de resposta
-        answerButtons.forEach(button => button.disabled = false); // Habilita os botões
-        timeBar.style.width = '100%';
-        timeBar.style.backgroundColor = '#4CAF50';
-        timeBar.classList.remove('time-bar-shaking');
-        explainConceptButton.style.display = 'none'; 
-        messageElement.textContent = ''; // Limpa a mensagem
-        messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message'); // Esconde e limpa classes
+        gameActive = false; score = 0; timeLeft = 60; correctAnswersCount = 0; consecutiveCorrectAnswersCount = 0;
+        elements.scoreValueElement.textContent = score; elements.timerValueElement.textContent = timeLeft + 's';
+        elements.playerNameInput.style.display = 'none'; elements.answerButtonsContainer.style.display = 'flex';
+        elements.answerButtons.forEach(button => button.disabled = false);
+        elements.timeBar.style.width = '100%'; elements.timeBar.style.backgroundColor = '#4CAF50'; elements.timeBar.classList.remove('time-bar-shaking');
+        elements.explainConceptButton.style.display = 'none'; elements.messageElement.textContent = '';
+        elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
         generateQuestion(); 
         timerInterval = setInterval(() => { 
-            timeLeft--;
-            timerValueElement.textContent = timeLeft + 's';
-            const percentage = (timeLeft / 60) * 100;
-            timeBar.style.width = percentage + '%';
-            if (percentage > 50) {
-                timeBar.style.backgroundColor = '#4CAF50';
-            } else if (percentage > 20) {
-                timeBar.style.backgroundColor = '#FFC107';
-                if (timeLeft <= 10 && !timeBar.classList.contains('time-bar-shaking')) {
-                    timeBar.classList.add('time-bar-shaking');
-                }
+            timeLeft--; elements.timerValueElement.textContent = timeLeft + 's';
+            const percentage = (timeLeft / 60) * 100; elements.timeBar.style.width = percentage + '%';
+            if (percentage > 50) elements.timeBar.style.backgroundColor = '#4CAF50';
+            else if (percentage > 20) {
+                elements.timeBar.style.backgroundColor = '#FFC107';
+                if (timeLeft <= 10 && !elements.timeBar.classList.contains('time-bar-shaking')) elements.timeBar.classList.add('time-bar-shaking');
             } else {
-                timeBar.style.backgroundColor = '#DC3545';
-                if (timeLeft <= 10 && !timeBar.classList.contains('time-bar-shaking')) {
-                    timeBar.classList.add('time-bar-shaking');
-                    void timeBar.offsetWidth;
+                elements.timeBar.style.backgroundColor = '#DC3545';
+                if (timeLeft <= 10 && !elements.timeBar.classList.contains('time-bar-shaking')) {
+                    elements.timeBar.classList.add('time-bar-shaking');
+                    void elements.timeBar.offsetWidth;
                 }
             }
-            if (timeLeft <= 0) {
-                endGame();
-            }
+            if (timeLeft <= 0) endGame();
         }, 1000);
     });
 
-    settingsDonateButton.addEventListener('click', () => { // NOVO: Event listener para o botão de Doar nas configurações
+    elements.settingsDonateButton.addEventListener('click', () => {
         openDonationLink();
-        hideSettingsModal(); // Fecha o modal de configurações após clicar em doar
-    });
-
-    settingsMoreButton.addEventListener('click', () => {
-        alert("Funcionalidade 'Mais Opções' em desenvolvimento!");
         hideSettingsModal();
     });
 
-    explainConceptButton.addEventListener('click', showExplanationModal);
-    closeExplanationModalButton.addEventListener('click', hideExplanationModal);
-    explanationOkButton.addEventListener('click', hideExplanationModal);
+    elements.settingsMoreButton.addEventListener('click', () => {
+        console.info("Funcionalidade 'Mais Opções' em desenvolvimento!");
+        hideSettingsModal();
+    });
+
+    elements.explainConceptButton.addEventListener('click', showExplanationModal);
+    elements.closeExplanationModalButton.addEventListener('click', hideExplanationModal);
+    elements.explanationOkButton.addEventListener('click', hideExplanationModal);
 
     window.onload = () => {
-        // Garante que os botões de resposta estão ocultos logo no carregamento da página
-        answerButtonsContainer.style.display = 'none'; 
+        elements.answerButtonsContainer.style.display = 'none'; 
         showSplashScreen();
     };
 
