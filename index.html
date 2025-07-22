@@ -2,6 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="desafio.60.jpg">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-N4PWJ72YCJ"></script>
   <script>
@@ -177,7 +179,7 @@
     #splash-screen {
         position: fixed; top: 0; left: 0;
         width: 100vw; height: 100vh;
-        background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%);
+        background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
         color: white; font-size: 4em; font-weight: bold;
         text-shadow: 3px 3px 6px var(--shadow-strong);
         display: none; flex-direction: column; align-items: center; justify-content: center;
@@ -354,11 +356,11 @@
         max-width: none; 
         width: 100%; 
         background-color: var(--bg-white);
-        border-radius: var(--border-radius-large); padding: 20px; box-shadow: 0 4px 8px var(--shadow-medium);
+        border-radius: var(--border-radius-large); padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         color: var(--text-dark); 
     }
     #dynamic-competition-ranking-display .ranking-section h2 {
-        font-size: 1.2em; margin-bottom: 10px; color: var(--primary-green); text-shadow: 1px 1px 2px var(--shadow-light);
+        color: var(--primary-green); font-size: 1.2em; margin-bottom: 10px; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
     #dynamic-competition-ranking-display .ranking-list {
         background-color: transparent; 
@@ -381,13 +383,13 @@
         font-size: 1em; 
         color: var(--text-medium);
         margin-bottom: 10px;
-        font-weight: 500; /* Medium weight */
+        font-weight: 500; 
         height: 1.2em; 
         line-height: 1.2em; 
         overflow: hidden; 
     }
     #question {
-      font-size: 2.5em; margin-bottom: 15px; color: var(--text-dark); font-weight: 700; /* Bold */
+      font-size: 2.5em; margin-bottom: 15px; color: var(--text-dark); font-weight: 700; 
       text-shadow: 1px 1px 2px var(--shadow-light); transition: color 0.3s ease, transform 0.3s ease;
     }
     /* Classe para a animação da frase "Prepare-se para a aventura!" */
@@ -414,7 +416,7 @@
     }
 
     #message {
-      margin-top: 15px; font-weight: 600; /* Semi-bold */
+      margin-top: 15px; font-weight: 600; 
       opacity: 0; font-size: 1.1em;
       transition: opacity 0.5s ease-out, transform 0.5s ease-out; transform: translateY(10px);
       color: var(--text-dark); display: block;
@@ -425,14 +427,14 @@
     #message.incredible-message { color: var(--accent-orange); font-size: 1.3em; }
 
     #timer, #score { font-size: 1.3em; margin: 10px 0; color: var(--text-medium); position: relative; } 
-    #timer-value, #score-value { font-weight: 700; /* Bold */ color: var(--primary-green); transition: color 0.3s ease; }
+    #timer-value, #score-value { font-weight: 700; color: var(--primary-green); transition: color 0.3s ease; }
     #timer-value.pulse-effect, #score-value.pulse-effect { animation: pulseEffect 0.3s ease-out; }
 
-    /* NOVO: Estilo para o texto flutuante de feedback */
+    /* Floating feedback text */
     .floating-feedback-text {
         position: absolute;
         font-size: 1.2em;
-        font-weight: 700; /* Bold */
+        font-weight: 700; 
         color: var(--accent-orange); 
         text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         animation: floatUpFadeOut 1s ease-out forwards;
@@ -476,7 +478,7 @@
         color: var(--text-light); border: none; cursor: pointer; transition: all 0.3s ease;
         box-shadow: 0 6px 12px var(--shadow-medium);
         display: flex; align-items: center; justify-content: center;
-        font-weight: 600; /* Semi-bold */
+        font-weight: 600; 
     }
     /* Aprimoramento das animações de acerto/erro nos botões */
     #answer-buttons-container button.correct-feedback { 
@@ -495,7 +497,7 @@
         position: absolute; top: 15px; right: 15px; background: none; border: none;
         font-size: 2.5em; cursor: pointer; color: var(--text-medium); transition: transform 0.2s ease;
         padding: 0; box-shadow: none; z-index: 10;
-        display: flex; align-items: center; justify-content: center; /* Para centralizar o ícone */
+        display: flex; align-items: center; justify-content: center; 
     }
     .settings-icon:hover { transform: rotate(30deg); color: var(--primary-blue); }
 
@@ -637,7 +639,7 @@
         display: flex;
         align-items: center;
         gap: 5px;
-        box-shadow: 0 2px 5px var(--shadow-medium);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.15);
         opacity: 0;
         transform: scale(0.8);
         transition: opacity 0.3s ease, transform 0.3s ease;
@@ -1898,7 +1900,7 @@
 
             // Adiciona o ícone Font Awesome para a conquista
             let iconHtml = '';
-            if (id === 'first_correct') { // Use id for direct comparison
+            if (id === 'first_correct') { 
                 iconHtml = '<i class="fas fa-bullseye"></i>';
             } else if (id === 'calc_master') {
                 iconHtml = '<i class="fas fa-brain"></i>';
@@ -1907,7 +1909,7 @@
             } else if (id === 'accuracy_master') {
                 iconHtml = '<i class="fas fa-check-double"></i>';
             } else {
-                iconHtml = achievement.icon; // Fallback para ícone padrão se não for Font Awesome
+                iconHtml = achievement.icon; 
             }
 
 
@@ -1954,13 +1956,13 @@
 
         const collectionName = `ranking_${mode}`;
         targetListElement.innerHTML = '<li>Carregando ranking...</li>';
-        console.log(`Setting up new ranking listener for ${collectionName} on ${targetListElement.id}`); // Debug log
+        console.log(`Setting up new ranking listener for ${collectionName} on ${targetListElement.id}`); 
 
         // Cancela a inscrição anterior para este elemento específico, se existir
         if (typeof targetListElement.dataset.unsubscribe === 'function') {
             targetListElement.dataset.unsubscribe();
             delete targetListElement.dataset.unsubscribe;
-            console.log(`Unsubscribed old listener for ${targetListElement.id}`); // Debug log
+            console.log(`Unsubscribed old listener for ${targetListElement.id}`); 
         }
 
         const currentUnsubscribe = db.collection(collectionName)
@@ -2076,7 +2078,7 @@
                 } else if (correctAnswersCount < 16) {
                     operatorsToUse = ['+', '-', '*']; num1 = randomInt(1, 50); num2 = randomInt(1, 50); currentLevelName = difficultyNames[3];
                 } else {
-                    operatorsToUse = ['+', '-', '*', '÷']; num1 = randomInt(1, 70); num2 = randomInt(1, 70); currentLevelName = difficultyNames[4];
+                    num1 = randomInt(1, 70); num2 = randomInt(1, 70); currentLevelName = difficultyNames[4];
                 }
             }
         }
@@ -2212,15 +2214,15 @@
               else if (percentage > 20) {
                   elements.timeBar.style.backgroundColor = 'var(--accent-orange)'; 
                   if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) elements.timeBar.classList.add('time-bar-shaking');
-              } else {
-                  elements.timeBar.style.backgroundColor = 'var(--danger-red)'; 
-                  if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) {
-                      elements.timeBar.classList.add('time-bar-shaking');
-                      void elements.timeBar.offsetWidth; 
-                  }
-              }
-          }
-          if (timeLeft <= 0) endGame();
+                } else {
+                    elements.timeBar.style.backgroundColor = 'var(--danger-red)'; 
+                    if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) {
+                        elements.timeBar.classList.add('time-bar-shaking');
+                        void elements.timeBar.offsetWidth; 
+                    }
+                }
+            }
+            if (timeLeft <= 0) endGame();
         }, 1000);
       }, 1000);
     }
