@@ -3,8 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9968425306160320"
-          crossorigin="anonymous"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-N4PWJ72YCJ"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -1488,6 +1486,7 @@
     }
 
     function showCompetitionModeSelection() { 
+        unsubscribeAllRankings(); // CORRIGIDO: Limpa listeners de ranking ao entrar nesta tela
         showScreen(elements.competitionModeSelectionContainer);
         currentGameMode = null;
         if (elements.dynamicCompetitionRankingDisplay) elements.dynamicCompetitionRankingDisplay.style.display = 'none';
@@ -1497,7 +1496,6 @@
             elements.streakIndicator.classList.remove('show');
             elements.streakIndicator.style.display = 'none';
         }
-        unsubscribeAllRankings();
     }
 
     function showGameScreen() {
@@ -1532,6 +1530,7 @@
     }
 
     function showRankingsScreen(highlightPlayer = false) { 
+        unsubscribeAllRankings(); // CORRIGIDO: Limpa listeners de ranking ao entrar nesta tela
         showScreen(elements.rankingsContainer);
         if (elements.rankingKidsArea) elements.rankingKidsArea.style.display = 'none';
         if (elements.rankingAdultsArea) elements.rankingAdultsArea.style.display = 'none';
@@ -1560,6 +1559,7 @@
             elements.streakIndicator.classList.remove('show');
             elements.streakIndicator.style.display = 'none';
         }
+        unsubscribeAllRankings(); // Limpa listeners de ranking ao entrar nesta tela (prevenção)
         displayUserStats();
     }
 
@@ -1898,13 +1898,13 @@
 
             // Adiciona o ícone Font Awesome para a conquista
             let iconHtml = '';
-            if (achievement.id === 'first_correct') {
+            if (id === 'first_correct') { // Use id for direct comparison
                 iconHtml = '<i class="fas fa-bullseye"></i>';
-            } else if (achievement.id === 'calc_master') {
+            } else if (id === 'calc_master') {
                 iconHtml = '<i class="fas fa-brain"></i>';
-            } else if (achievement.id === 'game_veteran') {
+            } else if (id === 'game_veteran') {
                 iconHtml = '<i class="fas fa-gamepad"></i>';
-            } else if (achievement.id === 'accuracy_master') {
+            } else if (id === 'accuracy_master') {
                 iconHtml = '<i class="fas fa-check-double"></i>';
             } else {
                 iconHtml = achievement.icon; // Fallback para ícone padrão se não for Font Awesome
@@ -1954,11 +1954,13 @@
 
         const collectionName = `ranking_${mode}`;
         targetListElement.innerHTML = '<li>Carregando ranking...</li>';
+        console.log(`Setting up new ranking listener for ${collectionName} on ${targetListElement.id}`); // Debug log
 
         // Cancela a inscrição anterior para este elemento específico, se existir
         if (typeof targetListElement.dataset.unsubscribe === 'function') {
             targetListElement.dataset.unsubscribe();
             delete targetListElement.dataset.unsubscribe;
+            console.log(`Unsubscribed old listener for ${targetListElement.id}`); // Debug log
         }
 
         const currentUnsubscribe = db.collection(collectionName)
