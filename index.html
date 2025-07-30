@@ -2,11 +2,13 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <!-- Favicon - Múltiplas declarações para melhor compatibilidade -->
   <link rel="icon" type="image/jpeg" href="desafio.60.jpg">
   <link rel="icon" type="image/png" href="desafio.60.png" sizes="32x32">
   <link rel="apple-touch-icon" href="desafio.60.png">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-N4PWJ72YCJ"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -18,10 +20,13 @@
   <title>Desafio dos 60 Segundos 🧠</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
+  <!-- Font Awesome para Ícones -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0V4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   
+  <!-- Google Fonts: Inter (para uma tipografia moderna) -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- Script principal do Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9968425306160320"
           crossorigin="anonymous"></script>
   
@@ -162,26 +167,26 @@
         border-radius: var(--border-radius-large);
         box-shadow: 0 8px 16px var(--shadow-medium);
         width: 95%;
-        margin: 15px auto;
-        position: absolute; /* Changed from relative to absolute for overlapping */
-        top: 0; /* Ensures consistent positioning for all containers */
-        left: 50%; /* Centers the container */
-        transform: translateX(-50%); /* Centers the container */
+        margin: 15px auto; /* Centraliza horizontalmente */
+        position: relative; /* Mantém no fluxo normal, permite z-index e posicionamento de filhos */
         overflow: hidden;
-        display: none; /* Oculto por padrão */
+        display: none; /* Crucial: Oculto por padrão */
         flex-direction: column;
         align-items: center;
         justify-content: center;
         box-sizing: border-box;
         text-align: center;
-        min-height: 80vh; /* Ensure containers have a minimum height for visibility */
+        /* min-height: 80vh; Removido para evitar problemas de layout */
     }
     /* Largura específica para cards menores */
     #main-menu, #operation-selection-container, #mode-selection-container, #game-container, #my-progress-container { max-width: 400px; }
     /* Largura específica para cards maiores */
     #rankings-container, #competition-mode-selection-container { max-width: 800px; }
     /* Estado ativo para animação */
-    .card-container.active { display: flex; animation: fadeInScale 0.7s ease-out forwards; position: relative; } /* Reverts to relative when active to flow content */
+    .card-container.active { 
+        display: flex; /* Apenas a tela ativa é visível */
+        animation: fadeInScale 0.7s ease-out forwards; 
+    }
 
     /* Tela de Splash */
     #splash-screen {
@@ -853,13 +858,16 @@
 
 </head>
 <body>
+  <!-- Novo H1 visível e descritivo -->
   <h1>Desafio dos 60 Segundos: Onde a Matemática Encontra a Diversão!</h1>
 
+  <!-- Splash Screen -->
   <div id="splash-screen">
     <span class="brain-icon">🧠</span>
     <span class="splash-text">Desafio dos<br>60 Segundos</span>
   </div>
 
+  <!-- Main Menu -->
   <div id="main-menu" class="card-container">
     <div class="main-title-box">
         <span class="brain-icon-title">🧠</span>
@@ -870,6 +878,7 @@
         <span>+</span><span>-</span><span>×</span><span>÷</span>
     </div>
 
+    <!-- NOVA SEÇÃO: Cards de Informação para Conteúdo -->
     <div class="info-cards-container">
         <div class="info-card" id="about-card" data-modal-target="about-modal">
             <span class="icon"><i class="fas fa-info-circle"></i></span>
@@ -889,6 +898,8 @@
             <p>Conheça os benefícios de exercitar sua mente.</p>
         </div>
     </div>
+    <!-- FIM DA NOVA SEÇÃO -->
+
     <div class="menu-buttons">
       <button id="practice-button" class="base-button main-menu-button"><i class="fas fa-pencil-alt"></i> Praticar</button>
       <button id="competition-button" class="base-button main-menu-button"><i class="fas fa-trophy"></i> Desafie-se</button>
@@ -896,6 +907,7 @@
     </div>
   </div>
 
+  <!-- Operation Selection (Practice Mode) -->
   <div id="operation-selection-container" class="card-container">
     <h3>Escolha a Operação para Praticar:</h3>
     <div class="operation-buttons">
@@ -908,6 +920,7 @@
     <button id="back-to-main-from-operation" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
   </div>
 
+  <!-- Mode Selection (Practice Mode) -->
   <div id="mode-selection-container" class="card-container">
     <h3>Escolha o Modo de Jogo:</h3>
     <button id="mode-kids-button" class="base-button mode-button" data-mode="practice_kids"><i class="fas fa-child"></i> Modo Kids</button>
@@ -915,12 +928,14 @@
     <button id="back-to-operation-selection" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar para Seleção de Operação</button>
   </div>
 
+  <!-- Competition Mode Selection (concorrência) -->
   <div id="competition-mode-selection-container" class="card-container">
     <h3>Modo Competição:</h3>
     <div class="competition-buttons">
         <button data-mode="competition_kids" class="base-button competition-mode-button"><i class="fas fa-child"></i> Kids</button>
         <button data-mode="competition_adults" class="base-button competition-mode-button"><i class="fas fa-user-graduate"></i> Adulto</button>
     </div>
+    <!-- NEW BUTTONS TO DISPLAY RANKING -->
     <div class="ranking-toggle-buttons-group">
         <button id="show-kids-ranking-button" class="base-button ranking-toggle-button">
             <i class="fas fa-trophy"></i> Top 50 Kids
@@ -930,7 +945,9 @@
         </button>
     </div>
 
+    <!-- NEW CONTAINER TO DISPLAY RANKING DYNAMICALLY -->
     <div id="dynamic-competition-ranking-display" style="display: none;">
+        <!-- Kids or Adult Ranking will be loaded here -->
         <div id="ranking-kids-area-dynamic" class="ranking-section">
             <h2><i class="fas fa-trophy"></i> Ranking Kids (Top 50)</h2>
             <ol id="ranking-kids-list-dynamic" class="ranking-list"></ol>
@@ -944,6 +961,7 @@
     <button id="back-to-main-from-competition-mode" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
   </div>
 
+  <!-- Game Content -->
   <div id="game-container" class="card-container">
     <button id="settings-icon" class="settings-icon" data-target-screen="game"><i class="fas fa-cog"></i></button>
     <div id="status">
@@ -971,6 +989,7 @@
     <button id="play-again" class="base-button" style="display: none;"><i class="fas fa-redo-alt"></i> Jogar Novamente</button>
   </div>
 
+  <!-- Rankings Container (Full Ranking Screen Post-Quiz) -->
   <div id="rankings-container" class="card-container">
     <button class="settings-icon" data-target-screen="rankings"><i class="fas fa-cog"></i></button>
     <div class="ranking-lists-wrapper">
@@ -984,16 +1003,19 @@
         </div>
     </div>
     
+    <!-- NEW: Share Buttons Container -->
     <div class="share-buttons-container">
         <button id="share-score-whatsapp" class="base-button share-button whatsapp-button">
             <i class="fab fa-whatsapp"></i> Compartilhar Pontuação
         </button>
-        </div>
+        <!-- Other share buttons can be added here -->
+    </div>
 
     <button id="ranking-donate-button" class="base-button back-button"><span class="animated-donate-text"><i class="fas fa-dollar-sign"></i> Incentive o App <i class="fas fa-heart"></i></span></button>
     <button id="back-to-main-from-ranking" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
   </div>
 
+  <!-- NEW: My Progress / Detailed Stats Screen -->
   <div id="my-progress-container" class="card-container">
     <button class="settings-icon" data-target-screen="my-progress"><i class="fas fa-cog"></i></button>
     <h3><i class="fas fa-chart-line"></i> Meu Progresso</h3>
@@ -1038,12 +1060,14 @@
     <div class="achievements-section">
         <h4><i class="fas fa-medal"></i> Minhas Conquistas</h4>
         <div id="achievements-grid" class="achievements-grid">
-            </div>
+            <!-- Achievements will be loaded here dynamically -->
+        </div>
     </div>
 
     <button id="back-to-main-from-progress" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
   </div>
 
+  <!-- Settings Modal -->
   <div id="settings-modal" class="modal-overlay">
     <div class="modal-content">
       <button class="close-button" id="close-settings-modal"><i class="fas fa-times"></i></button>
@@ -1075,6 +1099,7 @@
     </div>
   </div>
 
+  <!-- Explanation Modal -->
   <div id="explanation-modal" class="modal-overlay">
     <div class="modal-content">
       <button class="close-button" id="close-explanation-modal"><i class="fas fa-times"></i></button>
@@ -1084,11 +1109,13 @@
     </div>
   </div>
 
+  <!-- NOVO: Achievement Unlocked Notification -->
   <div id="achievement-notification" style="display: none;">
       <span id="achievement-notification-icon" class="achievement-icon"></span>
       <span id="achievement-notification-text"></span>
   </div>
 
+  <!-- NOVO: Modal "Sobre o Desafio dos 60 Segundos" -->
   <div id="about-modal" class="content-modal-overlay">
     <div class="content-modal-content">
       <button class="close-button" data-close-modal="about-modal"><i class="fas fa-times"></i></button>
@@ -1105,6 +1132,7 @@
     </div>
   </div>
 
+  <!-- NOVO: Modal "Como Jogar" -->
   <div id="how-to-play-modal" class="content-modal-overlay">
     <div class="content-modal-content">
       <button class="close-button" data-close-modal="how-to-play-modal"><i class="fas fa-times"></i></button>
@@ -1131,6 +1159,7 @@
     </div>
   </div>
 
+  <!-- NOVO: Modal "Por Que Jogar" -->
   <div id="benefits-modal" class="content-modal-overlay">
     <div class="content-modal-content">
       <button class="close-button" data-close-modal="benefits-modal"><i class="fas fa-times"></i></button>
@@ -1144,6 +1173,7 @@
     </div>
   </div>
 
+  <!-- AdSense Ad Blocks -->
   <div style="width: 100%; max-width: 728px; margin: 20px auto; text-align: center;">
     <ins class="adsbygoogle"
          style="display:block; width:100%; height:auto; min-height:90px;"
@@ -1172,6 +1202,7 @@
     <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
   </div>
 
+  <!-- NOVO: Rodapé -->
   <footer>
       <p>&copy; 2025 Desafio dos 60 Segundos. Todos os direitos reservados.</p>
       <p>
