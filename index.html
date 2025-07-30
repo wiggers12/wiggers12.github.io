@@ -109,10 +109,6 @@
         50% { transform: translateY(0) rotate(-5deg); }
         75% { transform: translateY(-3px) rotate(3deg); }
     }
-    @keyframes slideInPop {
-        from { opacity: 0; transform: translateY(20px) scale(0.9); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
-    }
     @keyframes neonGlow {
         0% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--accent-orange), 0 0 20px var(--accent-orange); transform: scale(1); }
         33% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--dark-orange), 0 0 20px var(--dark-orange); transform: scale(1.02); }
@@ -167,7 +163,10 @@
         box-shadow: 0 8px 16px var(--shadow-medium);
         width: 95%;
         margin: 15px auto;
-        position: relative;
+        position: absolute; /* Changed from relative to absolute for overlapping */
+        top: 0; /* Ensures consistent positioning for all containers */
+        left: 50%; /* Centers the container */
+        transform: translateX(-50%); /* Centers the container */
         overflow: hidden;
         display: none; /* Oculto por padrão */
         flex-direction: column;
@@ -175,13 +174,14 @@
         justify-content: center;
         box-sizing: border-box;
         text-align: center;
+        min-height: 80vh; /* Ensure containers have a minimum height for visibility */
     }
     /* Largura específica para cards menores */
     #main-menu, #operation-selection-container, #mode-selection-container, #game-container, #my-progress-container { max-width: 400px; }
     /* Largura específica para cards maiores */
     #rankings-container, #competition-mode-selection-container { max-width: 800px; }
     /* Estado ativo para animação */
-    .card-container.active { display: flex; animation: fadeInScale 0.7s ease-out forwards; }
+    .card-container.active { display: flex; animation: fadeInScale 0.7s ease-out forwards; position: relative; } /* Reverts to relative when active to flow content */
 
     /* Tela de Splash */
     #splash-screen {
@@ -517,8 +517,10 @@
 
     /* Botão de Fechar para modais de conteúdo */
     .content-modal-content .close-button {
-        color: var(--text-dark); /* Botão de fechar em cor escura para fundo claro */
-        background-color: var(--border-light); /* Fundo sutil para o botão de fechar */
+        position: absolute; top: 10px; right: 10px; background: none; border: none;
+        color: var(--text-dark); font-size: 1.8em; cursor: pointer; padding: 5px; line-height: 1;
+        border-radius: 50%; width: 40px; height: 40px; display: flex;
+        align-items: center; justify-content: center; transition: background-color 0.2s ease;
     }
     .content-modal-content .close-button:hover {
         background-color: var(--border-light); /* Mantém a cor no hover */
@@ -1361,32 +1363,37 @@
 
     // --- Screen Navigation Functions ---
     function hideAllScreens() {
-        Object.values(elements).forEach(el => {
-            if (el && el.classList && el.classList.contains('card-container')) { 
-                el.classList.remove('active');
-                el.style.display = 'none';
-            }
+        // Seleciona todos os elementos que têm a classe 'card-container'
+        const allCardContainers = document.querySelectorAll('.card-container');
+        allCardContainers.forEach(el => {
+            el.classList.remove('active');
+            el.style.display = 'none'; // Garante que estejam escondidos
         });
+
+        // Esconde a splash screen explicitamente
         if (elements.splashScreen) { 
             elements.splashScreen.classList.remove('active', 'fade-out');
             elements.splashScreen.style.display = 'none';
         }
+
+        // Esconde outros elementos globais que podem estar visíveis
         if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none'; 
+        
+        // Esconde todos os modais
         hideSettingsModal();
         hideExplanationModal();
         hideAchievementNotification();
-        // NEW: Hide all content modals
         if (elements.aboutModal) hideContentModal(elements.aboutModal);
         if (elements.howToPlayModal) hideContentModal(elements.howToPlayModal);
         if (elements.benefitsModal) hideContentModal(elements.benefitsModal);
     }
 
     function showScreen(screenElement, animationDelay = 0) {
-        hideAllScreens();
+        hideAllScreens(); // Esconde tudo ANTES de mostrar a nova tela
         setTimeout(() => {
             if (screenElement) { 
-                screenElement.style.display = 'flex';
-                screenElement.classList.add('active');
+                screenElement.style.display = 'flex'; // Garante que seja visível
+                screenElement.classList.add('active'); // Adiciona a classe para animação e posicionamento
             }
         }, animationDelay);
     }
@@ -1409,15 +1416,17 @@
     function showMainMenu() {
         try {
             showScreen(elements.mainMenu);
+            // Reset state for main menu elements
             if (elements.modeKidsButton) elements.modeKidsButton.classList.remove('active');
             if (elements.modeAdultsButton) elements.modeAdultsButton.classList.remove('active');
             if (elements.questionElement) {
                 elements.questionElement.textContent = 'Prepare-se para a aventura!';
                 elements.questionElement.classList.add('prepare-text-animated');
+                // Remove the animation class after it plays once
                 elements.questionElement.addEventListener('animationend', function handler() {
                     elements.questionElement.classList.remove('prepare-text-animated');
                     elements.questionElement.removeEventListener('animationend', handler);
-                });
+                }, { once: true }); // Ensure listener is removed after first use
             }
             if (elements.difficultyLevelElement) elements.difficultyLevelElement.textContent = '';
             if (elements.playerNameInput) elements.playerNameInput.style.display = 'none';
@@ -1437,9 +1446,9 @@
             console.error("Error displaying main menu:", e);
             document.body.innerHTML = `
                 <div style="text-align: center; color: var(--danger-red); margin-top: 50px;">
-                    <h1>Error loading game!</h1>
-                    <p>Please try again or contact support.</p>
-                    <p>Error details: ${e.message}</p>
+                    <h1>Erro ao carregar o jogo!</h1>
+                    <p>Por favor, tente novamente ou entre em contato com o suporte.</p>
+                    <p>Detalhes do erro: ${e.message}</p>
                 </div>
             `;
         }
@@ -1448,7 +1457,9 @@
     function showOperationSelection() { 
         showScreen(elements.operationSelectionContainer);
         selectedOperationType = null;
-        document.querySelectorAll('#operation-selection-container .operation-buttons button').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('#operation-selection-container .operation-buttons button').forEach(btn => {
+            if (btn) btn.classList.remove('active');
+        });
         if (elements.streakIndicator) {
             elements.streakIndicator.classList.remove('show');
             elements.streakIndicator.style.display = 'none';
@@ -1483,6 +1494,7 @@
         unsubscribeAllRankings(); // Clear ranking listeners when entering this screen
         showScreen(elements.competitionModeSelectionContainer);
         currentGameMode = null;
+        // Hide dynamic ranking display when entering competition mode selection
         if (elements.dynamicCompetitionRankingDisplay) elements.dynamicCompetitionRankingDisplay.style.display = 'none';
         if (elements.rankingKidsAreaDynamic) elements.rankingKidsAreaDynamic.style.display = 'none';
         if (elements.rankingAdultsAreaDynamic) elements.rankingAdultsAreaDynamic.style.display = 'none';
@@ -1513,7 +1525,7 @@
             elements.questionElement.addEventListener('animationend', function handler() {
                 elements.questionElement.classList.remove('prepare-text-animated');
                 elements.questionElement.removeEventListener('animationend', handler);
-            });
+            }, { once: true });
         }
         if (elements.difficultyLevelElement) elements.difficultyLevelElement.textContent = '';
         if (elements.streakIndicator) {
@@ -1526,21 +1538,14 @@
     function showRankingsScreen(highlightPlayer = false) { 
         unsubscribeAllRankings(); // Clear ranking listeners when entering this screen
         showScreen(elements.rankingsContainer);
-        if (elements.rankingKidsArea) elements.rankingKidsArea.style.display = 'none';
-        if (elements.rankingAdultsArea) elements.rankingAdultsArea.style.display = 'none';
+        // Ensure both ranking areas are visible for the full ranking screen
+        if (elements.rankingKidsArea) elements.rankingKidsArea.style.display = 'block';
+        if (elements.rankingAdultsArea) elements.rankingAdultsArea.style.display = 'block';
 
-        if (currentGameMode === 'competition_kids') {
-            if (elements.rankingKidsArea) elements.rankingKidsArea.style.display = 'block';
-            displayRanking('kids', elements.rankingKidsList, highlightPlayer, 50);
-        } else if (currentGameMode === 'competition_adults') {
-            if (elements.rankingAdultsArea) elements.rankingAdultsArea.style.display = 'block';
-            displayRanking('adults', elements.rankingAdultsList, highlightPlayer, 50);
-        } else { 
-            if (elements.rankingKidsArea) elements.rankingKidsArea.style.display = 'block';
-            if (elements.rankingAdultsArea) elements.rankingAdultsArea.style.display = 'block';
-            displayRanking('kids', elements.rankingKidsList, highlightPlayer, 50);
-            displayRanking('adults', elements.rankingAdultsList, highlightPlayer, 50);
-        }
+        // Display rankings
+        displayRanking('kids', elements.rankingKidsList, highlightPlayer, 50);
+        displayRanking('adults', elements.rankingAdultsList, highlightPlayer, 50);
+
         if (elements.streakIndicator) {
             elements.streakIndicator.classList.remove('show');
             elements.streakIndicator.style.display = 'none';
@@ -2279,7 +2284,7 @@
               elements.questionElement.addEventListener('animationend', function handler() {
                   if (elements.questionElement) elements.questionElement.classList.remove('prepare-text-animated');
                   elements.questionElement.removeEventListener('animationend', handler);
-              });
+              }, { once: true });
           }
           if (elements.difficultyLevelElement) elements.difficultyLevelElement.textContent = '';
           showMainMenu();
@@ -2306,7 +2311,7 @@
             elements.scoreValueElement.addEventListener('animationend', function handler() {
                 if (elements.scoreValueElement) elements.scoreValueElement.classList.remove('pulse-effect');
                 elements.scoreValueElement.removeEventListener('animationend', handler);
-            });
+            }, { once: true });
         }
         
         displayFloatingFeedback(elements.scoreValueElement, '+1', 'score-bonus');
@@ -2330,7 +2335,7 @@
             elements.questionElement.addEventListener('animationend', function handler() {
                 if (elements.questionElement) elements.questionElement.classList.remove('correct-animation');
                 elements.questionElement.removeEventListener('animationend', handler);
-            });
+            }, { once: true });
         }
 
         consecutiveCorrectAnswersCount++;
@@ -2374,7 +2379,7 @@
             elements.scoreValueElement.addEventListener('animationend', function handler() {
                 if (elements.scoreValueElement) elements.scoreValueElement.classList.remove('pulse-effect');
                 elements.scoreValueElement.removeEventListener('animationend', handler);
-            });
+            }, { once: true });
         }
 
         if (clickedButton) clickedButton.classList.add('incorrect-feedback'); 
@@ -2586,7 +2591,13 @@
     window.onload = () => {
         try {
             console.log("window.onload triggered.");
+            // Initially ensure all main screens are hidden
+            document.querySelectorAll('.card-container').forEach(container => {
+                container.style.display = 'none';
+            });
+            // Also ensure the answer buttons container is hidden initially
             if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none'; 
+            
             showSplashScreen();
         } catch (e) {
             console.error("Error during app initialization:", e);
