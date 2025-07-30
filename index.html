@@ -386,245 +386,145 @@
     #dynamic-competition-ranking-display .ranking-list li.ranking-item-bottom span { color: var(--danger-red); font-weight: bold; } 
 
 
-    /* Estilos para as novas seções de conteúdo */
-    .content-section {
-        margin-top: 25px;
-        margin-bottom: 30px;
-        padding: 0 15px;
-        color: var(--text-dark);
-        text-align: center;
-        width: 100%;
-        max-width: 600px; /* Limita a largura para melhor leitura */
-        box-sizing: border-box;
-    }
-    .content-section h2 {
-        font-size: 1.6em;
-        color: var(--primary-blue); /* Cor para títulos de seção */
-        margin-bottom: 15px;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-    }
-    .content-section p {
-        font-size: 1.1em;
-        line-height: 1.6;
-        margin-bottom: 15px;
-    }
-    .content-section ul {
-        list-style-type: disc;
-        margin-left: 20px;
-        font-size: 0.95em;
-        line-height: 1.5;
-        margin-bottom: 15px;
-        text-align: left; /* Alinha o texto das listas à esquerda */
-    }
-    .content-section ul.no-bullets {
-        list-style-type: none;
-        padding: 0;
+    /* Estilos para a seção de cartões de informações */
+    .info-cards-container {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         gap: 20px;
-    }
-    .content-section ul.no-bullets li {
-        background-color: var(--bg-light-gray);
-        padding: 20px;
-        border-radius: var(--border-radius-medium);
-        box-shadow: 0 2px 5px var(--shadow-light);
+        margin-top: 40px;
+        margin-bottom: 40px;
         width: 100%;
-        max-width: 280px;
-        text-align: left;
+        max-width: 800px; /* Limita a largura para centralizar bem */
     }
-    .content-section ul.no-bullets li h3 {
-        font-size: 1.2em;
-        color: var(--primary-blue);
+
+    .info-card {
+        background-color: var(--bg-light-gray);
+        padding: 25px;
+        border-radius: var(--border-radius-medium);
+        box-shadow: 0 4px 10px var(--shadow-light);
+        width: 100%;
+        max-width: 280px; /* Largura máxima para cada card */
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-dark);
+    }
+
+    .info-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 8px 15px var(--shadow-medium);
+        background-color: var(--bg-white);
+    }
+
+    .info-card .icon {
+        font-size: 3.5em; /* Tamanho maior para os ícones */
+        margin-bottom: 15px;
+        color: var(--primary-blue); /* Cor padrão para os ícones */
+    }
+
+    .info-card h3 {
+        font-size: 1.4em;
+        font-weight: 700;
         margin-bottom: 10px;
+        color: var(--text-dark);
     }
-    .content-section ul.no-bullets li p {
+
+    .info-card p {
         font-size: 0.95em;
         line-height: 1.5;
-        margin-bottom: 0; /* Remove margem inferior para parágrafos dentro de itens de lista */
-    }
-    
-    /* Cores específicas para títulos de seções */
-    #about-game h2 { color: var(--primary-blue); }
-    #how-to-play h2 { color: var(--accent-orange); }
-    #benefits h2 { color: var(--primary-green); }
-
-
-    /* Elementos da Tela de Jogo */
-    #difficulty-level { 
-        font-size: 1em; 
         color: var(--text-medium);
-        margin-bottom: 10px;
-        font-weight: 500; 
-        height: 1.2em; 
-        line-height: 1.2em; 
-        overflow: hidden; 
-    }
-    #question {
-      font-size: 2.5em; margin-bottom: 15px; color: var(--text-dark); font-weight: 700; 
-      text-shadow: 1px 1px 2px var(--shadow-light); transition: color 0.3s ease, transform 0.3s ease;
-    }
-    /* Classe para a animação da frase "Prepare-se para a aventura!" */
-    #question.prepare-text-animated {
-        animation: prepareTextPopColor 1.5s ease-out forwards;
-        display: inline-block; 
-    }
-    /* Aprimoramento das animações de acerto/erro na pergunta */
-    #question.correct-animation { animation: pulseGreen 0.5s ease-out, correctGlow 0.5s ease-out; }
-    #question.incorrect-animation { animation: shakeRed 0.5s ease-out, incorrectGlow 0.5s ease-out; }
-
-    #player-name-input {
-      padding: 15px; font-size: 1.5em; width: calc(100% - 30px); margin-bottom: 20px;
-      border: 2px solid var(--border-light); border-radius: var(--border-radius-medium);
-      text-align: center; transition: border-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
-      background-color: var(--bg-light-gray);
-      color: var(--text-dark);
-      -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none;
-      -moz-user-select: none; -ms-user-select: none; user-select: none;
-    }
-    #player-name-input::placeholder {
-        color: var(--text-medium);
-        opacity: 0.7;
     }
 
-    #message {
-      margin-top: 15px; font-weight: 600; 
-      opacity: 0; font-size: 1.1em;
-      transition: opacity 0.5s ease-out, transform 0.5s ease-out; transform: translateY(10px);
-      color: var(--text-dark); display: block;
-    }
-    #message.show { opacity: 1; transform: translateY(0); }
-    #message.success-message { color: var(--primary-green); }
-    #message.error-message { color: var(--danger-red); }
-    #message.incredible-message { color: var(--accent-orange); font-size: 1.3em; }
-
-    #timer, #score { font-size: 1.3em; margin: 10px 0; color: var(--text-medium); position: relative; } 
-    #timer-value, #score-value { font-weight: 700; color: var(--primary-green); transition: color 0.3s ease; }
-    #timer-value.pulse-effect, #score-value.pulse-effect { animation: pulseEffect 0.3s ease-out; }
-
-    /* Floating feedback text */
-    .floating-feedback-text {
-        position: absolute;
-        font-size: 1.2em;
-        font-weight: 700; 
-        color: var(--accent-orange); 
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-        animation: floatUpFadeOut 1s ease-out forwards;
-        pointer-events: none; 
-        z-index: 100;
-        white-space: nowrap;
-        opacity: 0; 
-    }
-    .floating-feedback-text.score-bonus {
-        color: var(--primary-green); 
-        left: 50%; 
-        transform: translateX(-50%);
-    }
-    .floating-feedback-text.time-bonus {
-        color: var(--primary-blue); 
-        left: 50%; 
-        transform: translateX(-50%);
-    }
+    /* Cores específicas para os ícones dos cards */
+    .info-card#about-card .icon { color: var(--primary-green); }
+    .info-card#how-to-play-card .icon { color: var(--accent-orange); }
+    .info-card#benefits-card .icon { color: var(--purple-main); }
 
 
-    #time-bar-container {
-      width: 100%; height: 15px; background-color: var(--border-light);
-      border-radius: var(--border-radius-small); margin-bottom: 15px; overflow: hidden;
-      box-shadow: inset 0 1px 3px var(--shadow-light);
-    }
-    #time-bar {
-      height: 100%; width: 100%; background-color: var(--primary-green);
-      border-radius: var(--border-radius-small); transition: width 0.9s linear, background-color 0.9s linear, transform 0.1s ease;
-    }
-    .time-bar-shaking { animation: timeShake 0.5s ease-out infinite; }
-
-    /* Answer Buttons Container */
-    #answer-buttons-container {
-        display: flex; flex-wrap: wrap; justify-content: space-around; gap: 15px;
-        width: 100%; max-width: 450px; margin-top: 20px; margin-bottom: 20px;
-    }
-    #answer-buttons-container button {
-        flex: 1 1 auto; min-width: 100px; padding: 15px; font-size: 1.8em;
-        border-radius: var(--border-radius-large);
-        background: linear-gradient(45deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
-        color: var(--text-light); border: none; cursor: pointer; transition: all 0.3s ease;
-        box-shadow: 0 6px 12px var(--shadow-medium);
-        display: flex; align-items: center; justify-content: center;
-        font-weight: 600; 
-    }
-    /* Aprimoramento das animações de acerto/erro nos botões */
-    #answer-buttons-container button.correct-feedback { 
-        background: linear-gradient(45deg, var(--dark-green) 0%, var(--primary-green) 100%); 
-        box-shadow: 0 0 15px rgba(46, 204, 113, 0.8);
-        animation: correctGlow 0.5s ease-out; 
-    }
-    #answer-buttons-container button.incorrect-feedback { 
-        background: linear-gradient(45deg, var(--danger-red) 0%, var(--dark-red) 100%); 
-        box-shadow: 0 0 15px rgba(231, 76, 60, 0.8);
-        animation: incorrectGlow 0.5s ease-out; 
-    }
-
-    /* Ícone de Configurações */
-    .settings-icon {
-        position: absolute; top: 15px; right: 15px; background: none; border: none;
-        font-size: 2.5em; cursor: pointer; color: var(--text-medium); transition: transform 0.2s ease;
-        padding: 0; box-shadow: none; z-index: 10;
-        display: flex; align-items: center; justify-content: center; 
-    }
-    .settings-icon:hover { transform: rotate(30deg); color: var(--primary-blue); }
-
-    /* Overlay do Modal */
-    .modal-overlay {
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background-color: rgba(0, 0, 0, 0.7); display: flex; align-items: center;
-        justify-content: center; z-index: 2000; opacity: 0; visibility: hidden;
+    /* Estilos dos Modais de Conteúdo */
+    .content-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2500; /* Acima do modal de configurações */
+        opacity: 0;
+        visibility: hidden;
         transition: opacity 0.3s ease, visibility 0.3s ease;
+        padding: 20px; /* Padding para evitar que o conteúdo toque nas bordas em mobile */
+        box-sizing: border-box;
     }
-    .modal-overlay.show { opacity: 1; visibility: visible; }
 
-    /* Conteúdo do Modal */
-    .modal-content {
-        background-color: var(--text-dark); /* Fundo mais escuro para modal */
-        padding: 30px; border-radius: var(--border-radius-large);
-        box-shadow: 0 10px 20px var(--shadow-strong); width: 90%; max-width: 400px;
-        position: relative; color: var(--text-light); text-align: center;
-        transform: scale(0.9); transition: transform 0.3s ease;
+    .content-modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
     }
-    .modal-overlay.show .modal-content { transform: scale(1); }
-    .modal-content h3 { color: var(--text-light); font-size: 1.8em; margin-bottom: 25px; }
 
-    /* Botão de Fechar */
-    .close-button {
-        position: absolute; top: 10px; right: 10px; background: none; border: none;
-        color: var(--text-light); font-size: 1.8em; cursor: pointer; padding: 5px; line-height: 1;
-        border-radius: 50%; width: 40px; height: 40px; display: flex;
-        align-items: center; justify-content: center; transition: background-color 0.2s ease;
+    .content-modal-content {
+        background-color: var(--bg-white); /* Fundo claro para o conteúdo */
+        padding: 30px;
+        border-radius: var(--border-radius-large);
+        box-shadow: 0 10px 20px var(--shadow-strong);
+        width: 95%;
+        max-width: 600px; /* Largura para o conteúdo do modal */
+        position: relative;
+        color: var(--text-dark);
+        text-align: left; /* Alinha o texto do modal à esquerda */
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+        max-height: 90vh; /* Limita a altura para que seja scrollável */
+        overflow-y: auto; /* Adiciona scroll se o conteúdo for muito grande */
     }
-    .close-button:hover { background-color: rgba(255, 255, 255, 0.2); }
 
-    /* Item de Configuração */
-    .setting-item {
-        display: flex; justify-content: space-between; align-items: center;
-        padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        font-size: 1.2em;
-        font-weight: 500;
+    .content-modal-overlay.show .content-modal-content {
+        transform: scale(1);
     }
-    .setting-item:last-of-type { border-bottom: none; }
-    .setting-item span { flex-grow: 1; text-align: left; padding-left: 10px; }
 
-    /* Chave Seletora (Toggle Switch) */
-    .toggle-switch {
-        width: 60px; height: 30px; background-color: var(--text-medium); border-radius: 15px; /* Cinza para off */
-        position: relative; cursor: pointer; transition: background-color 0.3s ease;
-        flex-shrink: 0;
+    .content-modal-content h3 {
+        color: var(--primary-blue); /* Cor para o título do modal */
+        font-size: 1.8em;
+        margin-bottom: 25px;
+        text-align: center; /* Título do modal centralizado */
     }
-    .toggle-switch.active { background-color: var(--primary-green); }
-    .toggle-button {
-        width: 26px; height: 26px; background-color: var(--bg-white); border-radius: 50%;
-        position: absolute; top: 2px; left: 2px; transition: transform 0.3s ease;
-        box-shadow: 0 2px 5px var(--shadow-medium);
+    .content-modal-content h4 { /* Estilo para os subtítulos dentro dos modais */
+        font-size: 1.3em;
+        color: var(--dark-blue);
+        margin-top: 20px;
+        margin-bottom: 10px;
     }
-    .toggle-switch.active .toggle-button { transform: translateX(30px); }
+    .content-modal-content p, .content-modal-content ul {
+        font-size: 1.1em;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+    .content-modal-content ul {
+        list-style-type: disc;
+        margin-left: 25px;
+    }
+    .content-modal-content strong {
+        color: var(--dark-blue); /* Destaque para termos importantes no modal */
+    }
+
+    /* Botão de Fechar para modais de conteúdo */
+    .content-modal-content .close-button {
+        color: var(--text-dark); /* Botão de fechar em cor escura para fundo claro */
+        background-color: var(--border-light); /* Fundo sutil para o botão de fechar */
+    }
+    .content-modal-content .close-button:hover {
+        background-color: var(--border-light); /* Mantém a cor no hover */
+        color: var(--danger-red); /* Mudar para vermelho no hover */
+    }
+
 
     /* Estilização das Listas de Ranking */
     .ranking-lists-wrapper {
@@ -681,7 +581,7 @@
     .ranking-list li.ranking-item-top { background-color: rgba(52, 152, 219, 0.1); border: 1px solid var(--primary-blue); }
     .ranking-list li.ranking-item-top span { color: var(--primary-blue); font-weight: 700; } 
     .ranking-list li.ranking-item-bottom { background-color: rgba(231, 76, 60, 0.1); border: 1px solid var(--danger-red); }
-    .ranking-list li.ranking-item-bottom span { color: var(--danger-red); font-weight: 700; }
+    #ranking-list li.ranking-item-bottom span { color: var(--danger-red); font-weight: 700; }
 
     /* Estilos específicos do botão de doação (para texto animado) */
     .animated-donate-text {
@@ -877,8 +777,11 @@
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
             max-width: 600px; 
         }
-        .content-section p {
-            font-size: 1.2em; /* Um pouco maior em telas maiores */
+        .info-card {
+            max-width: 280px; /* Mantém a largura maior em telas grandes */
+        }
+        .content-modal-content p, .content-modal-content ul {
+            font-size: 1.15em; /* Um pouco maior em telas maiores */
         }
     }
     @media (max-width: 600px) {
@@ -911,17 +814,34 @@
             grid-template-columns: 1fr; 
             gap: 10px;
         }
-        .content-section h2 {
-            font-size: 1.4em;
+        /* Responsividade para os cards de informação */
+        .info-cards-container {
+            flex-direction: column;
+            align-items: center;
         }
-        .content-section p {
-            font-size: 1em;
+        .info-card {
+            padding: 20px;
+            max-width: 90%; /* Ocupa mais largura em telas menores */
         }
-        .content-section ul li h3 {
-            font-size: 1.1em;
+        .info-card .icon {
+            font-size: 3em;
+            margin-bottom: 10px;
         }
-        .content-section ul li p {
+        .info-card h3 {
+            font-size: 1.2em;
+        }
+        .info-card p {
             font-size: 0.9em;
+        }
+        .content-modal-content {
+            padding: 20px;
+        }
+        .content-modal-content h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .content-modal-content p, .content-modal-content ul {
+            font-size: 1em;
         }
     }
   </style>
@@ -948,63 +868,25 @@
         <span>+</span><span>-</span><span>×</span><span>÷</span>
     </div>
 
-    <section id="about-game" class="content-section">
-        <h2>Sobre o Desafio dos 60 Segundos</h2>
-        <p>
-            Bem-vindo ao *Desafio dos 60 Segundos*, o jogo que vai testar suas habilidades matemáticas e agilidade mental! Prepare-se para uma aventura emocionante onde cada segundo conta. Você terá um minuto para resolver o máximo de operações matemáticas possível, competindo contra o relógio e contra outros jogadores.
-        </p>
-        <p>
-            Escolha entre os modos de prática para aprimorar suas habilidades em adição, subtração, multiplicação e divisão, ou mergulhe no modo competição para ver como você se sai no ranking global! Seja criança ou adulto, o *Desafio dos 60 Segundos* é a maneira perfeita de se divertir enquanto exercita seu cérebro.
-        </p>
-        <p style="color: var(--text-medium);">
-            Desafie-se, aprenda e torne-se um mestre da matemática!
-        </p>
-    </section>
-
-    <section id="how-to-play" class="content-section">
-        <h2>Como Jogar</h2>
-        <div style="text-align: left; max-width: 600px; margin: 0 auto;">
-            <p><strong style="color: var(--primary-blue);">1. Escolha seu Modo:</strong></p>
-            <ul>
-                <li>**Praticar:** Selecione uma operação (Adição, Subtração, Multiplicação, Divisão ou Todas Juntas) e o nível (Kids ou Adulto) para aprimorar suas habilidades sem pressão.</li>
-                <li>**Desafie-se (Competição):** Teste-se nos modos Kids ou Adulto contra o tempo e outros jogadores. Sua pontuação será registrada no ranking global!</li>
-            </ul>
-
-            <p><strong style="color: var(--primary-blue);">2. O Cronômetro de 60 Segundos:</strong></p>
-            <ul>
-                <li>Você tem 60 segundos para responder o máximo de perguntas possível.</li>
-                <li>Acerte rápido para ganhar bônus de tempo e aumentar sua pontuação!</li>
-            </ul>
-
-            <p><strong style="color: var(--primary-blue);">3. Pontuação e Ranking:</strong></p>
-            <ul>
-                <li>Cada resposta correta aumenta sua pontuação.</li>
-                <li>No modo Competição, sua melhor pontuação será salva no ranking correspondente.</li>
-                <li>Acompanhe seu progresso e conquistas na seção "Meu Progresso".</li>
-            </ul>
-
-            <p><strong style="color: var(--primary-blue);">Dica:</strong> Uma sequência de acertos (streak) concede bônus de tempo adicionais!</p>
+    <div class="info-cards-container">
+        <div class="info-card" id="about-card" data-modal-target="about-modal">
+            <span class="icon"><i class="fas fa-info-circle"></i></span>
+            <h3>Sobre o Desafio dos 60 Segundos</h3>
+            <p>Descubra o que é o jogo e sua missão.</p>
         </div>
-    </section>
 
-    <section id="benefits" class="content-section">
-        <h2>Por Que Jogar o Desafio dos 60 Segundos?</h2>
-        <ul class="no-bullets">
-            <li>
-                <h3><i class="fas fa-brain" style="margin-right: 8px;"></i> Melhora a Agilidade Mental</h3>
-                <p>Exercite seu cérebro diariamente e melhore sua capacidade de raciocínio rápido para cálculos.</p>
-            </li>
-            <li>
-                <h3><i class="fas fa-child" style="margin-right: 8px;"></i> Para Todas as Idades</h3>
-                <p>Com modos Kids e Adulto, o jogo é divertido e desafiador para crianças, adolescentes e adultos.</p>
-            </li>
-            <li>
-                <h3><i class="fas fa-trophy" style="margin-right: 8px;"></i> Desafie Amigos</h3>
-                <p>Suba no ranking e convide seus amigos para ver quem é o verdadeiro mestre da matemática!</p>
-            </li>
-        </ul>
-    </section>
+        <div class="info-card" id="how-to-play-card" data-modal-target="how-to-play-modal">
+            <span class="icon"><i class="fas fa-question-circle"></i></span>
+            <h3>Como Jogar</h3>
+            <p>Aprenda as regras e dicas para dominar.</p>
+        </div>
 
+        <div class="info-card" id="benefits-card" data-modal-target="benefits-modal">
+            <span class="icon"><i class="fas fa-award"></i></span>
+            <h3>Por Que Jogar?</h3>
+            <p>Conheça os benefícios de exercitar sua mente.</p>
+        </div>
+    </div>
     <div class="menu-buttons">
       <button id="practice-button" class="base-button main-menu-button"><i class="fas fa-pencil-alt"></i> Praticar</button>
       <button id="competition-button" class="base-button main-menu-button"><i class="fas fa-trophy"></i> Desafie-se</button>
@@ -1205,6 +1087,61 @@
       <span id="achievement-notification-text"></span>
   </div>
 
+  <div id="about-modal" class="content-modal-overlay">
+    <div class="content-modal-content">
+      <button class="close-button" data-close-modal="about-modal"><i class="fas fa-times"></i></button>
+      <h3>Sobre o Desafio dos 60 Segundos</h3>
+      <p>
+          Bem-vindo ao <strong>Desafio dos 60 Segundos</strong>, o jogo que vai testar suas habilidades matemáticas e agilidade mental! Prepare-se para uma aventura emocionante onde cada segundo conta. Você terá um minuto para resolver o máximo de operações matemáticas possível, competindo contra o relógio e contra outros jogadores.
+      </p>
+      <p>
+          Escolha entre os modos de prática para aprimorar suas habilidades em adição, subtração, multiplicação e divisão, ou mergulhe no modo competição para ver como você se sai no ranking global! Seja criança ou adulto, o *Desafio dos 60 Segundos* é a maneira perfeita de se divertir enquanto exercita seu cérebro.
+      </p>
+      <p style="color: var(--text-medium); font-style: italic;">
+          Desafie-se, aprenda e torne-se um mestre da matemática!
+      </p>
+    </div>
+  </div>
+
+  <div id="how-to-play-modal" class="content-modal-overlay">
+    <div class="content-modal-content">
+      <button class="close-button" data-close-modal="how-to-play-modal"><i class="fas fa-times"></i></button>
+      <h3>Como Jogar</h3>
+      <h4>1. Escolha seu Modo:</h4>
+      <ul>
+          <li><strong>Praticar:</strong> Selecione uma operação (Adição, Subtração, Multiplicação, Divisão ou Todas Juntas) e o nível (Kids ou Adulto) para aprimorar suas habilidades sem pressão.</li>
+          <li><strong>Desafie-se (Competição):</strong> Teste-se nos modos Kids ou Adulto contra o tempo e outros jogadores. Sua pontuação será registrada no ranking global!</li>
+      </ul>
+
+      <h4>2. O Cronômetro de 60 Segundos:</h4>
+      <ul>
+          <li>Você tem 60 segundos para responder o máximo de perguntas possível.</li>
+          <li>Acerte rápido para ganhar bônus de tempo e aumentar sua pontuação!</li>
+      </ul>
+
+      <h4>3. Pontuação e Ranking:</h4>
+      <ul>
+          <li>Cada resposta correta aumenta sua pontuação.</li>
+          <li>No modo Competição, sua melhor pontuação será salva no ranking correspondente.</li>
+          <li>Acompanhe seu progresso e conquistas na seção "Meu Progresso".</li>
+      </ul>
+      <p style="font-weight: bold; color: var(--primary-green);">Dica: Uma sequência de acertos (streak) concede bônus de tempo adicionais!</p>
+    </div>
+  </div>
+
+  <div id="benefits-modal" class="content-modal-overlay">
+    <div class="content-modal-content">
+      <button class="close-button" data-close-modal="benefits-modal"><i class="fas fa-times"></i></button>
+      <h3>Por Que Jogar o Desafio dos 60 Segundos?</h3>
+      <ul>
+          <li><strong>Melhora a Agilidade Mental:</strong> Exercite seu cérebro diariamente e melhore sua capacidade de raciocínio rápido para cálculos.</li>
+          <li><strong>Para Todas as Idades:</strong> Com modos Kids e Adulto, o jogo é divertido e desafiador para crianças, adolescentes e adultos.</li>
+          <li><strong>Desafie Amigos:</strong> Suba no ranking e convide seus amigos para ver quem é o verdadeiro mestre da matemática!</li>
+          <li><strong>Gratuito e Acessível:</strong> Jogue diretamente no seu navegador, a qualquer hora e em qualquer lugar.</li>
+      </ul>
+    </div>
+  </div>
+
   <div style="width: 100%; max-width: 728px; margin: 20px auto; text-align: center;">
     <ins class="adsbygoogle"
          style="display:block; width:100%; height:auto; min-height:90px;"
@@ -1355,7 +1292,13 @@
       achievementNotificationText: document.getElementById('achievement-notification-text'),
 
       // Share Button
-      shareScoreWhatsappButton: document.getElementById('share-score-whatsapp')
+      shareScoreWhatsappButton: document.getElementById('share-score-whatsapp'),
+
+      // NEW: Elements for content modals and info cards
+      aboutModal: document.getElementById('about-modal'),
+      howToPlayModal: document.getElementById('how-to-play-modal'),
+      benefitsModal: document.getElementById('benefits-modal'),
+      infoCards: document.querySelectorAll('.info-card') // Selects all info cards
     };
 
     // Game State Variables
@@ -1432,6 +1375,10 @@
         hideSettingsModal();
         hideExplanationModal();
         hideAchievementNotification();
+        // NEW: Hide all content modals
+        if (elements.aboutModal) hideContentModal(elements.aboutModal);
+        if (elements.howToPlayModal) hideContentModal(elements.howToPlayModal);
+        if (elements.benefitsModal) hideContentModal(elements.benefitsModal);
     }
 
     function showScreen(screenElement, animationDelay = 0) {
@@ -1627,8 +1574,8 @@
 
     async function showExplanationModal() {
         if (elements.explanationModal) elements.explanationModal.classList.add('show');
-        if (elements.explanationText) elements.explanationText.textContent = 'Loading explanation...';
-        const prompt = `Explain the mathematical concept behind the operation "${currentQuestion.question}" simply and didactically, as if teaching a child. Focus on the concept and not just the calculation. Be concise.`;
+        if (elements.explanationText) elements.explanationText.textContent = 'Carregando explicação...';
+        const prompt = `Explique o conceito matemático por trás da operação "${currentQuestion.question}" de forma simples e didática, como se estivesse ensinando uma criança. Foque no conceito e não apenas no cálculo. Seja conciso e direto.`;
         
         try {
             const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
@@ -1643,17 +1590,30 @@
             if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
                 if (elements.explanationText) elements.explanationText.textContent = result.candidates[0].content.parts[0].text;
             } else {
-                if (elements.explanationText) elements.explanationText.textContent = 'Could not generate explanation. Please try again.';
-                console.error('Unexpected API Gemini response structure:', result);
+                if (elements.explanationText) elements.explanationText.textContent = 'Não foi possível gerar a explicação. Tente novamente.';
+                console.error('Estrutura de resposta inesperada da API Gemini:', result);
             }
         } catch (error) {
-            if (elements.explanationText) elements.explanationText.textContent = 'Error connecting to AI. Check your connection or try again later.';
-            console.error('Error calling Gemini API:', error);
+            if (elements.explanationText) elements.explanationText.textContent = 'Erro ao conectar com a IA. Verifique sua conexão ou tente novamente mais tarde.';
+            console.error('Erro ao chamar a API Gemini:', error);
         }
     }
 
     function hideExplanationModal() { 
         if (elements.explanationModal) elements.explanationModal.classList.remove('show'); 
+    }
+
+    // NEW: Functions to open/close content modals
+    function showContentModal(modalElement) {
+        if (modalElement) {
+            modalElement.classList.add('show');
+        }
+    }
+
+    function hideContentModal(modalElement) {
+        if (modalElement) {
+            modalElement.classList.remove('show');
+        }
     }
 
     function handleToggle(element, stateVar) {
@@ -1832,7 +1792,7 @@
     // Function to show achievement notification
     function showAchievementNotification(icon, name) {
         if (elements.achievementNotificationIcon) elements.achievementNotificationIcon.textContent = icon;
-        if (elements.achievementNotificationText) elements.achievementNotificationText.textContent = `Achievement Unlocked: ${name}!`;
+        if (elements.achievementNotificationText) elements.achievementNotificationText.textContent = `Conquista Desbloqueada: ${name}!`;
         if (elements.achievementNotification) {
             elements.achievementNotification.style.display = 'flex';
             elements.achievementNotification.classList.remove('hide');
@@ -1876,7 +1836,7 @@
             if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = '0';
             if (elements.statAccuracy) elements.statAccuracy.textContent = '0%';
             if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'N/A';
-            if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Play to unlock achievements!</li>';
+            if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Jogue para desbloquear conquistas!</li>';
             renderAchievements([]);
             return;
         }
@@ -1914,19 +1874,19 @@
                 if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = '0';
                 if (elements.statAccuracy) elements.statAccuracy.textContent = '0%';
                 if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'N/A';
-                if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Play to unlock achievements!</li>';
+                if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Jogue para desbloquear conquistas!</li>';
                 renderAchievements([]);
             }
         } catch (error) {
             console.error("Error loading player stats: ", error);
-            if (elements.statPlayerName) elements.statPlayerName.textContent = 'Error loading';
-            if (elements.statHighestScore) elements.statHighestScore.textContent = 'Error';
-            if (elements.statTotalGames) elements.statTotalGames.textContent = 'Error';
-            if (elements.statTotalQuestions) elements.statTotalQuestions.textContent = 'Error';
-            if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = 'Error';
-            if (elements.statAccuracy) elements.statAccuracy.textContent = 'Error';
-            if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'Error';
-            if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Error loading achievements.</li>';
+            if (elements.statPlayerName) elements.statPlayerName.textContent = 'Erro ao carregar';
+            if (elements.statHighestScore) elements.statHighestScore.textContent = 'Erro';
+            if (elements.statTotalGames) elements.statTotalGames.textContent = 'Erro';
+            if (elements.statTotalQuestions) elements.statTotalQuestions.textContent = 'Erro';
+            if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = 'Erro';
+            if (elements.statAccuracy) elements.statAccuracy.textContent = 'Erro';
+            if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'Erro';
+            if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Erro ao carregar conquistas.</li>';
         }
     }
 
@@ -1991,16 +1951,16 @@
     async function displayRanking(mode, targetListElement, highlightPlayer = false, limit = 10) {
         if (!db) { 
             console.error("Firebase Firestore not initialized.");
-            if (targetListElement) targetListElement.innerHTML = '<li>Error: Firestore not ready.</li>';
+            if (targetListElement) targetListElement.innerHTML = '<li>Erro: Firestore não está pronto.</li>';
             return;
         }
         if (!targetListElement) {
-            console.error("Target ranking list element not found.");
+            console.error("Elemento da lista de ranking alvo não encontrado.");
             return;
         }
 
         const collectionName = `ranking_${mode}`;
-        targetListElement.innerHTML = '<li>Loading ranking...</li>';
+        targetListElement.innerHTML = '<li>Carregando ranking...</li>';
         console.log(`Setting up new ranking listener for ${collectionName} on ${targetListElement.id}`); 
 
         // Unsubscribe previous subscription for this specific element, if it exists
@@ -2016,7 +1976,7 @@
             .onSnapshot(async snapshot => { 
                 targetListElement.innerHTML = '';
                 if (snapshot.empty) {
-                    targetListElement.innerHTML = '<li>No records yet. Be the first!</li>';
+                    targetListElement.innerHTML = '<li>Nenhum registro ainda. Seja o primeiro!</li>';
                     return;
                 }
 
@@ -2086,7 +2046,7 @@
                 }
             }, error => {
                 console.error(`Error loading ranking ${mode}: `, error);
-                if (targetListElement) targetListElement.innerHTML = '<li>Error loading ranking. Check your connection.</li>';
+                if (targetListElement) targetListElement.innerHTML = '<li>Erro ao carregar ranking. Verifique sua conexão.</li>';
             });
         
         targetListElement.dataset.unsubscribe = currentUnsubscribe;
@@ -2213,12 +2173,12 @@
 
     async function startGame() { 
       if (!currentGameMode || (currentGameMode.startsWith('practice_') && selectedOperationType === null)) {
-          console.warn("Please select a game mode and/or operation before starting.");
+          console.warn("Por favor, selecione um modo de jogo e/ou operação antes de começar.");
           return;
       }
       currentPlayerName = elements.playerNameInput.value.trim();
       if (!elements.playerNameInput.checkValidity() || currentPlayerName === '' || !currentPlayerName.includes(' ')) {
-        console.warn("Please enter your first and last name (e.g., John Doe) to start the game!");
+        console.warn("Por favor, digite seu nome e sobrenome (ex: João Silva) para começar o jogo!");
         if (elements.playerNameInput) elements.playerNameInput.focus();
         return;
       }
@@ -2278,7 +2238,7 @@
       elements.answerButtons.forEach(button => { if (button) button.disabled = true; }); 
       
       if (elements.messageElement) {
-          elements.messageElement.textContent = `Time's up! You scored ${score} points.`;
+          elements.messageElement.textContent = `Tempo esgotado! Você marcou ${score} pontos.`;
           elements.messageElement.classList.add('show');
           elements.messageElement.classList.remove('success-message', 'error-message', 'incredible-message');
       }
@@ -2314,7 +2274,7 @@
           if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none';
           currentGameMode = null; selectedOperationType = 'all';
           if (elements.questionElement) {
-              elements.questionElement.textContent = 'Prepare for adventure!';
+              elements.questionElement.textContent = 'Prepare-se para a aventura!';
               elements.questionElement.classList.add('prepare-text-animated');
               elements.questionElement.addEventListener('animationend', function handler() {
                   if (elements.questionElement) elements.questionElement.classList.remove('prepare-text-animated');
@@ -2380,7 +2340,7 @@
             elements.streakIndicator.classList.add('show');
         }
 
-        let messageToShow = "Congratulations!";
+        let messageToShow = "Parabéns!";
         let messageType = 'success-message';
 
         // Streak Time Bonus (every 5 consecutive correct answers)
@@ -2389,13 +2349,13 @@
             timeLeft += streakBonusTime;
             if (elements.timerValueElement) elements.timerValueElement.textContent = Math.ceil(timeLeft) + 's';
             displayFloatingFeedback(elements.timerValueElement, `+${streakBonusTime}s`, 'time-bonus');
-            messageToShow = "Time Bonus!";
+            messageToShow = "Bônus de Tempo!";
             messageType = 'incredible-message';
         }
 
         // "Incredible!" message (every 10 consecutive correct answers)
         if (consecutiveCorrectAnswersCount > 0 && consecutiveCorrectAnswersCount % 10 === 0) {
-            messageToShow = "Incredible!";
+            messageToShow = "Incrível!";
             messageType = 'incredible-message';
         }
 
@@ -2428,7 +2388,7 @@
             elements.streakIndicator.classList.remove('show');
         }
 
-        showFeedbackMessage("Incorrect!", 'error-message');
+        showFeedbackMessage("Incorreto!", 'error-message');
         if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
         elements.answerButtons.forEach(button => { if (button) button.disabled = true; }); 
         setTimeout(() => generateQuestion(), 500);
@@ -2582,7 +2542,7 @@
     });
 
     if (elements.settingsMoreButton) elements.settingsMoreButton.addEventListener('click', () => {
-        console.info("Functionality 'More Options' in development!");
+        console.info("Funcionalidade 'Mais Opções' em desenvolvimento!");
         hideSettingsModal();
     });
 
@@ -2593,6 +2553,36 @@
     // Event Listener for WhatsApp share button
     if (elements.shareScoreWhatsappButton) elements.shareScoreWhatsappButton.addEventListener('click', shareOnWhatsApp);
 
+    // NEW: Event Listeners for info cards to open content modals
+    elements.infoCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            const targetModalId = e.currentTarget.dataset.modalTarget;
+            const targetModal = document.getElementById(targetModalId);
+            if (targetModal) {
+                showContentModal(targetModal);
+            }
+        });
+    });
+
+    // NEW: Event Listeners for close buttons of content modals
+    document.querySelectorAll('.content-modal-overlay .close-button').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const modalToCloseId = e.currentTarget.dataset.closeModal;
+            const modalToClose = document.getElementById(modalToCloseId);
+            hideContentModal(modalToClose);
+        });
+    });
+
+    // NEW (Optional): Close content modals when clicking on the overlay
+    document.querySelectorAll('.content-modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) { 
+                hideContentModal(overlay);
+            }
+        });
+    });
+
+
     window.onload = () => {
         try {
             console.log("window.onload triggered.");
@@ -2602,9 +2592,9 @@
             console.error("Error during app initialization:", e);
             document.body.innerHTML = `
                 <div style="text-align: center; color: var(--danger-red); margin-top: 50px;">
-                    <h1>Error loading game!</h1>
-                    <p>Please try again or contact support.</p>
-                    <p>Error details: ${e.message}</p>
+                    <h1>Erro ao carregar o jogo!</h1>
+                    <p>Por favor, tente novamente ou entre em contato com o suporte.</p>
+                    <p>Detalhes do erro: ${e.message}</p>
                 </div>
             `;
         }
