@@ -18,7 +18,7 @@
   <title>Desafio dos 60 Segundos 🧠</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0V4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0V4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -465,7 +465,7 @@
     }
 
     .content-modal-overlay.show {
-        display: flex !important; /* CORREÇÃO ROBUSTA: Apenas visível quando a classe 'show' é adicionada */
+        display: flex !important; /* Apenas visível quando a classe 'show' é adicionada */
         opacity: 1;
         visibility: visible;
     }
@@ -1224,7 +1224,7 @@
         showScreen(elements.gameContainer);
         if (elements.playerNameInput) elements.playerNameInput.style.display = 'inline-block';
         if (elements.startGameButton) elements.startGameButton.style.display = 'inline-block';
-        if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none';
+        if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'flex';
         if (elements.playAgainButton) elements.playAgainButton.style.display = 'none';
         if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
         if (elements.messageElement) {
@@ -1338,7 +1338,7 @@
             }
         } catch (error) {
             if (elements.explanationText) elements.explanationText.textContent = 'Erro ao conectar com a IA. Verifique sua conexão ou tente novamente mais tarde.';
-            console.error('Erro ao chamar a API Gemini:', error);
+            console.error('Erro ao chamar a IA Gemini:', error);
         }
     }
 
@@ -2198,9 +2198,20 @@
     }
 
     // --- Event Listeners ---
-    if (elements.practiceButton) elements.practiceButton.addEventListener('click', showOperationSelection); 
-    if (elements.competitionButton) elements.competitionButton.addEventListener('click', showCompetitionModeSelection); 
-    if (elements.myProgressButton) elements.myProgressButton.addEventListener('click', showMyProgressScreen);
+    if (elements.practiceButton) {
+      elements.practiceButton.addEventListener('click', showOperationSelection);
+      console.log("EventListener: practiceButton attached.");
+    }
+    if (elements.competitionButton) {
+      elements.competitionButton.addEventListener('click', showCompetitionModeSelection);
+      console.log("EventListener: competitionButton attached.");
+    }
+    // CORREÇÃO: Verificação adicionada e console.log para o botão "Meu Progresso"
+    if (elements.myProgressButton) {
+      elements.myProgressButton.addEventListener('click', showMyProgressScreen);
+      console.log("EventListener: myProgressButton attached.");
+    }
+    
     if (elements.rankingDonateButton) elements.rankingDonateButton.addEventListener('click', openDonationLink);
 
     if (elements.backToMainFromOperationButton) elements.backToMainFromOperationButton.addEventListener('click', showMainMenu); 
@@ -2368,26 +2379,29 @@
 
     window.onload = () => {
         try {
-            console.log("window.onload triggered.");
+            console.log("window.onload triggered. Initializing app state.");
             // Initial hiding of all main screens (card-containers)
             document.querySelectorAll('.card-container').forEach(container => {
                 container.style.display = 'none';
-                console.log(`Initial hide: #${container.id}`);
+                container.classList.remove('active'); // Ensure no active class initially
+                console.log(`Initial hide (onload): #${container.id}`);
             });
             // Initial hiding of all modal overlays (generic and content-specific)
             document.querySelectorAll('.modal-overlay').forEach(modal => {
                 modal.style.display = 'none';
-                console.log(`Initial hide: #${modal.id || 'unnamed'} (modal-overlay)`);
+                modal.classList.remove('show'); // Ensure no show class initially
+                console.log(`Initial hide (onload): #${modal.id || 'unnamed'} (modal-overlay)`);
             });
             document.querySelectorAll('.content-modal-overlay').forEach(modal => {
                 modal.style.display = 'none';
-                console.log(`Initial hide: #${modal.id || 'unnamed'} (content-modal-overlay)`);
+                modal.classList.remove('show'); // Ensure no show class initially
+                console.log(`Initial hide (onload): #${modal.id || 'unnamed'} (content-modal-overlay)`);
             });
 
             // Ensure the answer buttons container is hidden initially if it's separate
             if (elements.answerButtonsContainer) {
                 elements.answerButtonsContainer.style.display = 'none'; 
-                console.log("Initial hide: answerButtonsContainer.");
+                console.log("Initial hide (onload): answerButtonsContainer.");
             }
             
             // Show the splash screen after everything is hidden
