@@ -2,14 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <!-- Favicon - Múltiplas declarações para melhor compatibilidade -->
-  <link rel="icon" type="image/jpeg" href="desafio.60.jpg"> <!-- Versão JPG principal -->
-  <link rel="icon" type="image/png" href="desafio.60.png" sizes="32x32"> <!-- Sugestão: Converta para PNG -->
-  <link rel="apple-touch-icon" href="desafio.60.png"> <!-- Para ícone na tela inicial do iOS -->
-  <link rel="icon" type="image/x-icon" href="favicon.ico"> <!-- Versão ICO tradicional (se você criar) -->
-
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N4PWJ72YCJ"></script>
+  <link rel="icon" type="image/jpeg" href="desafio.60.jpg"> <link rel="icon" type="image/png" href="desafio.60.png" sizes="32x32"> <link rel="apple-touch-icon" href="desafio.60.png"> <link rel="icon" type="image/x-icon" href="favicon.ico"> <script async src="https://www.googletagmanager.com/gtag/js?id=G-N4PWJ72YCJ"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -20,13 +13,10 @@
   <title>Desafio dos 60 Segundos 🧠</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <!-- Font Awesome para Ícones -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0V4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0V4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   
-  <!-- Google Fonts: Inter (para uma tipografia moderna) -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Script principal do Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9968425306160320"
           crossorigin="anonymous"></script>
   
@@ -313,6 +303,42 @@
         display: flex; flex-direction: column; gap: 25px; width: 80%; max-width: 350px;
     }
 
+    /* Estilos para os ícones de informação no Menu Principal */
+    .info-buttons {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      max-width: 350px;
+      margin-top: 35px;
+      gap: 10px;
+    }
+    .info-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: none;
+      color: var(--text-medium);
+      cursor: pointer;
+      font-size: 0.9em;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      transition: color 0.3s ease, transform 0.3s ease;
+      padding: 10px;
+      border-radius: var(--border-radius-medium);
+    }
+    .info-button:hover {
+      color: var(--primary-blue);
+      transform: translateY(-3px);
+      background-color: var(--bg-light-gray);
+    }
+    .info-button .fas {
+      font-size: 2em; /* Ícones maiores */
+      color: var(--primary-blue);
+    }
+
+
     /* Grade de Botões de Operação e Competição */
     #operation-selection-container .operation-buttons,
     #competition-mode-selection-container .competition-buttons {
@@ -518,10 +544,37 @@
     .modal-content {
         background-color: var(--text-dark); /* Fundo mais escuro para modal */
         padding: 30px; border-radius: var(--border-radius-large);
-        box-shadow: 0 10px 20px var(--shadow-strong); width: 90%; max-width: 400px;
-        position: relative; color: var(--text-light); text-align: center;
+        box-shadow: 0 10px 20px var(--shadow-strong); width: 90%; max-width: 450px; /* Aumentado o max-width */
+        position: relative; color: var(--text-light);
         transform: scale(0.9); transition: transform 0.3s ease;
     }
+    /* Estilos específicos para o conteúdo do modal de informação */
+    .modal-content .info-content {
+        text-align: left;
+        line-height: 1.6;
+    }
+    .modal-content .info-content h3 {
+        text-align: center;
+    }
+    .modal-content .info-content ul {
+        padding-left: 20px;
+        list-style: none;
+    }
+    .modal-content .info-content ul li {
+        margin-bottom: 10px;
+        position: relative;
+        padding-left: 25px;
+    }
+    .modal-content .info-content ul li::before {
+        content: '\f058'; /* Ícone de check do Font Awesome */
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        left: 0;
+        top: 2px;
+        color: var(--primary-green);
+    }
+
     .modal-overlay.show .modal-content { transform: scale(1); }
     .modal-content h3 { color: var(--text-light); font-size: 1.8em; margin-bottom: 25px; }
 
@@ -819,13 +872,11 @@
 
 </head>
 <body>
-  <!-- Splash Screen -->
   <div id="splash-screen">
     <span class="brain-icon">🧠</span>
     <span class="splash-text">Desafio dos<br>60 Segundos</span>
   </div>
 
-  <!-- Main Menu -->
   <div id="main-menu" class="card-container">
     <div class="main-title-box">
         <span class="brain-icon-title">🧠</span>
@@ -840,9 +891,22 @@
       <button id="competition-button" class="base-button main-menu-button"><i class="fas fa-trophy"></i> Desafie-se</button>
       <button id="my-progress-button" class="base-button main-menu-button"><i class="fas fa-chart-line"></i> Meu Progresso</button>
     </div>
+    <div class="info-buttons">
+        <button class="info-button" id="about-button">
+            <i class="fas fa-info-circle"></i>
+            <span>Sobre o Jogo</span>
+        </button>
+        <button class="info-button" id="how-to-play-button">
+            <i class="fas fa-question-circle"></i>
+            <span>Como Jogar</span>
+        </button>
+        <button class="info-button" id="why-play-button">
+            <i class="fas fa-brain"></i>
+            <span>Por que Jogar?</span>
+        </button>
+    </div>
   </div>
 
-  <!-- Operation Selection (Practice Mode) -->
   <div id="operation-selection-container" class="card-container">
     <h3>Escolha a Operação para Praticar:</h3>
     <div class="operation-buttons">
@@ -855,7 +919,6 @@
     <button id="back-to-main-from-operation" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
   </div>
 
-  <!-- Mode Selection (Practice Mode) -->
   <div id="mode-selection-container" class="card-container">
     <h3>Escolha o Modo de Jogo:</h3>
     <button id="mode-kids-button" class="base-button mode-button" data-mode="practice_kids"><i class="fas fa-child"></i> Modo Kids</button>
@@ -863,14 +926,12 @@
     <button id="back-to-operation-selection" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar para Seleção de Operação</button>
   </div>
 
-  <!-- Competition Mode Selection (with Ranking Buttons) -->
   <div id="competition-mode-selection-container" class="card-container">
     <h3>Modo Competição:</h3>
     <div class="competition-buttons">
         <button data-mode="competition_kids" class="base-button competition-mode-button"><i class="fas fa-child"></i> Kids</button>
         <button data-mode="competition_adults" class="base-button competition-mode-button"><i class="fas fa-user-graduate"></i> Adulto</button>
     </div>
-    <!-- NEW BUTTONS TO DISPLAY RANKING -->
     <div class="ranking-toggle-buttons-group">
         <button id="show-kids-ranking-button" class="base-button ranking-toggle-button">
             <i class="fas fa-trophy"></i> Top 50 Kids
@@ -880,9 +941,7 @@
         </button>
     </div>
 
-    <!-- NEW CONTAINER TO DISPLAY RANKING DYNAMICALLY -->
     <div id="dynamic-competition-ranking-display" style="display: none;">
-        <!-- Kids or Adult Ranking will be loaded here -->
         <div id="ranking-kids-area-dynamic" class="ranking-section">
             <h2><i class="fas fa-trophy"></i> Ranking Kids (Top 50)</h2>
             <ol id="ranking-kids-list-dynamic" class="ranking-list"></ol>
@@ -896,7 +955,6 @@
     <button id="back-to-main-from-competition-mode" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
   </div>
 
-  <!-- Game Content -->
   <div id="game-container" class="card-container">
     <button id="settings-icon" class="settings-icon" data-target-screen="game"><i class="fas fa-cog"></i></button>
     <div id="status">
@@ -924,7 +982,6 @@
     <button id="play-again" class="base-button" style="display: none;"><i class="fas fa-redo-alt"></i> Jogar Novamente</button>
   </div>
 
-  <!-- Rankings Container (Full Ranking Screen Post-Quiz) -->
   <div id="rankings-container" class="card-container">
     <button class="settings-icon" data-target-screen="rankings"><i class="fas fa-cog"></i></button>
     <div class="ranking-lists-wrapper">
@@ -938,19 +995,16 @@
         </div>
     </div>
     
-    <!-- NEW: Share Buttons Container -->
     <div class="share-buttons-container">
         <button id="share-score-whatsapp" class="base-button share-button whatsapp-button">
             <i class="fab fa-whatsapp"></i> Compartilhar Pontuação
         </button>
-        <!-- Other share buttons can be added here -->
-    </div>
+        </div>
 
     <button id="ranking-donate-button" class="base-button back-button"><span class="animated-donate-text"><i class="fas fa-dollar-sign"></i> Incentive o App <i class="fas fa-heart"></i></span></button>
     <button id="back-to-main-from-ranking" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
   </div>
 
-  <!-- NEW: My Progress / Detailed Stats Screen -->
   <div id="my-progress-container" class="card-container">
     <button class="settings-icon" data-target-screen="my-progress"><i class="fas fa-cog"></i></button>
     <h3><i class="fas fa-chart-line"></i> Meu Progresso</h3>
@@ -995,14 +1049,12 @@
     <div class="achievements-section">
         <h4><i class="fas fa-medal"></i> Minhas Conquistas</h4>
         <div id="achievements-grid" class="achievements-grid">
-            <!-- Achievements will be loaded here dynamically -->
-        </div>
+            </div>
     </div>
 
     <button id="back-to-main-from-progress" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
   </div>
 
-  <!-- Settings Modal -->
   <div id="settings-modal" class="modal-overlay">
     <div class="modal-content">
       <button class="close-button" id="close-settings-modal"><i class="fas fa-times"></i></button>
@@ -1034,7 +1086,6 @@
     </div>
   </div>
 
-  <!-- Explanation Modal -->
   <div id="explanation-modal" class="modal-overlay">
     <div class="modal-content">
       <button class="close-button" id="close-explanation-modal"><i class="fas fa-times"></i></button>
@@ -1044,13 +1095,60 @@
     </div>
   </div>
 
-  <!-- NEW: Achievement Unlocked Notification -->
+  <div id="about-modal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="close-button" id="close-about-modal"><i class="fas fa-times"></i></button>
+        <div class="info-content">
+            <h3><i class="fas fa-info-circle"></i> Sobre o Desafio dos 60 Segundos</h3>
+            <p>
+                Bem-vindo ao Desafio dos 60 Segundos! Sua missão é simples: responder ao maior número de problemas de matemática que conseguir em apenas um minuto.
+            </p>
+            <p>
+                Teste sua agilidade mental, compita por um lugar no ranking e, o mais importante, divirta-se enquanto exercita seu cérebro. Preparado para o desafio?
+            </p>
+        </div>
+    </div>
+  </div>
+
+  <div id="how-to-play-modal" class="modal-overlay">
+      <div class="modal-content">
+          <button class="close-button" id="close-how-to-play-modal"><i class="fas fa-times"></i></button>
+          <div class="info-content">
+              <h3><i class="fas fa-question-circle"></i> Como Jogar</h3>
+              <ul>
+                  <li>Escolha um modo: <strong>Praticar</strong> para treinar ou <strong>Desafie-se</strong> para competir no ranking.</li>
+                  <li>Digite seu nome e sobrenome para que seu progresso e pontuações sejam salvos.</li>
+                  <li>Responda às questões o mais rápido que puder. Cada acerto vale pontos!</li>
+                  <li>No modo desafio, respostas rápidas podem render bônus de tempo.</li>
+                  <li>Acompanhe seu desempenho na tela "Meu Progresso" e veja sua posição no ranking.</li>
+              </ul>
+          </div>
+      </div>
+  </div>
+
+  <div id="why-play-modal" class="modal-overlay">
+      <div class="modal-content">
+          <button class="close-button" id="close-why-play-modal"><i class="fas fa-times"></i></button>
+          <div class="info-content">
+              <h3><i class="fas fa-brain"></i> Por Que Jogar?</h3>
+              <p>
+                  Exercitar a mente é tão importante quanto exercitar o corpo. Este jogo ajuda você a:
+              </p>
+              <ul>
+                  <li>Melhorar sua velocidade de cálculo e raciocínio lógico.</li>
+                  <li>Aumentar o foco e a concentração sob pressão.</li>
+                  <li>Manter seu cérebro ativo e saudável de uma forma divertida.</li>
+                  <li>Desafiar a si mesmo e competir de forma amigável com outros jogadores.</li>
+              </ul>
+          </div>
+      </div>
+  </div>
+
   <div id="achievement-notification" style="display: none;">
       <span id="achievement-notification-icon" class="achievement-icon"></span>
       <span id="achievement-notification-text"></span>
   </div>
 
-  <!-- AdSense Ad Blocks -->
   <div style="width: 100%; max-width: 728px; margin: 20px auto; text-align: center;">
     <ins class="adsbygoogle"
          style="display:block; width:100%; height:auto; min-height:90px;"
@@ -1143,8 +1241,11 @@
       competitionButton: document.getElementById('competition-button'),
       myProgressButton: document.getElementById('my-progress-button'),
       rankingDonateButton: document.getElementById('ranking-donate-button'),
-      backToMainFromOperationButton: document.getElementById('back-to-operation-selection'),
+      
+      // ** A CORREÇÃO ESTÁ AQUI **
+      backToMainFromOperationButton: document.getElementById('back-to-main-from-operation'),
       backToOperationSelectionButton: document.getElementById('back-to-operation-selection'),
+      
       backToMainFromCompetitionModeButton: document.getElementById('back-to-main-from-competition-mode'),
       backToMainFromRankingButton: document.getElementById('back-to-main-from-ranking'),
       backToMainFromProgressButton: document.getElementById('back-to-main-from-progress'),
@@ -1190,7 +1291,18 @@
       achievementNotificationText: document.getElementById('achievement-notification-text'),
 
       // Share Button
-      shareScoreWhatsappButton: document.getElementById('share-score-whatsapp')
+      shareScoreWhatsappButton: document.getElementById('share-score-whatsapp'),
+      
+      // Info Modals and Buttons
+      aboutButton: document.getElementById('about-button'),
+      howToPlayButton: document.getElementById('how-to-play-button'),
+      whyPlayButton: document.getElementById('why-play-button'),
+      aboutModal: document.getElementById('about-modal'),
+      howToPlayModal: document.getElementById('how-to-play-modal'),
+      whyPlayModal: document.getElementById('why-play-modal'),
+      closeAboutModalButton: document.getElementById('close-about-modal'),
+      closeHowToPlayModalButton: document.getElementById('close-how-to-play-modal'),
+      closeWhyPlayModalButton: document.getElementById('close-why-play-modal'),
     };
 
     // Game State Variables
@@ -1264,8 +1376,20 @@
             elements.splashScreen.style.display = 'none';
         }
         if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none'; 
-        hideSettingsModal();
-        hideExplanationModal();
+        hideAllModals();
+    }
+    
+    function hideAllModals() {
+        const modals = [
+            elements.settingsModal, 
+            elements.explanationModal, 
+            elements.aboutModal, 
+            elements.howToPlayModal, 
+            elements.whyPlayModal
+        ];
+        modals.forEach(modal => {
+            if (modal) modal.classList.remove('show');
+        });
         hideAchievementNotification();
     }
 
@@ -1446,9 +1570,17 @@
     }
 
     // --- Modal Functions ---
+    function showModal(modalElement) {
+        if(modalElement) modalElement.classList.add('show');
+    }
+
+    function hideModal(modalElement) {
+        if(modalElement) modalElement.classList.remove('show');
+    }
+    
     function showSettingsModal(sourceScreenId) {
+        showModal(elements.settingsModal);
         if (elements.settingsModal) { 
-            elements.settingsModal.classList.add('show');
             elements.settingsModal.dataset.sourceScreen = sourceScreenId;
         }
         if (elements.toggleSound) elements.toggleSound.classList.toggle('active', isSoundOn);
@@ -1457,13 +1589,13 @@
     }
 
     function hideSettingsModal() { 
-        if (elements.settingsModal) elements.settingsModal.classList.remove('show'); 
+        hideModal(elements.settingsModal);
     }
 
     async function showExplanationModal() {
-        if (elements.explanationModal) elements.explanationModal.classList.add('show');
-        if (elements.explanationText) elements.explanationText.textContent = 'Loading explanation...';
-        const prompt = `Explain the mathematical concept behind the operation "${currentQuestion.question}" simply and didactically, as if teaching a child. Focus on the concept and not just the calculation. Be concise.`;
+        showModal(elements.explanationModal);
+        if (elements.explanationText) elements.explanationText.textContent = 'Carregando explicação...';
+        const prompt = `Explique o conceito matemático por trás da operação "${currentQuestion.question}" de forma simples e didática, como se estivesse ensinando a uma criança. Foque no conceito e não apenas no cálculo. Seja conciso.`;
         
         try {
             const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
@@ -1478,17 +1610,17 @@
             if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
                 if (elements.explanationText) elements.explanationText.textContent = result.candidates[0].content.parts[0].text;
             } else {
-                if (elements.explanationText) elements.explanationText.textContent = 'Could not generate explanation. Please try again.';
+                if (elements.explanationText) elements.explanationText.textContent = 'Não foi possível gerar a explicação. Tente novamente.';
                 console.error('Unexpected API Gemini response structure:', result);
             }
         } catch (error) {
-            if (elements.explanationText) elements.explanationText.textContent = 'Error connecting to AI. Check your connection or try again later.';
+            if (elements.explanationText) elements.explanationText.textContent = 'Erro ao conectar à IA. Verifique sua conexão ou tente mais tarde.';
             console.error('Error calling Gemini API:', error);
         }
     }
 
     function hideExplanationModal() { 
-        if (elements.explanationModal) elements.explanationModal.classList.remove('show'); 
+        hideModal(elements.explanationModal);
     }
 
     function handleToggle(element, stateVar) {
@@ -1667,7 +1799,7 @@
     // Function to show achievement notification
     function showAchievementNotification(icon, name) {
         if (elements.achievementNotificationIcon) elements.achievementNotificationIcon.textContent = icon;
-        if (elements.achievementNotificationText) elements.achievementNotificationText.textContent = `Achievement Unlocked: ${name}!`;
+        if (elements.achievementNotificationText) elements.achievementNotificationText.textContent = `Conquista Desbloqueada: ${name}!`;
         if (elements.achievementNotification) {
             elements.achievementNotification.style.display = 'flex';
             elements.achievementNotification.classList.remove('hide');
@@ -1711,7 +1843,7 @@
             if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = '0';
             if (elements.statAccuracy) elements.statAccuracy.textContent = '0%';
             if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'N/A';
-            if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Play to unlock achievements!</li>';
+            if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Jogue para desbloquear conquistas!</li>';
             renderAchievements([]);
             return;
         }
@@ -1749,19 +1881,19 @@
                 if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = '0';
                 if (elements.statAccuracy) elements.statAccuracy.textContent = '0%';
                 if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'N/A';
-                if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Play to unlock achievements!</li>';
+                if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Jogue para desbloquear conquistas!</li>';
                 renderAchievements([]);
             }
         } catch (error) {
             console.error("Error loading player stats: ", error);
-            if (elements.statPlayerName) elements.statPlayerName.textContent = 'Error loading';
-            if (elements.statHighestScore) elements.statHighestScore.textContent = 'Error';
-            if (elements.statTotalGames) elements.statTotalGames.textContent = 'Error';
-            if (elements.statTotalQuestions) elements.statTotalQuestions.textContent = 'Error';
-            if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = 'Error';
-            if (elements.statAccuracy) elements.statAccuracy.textContent = 'Error';
-            if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'Error';
-            if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Error loading achievements.</li>';
+            if (elements.statPlayerName) elements.statPlayerName.textContent = 'Erro ao carregar';
+            if (elements.statHighestScore) elements.statHighestScore.textContent = 'Erro';
+            if (elements.statTotalGames) elements.statTotalGames.textContent = 'Erro';
+            if (elements.statTotalQuestions) elements.statTotalQuestions.textContent = 'Erro';
+            if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = 'Erro';
+            if (elements.statAccuracy) elements.statAccuracy.textContent = 'Erro';
+            if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'Erro';
+            if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Erro ao carregar conquistas.</li>';
         }
     }
 
@@ -1826,7 +1958,7 @@
     async function displayRanking(mode, targetListElement, highlightPlayer = false, limit = 10) {
         if (!db) { 
             console.error("Firebase Firestore not initialized.");
-            if (targetListElement) targetListElement.innerHTML = '<li>Error: Firestore not ready.</li>';
+            if (targetListElement) targetListElement.innerHTML = '<li>Erro: Firestore não está pronto.</li>';
             return;
         }
         if (!targetListElement) {
@@ -1835,7 +1967,7 @@
         }
 
         const collectionName = `ranking_${mode}`;
-        targetListElement.innerHTML = '<li>Loading ranking...</li>';
+        targetListElement.innerHTML = '<li>Carregando ranking...</li>';
         console.log(`Setting up new ranking listener for ${collectionName} on ${targetListElement.id}`); 
 
         // Unsubscribe previous subscription for this specific element, if it exists
@@ -1851,7 +1983,7 @@
             .onSnapshot(async snapshot => { 
                 targetListElement.innerHTML = '';
                 if (snapshot.empty) {
-                    targetListElement.innerHTML = '<li>No records yet. Be the first!</li>';
+                    targetListElement.innerHTML = '<li>Nenhum recorde ainda. Seja o primeiro!</li>';
                     return;
                 }
 
@@ -1921,7 +2053,7 @@
                 }
             }, error => {
                 console.error(`Error loading ranking ${mode}: `, error);
-                if (targetListElement) targetListElement.innerHTML = '<li>Error loading ranking. Check your connection.</li>';
+                if (targetListElement) targetListElement.innerHTML = '<li>Erro ao carregar o ranking. Verifique sua conexão.</li>';
             });
         
         targetListElement.dataset.unsubscribe = currentUnsubscribe;
@@ -2048,12 +2180,12 @@
 
     async function startGame() { 
       if (!currentGameMode || (currentGameMode.startsWith('practice_') && selectedOperationType === null)) {
-          console.warn("Please select a game mode and/or operation before starting.");
+          console.warn("Por favor, selecione um modo de jogo e/ou operação antes de começar.");
           return;
       }
       currentPlayerName = elements.playerNameInput.value.trim();
       if (!elements.playerNameInput.checkValidity() || currentPlayerName === '' || !currentPlayerName.includes(' ')) {
-        console.warn("Please enter your first and last name (e.g., John Doe) to start the game!");
+        console.warn("Por favor, digite seu nome e sobrenome (ex: João Silva) para iniciar o jogo!");
         if (elements.playerNameInput) elements.playerNameInput.focus();
         return;
       }
@@ -2113,7 +2245,7 @@
       elements.answerButtons.forEach(button => { if (button) button.disabled = true; }); 
       
       if (elements.messageElement) {
-          elements.messageElement.textContent = `Time's up! You scored ${score} points.`;
+          elements.messageElement.textContent = `Tempo esgotado! Você marcou ${score} pontos.`;
           elements.messageElement.classList.add('show');
           elements.messageElement.classList.remove('success-message', 'error-message', 'incredible-message');
       }
@@ -2149,7 +2281,7 @@
           if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none';
           currentGameMode = null; selectedOperationType = 'all';
           if (elements.questionElement) {
-              elements.questionElement.textContent = 'Prepare for adventure!';
+              elements.questionElement.textContent = 'Prepare-se para a aventura!';
               elements.questionElement.classList.add('prepare-text-animated');
               elements.questionElement.addEventListener('animationend', function handler() {
                   if (elements.questionElement) elements.questionElement.classList.remove('prepare-text-animated');
@@ -2215,7 +2347,7 @@
             elements.streakIndicator.classList.add('show');
         }
 
-        let messageToShow = "Congratulations!";
+        let messageToShow = "Parabéns!";
         let messageType = 'success-message';
 
         // Streak Time Bonus (every 5 consecutive correct answers)
@@ -2224,13 +2356,13 @@
             timeLeft += streakBonusTime;
             if (elements.timerValueElement) elements.timerValueElement.textContent = Math.ceil(timeLeft) + 's';
             displayFloatingFeedback(elements.timerValueElement, `+${streakBonusTime}s`, 'time-bonus');
-            messageToShow = "Time Bonus!";
+            messageToShow = "Bônus de Tempo!";
             messageType = 'incredible-message';
         }
 
         // "Incredible!" message (every 10 consecutive correct answers)
         if (consecutiveCorrectAnswersCount > 0 && consecutiveCorrectAnswersCount % 10 === 0) {
-            messageToShow = "Incredible!";
+            messageToShow = "Incrível!";
             messageType = 'incredible-message';
         }
 
@@ -2263,7 +2395,7 @@
             elements.streakIndicator.classList.remove('show');
         }
 
-        showFeedbackMessage("Incorrect!", 'error-message');
+        showFeedbackMessage("Incorreto!", 'error-message');
         if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
         elements.answerButtons.forEach(button => { if (button) button.disabled = true; }); 
         setTimeout(() => generateQuestion(), 500);
@@ -2275,11 +2407,11 @@
     function generateShareMessage(playerName, finalScore, gameMode) {
         const gameUrl = "https://wiggers12.github.io/"; 
         let modeText = '';
-        if (gameMode === 'competition_kids') modeText = 'in Kids Competition mode';
-        else if (gameMode === 'competition_adults') modeText = 'in Adult Competition mode';
-        else if (gameMode && gameMode.startsWith('practice_')) modeText = 'in Practice mode';
+        if (gameMode === 'competition_kids') modeText = 'no modo Competição Kids';
+        else if (gameMode === 'competition_adults') modeText = 'no modo Competição Adulto';
+        else if (gameMode && gameMode.startsWith('practice_')) modeText = 'no modo de Prática';
 
-        return `I just scored ${finalScore} points ${modeText} in the 60 Seconds Challenge! Can you beat me? Play now: ${gameUrl} #60SecondsChallenge #MathGame`;
+        return `Eu fiz ${finalScore} pontos ${modeText} no Desafio dos 60 Segundos! Você consegue me superar? Jogue agora: ${gameUrl} #Desafio60Segundos #JogoDeMatematica`;
     }
 
     // Function to share on WhatsApp
@@ -2354,6 +2486,12 @@
         else if (sourceScreen === 'rankings') showRankingsScreen();
         else if (sourceScreen === 'my-progress') showMyProgressScreen();
     });
+    
+    // CORREÇÃO: Adiciona listener para fechar modal de configurações clicando fora
+    if (elements.settingsModal) elements.settingsModal.addEventListener('click', (e) => {
+        if (e.target === elements.settingsModal) hideSettingsModal();
+    });
+
 
     if (elements.toggleSound) elements.toggleSound.addEventListener('click', () => { isSoundOn = handleToggle(elements.toggleSound, isSoundOn); });
     if (elements.toggleBGM) elements.toggleBGM.addEventListener('click', () => { isBGMOn = handleToggle(elements.toggleBGM, isBGMOn); });
@@ -2417,13 +2555,37 @@
     });
 
     if (elements.settingsMoreButton) elements.settingsMoreButton.addEventListener('click', () => {
-        console.info("Functionality 'More Options' in development!");
+        console.info("Funcionalidade 'Mais Opções' em desenvolvimento!");
         hideSettingsModal();
     });
 
     if (elements.explainConceptButton) elements.explainConceptButton.addEventListener('click', showExplanationModal);
     if (elements.closeExplanationModalButton) elements.closeExplanationModalButton.addEventListener('click', hideExplanationModal);
     if (elements.explanationOkButton) elements.explanationOkButton.addEventListener('click', hideExplanationModal);
+    // CORREÇÃO: Adiciona listener para fechar modal de explicação clicando fora
+    if (elements.explanationModal) elements.explanationModal.addEventListener('click', (e) => {
+        if (e.target === elements.explanationModal) hideExplanationModal();
+    });
+
+    // Event Listeners para os novos modais de informação
+    if (elements.aboutButton) elements.aboutButton.addEventListener('click', () => showModal(elements.aboutModal));
+    if (elements.howToPlayButton) elements.howToPlayButton.addEventListener('click', () => showModal(elements.howToPlayModal));
+    if (elements.whyPlayButton) elements.whyPlayButton.addEventListener('click', () => showModal(elements.whyPlayModal));
+
+    if (elements.closeAboutModalButton) elements.closeAboutModalButton.addEventListener('click', () => hideModal(elements.aboutModal));
+    if (elements.closeHowToPlayModalButton) elements.closeHowToPlayModalButton.addEventListener('click', () => hideModal(elements.howToPlayModal));
+    if (elements.closeWhyPlayModalButton) elements.closeWhyPlayModalButton.addEventListener('click', () => hideModal(elements.whyPlayModal));
+    
+    // CORREÇÃO: Adiciona listeners para fechar modais de info clicando fora
+    if (elements.aboutModal) elements.aboutModal.addEventListener('click', (e) => {
+        if (e.target === elements.aboutModal) hideModal(elements.aboutModal);
+    });
+    if (elements.howToPlayModal) elements.howToPlayModal.addEventListener('click', (e) => {
+        if (e.target === elements.howToPlayModal) hideModal(elements.howToPlayModal);
+    });
+    if (elements.whyPlayModal) elements.whyPlayModal.addEventListener('click', (e) => {
+        if (e.target === elements.whyPlayModal) hideModal(elements.whyPlayModal);
+    });
 
     // Event Listener for WhatsApp share button
     if (elements.shareScoreWhatsappButton) elements.shareScoreWhatsappButton.addEventListener('click', shareOnWhatsApp);
@@ -2437,9 +2599,9 @@
             console.error("Error during app initialization:", e);
             document.body.innerHTML = `
                 <div style="text-align: center; color: var(--danger-red); margin-top: 50px;">
-                    <h1>Error loading game!</h1>
-                    <p>Please try again or contact support.</p>
-                    <p>Error details: ${e.message}</p>
+                    <h1>Erro ao carregar o jogo!</h1>
+                    <p>Por favor, tente novamente ou contate o suporte.</p>
+                    <p>Detalhes do erro: ${e.message}</p>
                 </div>
             `;
         }
