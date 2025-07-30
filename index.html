@@ -176,7 +176,7 @@
         justify-content: center;
         box-sizing: border-box;
         text-align: center;
-        /* min-height: 80vh; Removido para evitar problemas de layout */
+        /* Removido min-height: 80vh; para evitar problemas de layout em alguns casos */
     }
     /* Largura específica para cards menores */
     #main-menu, #operation-selection-container, #mode-selection-container, #game-container, #my-progress-container { max-width: 400px; }
@@ -459,7 +459,7 @@
         width: 100vw;
         height: 100vh;
         background-color: rgba(0, 0, 0, 0.7);
-        display: flex;
+        display: none; /* Crucial: Oculto por padrão */
         align-items: center;
         justify-content: center;
         z-index: 2500; /* Acima do modal de configurações */
@@ -471,6 +471,7 @@
     }
 
     .content-modal-overlay.show {
+        display: flex; /* Only visible when 'show' class is added */
         opacity: 1;
         visibility: visible;
     }
@@ -2002,7 +2003,7 @@
         // Unsubscribe previous subscription for this specific element, if it exists
         if (typeof targetListElement.dataset.unsubscribe === 'function') {
             targetListElement.dataset.unsubscribe();
-            delete targetListElement.dataset.unsubscribe;
+            delete targetListElement.dataset.unsubscribe; 
             console.log(`Unsubscribed old listener for ${targetListElement.id}`); 
         }
 
@@ -2301,7 +2302,7 @@
               else finalDifficultyLevelName = difficultyNames[1];
           }
           
-          saveRanking(currentPlayerName, score, currentGameMode, finalDifficultyLevelName);
+          saveRanking(currentPlayerName, score, currentGameMode, finalDifficultyDifficultyLevelName);
           showRankingsScreen(true); 
           
       } else { 
