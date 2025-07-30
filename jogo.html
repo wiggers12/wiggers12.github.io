@@ -12,7 +12,6 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-N4PWJ72YCJ');
   </script>
   <title>Jogar - Desafio dos 60 Segundos 🧠</title>
@@ -25,7 +24,6 @@
           crossorigin="anonymous"></script>
   
   <style>
-    /* Estilos do Jogo (código anterior) */
     :root {
       --primary-green: #2ecc71; --dark-green: #27ae60; --primary-blue: #3498db; --dark-blue: #2980b9;
       --accent-orange: #f39c12; --dark-orange: #e67e22; --danger-red: #e74c3c; --dark-red: #c0392b;
@@ -37,45 +35,64 @@
     body {
       font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center;
       justify-content: flex-start; min-height: 100vh; margin: 0;
-      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-green) 100%);
+      background: linear-gradient(135deg, #3498db 0%, #2ecc71 100%);
       color: var(--text-dark); padding: 15px; box-sizing: border-box; overflow-x: hidden;
     }
-    
-    /* ESTILOS PARA NAVEGAÇÃO E RODAPÉ */
     header { width:100%; max-width: 800px; text-align: center; padding: 10px 0; color: white; }
     nav { text-align: center; padding: 10px 0; background-color: rgba(255, 255, 255, 0.2); border-radius: 10px; margin-bottom: 10px; }
     nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: 500; }
     footer { text-align: center; padding: 20px; color: white; width: 100%; }
     footer a { color: white; }
-    
     h1 { display: none; }
     @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-    .card-container {
-        background-color: var(--bg-white); padding: 30px; border-radius: var(--border-radius-large);
-        box-shadow: 0 8px 16px var(--shadow-medium); width: 95%; margin: 5px auto; position: relative;
-        overflow: hidden; display: none; flex-direction: column; align-items: center;
-        justify-content: center; box-sizing: border-box; text-align: center;
-    }
+    @keyframes pulseEffect { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+    @keyframes timeShake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); } 20%, 40%, 60%, 80% { transform: translateX(2px); } }
+    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; display: none; } }
+    @keyframes danceSymbols { 0%, 100% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(-5px) rotate(5deg); } 50% { transform: translateY(0) rotate(-5deg); } 75% { transform: translateY(-3px) rotate(3deg); } }
+    @keyframes floatUpFadeOut { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-50px); } }
+    @keyframes correctGlow { 0% { box-shadow: 0 0 0px var(--primary-green); } 50% { box-shadow: 0 0 20px var(--primary-green), 0 0 30px var(--primary-green); } 100% { box-shadow: 0 0 0px var(--primary-green); } }
+    @keyframes incorrectGlow { 0% { box-shadow: 0 0 0px var(--danger-red); } 50% { box-shadow: 0 0 20px var(--danger-red), 0 0 30px var(--danger-red); } 100% { box-shadow: 0 0 0px var(--danger-red); } }
+    @keyframes achievementPopIn { 0% { opacity: 0; transform: translateY(50px) scale(0.7); } 80% { opacity: 1; transform: translateY(-10px) scale(1.1); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes achievementFadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
+    .card-container { background-color: var(--bg-white); padding: 30px; border-radius: var(--border-radius-large); box-shadow: 0 8px 16px var(--shadow-medium); width: 95%; margin: 5px auto; position: relative; overflow: hidden; display: none; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box; text-align: center; }
     #main-menu, #operation-selection-container, #mode-selection-container, #game-container, #my-progress-container { max-width: 400px; }
     #rankings-container, #competition-mode-selection-container { max-width: 800px; }
     .card-container.active { display: flex; animation: fadeInScale 0.7s ease-out forwards; }
-    
-    /* ... (COLE O RESTANTE DO SEU CSS GIGANTE AQUI PARA ECONOMIZAR ESPAÇO NA RESPOSTA) ... */
-    /* Como o CSS é muito longo, estou omitindo-o aqui, mas você deve colar TODO O CSS do seu arquivo original nesta seção */
+    #splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%); color: white; font-size: 4em; font-weight: bold; text-shadow: 3px 3px 6px var(--shadow-strong); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; }
+    #splash-screen.active { display: flex; opacity: 1; }
+    #splash-screen.fade-out { animation: fadeOut 0.5s forwards; }
+    .main-title-box { background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%); border-radius: var(--border-radius-xl); padding: 20px 30px; margin-bottom: 40px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 8px 16px var(--shadow-strong); color: var(--text-light); text-shadow: 2px 2px 4px var(--shadow-medium); width: 90%; max-width: 300px; }
+    .main-title-box .brain-icon-title { font-size: 4em; margin-bottom: 10px; }
+    .main-title-box .title-text { font-size: 2em; font-weight: bold; line-height: 1.2; }
+    #main-menu .math-symbols { font-size: 5.5em; color: var(--accent-orange); margin-bottom: 50px; font-weight: bold; letter-spacing: 10px; text-shadow: 3px 3px 6px var(--shadow-strong); display: flex; gap: 15px; }
+    #main-menu .math-symbols span { display: inline-block; animation: danceSymbols 2s infinite ease-in-out alternate; }
+    .base-button { padding: 18px 35px; font-size: 1.5em; border-radius: var(--border-radius-large); box-shadow: 0 6px 12px var(--shadow-medium); border: none; color: var(--text-light); cursor: pointer; transition: all 0.3s ease; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .base-button:hover:not(:disabled) { transform: translateY(-5px); box-shadow: 0 10px 20px var(--shadow-strong); }
+    .main-menu-button { padding: 20px 40px; font-size: 1.8em; border-radius: var(--border-radius-large); background: linear-gradient(45deg, var(--accent-orange) 0%, var(--dark-orange) 100%); }
     .info-buttons { display: flex; justify-content: space-around; width: 100%; max-width: 350px; margin-top: 35px; gap: 10px; }
     .info-button { display: flex; flex-direction: column; align-items: center; gap: 8px; background: none; border: none; color: var(--text-medium); cursor: pointer; font-size: 0.9em; font-family: 'Inter', sans-serif; text-align: center; transition: color 0.3s ease, transform 0.3s ease; padding: 10px; border-radius: var(--border-radius-medium); }
     .info-button:hover { color: var(--primary-blue); transform: translateY(-3px); background-color: var(--bg-light-gray); }
     .info-button .fas { font-size: 2em; color: var(--primary-blue); }
-    .main-title-box { background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%); border-radius: var(--border-radius-xl); padding: 20px 30px; margin-bottom: 40px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 8px 16px var(--shadow-strong); color: var(--text-light); text-shadow: 2px 2px 4px var(--shadow-medium); width: 90%; max-width: 300px; }
-    .main-title-box .brain-icon-title { font-size: 4em; margin-bottom: 10px; }
-    .main-title-box .title-text { font-size: 2em; font-weight: bold; line-height: 1.2; }
-    #main-menu .math-symbols { font-size: 4em; color: var(--accent-orange); margin-bottom: 25px; font-weight: bold; letter-spacing: 10px; text-shadow: 3px 3px 6px var(--shadow-strong); display: flex; gap: 15px; }
-    #main-menu .menu-buttons { display: flex; flex-direction: column; gap: 20px; width: 80%; max-width: 350px; }
-    .main-menu-button { padding: 20px 40px; font-size: 1.8em; border-radius: var(--border-radius-large); background: linear-gradient(45deg, var(--accent-orange) 0%, var(--dark-orange) 100%); }
-    .base-button { padding: 18px 35px; font-size: 1.5em; border-radius: var(--border-radius-large); box-shadow: 0 6px 12px var(--shadow-medium); border: none; color: var(--text-light); cursor: pointer; transition: all 0.3s ease; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .base-button:hover:not(:disabled) { transform: translateY(-5px); box-shadow: 0 10px 20px var(--shadow-strong); }
-    /* Adicione o resto do CSS aqui */
-
+    #main-menu .menu-buttons { display: flex; flex-direction: column; gap: 25px; width: 80%; max-width: 350px; }
+    .operation-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; margin-bottom: 20px; }
+    .operation-button { background: linear-gradient(45deg, var(--primary-blue) 0%, var(--dark-blue) 100%); }
+    .back-button { background: linear-gradient(45deg, var(--danger-red) 0%, var(--dark-red) 100%); margin-top: 30px !important; }
+    #question { font-size: 2.5em; margin-bottom: 15px; color: var(--text-dark); font-weight: 700; }
+    #player-name-input { padding: 15px; font-size: 1.5em; width: calc(100% - 30px); margin-bottom: 20px; border: 2px solid var(--border-light); border-radius: var(--border-radius-medium); text-align: center; background-color: var(--bg-light-gray); }
+    #answer-buttons-container { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 15px; width: 100%; max-width: 450px; margin-top: 20px; }
+    #answer-buttons-container button { flex: 1 1 auto; min-width: 100px; padding: 15px; font-size: 1.8em; border-radius: var(--border-radius-large); background: linear-gradient(45deg, var(--primary-blue) 0%, var(--dark-blue) 100%); }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 2000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+    .modal-overlay.show { opacity: 1; visibility: visible; }
+    .modal-content { background-color: var(--text-dark); padding: 30px; border-radius: var(--border-radius-large); box-shadow: 0 10px 20px var(--shadow-strong); width: 90%; max-width: 450px; position: relative; color: var(--text-light); transform: scale(0.9); transition: transform 0.3s ease; }
+    .modal-overlay.show .modal-content { transform: scale(1); }
+    .close-button { position: absolute; top: 10px; right: 10px; background: none; border: none; color: var(--text-light); font-size: 1.8em; cursor: pointer; }
+    .modal-content .info-content { text-align: left; line-height: 1.6; }
+    .modal-content .info-content ul { list-style: none; padding-left: 20px; }
+    .modal-content .info-content ul li { position: relative; padding-left: 25px; margin-bottom: 10px; }
+    .modal-content .info-content ul li::before { content: '\f058'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: var(--primary-green); }
+    #timer, #score { font-size: 1.3em; margin: 10px 0; }
+    #time-bar-container { width: 100%; height: 15px; background-color: var(--border-light); border-radius: var(--border-radius-small); margin-bottom: 15px; overflow: hidden; }
+    #time-bar { height: 100%; width: 100%; background-color: var(--primary-green); transition: width 0.9s linear; }
   </style>
 </head>
 <body>
@@ -88,35 +105,272 @@
         </nav>
     </header>
 
-    <div id="splash-screen"></div>
-    <div id="main-menu" class="card-container">
-        <div class="main-title-box">
-            <span class="brain-icon-title">🧠</span>
-            <span class="title-text">Matemática em</span>
-            <span class="title-text">60 Segundos</span>
+    <main>
+        <div id="splash-screen">
+          <span class="brain-icon">🧠</span>
+          <span class="splash-text">Desafio dos<br>60 Segundos</span>
         </div>
-        <div class="math-symbols">
-            <span>+</span><span>-</span><span>×</span><span>÷</span>
-        </div>
-        <div class="menu-buttons">
+
+        <div id="main-menu" class="card-container">
+          <div class="main-title-box">
+              <span class="brain-icon-title">🧠</span>
+              <span class="title-text">Matemática em</span>
+              <span class="title-text">60 Segundos</span>
+          </div>
+          <div class="math-symbols">
+              <span>+</span><span>-</span><span>×</span><span>÷</span>
+          </div>
+          <div class="menu-buttons">
             <button id="practice-button" class="base-button main-menu-button"><i class="fas fa-pencil-alt"></i> Praticar</button>
             <button id="competition-button" class="base-button main-menu-button"><i class="fas fa-trophy"></i> Desafie-se</button>
             <button id="my-progress-button" class="base-button main-menu-button"><i class="fas fa-chart-line"></i> Meu Progresso</button>
+          </div>
+          <div class="info-buttons">
+              <button class="info-button" id="about-button"><i class="fas fa-info-circle"></i><span>Sobre o Jogo</span></button>
+              <button class="info-button" id="how-to-play-button"><i class="fas fa-question-circle"></i><span>Como Jogar</span></button>
+              <button class="info-button" id="why-play-button"><i class="fas fa-brain"></i><span>Por que Jogar?</span></button>
+          </div>
         </div>
-        <div class="info-buttons">
-            <button class="info-button" id="about-button"><i class="fas fa-info-circle"></i><span>Sobre o Jogo</span></button>
-            <button class="info-button" id="how-to-play-button"><i class="fas fa-question-circle"></i><span>Como Jogar</span></button>
-            <button class="info-button" id="why-play-button"><i class="fas fa-brain"></i><span>Por que Jogar?</span></button>
+
+        <div id="operation-selection-container" class="card-container">
+          <h3>Escolha a Operação para Praticar:</h3>
+          <div class="operation-buttons">
+              <button data-op="+" class="base-button operation-button"><i class="fas fa-plus"></i> Adição</button>
+              <button data-op="-" class="base-button operation-button"><i class="fas fa-minus"></i> Subtração</button>
+              <button data-op="*" class="base-button operation-button"><i class="fas fa-times"></i> Multiplicação</button>
+              <button data-op="÷" class="base-button operation-button"><i class="fas fa-divide"></i> Divisão</button>
+              <button data-op="all" class="base-button operation-button"><i class="fas fa-random"></i> Todos Juntos</button>
+          </div>
+          <button id="back-to-main-from-operation" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
         </div>
-    </div>
+
+        <div id="mode-selection-container" class="card-container">
+          <h3>Escolha o Modo de Jogo:</h3>
+          <button id="mode-kids-button" class="base-button" data-mode="practice_kids"><i class="fas fa-child"></i> Modo Kids</button>
+          <button id="mode-adults-button" class="base-button" data-mode="practice_adults"><i class="fas fa-user-graduate"></i> Modo Adulto</button>
+          <button id="back-to-operation-selection" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar para Seleção</button>
+        </div>
+
+        <div id="competition-mode-selection-container" class="card-container">
+          <h3>Modo Competição:</h3>
+          <button data-mode="competition_kids" class="base-button"><i class="fas fa-child"></i> Kids</button>
+          <button data-mode="competition_adults" class="base-button"><i class="fas fa-user-graduate"></i> Adulto</button>
+          <button id="back-to-main-from-competition-mode" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar</button>
+        </div>
+
+        <div id="game-container" class="card-container">
+          <div id="status">
+            <p id="timer">Tempo: <span id="timer-value">60s</span></p>
+            <div id="time-bar-container"><div id="time-bar"></div></div>
+            <p id="score">Pontos: <span id="score-value">0</span></p>
+          </div>
+          <p id="question">Prepare-se!</p>
+          <input type="text" id="player-name-input" placeholder="Seu Nome e Sobrenome">
+          <div id="answer-buttons-container">
+              <button class="answer-button"></button>
+              <button class="answer-button"></button>
+              <button class="answer-button"></button>
+          </div>
+          <button id="start-game-button" class="base-button">Começar Jogo</button>
+        </div>
+        
+        <div id="rankings-container" class="card-container"></div>
+        <div id="my-progress-container" class="card-container"></div>
+        <div id="settings-modal" class="modal-overlay"></div>
+        <div id="about-modal" class="modal-overlay">
+          <div class="modal-content">
+              <button class="close-button" id="close-about-modal"><i class="fas fa-times"></i></button>
+              <div class="info-content">
+                  <h3><i class="fas fa-info-circle"></i> Sobre o Desafio</h3>
+                  <p>Sua missão é responder ao maior número de problemas de matemática em 60 segundos.</p>
+              </div>
+          </div>
+        </div>
+        <div id="how-to-play-modal" class="modal-overlay">
+          <div class="modal-content">
+              <button class="close-button" id="close-how-to-play-modal"><i class="fas fa-times"></i></button>
+              <div class="info-content">
+                  <h3><i class="fas fa-question-circle"></i> Como Jogar</h3>
+                  <ul>
+                      <li>Escolha um modo: Praticar ou Desafie-se.</li>
+                      <li>Digite seu nome para salvar seu progresso.</li>
+                      <li>Responda o mais rápido que puder!</li>
+                  </ul>
+              </div>
+          </div>
+        </div>
+        <div id="why-play-modal" class="modal-overlay">
+          <div class="modal-content">
+              <button class="close-button" id="close-why-play-modal"><i class="fas fa-times"></i></button>
+              <div class="info-content">
+                  <h3><i class="fas fa-brain"></i> Por Que Jogar?</h3>
+                   <ul>
+                      <li>Melhora sua velocidade de cálculo.</li>
+                      <li>Aumenta o foco e a concentração.</li>
+                      <li>Mantém seu cérebro ativo e saudável.</li>
+                  </ul>
+              </div>
+          </div>
+        </div>
+    </main>
     
-    <footer >
+    <footer>
         <p>&copy; 2025 Desafio dos 60 Segundos | <a href="privacidade.html">Política de Privacidade</a></p>
     </footer>
 
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
     <script>
-        // ... (COLE AQUI O SEU SCRIPT JAVASCRIPT COMPLETO) ...
-        // Importante: Não se esqueça de incluir a correção que fizemos no botão "voltar"
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyA4PWRt-22S8HGc6GS1m-4Wa9hYsh5Zbo",
+        authDomain: "desafio-dos-60-segundos.firebaseapp.com",
+        projectId: "desafio-dos-60-segundos",
+        storageBucket: "desafio-dos-60-segundos.appspot.com",
+        messagingSenderId: "1054471364887",
+        appId: "1:1054471364887:web:332b4f28814e9f5d0cd752",
+        measurementId: "G-N4PWJ72YCJ"
+      };
+
+      const app = firebase.initializeApp(firebaseConfig);
+      const db = app.firestore();
+
+      // DOM Elements
+      const elements = {
+        splashScreen: document.getElementById('splash-screen'),
+        mainMenu: document.getElementById('main-menu'),
+        operationSelectionContainer: document.getElementById('operation-selection-container'),
+        modeSelectionContainer: document.getElementById('mode-selection-container'),
+        competitionModeSelectionContainer: document.getElementById('competition-mode-selection-container'),
+        gameContainer: document.getElementById('game-container'),
+        questionElement: document.getElementById('question'),
+        playerNameInput: document.getElementById('player-name-input'),
+        timerValueElement: document.getElementById('timer-value'),
+        scoreValueElement: document.getElementById('score-value'),
+        startGameButton: document.getElementById('start-game-button'),
+        answerButtons: document.querySelectorAll('.answer-button'),
+        practiceButton: document.getElementById('practice-button'),
+        competitionButton: document.getElementById('competition-button'),
+        backToMainFromOperationButton: document.getElementById('back-to-main-from-operation'),
+        backToOperationSelectionButton: document.getElementById('back-to-operation-selection'),
+        backToMainFromCompetitionModeButton: document.getElementById('back-to-main-from-competition-mode'),
+        aboutButton: document.getElementById('about-button'),
+        howToPlayButton: document.getElementById('how-to-play-button'),
+        whyPlayButton: document.getElementById('why-play-button'),
+        aboutModal: document.getElementById('about-modal'),
+        howToPlayModal: document.getElementById('how-to-play-modal'),
+        whyPlayModal: document.getElementById('why-play-modal'),
+        closeAboutModalButton: document.getElementById('close-about-modal'),
+        closeHowToPlayModalButton: document.getElementById('close-how-to-play-modal'),
+        closeWhyPlayModalButton: document.getElementById('close-why-play-modal'),
+      };
+      
+      let currentGameMode = null;
+      let score = 0;
+      let timeLeft = 60;
+      let timerInterval;
+      let gameActive = false;
+      let currentQuestion;
+
+      function showScreen(screen) {
+        document.querySelectorAll('.card-container').forEach(c => c.style.display = 'none');
+        screen.style.display = 'flex';
+        screen.classList.add('active');
+      }
+      
+      function showMainMenu() {
+        showScreen(elements.mainMenu);
+      }
+
+      function showOperationSelection() {
+        showScreen(elements.operationSelectionContainer);
+      }
+      
+      function showGameScreen() {
+          showScreen(elements.gameContainer);
+          elements.playerNameInput.style.display = 'block';
+          elements.startGameButton.style.display = 'block';
+          document.getElementById('answer-buttons-container').style.display = 'none';
+      }
+
+      function startGame() {
+          gameActive = true;
+          score = 0;
+          timeLeft = 60;
+          elements.scoreValueElement.textContent = score;
+          elements.timerValueElement.textContent = timeLeft + 's';
+          elements.playerNameInput.style.display = 'none';
+          elements.startGameButton.style.display = 'none';
+          document.getElementById('answer-buttons-container').style.display = 'flex';
+          generateQuestion();
+          timerInterval = setInterval(updateTimer, 1000);
+      }
+      
+      function updateTimer() {
+          timeLeft--;
+          elements.timerValueElement.textContent = timeLeft + 's';
+          if (timeLeft <= 0) {
+              clearInterval(timerInterval);
+              gameActive = false;
+              alert(`Tempo esgotado! Sua pontuação: ${score}`);
+              showMainMenu();
+          }
+      }
+      
+      function generateQuestion() {
+          let num1 = Math.floor(Math.random() * 10) + 1;
+          let num2 = Math.floor(Math.random() * 10) + 1;
+          currentQuestion = {
+              question: `${num1} + ${num2}`,
+              answer: num1 + num2
+          };
+          elements.questionElement.textContent = currentQuestion.question;
+          
+          let answers = [currentQuestion.answer];
+          while (answers.length < 3) {
+              let randomAnswer = Math.floor(Math.random() * 20);
+              if (!answers.includes(randomAnswer)) {
+                  answers.push(randomAnswer);
+              }
+          }
+          answers.sort(() => Math.random() - 0.5);
+          elements.answerButtons.forEach((button, index) => {
+              button.textContent = answers[index];
+              button.onclick = () => checkAnswer(answers[index]);
+          });
+      }
+
+      function checkAnswer(answer) {
+          if (!gameActive) return;
+          if (answer === currentQuestion.answer) {
+              score++;
+              elements.scoreValueElement.textContent = score;
+          }
+          generateQuestion();
+      }
+      
+      function showModal(modal) { modal.classList.add('show'); }
+      function hideModal(modal) { modal.classList.remove('show'); }
+
+      // Event Listeners
+      elements.practiceButton.addEventListener('click', showOperationSelection);
+      elements.backToMainFromOperationButton.addEventListener('click', showMainMenu);
+      document.querySelectorAll('#operation-selection-container .operation-button').forEach(button => {
+          button.addEventListener('click', showGameScreen);
+      });
+      elements.startGameButton.addEventListener('click', startGame);
+      
+      elements.aboutButton.addEventListener('click', () => showModal(elements.aboutModal));
+      elements.howToPlayButton.addEventListener('click', () => showModal(elements.howToPlayModal));
+      elements.whyPlayButton.addEventListener('click', () => showModal(elements.whyPlayModal));
+      elements.closeAboutModalButton.addEventListener('click', () => hideModal(elements.aboutModal));
+      elements.closeHowToPlayModalButton.addEventListener('click', () => hideModal(elements.howToPlayModal));
+      elements.closeWhyPlayModalButton.addEventListener('click', () => hideModal(elements.whyPlayModal));
+
+      window.onload = () => {
+          showScreen(elements.mainMenu);
+      };
     </script>
+
 </body>
 </html>
