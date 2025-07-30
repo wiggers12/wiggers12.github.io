@@ -171,6 +171,7 @@
         justify-content: center;
         box-sizing: border-box;
         text-align: center;
+        /* Removido min-height para evitar espaçamentos indesejados quando oculto ou em layouts flexíveis */
     }
     /* Largura específica para cards menores */
     #main-menu, #operation-selection-container, #mode-selection-container, #game-container, #my-progress-container { max-width: 400px; }
@@ -627,7 +628,7 @@
     /* Estilos específicos do botão de doação (para texto animado) */
     .animated-donate-text {
         display: inline-block; font-size: 1em; font-weight: 700; color: var(--text-light);
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.7), 0 0 10px rgba(255, 255, 255, 0.5);
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--accent-orange), 0 0 20px var(--accent-orange);
         animation: neonGlow 2s infinite alternate ease-in-out;
     }
     #ranking-donate-button, #settings-modal .modal-content button#settings-donate-button {
@@ -765,32 +766,146 @@
     .share-button.whatsapp-button:hover { background: linear-gradient(45deg, #128C7E 0%, #25D366 100%); }
     .share-button .fas { font-size: 1.5em; }
 
-    /* Estilos do Rodapé */
-    footer {
-        margin-top: 50px;
-        padding: 20px;
-        background-color: var(--text-dark); /* Fundo escuro */
-        color: var(--text-light); /* Texto claro */
-        text-align: center;
+    /* Estilos para a seção de cartões de informações */
+    .info-cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 40px;
+        margin-bottom: 40px;
         width: 100%;
+        max-width: 800px; /* Limita a largura para centralizar bem */
+    }
+
+    .info-card {
+        background-color: var(--bg-light-gray);
+        padding: 25px;
+        border-radius: var(--border-radius-medium);
+        box-shadow: 0 4px 10px var(--shadow-light);
+        width: 100%;
+        max-width: 280px; /* Largura máxima para cada card */
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-dark);
+    }
+
+    .info-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 8px 15px var(--shadow-medium);
+        background-color: var(--bg-white);
+    }
+
+    .info-card .icon {
+        font-size: 3.5em; /* Tamanho maior para os ícones */
+        margin-bottom: 15px;
+        color: var(--primary-blue); /* Cor padrão para os ícones */
+    }
+
+    .info-card h3 {
+        font-size: 1.4em;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: var(--text-dark);
+    }
+
+    .info-card p {
+        font-size: 0.95em;
+        line-height: 1.5;
+        color: var(--text-medium);
+    }
+
+    /* Cores específicas para os ícones dos cards */
+    .info-card#about-card .icon { color: var(--primary-green); }
+    .info-card#how-to-play-card .icon { color: var(--accent-orange); }
+    .info-card#benefits-card .icon { color: var(--purple-main); }
+
+
+    /* Estilos dos Modais de Conteúdo */
+    .content-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: none; /* CORREÇÃO CRUCIAL: Oculto por padrão */
+        align-items: center;
+        justify-content: center;
+        z-index: 2500; /* Acima do modal de configurações */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        padding: 20px; /* Padding para evitar que o conteúdo toque nas bordas em mobile */
         box-sizing: border-box;
     }
-    footer p {
-        margin: 0;
-        font-size: 0.9em;
+
+    .content-modal-overlay.show {
+        display: flex; /* Apenas visível quando a classe 'show' é adicionada */
+        opacity: 1;
+        visibility: visible;
     }
-    footer a {
-        color: var(--primary-blue);
-        text-decoration: none;
-        transition: color 0.2s ease;
+
+    .content-modal-content {
+        background-color: var(--bg-white); /* Fundo claro para o conteúdo */
+        padding: 30px;
+        border-radius: var(--border-radius-large);
+        box-shadow: 0 10px 20px var(--shadow-strong);
+        width: 95%;
+        max-width: 600px; /* Largura para o conteúdo do modal */
+        position: relative;
+        color: var(--text-dark);
+        text-align: left; /* Alinha o texto do modal à esquerda */
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+        max-height: 90vh; /* Limita a altura para que seja scrollável */
+        overflow-y: auto; /* Adiciona scroll se o conteúdo for muito grande */
     }
-    footer a:hover {
-        color: var(--accent-orange);
+
+    .content-modal-content.show .content-modal-content {
+        transform: scale(1);
     }
-    footer p:last-child {
-        font-size: 0.8em;
-        margin-top: 10px;
-        color: var(--text-medium);
+
+    .content-modal-content h3 {
+        color: var(--primary-blue); /* Cor para o título do modal */
+        font-size: 1.8em;
+        margin-bottom: 25px;
+        text-align: center; /* Título do modal centralizado */
+    }
+    .content-modal-content h4 { /* Estilo para os subtítulos dentro dos modais */
+        font-size: 1.3em;
+        color: var(--dark-blue);
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+    .content-modal-content p, .content-modal-content ul {
+        font-size: 1.1em;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+    .content-modal-content ul {
+        list-style-type: disc;
+        margin-left: 25px;
+    }
+    .content-modal-content strong {
+        color: var(--dark-blue); /* Destaque para termos importantes no modal */
+    }
+
+    /* Botão de Fechar para modais de conteúdo */
+    .content-modal-content .close-button {
+        position: absolute; top: 10px; right: 10px; background: none; border: none;
+        color: var(--text-dark); font-size: 1.8em; cursor: pointer; padding: 5px; line-height: 1;
+        border-radius: 50%; width: 40px; height: 40px; display: flex;
+        align-items: center; justify-content: center; transition: background-color 0.2s ease;
+    }
+    .content-modal-content .close-button:hover {
+        background-color: var(--border-light); /* Mantém a cor no hover */
+        color: var(--danger-red); /* Mudar para vermelho no hover */
     }
 
 
@@ -1092,61 +1207,6 @@
       <span id="achievement-notification-text"></span>
   </div>
 
-  <div id="about-modal" class="content-modal-overlay">
-    <div class="content-modal-content">
-      <button class="close-button" data-close-modal="about-modal"><i class="fas fa-times"></i></button>
-      <h3>Sobre o Desafio dos 60 Segundos</h3>
-      <p>
-          Bem-vindo ao <strong>Desafio dos 60 Segundos</strong>, o jogo que vai testar suas habilidades matemáticas e agilidade mental! Prepare-se para uma aventura emocionante onde cada segundo conta. Você terá um minuto para resolver o máximo de operações matemáticas possível, competindo contra o relógio e contra outros jogadores.
-      </p>
-      <p>
-          Escolha entre os modos de prática para aprimorar suas habilidades em adição, subtração, multiplicação e divisão, ou mergulhe no modo competição para ver como você se sai no ranking global! Seja criança ou adulto, o *Desafio dos 60 Segundos* é a maneira perfeita de se divertir enquanto exercita seu cérebro.
-      </p>
-      <p style="color: var(--text-medium); font-style: italic;">
-          Desafie-se, aprenda e torne-se um mestre da matemática!
-      </p>
-    </div>
-  </div>
-
-  <div id="how-to-play-modal" class="content-modal-overlay">
-    <div class="content-modal-content">
-      <button class="close-button" data-close-modal="how-to-play-modal"><i class="fas fa-times"></i></button>
-      <h3>Como Jogar</h3>
-      <h4>1. Escolha seu Modo:</h4>
-      <ul>
-          <li><strong>Praticar:</strong> Selecione uma operação (Adição, Subtração, Multiplicação, Divisão ou Todas Juntas) e o nível (Kids ou Adulto) para aprimorar suas habilidades sem pressão.</li>
-          <li><strong>Desafie-se (Competição):</strong> Teste-se nos modos Kids ou Adulto contra o tempo e outros jogadores. Sua pontuação será registrada no ranking global!</li>
-      </ul>
-
-      <h4>2. O Cronômetro de 60 Segundos:</h4>
-      <ul>
-          <li>Você tem 60 segundos para responder o máximo de perguntas possível.</li>
-          <li>Acerte rápido para ganhar bônus de tempo e aumentar sua pontuação!</li>
-      </ul>
-
-      <h4>3. Pontuação e Ranking:</h4>
-      <ul>
-          <li>Cada resposta correta aumenta sua pontuação.</li>
-          <li>No modo Competição, sua melhor pontuação será salva no ranking correspondente.</li>
-          <li>Acompanhe seu progresso e conquistas na seção "Meu Progresso".</li>
-      </ul>
-      <p style="font-weight: bold; color: var(--primary-green);">Dica: Uma sequência de acertos (streak) concede bônus de tempo adicionais!</p>
-    </div>
-  </div>
-
-  <div id="benefits-modal" class="content-modal-overlay">
-    <div class="content-modal-content">
-      <button class="close-button" data-close-modal="benefits-modal"><i class="fas fa-times"></i></button>
-      <h3>Por Que Jogar o Desafio dos 60 Segundos?</h3>
-      <ul>
-          <li><strong>Melhora a Agilidade Mental:</strong> Exercite seu cérebro diariamente e melhore sua capacidade de raciocínio rápido para cálculos.</li>
-          <li><strong>Para Todas as Idades:</strong> Com modos Kids e Adulto, o jogo é divertido e desafiador para crianças, adolescentes e adultos.</li>
-          <li><strong>Desafie Amigos:</strong> Suba no ranking e convide seus amigos para ver quem é o verdadeiro mestre da matemática!</li>
-          <li><strong>Gratuito e Acessível:</strong> Jogue diretamente no seu navegador, a qualquer hora e em qualquer lugar.</li>
-      </ul>
-    </div>
-  </div>
-
   <div style="width: 100%; max-width: 728px; margin: 20px auto; text-align: center;">
     <ins class="adsbygoogle"
          style="display:block; width:100%; height:auto; min-height:90px;"
@@ -1386,6 +1446,7 @@
         hideSettingsModal();
         hideExplanationModal();
         hideAchievementNotification();
+        // Garantir que os novos modais de conteúdo também sejam ocultados explicitamente
         if (elements.aboutModal) hideContentModal(elements.aboutModal);
         if (elements.howToPlayModal) hideContentModal(elements.howToPlayModal);
         if (elements.benefitsModal) hideContentModal(elements.benefitsModal);
@@ -1541,7 +1602,6 @@
     }
 
     function showRankingsScreen(highlightPlayer = false) { 
-        unsubscribeAllRankings(); // Clear ranking listeners when entering this screen
         showScreen(elements.rankingsContainer);
         if (elements.rankingKidsArea) elements.rankingKidsArea.style.display = 'block';
         if (elements.rankingAdultsArea) elements.rankingAdultsArea.style.display = 'block';
@@ -1562,6 +1622,7 @@
             elements.streakIndicator.classList.remove('show');
             elements.streakIndicator.style.display = 'none';
         }
+        unsubscribeAllRankings();
     }
 
     function showMyProgressScreen() {
@@ -1591,12 +1652,12 @@
 
     async function showExplanationModal() {
         if (elements.explanationModal) elements.explanationModal.classList.add('show');
-        if (elements.explanationText) elements.explanationText.textContent = 'Loading explanation...';
-        const prompt = `Explain the mathematical concept behind the operation "${currentQuestion.question}" simply and didactically, as if teaching a child. Focus on the concept and not just the calculation. Be concise.`;
+        if (elements.explanationText) elements.explanationText.textContent = 'Carregando explicação...';
+        const prompt = `Explique o conceito matemático por trás da operação "${currentQuestion.question}" de forma simples e didática, como se estivesse ensinando uma criança. Foque no conceito e não apenas no cálculo. Seja conciso e direto.`;
         
         try {
             const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
-            const apiKey = ""; 
+            const apiKey = "AIzaSyA4PWRt-22S8HGc6GS1m-4Wa9hYsh5Zbo"; 
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
             const response = await fetch(apiUrl, {
                 method: 'POST',
@@ -1607,12 +1668,12 @@
             if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
                 if (elements.explanationText) elements.explanationText.textContent = result.candidates[0].content.parts[0].text;
             } else {
-                if (elements.explanationText) elements.explanationText.textContent = 'Could not generate explanation. Please try again.';
-                console.error('Unexpected API Gemini response structure:', result);
+                if (elements.explanationText) elements.explanationText.textContent = 'Não foi possível gerar a explicação. Tente novamente.';
+                console.error('Estrutura de resposta inesperada da API Gemini:', result);
             }
         } catch (error) {
-            if (elements.explanationText) elements.explanationText.textContent = 'Error connecting to AI. Check your connection or try again later.';
-            console.error('Error calling Gemini API:', error);
+            if (elements.explanationText) elements.explanationText.textContent = 'Erro ao conectar com a IA. Verifique sua conexão ou tente novamente mais tarde.';
+            console.error('Erro ao chamar a API Gemini:', error);
         }
     }
 
@@ -2624,9 +2685,9 @@
             console.error("Error during app initialization:", e);
             document.body.innerHTML = `
                 <div style="text-align: center; color: var(--danger-red); margin-top: 50px;">
-                    <h1>Erro ao carregar o jogo!</h1>
-                    <p>Por favor, tente novamente ou entre em contato com o suporte.</p>
-                    <p>Detalhes do erro: ${e.message}</p>
+                    <h1>Error loading game!</h1>
+                    <p>Please try again or contact support.</p>
+                    <p>Error details: ${e.message}</p>
                 </div>
             `;
         }
