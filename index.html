@@ -1,118 +1,2612 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desafio dos 60 Segundos - Exercite sua Mente!</title>
-    <meta name="description" content="Teste sua agilidade mental com o Desafio dos 60 Segundos. Um jogo de matemática rápido e divertido para todas as idades.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            background: linear-gradient(135deg, #3498db 0%, #2ecc71 100%);
-            color: #2c3e50;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            align-items: center;
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/jpeg" href="desafio.60.jpg"> <link rel="icon" type="image/png" href="desafio.60.png" sizes="32x32"> <link rel="apple-touch-icon" href="desafio.60.png"> <link rel="icon" type="image/x-icon" href="favicon.ico"> <script async src="https://www.googletagmanager.com/gtag/js?id=G-N4PWJ72YCJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-N4PWJ72YCJ'); // Seu ID de Medição do Google Analytics
+  </script>
+  <title>Desafio dos 60 Segundos 🧠</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0V4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9968425306160320"
+          crossorigin="anonymous"></script>
+  
+  <style>
+    /* Variáveis CSS para cores e tamanhos (NOVA PALETA) */
+    :root {
+      --primary-green: #2ecc71; /* Um verde vibrante para sucesso/positivo */
+      --dark-green: #27ae60;
+      --primary-blue: #3498db; /* Um azul forte para elementos interativos */
+      --dark-blue: #2980b9;
+      --accent-orange: #f39c12; /* Um laranja quente para ações principais */
+      --dark-orange: #e67e22;
+      --danger-red: #e74c3c; /* Um vermelho claro para perigo/erro */
+      --dark-red: #c0392b;
+      --purple-main: #9b59b6; /* Um roxo para destaque/explicação */
+      --dark-purple: #8e44ad;
+      
+      --text-dark: #2c3e50; /* Carvão escuro para texto principal */
+      --text-medium: #7f8c8d; /* Cinza médio para texto secundário */
+      --text-light: #ecf0f1; /* Cinza claro para texto em fundos escuros */
+      
+      --bg-white: #ffffff;
+      --bg-light-gray: #f8f9fa; /* Um cinza muito claro para fundos */
+      --border-light: #e0e0e0; /* Borda sutil */
+      
+      --shadow-light: rgba(0, 0, 0, 0.08); /* Sombra mais suave */
+      --shadow-medium: rgba(0, 0, 0, 0.15);
+      --shadow-strong: rgba(0, 0, 0, 0.25);
+      
+      --border-radius-small: 6px;
+      --border-radius-medium: 10px;
+      --border-radius-large: 15px;
+      --border-radius-xl: 25px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif; /* NOVA FONTE */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      /* NOVO GRADIENTE DE FUNDO */
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-green) 100%);
+      color: var(--text-dark);
+      padding: 15px;
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+
+    h1 { display: none; } /* Oculta o H1, pois o título está no menu principal */
+
+    /* Animações Keyframe */
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.95) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes pulseEffect {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    @keyframes timeShake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+        20%, 40%, 60%, 80% { transform: translateX(2px); }
+    }
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; display: none; }
+    }
+    @keyframes danceSymbols {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        25% { transform: translateY(-5px) rotate(5deg); }
+        50% { transform: translateY(0) rotate(-5deg); }
+        75% { transform: translateY(-3px) rotate(3deg); }
+    }
+    @keyframes slideInPop {
+        from { opacity: 0; transform: translateY(20px) scale(0.9); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes neonGlow {
+        0% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--accent-orange), 0 0 20px var(--accent-orange); transform: scale(1); }
+        33% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--dark-orange), 0 0 20px var(--dark-orange); transform: scale(1.02); }
+        66% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--accent-orange), 0 0 20px var(--accent-orange); transform: scale(1); }
+        100% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--accent-orange), 0 0 20px var(--accent-orange); transform: scale(1.02); }
+    }
+
+    /* Animação para a frase "Prepare-se para a aventura!" */
+    @keyframes prepareTextPopColor {
+        0% { opacity: 0; transform: scale(0.8); color: var(--text-dark); }
+        25% { opacity: 1; transform: scale(1.1); color: var(--accent-orange); }
+        50% { transform: scale(0.95); color: var(--danger-red); }
+        75% { transform: scale(1.05); color: var(--primary-blue); }
+        100% { opacity: 1; transform: scale(1); color: var(--text-dark); }
+    }
+
+    /* NOVO: Animação para texto flutuante de pontos/tempo */
+    @keyframes floatUpFadeOut {
+        0% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-50px); }
+    }
+
+    /* NOVO: Animação para o brilho do acerto */
+    @keyframes correctGlow {
+        0% { box-shadow: 0 0 0px var(--primary-green); }
+        50% { box-shadow: 0 0 20px var(--primary-green), 0 0 30px var(--primary-green); }
+        100% { box-shadow: 0 0 0px var(--primary-green); }
+    }
+    /* NOVO: Animação para o brilho do erro */
+    @keyframes incorrectGlow {
+        0% { box-shadow: 0 0 0px var(--danger-red); }
+        50% { box-shadow: 0 0 20px var(--danger-red), 0 0 30px var(--danger-red); }
+        100% { box-shadow: 0 0 0px var(--danger-red); }
+    }
+    /* NOVO: Animação para a notificação de conquista */
+    @keyframes achievementPopIn {
+        0% { opacity: 0; transform: translateY(50px) scale(0.7); }
+        80% { opacity: 1; transform: translateY(-10px) scale(1.1); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes achievementFadeOut {
+        0% { opacity: 1; }
+        100% { opacity: 0; }
+    }
+
+
+    /* Estilos base para os cards das telas principais */
+    .card-container {
+        background-color: var(--bg-white);
+        padding: 30px;
+        border-radius: var(--border-radius-large);
+        box-shadow: 0 8px 16px var(--shadow-medium);
+        width: 95%;
+        margin: 15px auto;
+        position: relative;
+        overflow: hidden;
+        display: none; /* Oculto por padrão */
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        text-align: center;
+    }
+    /* Largura específica para cards menores */
+    #main-menu, #operation-selection-container, #mode-selection-container, #game-container, #my-progress-container { max-width: 400px; }
+    /* Largura específica para cards maiores */
+    #rankings-container, #competition-mode-selection-container { max-width: 800px; }
+    /* Estado ativo para animação */
+    .card-container.active { display: flex; animation: fadeInScale 0.7s ease-out forwards; }
+
+    /* Tela de Splash */
+    #splash-screen {
+        position: fixed; top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+        color: white; font-size: 4em; font-weight: bold;
+        text-shadow: 3px 3px 6px var(--shadow-strong);
+        display: none; flex-direction: column; align-items: center; justify-content: center;
+        z-index: 1000;
+    }
+    #splash-screen.active { display: flex; opacity: 1; }
+    #splash-screen.fade-out { animation: fadeOut 0.5s forwards; }
+    #splash-screen .brain-icon { font-size: 5em; margin-bottom: 10px; animation: pulseEffect 1.5s infinite alternate; }
+    #splash-screen .splash-text { font-size: 1.5em; font-weight: normal; text-align: center; line-height: 1.2; }
+
+    /* Caixa de Título do Menu Principal */
+    .main-title-box {
+        background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%);
+        border-radius: var(--border-radius-xl); padding: 20px 30px; margin-bottom: 40px;
+        display: flex; flex-direction: column; align-items: center;
+        box-shadow: 0 8px 16px var(--shadow-strong); color: var(--text-light); /* Texto claro */
+        text-shadow: 2px 2px 4px var(--shadow-medium);
+        width: 90%; max-width: 300px;
+    }
+    .main-title-box .brain-icon-title { font-size: 4em; margin-bottom: 10px; }
+    .main-title-box .title-text { font-size: 2em; font-weight: bold; line-height: 1.2; }
+
+    /* Símbolos Matemáticos no Menu Principal */
+    #main-menu .math-symbols {
+        font-size: 5.5em; color: var(--accent-orange); margin-bottom: 50px;
+        font-weight: bold; letter-spacing: 10px; text-shadow: 3px 3px 6px var(--shadow-stronger);
+        display: flex; gap: 15px;
+    }
+    #main-menu .math-symbols span { display: inline-block; animation: danceSymbols 2s infinite ease-in-out alternate; }
+    #main-menu .math-symbols span:nth-child(1) { animation-delay: 0s; }
+    #main-menu .math-symbols span:nth-child(2) { animation-delay: 0.2s; }
+    #main-menu .math-symbols span:nth-child(3) { animation-delay: 0.4s; }
+    #main-menu .math-symbols span:nth-child(4) { animation-delay: 0.6s; }
+
+    /* Estilos Base dos Botões */
+    .base-button {
+        padding: 18px 35px; font-size: 1.5em; border-radius: var(--border-radius-large);
+        box-shadow: 0 6px 12px var(--shadow-medium); border: none; color: var(--text-light); /* Texto claro */
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%; /* Padrão para largura total para consistência */
+        display: flex; /* Para alinhar ícones e texto */
+        align-items: center;
+        justify-content: center;
+        gap: 10px; /* Espaço entre ícone e texto */
+    }
+    .base-button:hover:not(:disabled) { transform: translateY(-5px); box-shadow: 0 10px 20px var(--shadow-strong); }
+    .base-button:active:not(:disabled) { transform: translateY(0); box-shadow: 0 4px 8px var(--shadow-medium); }
+    .base-button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Cores/Tamanhos Específicos dos Botões */
+    .main-menu-button {
+        padding: 20px 40px; font-size: 1.8em; /* Ajuste de tamanho para ícones */
+        border-radius: var(--border-radius-large);
+        background: linear-gradient(45deg, var(--accent-orange) 0%, var(--dark-orange) 100%);
+    }
+    .main-menu-button:hover { background: linear-gradient(45deg, var(--dark-orange) 0%, var(--accent-orange) 100%); }
+    .main-menu-button .fas { font-size: 1.2em; } /* Tamanho do ícone dentro do botão */
+    
+    /* NOVO: Ajuste para o botão "Meu Progresso" */
+    #my-progress-button {
+        padding: 20px 40px; 
+        font-size: 1.8em; 
+        border-radius: var(--border-radius-large);
+        background: linear-gradient(45deg, var(--accent-orange) 0%, var(--dark-orange) 100%);
+    }
+    #my-progress-button:hover {
+        background: linear-gradient(45deg, var(--dark-orange) 0%, var(--accent-orange) 100%);
+    }
+    #my-progress-button .fas { font-size: 1.2em; }
+
+
+    .operation-button, .competition-mode-button, .mode-button {
+        padding: 15px 20px; font-size: 1.2em; border-radius: var(--border-radius-medium);
+        background: linear-gradient(45deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+        box-shadow: 0 4px 8px var(--shadow-medium);
+    }
+    .operation-button:hover, .competition-mode-button:hover, .mode-button:hover {
+        background: linear-gradient(45deg, var(--dark-blue) 0%, var(--primary-blue) 100%);
+        transform: translateY(-3px); box-shadow: 0 6px 12px var(--shadow-strong);
+    }
+    .operation-button.active, .competition-mode-button.active, .mode-button.active {
+        background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%);
+        box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.6); /* Sombra verde mais suave */
+    }
+    .operation-button .fas, .competition-mode-button .fas, .mode-button .fas { font-size: 1.1em; }
+
+
+    .back-button {
+        background: linear-gradient(45deg, var(--danger-red) 0%, var(--dark-red) 100%);
+        margin-top: 30px !important; padding: 15px 30px; font-size: 1.2em;
+        border-radius: var(--border-radius-medium);
+    }
+    .back-button:hover { background: linear-gradient(45deg, var(--dark-red) 0%, var(--danger-red) 100%); }
+    .back-button .fas { font-size: 1.1em; }
+
+    .settings-action-button {
+        width: 100%; padding: 12px 20px; font-size: 1.2em; border-radius: var(--border-radius-small);
+        margin-top: 15px; box-shadow: 0 4px 8px var(--shadow-medium);
+    }
+    .settings-action-button.green-button { background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%); }
+    .settings-action-button.green-button:hover { background: linear-gradient(45deg, var(--dark-green) 0%, var(--primary-green) 100%); }
+    .settings-action-button.blue-button { background: linear-gradient(45deg, var(--primary-blue) 0%, var(--dark-blue) 100%); }
+    .settings-action-button.blue-button:hover { background: linear-gradient(45deg, var(--dark-blue) 0%, var(--primary-blue) 100%); }
+    .settings-action-button .fas { font-size: 1.1em; }
+
+    /* CORREÇÃO: Estilo para o botão Começar Jogo (mais específico para garantir aplicação) */
+    #start-game-button.base-button.green-button {
+      background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%);
+    }
+    #start-game-button.base-button.green-button:hover {
+      background: linear-gradient(45deg, var(--dark-green) 0%, var(--primary-green) 100%);
+    }
+    #start-game-button .fas { font-size: 1.2em; }
+
+
+    #explain-concept-button {
+        margin-top: 20px; background: linear-gradient(45deg, var(--purple-main) 0%, var(--dark-purple) 100%);
+        color: var(--text-light); padding: 15px 30px; font-size: 1.2em; border-radius: var(--border-radius-medium);
+        box-shadow: 0 5px 10px var(--shadow-medium);
+    }
+    #explain-concept-button:hover { background: linear-gradient(45deg, var(--dark-purple) 0%, var(--purple-main) 100%); }
+    #explain-concept-button .fas { font-size: 1.1em; }
+
+    /* Contêiner de Botões do Menu Principal */
+    #main-menu .menu-buttons {
+        display: flex; flex-direction: column; gap: 25px; width: 80%; max-width: 350px;
+    }
+
+    /* Estilos para os ícones de informação no Menu Principal */
+    .info-buttons {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      max-width: 350px;
+      margin-top: 35px;
+      gap: 10px;
+    }
+    .info-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: none;
+      color: var(--text-medium);
+      cursor: pointer;
+      font-size: 0.9em;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      transition: color 0.3s ease, transform 0.3s ease;
+      padding: 10px;
+      border-radius: var(--border-radius-medium);
+    }
+    .info-button:hover {
+      color: var(--primary-blue);
+      transform: translateY(-3px);
+      background-color: var(--bg-light-gray);
+    }
+    .info-button .fas {
+      font-size: 2em; /* Ícones maiores */
+      color: var(--primary-blue);
+    }
+
+
+    /* Grade de Botões de Operação e Competição */
+    #operation-selection-container .operation-buttons,
+    #competition-mode-selection-container .competition-buttons {
+        display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; margin-bottom: 20px;
+    }
+
+    /* NOVO: Estilos para os botões de alternância de ranking na tela de competição */
+    .ranking-toggle-button {
+        background: linear-gradient(45deg, var(--primary-blue) 0%, var(--dark-blue) 100%) !important; 
+        color: var(--text-light);
+        padding: 15px 20px;
+        font-size: 1.2em;
+        border-radius: var(--border-radius-medium);
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px var(--shadow-medium);
+        margin-top: 15px; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .ranking-toggle-button:hover {
+        background: linear-gradient(45deg, var(--dark-blue) 0%, var(--primary-blue) 100%) !important;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px var(--shadow-strong);
+    }
+    .ranking-toggle-button .fas {
+        font-size: 1.5em; 
+    }
+
+    /* NOVO: Contêiner para o ranking dinâmico na tela de competição */
+    #dynamic-competition-ranking-display {
+        width: 100%;
+        margin-top: 25px; 
+        display: flex; 
+        flex-direction: column;
+        align-items: center;
+    }
+    /* Estilos para as seções de ranking dentro do contêiner dinâmico */
+    #dynamic-competition-ranking-display .ranking-section {
+        flex: 1; 
+        margin-bottom: 0; 
+        max-width: none; 
+        width: 100%; 
+        background-color: var(--bg-white);
+        border-radius: var(--border-radius-large); padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        color: var(--text-dark); 
+    }
+    #dynamic-competition-ranking-display .ranking-section h2 {
+        color: var(--primary-green); font-size: 1.2em; margin-bottom: 10px; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    #dynamic-competition-ranking-display .ranking-list {
+        background-color: transparent; 
+        border-radius: var(--border-radius-medium); padding: 10px;
+    }
+    #dynamic-competition-ranking-display .ranking-list li {
+        padding: 10px 0; border-bottom: 1px solid var(--border-light); 
+        background-color: transparent; transition: background-color 0.3s ease;
+    }
+    #dynamic-competition-ranking-display .ranking-list li:last-child { border-bottom: none; }
+    #dynamic-competition-ranking-display .ranking-list li:hover { background-color: var(--bg-light-gray); } 
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-top { background-color: rgba(52, 152, 219, 0.1); border: 1px solid var(--primary-blue); }
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-top span { color: var(--primary-blue); font-weight: bold; } 
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-bottom { background-color: rgba(231, 76, 60, 0.1); border: 1px solid var(--danger-red); }
+    #dynamic-competition-ranking-display .ranking-list li.ranking-item-bottom span { color: var(--danger-red); font-weight: bold; } 
+
+
+    /* Elementos da Tela de Jogo */
+    #difficulty-level { 
+        font-size: 1em; 
+        color: var(--text-medium);
+        margin-bottom: 10px;
+        font-weight: 500; 
+        height: 1.2em; 
+        line-height: 1.2em; 
+        overflow: hidden; 
+    }
+    #question {
+      font-size: 2.5em; margin-bottom: 15px; color: var(--text-dark); font-weight: 700; 
+      text-shadow: 1px 1px 2px var(--shadow-light); transition: color 0.3s ease, transform 0.3s ease;
+    }
+    /* Classe para a animação da frase "Prepare-se para a aventura!" */
+    #question.prepare-text-animated {
+        animation: prepareTextPopColor 1.5s ease-out forwards;
+        display: inline-block; 
+    }
+    /* Aprimoramento das animações de acerto/erro na pergunta */
+    #question.correct-animation { animation: pulseGreen 0.5s ease-out, correctGlow 0.5s ease-out; }
+    #question.incorrect-animation { animation: shakeRed 0.5s ease-out, incorrectGlow 0.5s ease-out; }
+
+    #player-name-input {
+      padding: 15px; font-size: 1.5em; width: calc(100% - 30px); margin-bottom: 20px;
+      border: 2px solid var(--border-light); border-radius: var(--border-radius-medium);
+      text-align: center; transition: border-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+      background-color: var(--bg-light-gray);
+      color: var(--text-dark);
+      -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none;
+      -moz-user-select: none; -ms-user-select: none; user-select: none;
+    }
+    #player-name-input::placeholder {
+        color: var(--text-medium);
+        opacity: 0.7;
+    }
+
+    #message {
+      margin-top: 15px; font-weight: 600; 
+      opacity: 0; font-size: 1.1em;
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out; transform: translateY(10px);
+      color: var(--text-dark); display: block;
+    }
+    #message.show { opacity: 1; transform: translateY(0); }
+    #message.success-message { color: var(--primary-green); }
+    #message.error-message { color: var(--danger-red); }
+    #message.incredible-message { color: var(--accent-orange); font-size: 1.3em; }
+
+    #timer, #score { font-size: 1.3em; margin: 10px 0; color: var(--text-medium); position: relative; } 
+    #timer-value, #score-value { font-weight: 700; color: var(--primary-green); transition: color 0.3s ease; }
+    #timer-value.pulse-effect, #score-value.pulse-effect { animation: pulseEffect 0.3s ease-out; }
+
+    /* Floating feedback text */
+    .floating-feedback-text {
+        position: absolute;
+        font-size: 1.2em;
+        font-weight: 700; 
+        color: var(--accent-orange); 
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        animation: floatUpFadeOut 1s ease-out forwards;
+        pointer-events: none; 
+        z-index: 100;
+        white-space: nowrap;
+        opacity: 0; 
+    }
+    .floating-feedback-text.score-bonus {
+        color: var(--primary-green); 
+        left: 50%; 
+        transform: translateX(-50%);
+    }
+    .floating-feedback-text.time-bonus {
+        color: var(--primary-blue); 
+        left: 50%; 
+        transform: translateX(-50%);
+    }
+
+
+    #time-bar-container {
+      width: 100%; height: 15px; background-color: var(--border-light);
+      border-radius: var(--border-radius-small); margin-bottom: 15px; overflow: hidden;
+      box-shadow: inset 0 1px 3px var(--shadow-light);
+    }
+    #time-bar {
+      height: 100%; width: 100%; background-color: var(--primary-green);
+      border-radius: var(--border-radius-small); transition: width 0.9s linear, background-color 0.9s linear, transform 0.1s ease;
+    }
+    .time-bar-shaking { animation: timeShake 0.5s ease-out infinite; }
+
+    /* Answer Buttons Container */
+    #answer-buttons-container {
+        display: flex; flex-wrap: wrap; justify-content: space-around; gap: 15px;
+        width: 100%; max-width: 450px; margin-top: 20px; margin-bottom: 20px;
+    }
+    #answer-buttons-container button {
+        flex: 1 1 auto; min-width: 100px; padding: 15px; font-size: 1.8em;
+        border-radius: var(--border-radius-large);
+        background: linear-gradient(45deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+        color: var(--text-light); border: none; cursor: pointer; transition: all 0.3s ease;
+        box-shadow: 0 6px 12px var(--shadow-medium);
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 600; 
+    }
+    /* Aprimoramento das animações de acerto/erro nos botões */
+    #answer-buttons-container button.correct-feedback { 
+        background: linear-gradient(45deg, var(--dark-green) 0%, var(--primary-green) 100%); 
+        box-shadow: 0 0 15px rgba(46, 204, 113, 0.8);
+        animation: correctGlow 0.5s ease-out; 
+    }
+    #answer-buttons-container button.incorrect-feedback { 
+        background: linear-gradient(45deg, var(--danger-red) 0%, var(--dark-red) 100%); 
+        box-shadow: 0 0 15px rgba(231, 76, 60, 0.8);
+        animation: incorrectGlow 0.5s ease-out; 
+    }
+
+    /* Ícone de Configurações */
+    .settings-icon {
+        position: absolute; top: 15px; right: 15px; background: none; border: none;
+        font-size: 2.5em; cursor: pointer; color: var(--text-medium); transition: transform 0.2s ease;
+        padding: 0; box-shadow: none; z-index: 10;
+        display: flex; align-items: center; justify-content: center; 
+    }
+    .settings-icon:hover { transform: rotate(30deg); color: var(--primary-blue); }
+
+    /* Overlay do Modal */
+    .modal-overlay {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background-color: rgba(0, 0, 0, 0.7); display: flex; align-items: center;
+        justify-content: center; z-index: 2000; opacity: 0; visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .modal-overlay.show { opacity: 1; visibility: visible; }
+
+    /* Conteúdo do Modal */
+    .modal-content {
+        background-color: var(--text-dark); /* Fundo mais escuro para modal */
+        padding: 30px; border-radius: var(--border-radius-large);
+        box-shadow: 0 10px 20px var(--shadow-strong); width: 90%; max-width: 450px; /* Aumentado o max-width */
+        position: relative; color: var(--text-light);
+        transform: scale(0.9); transition: transform 0.3s ease;
+    }
+    /* Estilos específicos para o conteúdo do modal de informação */
+    .modal-content .info-content {
+        text-align: left;
+        line-height: 1.6;
+    }
+    .modal-content .info-content h3 {
+        text-align: center;
+    }
+    .modal-content .info-content ul {
+        padding-left: 20px;
+        list-style: none;
+    }
+    .modal-content .info-content ul li {
+        margin-bottom: 10px;
+        position: relative;
+        padding-left: 25px;
+    }
+    .modal-content .info-content ul li::before {
+        content: '\f058'; /* Ícone de check do Font Awesome */
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        left: 0;
+        top: 2px;
+        color: var(--primary-green);
+    }
+
+    .modal-overlay.show .modal-content { transform: scale(1); }
+    .modal-content h3 { color: var(--text-light); font-size: 1.8em; margin-bottom: 25px; }
+
+    /* Botão de Fechar */
+    .close-button {
+        position: absolute; top: 10px; right: 10px; background: none; border: none;
+        color: var(--text-light); font-size: 1.8em; cursor: pointer; padding: 5px; line-height: 1;
+        border-radius: 50%; width: 40px; height: 40px; display: flex;
+        align-items: center; justify-content: center; transition: background-color 0.2s ease;
+    }
+    .close-button:hover { background-color: rgba(255, 255, 255, 0.2); }
+
+    /* Item de Configuração */
+    .setting-item {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 1.2em;
+        font-weight: 500;
+    }
+    .setting-item:last-of-type { border-bottom: none; }
+    .setting-item span { flex-grow: 1; text-align: left; padding-left: 10px; }
+
+    /* Chave Seletora (Toggle Switch) */
+    .toggle-switch {
+        width: 60px; height: 30px; background-color: var(--text-medium); border-radius: 15px; /* Cinza para off */
+        position: relative; cursor: pointer; transition: background-color 0.3s ease;
+        flex-shrink: 0;
+    }
+    .toggle-switch.active { background-color: var(--primary-green); }
+    .toggle-button {
+        width: 26px; height: 26px; background-color: var(--bg-white); border-radius: 50%;
+        position: absolute; top: 2px; left: 2px; transition: transform 0.3s ease;
+        box-shadow: 0 2px 5px var(--shadow-medium);
+    }
+    .toggle-switch.active .toggle-button { transform: translateX(30px); }
+
+    /* Estilização das Listas de Ranking */
+    .ranking-lists-wrapper {
+        display: flex; flex-direction: column; width: 100%; gap: 20px;
+        margin-bottom: 20px; align-items: center;
+    }
+    #rankings-container .ranking-section {
+        width: 95%; max-width: 400px; margin: 0;
+    }
+    .ranking-section h2 { color: var(--primary-green); margin-bottom: 15px; text-shadow: 1px 1px 2px var(--shadow-light); }
+    .ranking-list { list-style: none; padding: 0; text-align: left; width: 100%; font-size: 0.95em; } /* Ajuste de fonte */
+    .ranking-list li {
+      padding: 10px 0; border-bottom: 1px solid var(--border-light); display: flex;
+      align-items: center; flex-wrap: nowrap;
+      font-weight: 500; /* Medium weight */
+    }
+    .ranking-list li:last-child { border-bottom: none; }
+    /* Ajuste de alinhamento para o número da posição */
+    .ranking-position { 
+        font-weight: 700; 
+        color: var(--primary-blue); 
+        min-width: 30px; 
+        margin-right: 8px; 
+        text-align: right; 
+    }
+    .ranking-name { flex-grow: 1; margin-right: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-dark); }
+    
+    /* NOVO: Estilo para o indicador de ranking com fundo */
+    .ranking-indicator {
+        display: inline-flex; 
+        align-items: center;
+        justify-content: center;
+        width: 24px; 
+        height: 24px; 
+        border-radius: 4px; 
+        font-size: 0.9em; 
+        font-weight: 700; 
+        margin-right: 8px; 
+        color: var(--text-light); 
+        text-shadow: 0 0 2px rgba(0,0,0,0.3); 
+        box-shadow: 0 1px 3px var(--shadow-light); 
+    }
+    .ranking-indicator.up { background-color: var(--primary-blue); } 
+    .ranking-indicator.down { background-color: var(--danger-red); } 
+    .ranking-indicator.stable { background-color: var(--primary-green); } 
+
+
+    .ranking-score { font-weight: 700; color: var(--text-dark); min-width: 50px; text-align: right; flex-shrink: 0; }
+    .ranking-list li.current-player-highlight {
+        background: linear-gradient(90deg, var(--accent-orange) 0%, var(--dark-orange) 100%);
+        color: var(--text-light); font-weight: 700; box-shadow: 0 0 10px rgba(243, 156, 18, 0.7);
+    }
+    .ranking-list li.current-player-highlight span { color: var(--text-light); } 
+    .ranking-list li.ranking-item-top { background-color: rgba(52, 152, 219, 0.1); border: 1px solid var(--primary-blue); }
+    .ranking-list li.ranking-item-top span { color: var(--primary-blue); font-weight: 700; } 
+    .ranking-list li.ranking-item-bottom { background-color: rgba(231, 76, 60, 0.1); border: 1px solid var(--danger-red); }
+    .ranking-list li.ranking-item-bottom span { color: var(--danger-red); font-weight: 700; }
+
+    /* Estilos específicos do botão de doação (para texto animado) */
+    .animated-donate-text {
+        display: inline-block; font-size: 1em; font-weight: 700; color: var(--text-light);
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.7), 0 0 10px rgba(255, 255, 255, 0.5);
+        animation: neonGlow 2s infinite alternate ease-in-out;
+    }
+    #ranking-donate-button, #settings-modal .modal-content button#settings-donate-button {
+        background: linear-gradient(45deg, var(--accent-orange) 0%, var(--dark-orange) 100%) !important;
+    }
+    #ranking-donate-button:hover, #settings-modal .modal-content button#settings-donate-button:hover {
+        background: linear-gradient(45deg, var(--dark-orange) 0%, var(--accent-orange) 100%) !important;
+    }
+
+    /* NOVO: Estilo para o indicador de sequência de acertos */
+    #streak-indicator {
+        position: absolute; top: 5px; right: 15px; 
+        background-color: var(--accent-orange); 
+        color: var(--text-light);
+        padding: 5px 10px; border-radius: 15px;
+        font-size: 0.9em; font-weight: 600; 
+        display: flex; align-items: center; gap: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        opacity: 0; transform: scale(0.8);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        z-index: 50; pointer-events: none; 
+    }
+    #streak-indicator.show { opacity: 1; transform: scale(1); }
+    #streak-indicator .fas { color: var(--text-light); text-shadow: 0 0 5px rgba(255,255,0,0.5); }
+
+    /* NOVO: Estilos para a tela de Meu Progresso */
+    #my-progress-container h3 {
+        color: var(--primary-green); font-size: 1.8em; margin-bottom: 25px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    #my-progress-container .player-stats-grid {
+        display: grid; grid-template-columns: 1fr; gap: 15px;
+        width: 100%; max-width: 350px; margin-top: 20px;
+    }
+    #my-progress-container .stat-item {
+        background-color: var(--bg-light-gray); padding: 15px 20px;
+        border-radius: var(--border-radius-medium); box-shadow: 0 2px 5px var(--shadow-light);
+        display: flex; flex-direction: column; align-items: flex-start;
+        font-size: 1.1em; font-weight: 600; color: var(--text-dark);
+        position: relative; overflow: hidden;
+    }
+    #my-progress-container .stat-item .stat-label {
+        color: var(--text-medium); font-weight: 400; margin-bottom: 5px; font-size: 0.9em;
+    }
+    #my-progress-container .stat-item .stat-value {
+        color: var(--primary-blue); font-size: 1.3em; font-weight: 700;
+    }
+    #my-progress-container .stat-item .stat-icon {
+        position: absolute; top: 15px; right: 15px; font-size: 2em;
+        color: rgba(0, 0, 0, 0.1); z-index: 1;
+    }
+    #my-progress-container .stat-item.highlight-stat {
+        background: linear-gradient(45deg, var(--accent-orange) 0%, var(--dark-orange) 100%);
+        color: var(--text-light); box-shadow: 0 0 10px rgba(243, 156, 18, 0.7);
+    }
+    #my-progress-container .stat-item.highlight-stat .stat-value { color: var(--text-light); }
+    #my-progress-container .stat-item.highlight-stat .stat-label { color: rgba(255, 255, 255, 0.8); }
+    #my-progress-container .stat-item.highlight-stat .stat-icon { color: rgba(255, 255, 255, 0.2); }
+
+    /* Achievements Section */
+    #my-progress-container .achievements-section {
+        margin-top: 40px; width: 100%; max-width: 350px;
+    }
+    #my-progress-container .achievements-section h4 {
+        color: var(--primary-blue); font-size: 1.5em; margin-bottom: 20px;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    #my-progress-container .achievements-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
+        gap: 15px; width: 100%;
+    }
+    #my-progress-container .achievement-item {
+        background-color: var(--bg-light-gray); border-radius: var(--border-radius-medium);
+        padding: 15px; box-shadow: 0 2px 5px var(--shadow-light);
+        display: flex; flex-direction: column; align-items: center; text-align: center;
+        opacity: 0.5; transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: help; color: var(--text-dark); font-weight: 500;
+        position: relative;
+    }
+    #my-progress-container .achievement-item.unlocked {
+        opacity: 1; 
+        background: linear-gradient(45deg, var(--primary-green) 0%, var(--dark-green) 100%);
+        color: var(--text-light);
+        box-shadow: 0 0 10px rgba(46, 204, 113, 0.7);
+    }
+    #my-progress-container .achievement-item.unlocked .achievement-icon { color: var(--accent-orange); }
+    #my-progress-container .achievement-item:hover { transform: translateY(-3px); box-shadow: 0 4px 8px var(--shadow-medium); }
+    #my-progress-container .achievement-icon {
+        font-size: 2.5em; margin-bottom: 8px; color: var(--text-medium); 
+        position: relative; z-index: 2;
+    }
+    #my-progress-container .achievement-name {
+        font-weight: 600; font-size: 0.9em; line-height: 1.2;
+        position: relative; z-index: 2;
+    }
+    #my-progress-container .achievement-description {
+        font-size: 0.8em; color: var(--text-light); 
+        margin-top: 5px; display: none; 
+    }
+    #my-progress-container .achievement-item.unlocked .achievement-description { color: rgba(255, 255, 255, 0.8); }
+    /* Overlay for locked achievements */
+    #my-progress-container .achievement-item:not(.unlocked)::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); border-radius: var(--border-radius-medium); z-index: 1;
+    }
+    #my-progress-container .achievement-item:not(.unlocked) .achievement-icon,
+    #my-progress-container .achievement-item:not(.unlocked) .achievement-name { filter: grayscale(100%) brightness(0.7); }
+
+    /* Achievement Notification */
+    #achievement-notification {
+        position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+        background: linear-gradient(45deg, var(--purple-main) 0%, var(--dark-purple) 100%);
+        color: var(--text-light); padding: 15px 25px; border-radius: var(--border-radius-large);
+        box-shadow: 0 5px 15px var(--shadow-strong); font-size: 1.2em; font-weight: 600; 
+        display: flex; align-items: center; gap: 10px; z-index: 3000;
+        opacity: 0; visibility: hidden; animation: achievementPopIn 0.5s ease-out forwards;
+    }
+    #achievement-notification.show { visibility: visible; animation: achievementPopIn 0.5s ease-out forwards; }
+    #achievement-notification.hide { animation: achievementFadeOut 0.5s ease-out forwards; }
+    #achievement-notification .achievement-icon { font-size: 1.8em; color: var(--accent-orange); }
+
+    /* Share Buttons Container */
+    .share-buttons-container {
+        display: flex; flex-direction: column; gap: 15px;
+        width: 100%; max-width: 350px; margin-top: 25px;
+    }
+    .share-button {
+        padding: 15px 20px; font-size: 1.2em; border-radius: var(--border-radius-medium);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15); border: none;
+        color: var(--text-light); cursor: pointer; transition: all 0.3s ease;
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .share-button:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.25); }
+    .share-button.whatsapp-button { background: linear-gradient(45deg, #25D366 0%, #128C7E 100%); } 
+    .share-button.whatsapp-button:hover { background: linear-gradient(45deg, #128C7E 0%, #25D366 100%); }
+    .share-button .fas { font-size: 1.5em; }
+
+
+    /* Responsividade */
+    @media (min-width: 768px) {
+        #embedded-rankings-area, .ranking-lists-wrapper {
+            flex-direction: row; align-items: flex-start; justify-content: center; flex-wrap: wrap;
         }
-        .container {
-            width: 90%;
-            max-width: 800px;
-            margin: 20px auto;
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-            flex-grow: 1;
+        #rankings-container .ranking-section, #dynamic-competition-ranking-display .ranking-section {
+            flex: 1; max-width: 48%; margin: 0 10px; min-width: 300px;
         }
-        header {
-            text-align: center;
-            padding: 20px;
-            color: white;
-        }
-        header h1 {
-            font-size: 2.5em;
-            margin-bottom: 0;
-        }
-        nav {
-            text-align: center;
-            padding: 10px 0;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: 500;
-        }
-        h2 {
-            text-align: center;
-            color: #2980b9;
-        }
-        p {
-            line-height: 1.7;
-            text-align: justify;
-        }
-        .cta-button {
-            display: block;
-            width: 80%;
-            max-width: 300px;
-            margin: 40px auto;
-            padding: 20px;
-            background: linear-gradient(45deg, #f39c12 0%, #e67e22 100%);
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            font-size: 1.8em;
-            font-weight: 700;
-            border-radius: 15px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: white;
+        /* Adjust for 2 columns of ranking buttons on competition screen */
+        #competition-mode-selection-container .ranking-toggle-buttons-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 15px;
             width: 100%;
+            margin-top: 20px;
         }
-        footer a {
-            color: white;
+        #my-progress-container .player-stats-grid {
+            grid-template-columns: repeat(2, 1fr); 
+            max-width: 600px; 
         }
-    </style>
+        #my-progress-container .achievements-grid {
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+            max-width: 600px; 
+        }
+    }
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .card-container { padding: 20px; border-radius: var(--border-radius-medium); }
+      #splash-screen { font-size: 2.5em; }
+      #splash-screen .brain-icon { font-size: 4em; }
+      #splash-screen .splash-text { font-size: 1.2em; }
+      .main-title-box { padding: 15px 20px; max-width: 250px; }
+      .main-title-box .brain-icon-title { font-size: 3em; }
+      .main-title-box .title-text { font-size: 1.5em; }
+      #main-menu .math-symbols { font-size: 4em; letter-spacing: 8px; gap: 10px; }
+      #main-menu .menu-buttons { width: 90%; gap: 15px; }
+      .main-menu-button { font-size: 1.5em; padding: 15px 25px; }
+      #question { font-size: 1.8em; }
+      #player-name-input { font-size: 1.2em; padding: 12px; }
+      #answer-buttons-container { max-width: 280px; gap: 10px; flex-direction: column; }
+      #answer-buttons-container button { font-size: 1.5em; padding: 15px; min-width: auto; }
+      .settings-icon { font-size: 2em; top: 10px; right: 10px; }
+      .modal-content { padding: 20px; max-width: 95%; }
+      .modal-content h3 { font-size: 1.5em; margin-bottom: 20px; }
+      .setting-item { font-size: 1em; padding: 10px 0; }
+      .toggle-switch { width: 50px; height: 25px; border-radius: 12.5px; }
+      .toggle-button { width: 21px; height: 21px; top: 2px; left: 2px; }
+      .toggle-switch.active .toggle-button { transform: translateX(25px); }
+      .settings-action-button { font-size: 1em; padding: 10px 15px; }
+      /* Adjust for 1 column of ranking buttons on competition screen on mobile */
+      #competition-mode-selection-container .ranking-toggle-buttons-group {
+            grid-template-columns: 1fr; 
+            gap: 10px;
+        }
+    }
+  </style>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 </head>
 <body>
+  <div id="splash-screen">
+    <span class="brain-icon">🧠</span>
+    <span class="splash-text">Desafio dos<br>60 Segundos</span>
+  </div>
 
-    <header>
-        <h1>Desafio dos 60 Segundos 🧠</h1>
-        <nav>
-            <a href="index.html">Início</a>
-            <a href="jogo.html">Jogar</a>
-            <a href="sobre.html">Sobre</a>
-        </nav>
-    </header>
+  <div id="main-menu" class="card-container">
+    <div class="main-title-box">
+        <span class="brain-icon-title">🧠</span>
+        <span class="title-text">Matemática em</span>
+        <span class="title-text">60 Segundos</span>
+    </div>
+    <div class="math-symbols">
+        <span>+</span><span>-</span><span>×</span><span>÷</span>
+    </div>
+    <div class="menu-buttons">
+      <button id="practice-button" class="base-button main-menu-button"><i class="fas fa-pencil-alt"></i> Praticar</button>
+      <button id="competition-button" class="base-button main-menu-button"><i class="fas fa-trophy"></i> Desafie-se</button>
+      <button id="my-progress-button" class="base-button main-menu-button"><i class="fas fa-chart-line"></i> Meu Progresso</button>
+    </div>
+    <div class="info-buttons">
+        <button class="info-button" id="about-button">
+            <i class="fas fa-info-circle"></i>
+            <span>Sobre o Jogo</span>
+        </button>
+        <button class="info-button" id="how-to-play-button">
+            <i class="fas fa-question-circle"></i>
+            <span>Como Jogar</span>
+        </button>
+        <button class="info-button" id="why-play-button">
+            <i class="fas fa-brain"></i>
+            <span>Por que Jogar?</span>
+        </button>
+    </div>
+  </div>
 
-    <main class="container">
-        <h2>Teste sua Agilidade Mental e Desafie o Tempo!</h2>
-        <p>
-            Bem-vindo ao Desafio dos 60 Segundos! Este é um jogo simples, mas viciante, projetado para testar e melhorar sua velocidade de raciocínio matemático. A missão é clara: resolver o máximo de problemas de matemática que conseguir em apenas um minuto. Cada resposta correta aumenta sua pontuação e te leva mais perto do topo do nosso ranking.
-        </p>
-        <p>
-            Mais do que um simples passatempo, este jogo é uma ferramenta poderosa para exercitar sua mente. Jogar regularmente ajuda a aprimorar o foco, aumentar a concentração sob pressão e manter seu cérebro ativo e saudável. Seja você um estudante querendo praticar ou um adulto buscando um desafio divertido, o Desafio dos 60 Segundos é para todos.
-        </p>
-        <a href="jogo.html" class="cta-button">▶️ Jogar Agora!</a>
-    </main>
+  <div id="operation-selection-container" class="card-container">
+    <h3>Escolha a Operação para Praticar:</h3>
+    <div class="operation-buttons">
+        <button data-op="+" class="base-button operation-button"><i class="fas fa-plus"></i> Adição</button>
+        <button data-op="-" class="base-button operation-button"><i class="fas fa-minus"></i> Subtração</button>
+        <button data-op="*" class="base-button operation-button"><i class="fas fa-times"></i> Multiplicação</button>
+        <button data-op="÷" class="base-button operation-button"><i class="fas fa-divide"></i> Divisão</button>
+        <button data-op="all" class="base-button operation-button"><i class="fas fa-random"></i> Todos Juntos</button>
+    </div>
+    <button id="back-to-main-from-operation" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
+  </div>
 
-    <footer>
-        <p>&copy; 2025 Desafio dos 60 Segundos | <a href="privacidade.html">Política de Privacidade</a></p>
-    </footer>
+  <div id="mode-selection-container" class="card-container">
+    <h3>Escolha o Modo de Jogo:</h3>
+    <button id="mode-kids-button" class="base-button mode-button" data-mode="practice_kids"><i class="fas fa-child"></i> Modo Kids</button>
+    <button id="mode-adults-button" class="base-button mode-button" data-mode="practice_adults"><i class="fas fa-user-graduate"></i> Modo Adulto</button>
+    <button id="back-to-operation-selection" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar para Seleção de Operação</button>
+  </div>
 
+  <div id="competition-mode-selection-container" class="card-container">
+    <h3>Modo Competição:</h3>
+    <div class="competition-buttons">
+        <button data-mode="competition_kids" class="base-button competition-mode-button"><i class="fas fa-child"></i> Kids</button>
+        <button data-mode="competition_adults" class="base-button competition-mode-button"><i class="fas fa-user-graduate"></i> Adulto</button>
+    </div>
+    <div class="ranking-toggle-buttons-group">
+        <button id="show-kids-ranking-button" class="base-button ranking-toggle-button">
+            <i class="fas fa-trophy"></i> Top 50 Kids
+        </button>
+        <button id="show-adults-ranking-button" class="base-button ranking-toggle-button">
+            <i class="fas fa-trophy"></i> Top 50 Adulto
+        </button>
+    </div>
+
+    <div id="dynamic-competition-ranking-display" style="display: none;">
+        <div id="ranking-kids-area-dynamic" class="ranking-section">
+            <h2><i class="fas fa-trophy"></i> Ranking Kids (Top 50)</h2>
+            <ol id="ranking-kids-list-dynamic" class="ranking-list"></ol>
+        </div>
+        <div id="ranking-adults-area-dynamic" class="ranking-section" style="display: none;">
+            <h2><i class="fas fa-trophy"></i> Ranking Adulto (Top 50)</h2>
+            <ol id="ranking-adults-list-dynamic" class="ranking-list"></ol>
+        </div>
+    </div>
+
+    <button id="back-to-main-from-competition-mode" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
+  </div>
+
+  <div id="game-container" class="card-container">
+    <button id="settings-icon" class="settings-icon" data-target-screen="game"><i class="fas fa-cog"></i></button>
+    <div id="status">
+      <p id="timer">Tempo: <span id="timer-value">60s</span></p>
+      <div id="time-bar-container"><div id="time-bar"></div></div>
+      <p id="score">Pontos: <span id="score-value">0</span></p>
+      <div id="streak-indicator" style="display: none;">
+          <i class="fas fa-star"></i>
+          <span id="streak-count"></span>
+      </div>
+    </div>
+    <div id="question-area">
+      <p id="difficulty-level"></p>
+      <p id="question">Prepare-se para a aventura!</p>
+      <input type="text" id="player-name-input" placeholder="Nome e Sobrenome (ex: João Silva)" maxlength="40" pattern="[A-Za-zÀ-ú\s]+" title="Por favor, digite seu nome e sobrenome (ex: João Silva).">
+      <p id="message"></p>
+    </div>
+    <div id="answer-buttons-container">
+        <button class="answer-button base-button" data-value="0"></button>
+        <button class="answer-button base-button" data-value="0"></button>
+        <button class="answer-button base-button" data-value="0"></button>
+    </div>
+    <button id="explain-concept-button" class="base-button" style="display: none;"><i class="fas fa-lightbulb"></i> Explicar Conceito</button>
+    <button id="start-game-button" class="base-button green-button"><i class="fas fa-play"></i> Começar Jogo</button>
+    <button id="play-again" class="base-button" style="display: none;"><i class="fas fa-redo-alt"></i> Jogar Novamente</button>
+  </div>
+
+  <div id="rankings-container" class="card-container">
+    <button class="settings-icon" data-target-screen="rankings"><i class="fas fa-cog"></i></button>
+    <div class="ranking-lists-wrapper">
+        <div id="ranking-kids-area" class="ranking-section" style="display: none;">
+          <h2><i class="fas fa-trophy"></i> Ranking Kids (Top 50)</h2>
+          <ol id="ranking-kids-list" class="ranking-list"></ol>
+        </div>
+        <div id="ranking-adults-area" class="ranking-section" style="display: none;">
+          <h2><i class="fas fa-trophy"></i> Ranking Adulto (Top 50)</h2>
+          <ol id="ranking-adults-list" class="ranking-list"></ol>
+        </div>
+    </div>
+    
+    <div class="share-buttons-container">
+        <button id="share-score-whatsapp" class="base-button share-button whatsapp-button">
+            <i class="fab fa-whatsapp"></i> Compartilhar Pontuação
+        </button>
+        </div>
+
+    <button id="ranking-donate-button" class="base-button back-button"><span class="animated-donate-text"><i class="fas fa-dollar-sign"></i> Incentive o App <i class="fas fa-heart"></i></span></button>
+    <button id="back-to-main-from-ranking" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
+  </div>
+
+  <div id="my-progress-container" class="card-container">
+    <button class="settings-icon" data-target-screen="my-progress"><i class="fas fa-cog"></i></button>
+    <h3><i class="fas fa-chart-line"></i> Meu Progresso</h3>
+    <div class="player-stats-grid">
+        <div class="stat-item">
+            <span class="stat-icon"><i class="fas fa-user"></i></span>
+            <span class="stat-label">Nome:</span>
+            <span id="stat-player-name" class="stat-value">N/A</span>
+        </div>
+        <div class="stat-item highlight-stat">
+            <span class="stat-icon"><i class="fas fa-star"></i></span>
+            <span class="stat-label">Maior Pontuação:</span>
+            <span id="stat-highest-score" class="stat-value">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-icon"><i class="fas fa-gamepad"></i></span>
+            <span class="stat-label">Total de Jogos:</span>
+            <span id="stat-total-games" class="stat-value">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-icon"><i class="fas fa-question-circle"></i></span>
+            <span class="stat-label">Perguntas Respondidas:</span>
+            <span id="stat-total-questions" class="stat-value">0</span>
+        </div>
+        <div class="stat-item highlight-stat">
+            <span class="stat-icon"><i class="fas fa-check-circle"></i></span>
+            <span class="stat-label">Respostas Corretas:</span>
+            <span id="stat-total-correct" class="stat-value">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-icon"><i class="fas fa-percent"></i></span>
+            <span class="stat-label">Taxa de Acerto:</span>
+            <span id="stat-accuracy" class="stat-value">0%</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-icon"><i class="fas fa-clock"></i></span>
+            <span class="stat-label">Última Partida:</span>
+            <span id="stat-last-played" class="stat-value">N/A</span>
+        </div>
+    </div>
+
+    <div class="achievements-section">
+        <h4><i class="fas fa-medal"></i> Minhas Conquistas</h4>
+        <div id="achievements-grid" class="achievements-grid">
+            </div>
+    </div>
+
+    <button id="back-to-main-from-progress" class="base-button back-button"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</button>
+  </div>
+
+  <div id="settings-modal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="close-button" id="close-settings-modal"><i class="fas fa-times"></i></button>
+      <h3><i class="fas fa-cog"></i> Configurações</h3>
+      <div class="setting-item">
+        <span><i class="fas fa-volume-up"></i> Som</span>
+        <div class="toggle-switch" id="toggle-sound"><div class="toggle-button"></div></div>
+      </div>
+      <div class="setting-item">
+        <span><i class="fas fa-music"></i> Música de Fundo</span>
+        <div class="toggle-switch" id="toggle-bgm"><div class="toggle-button"></div></div>
+      </div>
+      <div class="setting-item">
+        <span><i class="fas fa-vial"></i> Vibração</span>
+        <div class="toggle-switch" id="toggle-vibration"><div class="toggle-button"></div></div>
+      </div>
+      <div class="setting-item button-item">
+        <button id="settings-home-button" class="base-button settings-action-button green-button"><i class="fas fa-home"></i> Início</button>
+      </div>
+      <div class="setting-item button-item">
+        <button id="settings-replay-button" class="base-button settings-action-button green-button"><i class="fas fa-redo-alt"></i> Jogar Novamente</button>
+      </div>
+      <div class="setting-item button-item">
+        <button id="settings-donate-button" class="base-button settings-action-button blue-button"><span class="animated-donate-text"><i class="fas fa-dollar-sign"></i> Incentive o App <i class="fas fa-heart"></i></span></button>
+      </div>
+      <div class="setting-item button-item">
+        <button id="settings-more-button" class="base-button settings-action-button blue-button"><i class="fas fa-ellipsis-h"></i> Mais Opções</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="explanation-modal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="close-button" id="close-explanation-modal"><i class="fas fa-times"></i></button>
+      <h3><i class="fas fa-lightbulb"></i> Explicação do Conceito</h3>
+      <p id="explanation-text">Carregando explicação...</p>
+      <button class="base-button settings-action-button blue-button" id="explanation-ok-button"><i class="fas fa-check-circle"></i> Entendi!</button>
+    </div>
+  </div>
+
+  <div id="about-modal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="close-button" id="close-about-modal"><i class="fas fa-times"></i></button>
+        <div class="info-content">
+            <h3><i class="fas fa-info-circle"></i> Sobre o Desafio dos 60 Segundos</h3>
+            <p>
+                Bem-vindo ao Desafio dos 60 Segundos! Sua missão é simples: responder ao maior número de problemas de matemática que conseguir em apenas um minuto.
+            </p>
+            <p>
+                Teste sua agilidade mental, compita por um lugar no ranking e, o mais importante, divirta-se enquanto exercita seu cérebro. Preparado para o desafio?
+            </p>
+        </div>
+    </div>
+  </div>
+
+  <div id="how-to-play-modal" class="modal-overlay">
+      <div class="modal-content">
+          <button class="close-button" id="close-how-to-play-modal"><i class="fas fa-times"></i></button>
+          <div class="info-content">
+              <h3><i class="fas fa-question-circle"></i> Como Jogar</h3>
+              <ul>
+                  <li>Escolha um modo: <strong>Praticar</strong> para treinar ou <strong>Desafie-se</strong> para competir no ranking.</li>
+                  <li>Digite seu nome e sobrenome para que seu progresso e pontuações sejam salvos.</li>
+                  <li>Responda às questões o mais rápido que puder. Cada acerto vale pontos!</li>
+                  <li>No modo desafio, respostas rápidas podem render bônus de tempo.</li>
+                  <li>Acompanhe seu desempenho na tela "Meu Progresso" e veja sua posição no ranking.</li>
+              </ul>
+          </div>
+      </div>
+  </div>
+
+  <div id="why-play-modal" class="modal-overlay">
+      <div class="modal-content">
+          <button class="close-button" id="close-why-play-modal"><i class="fas fa-times"></i></button>
+          <div class="info-content">
+              <h3><i class="fas fa-brain"></i> Por Que Jogar?</h3>
+              <p>
+                  Exercitar a mente é tão importante quanto exercitar o corpo. Este jogo ajuda você a:
+              </p>
+              <ul>
+                  <li>Melhorar sua velocidade de cálculo e raciocínio lógico.</li>
+                  <li>Aumentar o foco e a concentração sob pressão.</li>
+                  <li>Manter seu cérebro ativo e saudável de uma forma divertida.</li>
+                  <li>Desafiar a si mesmo e competir de forma amigável com outros jogadores.</li>
+              </ul>
+          </div>
+      </div>
+  </div>
+
+  <div id="achievement-notification" style="display: none;">
+      <span id="achievement-notification-icon" class="achievement-icon"></span>
+      <span id="achievement-notification-text"></span>
+  </div>
+
+  <div style="width: 100%; max-width: 728px; margin: 20px auto; text-align: center;">
+    <ins class="adsbygoogle"
+         style="display:block; width:100%; height:auto; min-height:90px;"
+         data-ad-client="ca-pub-9968425306160320"
+         data-ad-slot="9401721950"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+  </div>
+  <div style="width: 100%; max-width: 728px; margin: 20px auto; text-align: center;">
+    <ins class="adsbygoogle"
+         style="display:block; width:100%; height:auto; min-height:90px;"
+         data-ad-client="ca-pub-9968425306160320"
+         data-ad-slot="SEU_SLOT_ID_2"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+  </div>
+  <div style="width: 100%; max-width: 728px; margin: 20px auto 0 auto; text-align: center;">
+    <ins class="adsbygoogle"
+         style="display:block; width:100%; height:auto; min-height:90px;"
+         data-ad-client="ca-pub-9968425306160320"
+         data-ad-slot="SEU_SLOT_ID_3"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script> (adsbygoogle = window.adsbygoogle || []).push({}); </script>
+  </div>
+
+  <script>
+    console.log("App started successfully!"); // Log to confirm script initialization
+
+    // Firebase configuration for "Desafio dos 60 Segundos"
+    const firebaseConfig = {
+      apiKey: "AIzaSyA4PWRt-22S8HGc6GS1m-4Wa9hYsh5Zbo",
+      authDomain: "desafio-dos-60-segundos.firebaseapp.com",
+      projectId: "desafio-dos-60-segundos",
+      storageBucket: "desafio-dos-60-segundos.firebaseapp.com",
+      messagingSenderId: "1054471364887",
+      appId: "1:1054471364887:web:332b4f28814e9f5d0cd752",
+      measurementId: "G-N4PWJ72YCJ"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = app.firestore(); 
+
+    // DOM Elements (centralized for easy access)
+    const elements = {
+      splashScreen: document.getElementById('splash-screen'),
+      mainMenu: document.getElementById('main-menu'),
+      operationSelectionContainer: document.getElementById('operation-selection-container'),
+      modeSelectionContainer: document.getElementById('mode-selection-container'),
+      competitionModeSelectionContainer: document.getElementById('competition-mode-selection-container'),
+      gameContainer: document.getElementById('game-container'),
+      rankingsContainer: document.getElementById('rankings-container'),
+      myProgressContainer: document.getElementById('my-progress-container'),
+
+      questionElement: document.getElementById('question'),
+      playerNameInput: document.getElementById('player-name-input'),
+      messageElement: document.getElementById('message'),
+      timerValueElement: document.getElementById('timer-value'),
+      scoreValueElement: document.getElementById('score-value'),
+      startGameButton: document.getElementById('start-game-button'),
+      playAgainButton: document.getElementById('play-again'),
+      timeBar: document.getElementById('time-bar'),
+      difficultyLevelElement: document.getElementById('difficulty-level'),
+
+      modeKidsButton: document.getElementById('mode-kids-button'),
+      modeAdultsButton: document.getElementById('mode-adults-button'),
+
+      // Ranking lists for full ranking screen (post-quiz)
+      rankingKidsList: document.getElementById('ranking-kids-list'),
+      rankingAdultsList: document.getElementById('ranking-adults-list'),
+      // Ranking areas for full ranking screen (post-quiz)
+      rankingKidsArea: document.getElementById('ranking-kids-area'), 
+      rankingAdultsArea: document.getElementById('ranking-adults-area'), 
+
+      // Ranking lists for dynamic display on competition screen
+      rankingKidsListDynamic: document.getElementById('ranking-kids-list-dynamic'),
+      rankingAdultsListDynamic: document.getElementById('ranking-adults-list-dynamic'),
+      // Ranking areas for dynamic display on competition screen
+      rankingKidsAreaDynamic: document.getElementById('ranking-kids-area-dynamic'),
+      rankingAdultsAreaDynamic: document.getElementById('ranking-adults-area-dynamic'),
+      dynamicCompetitionRankingDisplay: document.getElementById('dynamic-competition-ranking-display'),
+
+
+      answerButtonsContainer: document.getElementById('answer-buttons-container'),
+      answerButtons: document.querySelectorAll('#answer-buttons-container button'),
+
+      practiceButton: document.getElementById('practice-button'),
+      competitionButton: document.getElementById('competition-button'),
+      myProgressButton: document.getElementById('my-progress-button'),
+      rankingDonateButton: document.getElementById('ranking-donate-button'),
+      
+      // ** A CORREÇÃO ESTÁ AQUI **
+      backToMainFromOperationButton: document.getElementById('back-to-main-from-operation'),
+      backToOperationSelectionButton: document.getElementById('back-to-operation-selection'),
+      
+      backToMainFromCompetitionModeButton: document.getElementById('back-to-main-from-competition-mode'),
+      backToMainFromRankingButton: document.getElementById('back-to-main-from-ranking'),
+      backToMainFromProgressButton: document.getElementById('back-to-main-from-progress'),
+
+      // New buttons to toggle ranking on competition screen
+      showKidsRankingButton: document.getElementById('show-kids-ranking-button'),
+      showAdultsRankingButton: document.getElementById('show-adults-ranking-button'),
+
+
+      settingsIcons: document.querySelectorAll('.settings-icon'),
+      settingsModal: document.getElementById('settings-modal'),
+      closeSettingsModalButton: document.getElementById('close-settings-modal'),
+      toggleSound: document.getElementById('toggle-sound'),
+      toggleBGM: document.getElementById('toggle-bgm'),
+      toggleVibration: document.getElementById('toggle-vibration'),
+      settingsHomeButton: document.getElementById('settings-home-button'),
+      settingsReplayButton: document.getElementById('settings-replay-button'),
+      settingsDonateButton: document.getElementById('settings-donate-button'),
+      settingsMoreButton: document.getElementById('settings-more-button'),
+
+      explainConceptButton: document.getElementById('explain-concept-button'),
+      explanationModal: document.getElementById('explanation-modal'),
+      closeExplanationModalButton: document.getElementById('close-explanation-modal'),
+      explanationText: document.getElementById('explanation-text'),
+      explanationOkButton: document.getElementById('explanation-ok-button'),
+
+      streakIndicator: document.getElementById('streak-indicator'),
+      streakCount: document.getElementById('streak-count'),
+
+      // Elements of My Progress screen
+      statPlayerName: document.getElementById('stat-player-name'),
+      statHighestScore: document.getElementById('stat-highest-score'),
+      statTotalGames: document.getElementById('stat-total-games'),
+      statTotalQuestions: document.getElementById('stat-total-questions'),
+      statTotalCorrect: document.getElementById('stat-total-correct'),
+      statAccuracy: document.getElementById('stat-accuracy'),
+      statLastPlayed: document.getElementById('stat-last-played'),
+      achievementsGrid: document.getElementById('achievements-grid'),
+
+      // Achievement notification elements
+      achievementNotification: document.getElementById('achievement-notification'),
+      achievementNotificationIcon: document.getElementById('achievement-notification-icon'),
+      achievementNotificationText: document.getElementById('achievement-notification-text'),
+
+      // Share Button
+      shareScoreWhatsappButton: document.getElementById('share-score-whatsapp'),
+      
+      // Info Modals and Buttons
+      aboutButton: document.getElementById('about-button'),
+      howToPlayButton: document.getElementById('how-to-play-button'),
+      whyPlayButton: document.getElementById('why-play-button'),
+      aboutModal: document.getElementById('about-modal'),
+      howToPlayModal: document.getElementById('how-to-play-modal'),
+      whyPlayModal: document.getElementById('why-play-modal'),
+      closeAboutModalButton: document.getElementById('close-about-modal'),
+      closeHowToPlayModalButton: document.getElementById('close-how-to-play-modal'),
+      closeWhyPlayModalButton: document.getElementById('close-why-play-modal'),
+    };
+
+    // Game State Variables
+    let currentGameMode = null; // 'practice_kids', 'practice_adults', 'competition_kids', 'competition_adults'
+    let correctAnswersCount = 0; // Correct answers in current game
+    let totalQuestionsAnsweredCurrentGame = 0; // Questions answered in current game
+    let consecutiveCorrectAnswersCount = 0;
+    let isSoundOn = true;
+    let isBGMOn = true;
+    let isVibrationOn = true;
+    let currentQuestion;
+    let score = 0;
+    let timeLeft = 60;
+    let timerInterval;
+    let gameActive = false;
+    let currentPlayerName = '';
+    let questionStartTime; 
+    let selectedOperationType = 'all'; // Default to all operations for practice mode
+
+    // Audio Files (should be in the same folder or accessible path)
+    const correctSound = new Audio('correct.mp3'); 
+    const incorrectSound = new Audio('incorrect.mp3');
+
+    // Difficulty Names
+    const difficultyNames = {
+        1: "Iniciante", 
+        2: "Amador",   
+        3: "Desafiador", 
+        4: "Mestre",    
+        "kids_easy": "Fácil",
+    };
+
+    // Achievement Definitions
+    const achievements = {
+        'first_correct': {
+            name: 'Primeiro Acerto',
+            description: 'Acerte sua primeira pergunta!',
+            icon: '🎯',
+            check: (stats) => stats.totalCorrectAnswers >= 1
+        },
+        'calc_master': {
+            name: 'Mestre dos Cálculos',
+            description: 'Acerte 50 perguntas no total.',
+            icon: '🧠',
+            check: (stats) => stats.totalCorrectAnswers >= 50
+        },
+        'game_veteran': {
+            name: 'Veterano do Jogo',
+            description: 'Jogue 10 partidas no total.',
+            icon: '🎮',
+            check: (stats) => stats.totalGamesPlayed >= 10
+        },
+        'accuracy_master': {
+            name: 'Mestre da Precisão',
+            description: 'Mantenha 80% de acerto em 20 ou mais perguntas.',
+            icon: '✅',
+            check: (stats) => stats.totalQuestionsAnswered >= 20 && (stats.totalCorrectAnswers / stats.totalQuestionsAnswered) >= 0.8
+        }
+    };
+
+    // --- Screen Navigation Functions ---
+    function hideAllScreens() {
+        Object.values(elements).forEach(el => {
+            if (el && el.classList && el.classList.contains('card-container')) { 
+                el.classList.remove('active');
+                el.style.display = 'none';
+            }
+        });
+        if (elements.splashScreen) { 
+            elements.splashScreen.classList.remove('active', 'fade-out');
+            elements.splashScreen.style.display = 'none';
+        }
+        if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none'; 
+        hideAllModals();
+    }
+    
+    function hideAllModals() {
+        const modals = [
+            elements.settingsModal, 
+            elements.explanationModal, 
+            elements.aboutModal, 
+            elements.howToPlayModal, 
+            elements.whyPlayModal
+        ];
+        modals.forEach(modal => {
+            if (modal) modal.classList.remove('show');
+        });
+        hideAchievementNotification();
+    }
+
+    function showScreen(screenElement, animationDelay = 0) {
+        hideAllScreens();
+        setTimeout(() => {
+            if (screenElement) { 
+                screenElement.style.display = 'flex';
+                screenElement.classList.add('active');
+            }
+        }, animationDelay);
+    }
+
+    function showSplashScreen() {
+        if (elements.splashScreen) { 
+            elements.splashScreen.style.display = 'flex';
+            elements.splashScreen.classList.add('active');
+            elements.splashScreen.classList.remove('fade-out');
+            setTimeout(() => {
+                if (elements.splashScreen) elements.splashScreen.classList.add('fade-out'); 
+                setTimeout(() => showMainMenu(), 500); 
+            }, 2000);
+        } else {
+            console.error("splashScreen element not found. Proceeding directly to main menu.");
+            showMainMenu();
+        }
+    }
+
+    function showMainMenu() {
+        try {
+            showScreen(elements.mainMenu);
+            if (elements.modeKidsButton) elements.modeKidsButton.classList.remove('active');
+            if (elements.modeAdultsButton) elements.modeAdultsButton.classList.remove('active');
+            if (elements.questionElement) {
+                elements.questionElement.textContent = 'Prepare-se para a aventura!';
+                elements.questionElement.classList.add('prepare-text-animated');
+                elements.questionElement.addEventListener('animationend', function handler() {
+                    elements.questionElement.classList.remove('prepare-text-animated');
+                    elements.questionElement.removeEventListener('animationend', handler);
+                });
+            }
+            if (elements.difficultyLevelElement) elements.difficultyLevelElement.textContent = '';
+            if (elements.playerNameInput) elements.playerNameInput.style.display = 'none';
+            if (elements.startGameButton) elements.startGameButton.style.display = 'none';
+            if (elements.playAgainButton) elements.playAgainButton.style.display = 'none';
+            if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
+            if (elements.messageElement) {
+                elements.messageElement.textContent = '';
+                elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+            }
+            if (elements.streakIndicator) {
+                elements.streakIndicator.classList.remove('show');
+                elements.streakIndicator.style.display = 'none';
+            }
+            unsubscribeAllRankings(); // Ensure previous ranking observers are cleaned up
+        } catch (e) {
+            console.error("Error displaying main menu:", e);
+            document.body.innerHTML = `
+                <div style="text-align: center; color: var(--danger-red); margin-top: 50px;">
+                    <h1>Error loading game!</h1>
+                    <p>Please try again or contact support.</p>
+                    <p>Error details: ${e.message}</p>
+                </div>
+            `;
+        }
+    }
+
+    function showOperationSelection() { 
+        showScreen(elements.operationSelectionContainer);
+        selectedOperationType = null;
+        document.querySelectorAll('#operation-selection-container .operation-buttons button').forEach(btn => btn.classList.remove('active'));
+        if (elements.streakIndicator) {
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
+        unsubscribeAllRankings();
+    }
+
+    function selectOperation(operation) { 
+        selectedOperationType = operation;
+        document.querySelectorAll('#operation-selection-container .operation-buttons button').forEach(btn => {
+            if (btn) { 
+                if (btn.dataset.op === operation) btn.classList.add('active');
+                else btn.classList.remove('active');
+            }
+        });
+        showModeSelectionForPractice();
+    }
+
+    function showModeSelectionForPractice() { 
+        showScreen(elements.modeSelectionContainer);
+        currentGameMode = 'practice'; 
+        if (elements.modeKidsButton) elements.modeKidsButton.classList.remove('active');
+        if (elements.modeAdultsButton) elements.modeAdultsButton.classList.remove('active');
+        if (elements.streakIndicator) {
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
+        unsubscribeAllRankings();
+    }
+
+    function showCompetitionModeSelection() { 
+        unsubscribeAllRankings(); // Clear ranking listeners when entering this screen
+        showScreen(elements.competitionModeSelectionContainer);
+        currentGameMode = null;
+        if (elements.dynamicCompetitionRankingDisplay) elements.dynamicCompetitionRankingDisplay.style.display = 'none';
+        if (elements.rankingKidsAreaDynamic) elements.rankingKidsAreaDynamic.style.display = 'none';
+        if (elements.rankingAdultsAreaDynamic) elements.rankingAdultsAreaDynamic.style.display = 'none';
+        if (elements.streakIndicator) {
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
+    }
+
+    function showGameScreen() {
+        showScreen(elements.gameContainer);
+        if (elements.playerNameInput) elements.playerNameInput.style.display = 'inline-block';
+        if (elements.startGameButton) elements.startGameButton.style.display = 'inline-block';
+        if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none';
+        if (elements.playAgainButton) elements.playAgainButton.style.display = 'none';
+        if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
+        if (elements.messageElement) {
+            elements.messageElement.textContent = '';
+            elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+        }
+        if (elements.playerNameInput) {
+            elements.playerNameInput.value = ''; 
+            elements.playerNameInput.focus(); 
+        }
+        if (elements.questionElement) {
+            elements.questionElement.textContent = 'Prepare-se para a aventura!';
+            elements.questionElement.classList.add('prepare-text-animated');
+            elements.questionElement.addEventListener('animationend', function handler() {
+                elements.questionElement.classList.remove('prepare-text-animated');
+                elements.questionElement.removeEventListener('animationend', handler);
+            });
+        }
+        if (elements.difficultyLevelElement) elements.difficultyLevelElement.textContent = '';
+        if (elements.streakIndicator) {
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
+        unsubscribeAllRankings();
+    }
+
+    function showRankingsScreen(highlightPlayer = false) { 
+        unsubscribeAllRankings(); // Clear ranking listeners when entering this screen
+        showScreen(elements.rankingsContainer);
+        if (elements.rankingKidsArea) elements.rankingKidsArea.style.display = 'none';
+        if (elements.rankingAdultsArea) elements.rankingAdultsArea.style.display = 'none';
+
+        if (currentGameMode === 'competition_kids') {
+            if (elements.rankingKidsArea) elements.rankingKidsArea.style.display = 'block';
+            displayRanking('kids', elements.rankingKidsList, highlightPlayer, 50);
+        } else if (currentGameMode === 'competition_adults') {
+            if (elements.rankingAdultsArea) elements.rankingAdultsArea.style.display = 'block';
+            displayRanking('adults', elements.rankingAdultsList, highlightPlayer, 50);
+        } else { 
+            if (elements.rankingKidsArea) elements.rankingKidsArea.style.display = 'block';
+            if (elements.rankingAdultsArea) elements.rankingAdultsArea.style.display = 'block';
+            displayRanking('kids', elements.rankingKidsList, highlightPlayer, 50);
+            displayRanking('adults', elements.rankingAdultsList, highlightPlayer, 50);
+        }
+        if (elements.streakIndicator) {
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
+    }
+
+    function showMyProgressScreen() {
+        showScreen(elements.myProgressContainer);
+        if (elements.streakIndicator) {
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
+        unsubscribeAllRankings(); // Clear ranking listeners when entering this screen (prevention)
+        displayUserStats();
+    }
+
+    // --- Modal Functions ---
+    function showModal(modalElement) {
+        if(modalElement) modalElement.classList.add('show');
+    }
+
+    function hideModal(modalElement) {
+        if(modalElement) modalElement.classList.remove('show');
+    }
+    
+    function showSettingsModal(sourceScreenId) {
+        showModal(elements.settingsModal);
+        if (elements.settingsModal) { 
+            elements.settingsModal.dataset.sourceScreen = sourceScreenId;
+        }
+        if (elements.toggleSound) elements.toggleSound.classList.toggle('active', isSoundOn);
+        if (elements.toggleBGM) elements.toggleBGM.classList.toggle('active', isBGMOn);
+        if (elements.toggleVibration) elements.toggleVibration.classList.toggle('active', isVibrationOn);
+    }
+
+    function hideSettingsModal() { 
+        hideModal(elements.settingsModal);
+    }
+
+    async function showExplanationModal() {
+        showModal(elements.explanationModal);
+        if (elements.explanationText) elements.explanationText.textContent = 'Carregando explicação...';
+        const prompt = `Explique o conceito matemático por trás da operação "${currentQuestion.question}" de forma simples e didática, como se estivesse ensinando a uma criança. Foque no conceito e não apenas no cálculo. Seja conciso.`;
+        
+        try {
+            const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                if (elements.explanationText) elements.explanationText.textContent = result.candidates[0].content.parts[0].text;
+            } else {
+                if (elements.explanationText) elements.explanationText.textContent = 'Não foi possível gerar a explicação. Tente novamente.';
+                console.error('Unexpected API Gemini response structure:', result);
+            }
+        } catch (error) {
+            if (elements.explanationText) elements.explanationText.textContent = 'Erro ao conectar à IA. Verifique sua conexão ou tente mais tarde.';
+            console.error('Error calling Gemini API:', error);
+        }
+    }
+
+    function hideExplanationModal() { 
+        hideModal(elements.explanationModal);
+    }
+
+    function handleToggle(element, stateVar) {
+        if (element) { 
+            element.classList.toggle('active');
+            return element.classList.contains('active');
+        }
+        return stateVar; 
+    }
+
+    // --- Game Logic Functions ---
+    function selectGameModeAndStart(mode) { 
+        currentGameMode = mode;
+        correctAnswersCount = 0;
+        totalQuestionsAnsweredCurrentGame = 0;
+        consecutiveCorrectAnswersCount = 0;
+        
+        if (mode.startsWith('practice_')) {
+            if (elements.modeKidsButton) elements.modeKidsButton.classList.remove('active');
+            if (elements.modeAdultsButton) elements.modeAdultsButton.classList.remove('active');
+            if (mode === 'practice_kids' && elements.modeKidsButton) elements.modeKidsButton.classList.add('active');
+            else if (mode === 'practice_adults' && elements.modeAdultsButton) elements.modeAdultsButton.classList.add('active');
+        }
+        showGameScreen();
+    }
+
+    // Logic: Save/Update Ranking with Unique Name and Highest Score
+    async function saveRanking(player, score, mode, difficultyLevelPlayed) {
+        let collectionName;
+        if (mode.startsWith('competition_')) {
+            collectionName = `ranking_${mode.includes('kids') ? 'kids' : 'adults'}`;
+        } else {
+            console.warn("Game mode not recognized for ranking saving:", mode);
+            return;
+        }
+        
+        const collectionRef = db.collection(collectionName);
+        const normalizedPlayerName = player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+        const playerDocRef = collectionRef.doc(normalizedPlayerName);
+
+        try {
+            const docSnap = await playerDocRef.get();
+
+            if (docSnap.exists) {
+                const existingScore = docSnap.data().score;
+                if (score > existingScore) {
+                    await playerDocRef.update({
+                        player: player,
+                        score: score,
+                        difficulty: difficultyLevelPlayed,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+            } else {
+                await playerDocRef.set({
+                    player: player,
+                    score: score,
+                    difficulty: difficultyLevelPlayed,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+        } catch (error) {
+            console.error("Error saving/updating ranking: ", error);
+        }
+    }
+
+    // Function to save/update player stats
+    async function saveUserStats(player, currentScore, currentCorrectAnswers, currentTotalQuestions, gameMode) {
+        if (!player || player.trim() === '' || !player.includes(' ')) {
+            console.warn("Invalid player name for saving stats.");
+            return;
+        }
+
+        const statsCollectionRef = db.collection('user_stats');
+        const normalizedPlayerName = player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+        const playerStatsDocRef = statsCollectionRef.doc(normalizedPlayerName);
+
+        try {
+            const docSnap = await playerStatsDocRef.get();
+            let dataToUpdate = {};
+            let existingUnlockedAchievements = [];
+
+            if (docSnap.exists) {
+                const existingStats = docSnap.data();
+                existingUnlockedAchievements = existingStats.unlockedAchievements || [];
+                dataToUpdate = {
+                    totalGamesPlayed: (existingStats.totalGamesPlayed || 0) + 1,
+                    totalCorrectAnswers: (existingStats.totalCorrectAnswers || 0) + currentCorrectAnswers,
+                    totalQuestionsAnswered: (existingStats.totalQuestionsAnswered || 0) + currentTotalQuestions,
+                    highestScore: Math.max(existingStats.highestScore || 0, currentScore),
+                    lastPlayedTimestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastGameMode: gameMode,
+                    unlockedAchievements: existingUnlockedAchievements
+                };
+                // Store last ranking position for Kids and Adults
+                if (gameMode === 'competition_kids') {
+                    dataToUpdate.previousRankKids = existingStats.lastRankKids || null;
+                    dataToUpdate.lastRankKids = await getPlayerRank(normalizedPlayerName, 'kids');
+                } else if (gameMode === 'competition_adults') {
+                    dataToUpdate.previousRankAdults = existingStats.lastRankAdults || null;
+                    dataToUpdate.lastRankAdults = await getPlayerRank(normalizedPlayerName, 'adults');
+                }
+                await playerStatsDocRef.update(dataToUpdate);
+            } else {
+                dataToUpdate = {
+                    player: player,
+                    totalGamesPlayed: 1,
+                    totalCorrectAnswers: currentCorrectAnswers,
+                    totalQuestionsAnswered: currentTotalQuestions,
+                    highestScore: currentScore,
+                    lastPlayedTimestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    lastGameMode: gameMode,
+                    unlockedAchievements: []
+                };
+                // Store initial ranking position for Kids and Adults
+                if (gameMode === 'competition_kids') {
+                    dataToUpdate.previousRankKids = null; 
+                    dataToUpdate.lastRankKids = await getPlayerRank(normalizedPlayerName, 'kids');
+                } else if (gameMode === 'competition_adults') {
+                    dataToUpdate.previousRankAdults = null; 
+                    dataToUpdate.lastRankAdults = await getPlayerRank(normalizedPlayerName, 'adults');
+                }
+                await playerStatsDocRef.set(dataToUpdate);
+            }
+            checkAndDisplayAchievements(normalizedPlayerName, dataToUpdate, existingUnlockedAchievements);
+
+        } catch (error) {
+            console.error("Error saving/updating player stats: ", error);
+        }
+    }
+
+    // Function to get current player rank
+    async function getPlayerRank(normalizedPlayerName, mode) {
+        const collectionName = `ranking_${mode}`;
+        const collectionRef = db.collection(collectionName);
+        const playerDocRef = collectionRef.doc(normalizedPlayerName);
+
+        try {
+            const docSnap = await playerDocRef.get();
+            if (!docSnap.exists) {
+                return null; 
+            }
+            const playerScore = docSnap.data().score;
+
+            // Count how many players have a higher score
+            const higherScoresSnapshot = await collectionRef.where('score', '>', playerScore).get();
+            const rank = higherScoresSnapshot.size + 1; 
+            return rank;
+        } catch (error) {
+            console.error(`Error getting player rank for mode ${mode}:`, error);
+            return null;
+        }
+    }
+
+    // Function to check and display achievements
+    async function checkAndDisplayAchievements(normalizedPlayerName, currentStats, previouslyUnlockedAchievements) {
+        const playerStatsDocRef = db.collection('user_stats').doc(normalizedPlayerName);
+        let newUnlockedAchievements = [];
+
+        for (const achievementId in achievements) {
+            const achievement = achievements[achievementId];
+            if (!previouslyUnlockedAchievements.includes(achievementId) && achievement.check(currentStats)) {
+                newUnlockedAchievements.push(achievementId);
+                showAchievementNotification(achievement.icon, achievement.name);
+            }
+        }
+
+        if (newUnlockedAchievements.length > 0) {
+            const updatedAchievements = [...previouslyUnlockedAchievements, ...newUnlockedAchievements];
+            await playerStatsDocRef.update({
+                unlockedAchievements: updatedAchievements
+            });
+        }
+    }
+
+    // Function to show achievement notification
+    function showAchievementNotification(icon, name) {
+        if (elements.achievementNotificationIcon) elements.achievementNotificationIcon.textContent = icon;
+        if (elements.achievementNotificationText) elements.achievementNotificationText.textContent = `Conquista Desbloqueada: ${name}!`;
+        if (elements.achievementNotification) {
+            elements.achievementNotification.style.display = 'flex';
+            elements.achievementNotification.classList.remove('hide');
+            elements.achievementNotification.classList.add('show');
+
+            setTimeout(() => {
+                if (elements.achievementNotification) {
+                    elements.achievementNotification.classList.remove('show');
+                    elements.achievementNotification.classList.add('hide');
+                    elements.achievementNotification.addEventListener('animationend', function handler() {
+                        if (elements.achievementNotification) elements.achievementNotification.style.display = 'none';
+                        elements.achievementNotification.removeEventListener('animationend', handler);
+                    }, { once: true });
+                }
+            }, 3000);
+        }
+    }
+
+    // Function to hide achievement notification
+    function hideAchievementNotification() {
+        if (elements.achievementNotification) {
+            elements.achievementNotification.style.display = 'none';
+            elements.achievementNotification.classList.remove('show', 'hide');
+        }
+    }
+
+
+    // Function to display player stats on "My Progress" screen
+    async function displayUserStats() {
+        if (!db) {
+            console.error("Firebase Firestore not initialized.");
+            return;
+        }
+
+        const storedPlayerName = localStorage.getItem('lastPlayerName');
+        if (!storedPlayerName || storedPlayerName.trim() === '' || !storedPlayerName.includes(' ')) {
+            if (elements.statPlayerName) elements.statPlayerName.textContent = 'N/A';
+            if (elements.statHighestScore) elements.statHighestScore.textContent = '0';
+            if (elements.statTotalGames) elements.statTotalGames.textContent = '0';
+            if (elements.statTotalQuestions) elements.statTotalQuestions.textContent = '0';
+            if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = '0';
+            if (elements.statAccuracy) elements.statAccuracy.textContent = '0%';
+            if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'N/A';
+            if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Jogue para desbloquear conquistas!</li>';
+            renderAchievements([]);
+            return;
+        }
+
+        const normalizedPlayerName = storedPlayerName.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+        const playerStatsDocRef = db.collection('user_stats').doc(normalizedPlayerName);
+
+        try {
+            const docSnap = await playerStatsDocRef.get();
+            if (docSnap.exists) {
+                const stats = docSnap.data();
+                if (elements.statPlayerName) elements.statPlayerName.textContent = stats.player || storedPlayerName;
+                if (elements.statHighestScore) elements.statHighestScore.textContent = stats.highestScore || 0;
+                if (elements.statTotalGames) elements.statTotalGames.textContent = stats.totalGamesPlayed || 0;
+                if (elements.statTotalQuestions) elements.statTotalQuestions.textContent = stats.totalQuestionsAnswered || 0;
+                if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = stats.totalCorrectAnswers || 0;
+
+                const accuracy = stats.totalQuestionsAnswered > 0 
+                    ? ((stats.totalCorrectAnswers / stats.totalQuestionsAnswered) * 100).toFixed(2) 
+                    : 0;
+                if (elements.statAccuracy) elements.statAccuracy.textContent = `${accuracy}%`;
+
+                if (stats.lastPlayedTimestamp) {
+                    const date = stats.lastPlayedTimestamp.toDate();
+                    if (elements.statLastPlayed) elements.statLastPlayed.textContent = date.toLocaleString('pt-BR');
+                } else {
+                    if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'N/A';
+                }
+                renderAchievements(stats.unlockedAchievements || []);
+            } else {
+                if (elements.statPlayerName) elements.statPlayerName.textContent = storedPlayerName;
+                if (elements.statHighestScore) elements.statHighestScore.textContent = '0';
+                if (elements.statTotalGames) elements.statTotalGames.textContent = '0';
+                if (elements.statTotalQuestions) elements.statTotalQuestions.textContent = '0';
+                if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = '0';
+                if (elements.statAccuracy) elements.statAccuracy.textContent = '0%';
+                if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'N/A';
+                if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Jogue para desbloquear conquistas!</li>';
+                renderAchievements([]);
+            }
+        } catch (error) {
+            console.error("Error loading player stats: ", error);
+            if (elements.statPlayerName) elements.statPlayerName.textContent = 'Erro ao carregar';
+            if (elements.statHighestScore) elements.statHighestScore.textContent = 'Erro';
+            if (elements.statTotalGames) elements.statTotalGames.textContent = 'Erro';
+            if (elements.statTotalQuestions) elements.statTotalQuestions.textContent = 'Erro';
+            if (elements.statTotalCorrect) elements.statTotalCorrect.textContent = 'Erro';
+            if (elements.statAccuracy) elements.statAccuracy.textContent = 'Erro';
+            if (elements.statLastPlayed) elements.statLastPlayed.textContent = 'Erro';
+            if (elements.achievementsGrid) elements.achievementsGrid.innerHTML = '<li>Erro ao carregar conquistas.</li>';
+        }
+    }
+
+    // Function to render achievements grid
+    function renderAchievements(unlockedIds) {
+        if (!elements.achievementsGrid) return;
+        elements.achievementsGrid.innerHTML = '';
+        for (const id in achievements) {
+            const achievement = achievements[id];
+            const item = document.createElement('div');
+            item.classList.add('achievement-item');
+            if (unlockedIds.includes(id)) {
+                item.classList.add('unlocked');
+            }
+            item.setAttribute('title', `${achievement.name}: ${achievement.description}`);
+
+            // Add Font Awesome icon for achievement
+            let iconHtml = '';
+            if (id === 'first_correct') { 
+                iconHtml = '<i class="fas fa-bullseye"></i>';
+            } else if (id === 'calc_master') {
+                iconHtml = '<i class="fas fa-brain"></i>';
+            } else if (id === 'game_veteran') {
+                iconHtml = '<i class="fas fa-gamepad"></i>';
+            } else if (id === 'accuracy_master') {
+                iconHtml = '<i class="fas fa-check-double"></i>';
+            } else {
+                iconHtml = achievement.icon; 
+            }
+
+
+            item.innerHTML = `
+                <span class="achievement-icon">${iconHtml}</span>
+                <span class="achievement-name">${achievement.name}</span>
+            `;
+            elements.achievementsGrid.appendChild(item);
+        }
+    }
+
+    // Function to unsubscribe all Firestore ranking subscriptions
+    function unsubscribeAllRankings() {
+        // List of ranking elements that may have observers
+        const rankingListElements = [
+            elements.rankingKidsList,
+            elements.rankingAdultsList,
+            elements.rankingKidsListDynamic,
+            elements.rankingAdultsListDynamic
+        ];
+
+        rankingListElements.forEach(listElement => {
+            // Check if element exists and has an unsubscribe function stored
+            if (listElement && typeof listElement.dataset.unsubscribe === 'function') { 
+                listElement.dataset.unsubscribe(); 
+                delete listElement.dataset.unsubscribe; 
+                console.log(`Unsubscribed from ${listElement.id}`);
+            }
+        });
+    }
+
+
+    // Function to display rankings (now more flexible for different targets)
+    async function displayRanking(mode, targetListElement, highlightPlayer = false, limit = 10) {
+        if (!db) { 
+            console.error("Firebase Firestore not initialized.");
+            if (targetListElement) targetListElement.innerHTML = '<li>Erro: Firestore não está pronto.</li>';
+            return;
+        }
+        if (!targetListElement) {
+            console.error("Target ranking list element not found.");
+            return;
+        }
+
+        const collectionName = `ranking_${mode}`;
+        targetListElement.innerHTML = '<li>Carregando ranking...</li>';
+        console.log(`Setting up new ranking listener for ${collectionName} on ${targetListElement.id}`); 
+
+        // Unsubscribe previous subscription for this specific element, if it exists
+        if (typeof targetListElement.dataset.unsubscribe === 'function') {
+            targetListElement.dataset.unsubscribe();
+            delete targetListElement.dataset.unsubscribe;
+            console.log(`Unsubscribed old listener for ${targetListElement.id}`); 
+        }
+
+        const currentUnsubscribe = db.collection(collectionName)
+            .orderBy("score", "desc")
+            .limit(limit)
+            .onSnapshot(async snapshot => { 
+                targetListElement.innerHTML = '';
+                if (snapshot.empty) {
+                    targetListElement.innerHTML = '<li>Nenhum recorde ainda. Seja o primeiro!</li>';
+                    return;
+                }
+
+                const rankings = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                const normalizedCurrentPlayerName = currentPlayerName.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+
+                // Create an array of promises for fetching all user stats for players in the current ranking
+                const userStatsPromises = rankings.map(async (data) => {
+                    const normalizedPlayerName = data.player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+                    const statsSnap = await db.collection('user_stats').doc(normalizedPlayerName).get();
+                    return { playerName: normalizedPlayerName, stats: statsSnap.exists ? statsSnap.data() : null };
+                });
+
+                // Wait for all user stats to be fetched
+                const allPlayerStats = await Promise.all(userStatsPromises);
+                const playerStatsMap = new Map(allPlayerStats.map(item => [item.playerName, item.stats]));
+
+                rankings.forEach((data, index) => {
+                    const li = document.createElement('li');
+                    const rankingPosition = index + 1;
+                    const normalizedPlayerName = data.player.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+                    const playerStats = playerStatsMap.get(normalizedPlayerName); 
+                    
+                    let indicatorHtml = '';
+                    if (playerStats) { 
+                        let previousRank = null;
+                        
+                        // Determine previous rank based on mode
+                        if (mode === 'kids') {
+                            if (playerStats.lastGameMode === 'competition_kids' && playerStats.lastRankKids !== null) {
+                                previousRank = playerStats.lastRankKids;
+                            }
+                        } else if (mode === 'adults') {
+                            if (playerStats.lastGameMode === 'competition_adults' && playerStats.lastRankAdults !== null) {
+                                previousRank = playerStats.lastRankAdults;
+                            }
+                        }
+
+                        // Only show indicator if there's a previous rank to compare against
+                        if (previousRank !== null) { 
+                            if (rankingPosition < previousRank) { 
+                                indicatorHtml = '<span class="ranking-indicator up"><i class="fas fa-caret-up"></i></span>'; // Blue up arrow
+                            } else if (rankingPosition > previousRank) { 
+                                indicatorHtml = '<span class="ranking-indicator down"><i class="fas fa-caret-down"></i></span>'; // Red down arrow
+                            } else { 
+                                indicatorHtml = '<span class="ranking-indicator stable"><i class="fas fa-square"></i></span>'; // Green stable square
+                            }
+                        }
+                    }
+
+                    // Order of elements: indicator, number, name, score
+                    li.innerHTML = `${indicatorHtml}<span class="ranking-position">${rankingPosition}º</span><span class="ranking-name">${data.player}</span><span class="ranking-score">${data.score}</span>`; 
+                    
+                    if (highlightPlayer && normalizedPlayerName === normalizedCurrentPlayerName) {
+                        li.classList.add('current-player-highlight');
+                        li.id = `player-rank-${data.id}`; 
+                    }
+                    if (rankingPosition <= 3) li.classList.add('ranking-item-top'); 
+                    if (rankings.length >= 4 && index >= rankings.length - 3) li.classList.add('ranking-item-bottom');
+
+                    targetListElement.appendChild(li);
+                });
+
+                if (highlightPlayer && normalizedCurrentPlayerName) {
+                    const playerElement = document.querySelector(`.current-player-highlight`);
+                    if (playerElement) playerElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, error => {
+                console.error(`Error loading ranking ${mode}: `, error);
+                if (targetListElement) targetListElement.innerHTML = '<li>Erro ao carregar o ranking. Verifique sua conexão.</li>';
+            });
+        
+        targetListElement.dataset.unsubscribe = currentUnsubscribe;
+    }
+
+    function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+    function generateQuestion() {
+        let num1, num2, operatorsToUse, operator, correctAnswer, currentLevelName; 
+
+        if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none'; 
+        if (elements.messageElement) {
+            elements.messageElement.textContent = '';
+            elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+        }
+
+        if (currentGameMode.startsWith('practice_')) {
+            operatorsToUse = (selectedOperationType === 'all') ? ['+', '-', '*', '÷'] : [selectedOperationType];
+            num1 = randomInt(1, 15);
+            num2 = randomInt(1, 15);
+            currentLevelName = difficultyNames["kids_easy"]; 
+        } else { // Competition Modes
+            if (currentGameMode === 'competition_kids') {
+                operatorsToUse = ['+', '-'];
+                num1 = randomInt(1, 10);
+                num2 = randomInt(1, 10);
+                currentLevelName = difficultyNames["kids_easy"];
+            } else { // 'competition_adults'
+                operatorsToUse = ['+', '-', '*', '÷']; 
+                if (correctAnswersCount < 5) {
+                    operatorsToUse = ['+']; num1 = randomInt(1, 20); num2 = randomInt(1, 20); currentLevelName = difficultyNames[1];
+                } else if (correctAnswersCount < 10) {
+                    operatorsToUse = ['+', '-']; num1 = randomInt(1, 30); num2 = randomInt(1, 30); currentLevelName = difficultyNames[2];
+                } else if (correctAnswersCount < 16) {
+                    operatorsToUse = ['+', '-', '*']; num1 = randomInt(1, 50); num2 = randomInt(1, 50); currentLevelName = difficultyNames[3];
+                } else {
+                    num1 = randomInt(1, 70); num2 = randomInt(1, 70); currentLevelName = difficultyNames[4];
+                }
+            }
+        }
+        
+        operator = operatorsToUse[Math.floor(Math.random() * operatorsToUse.length)];
+
+        if (operator === '-') {
+            if (num1 < num2) [num1, num2] = [num2, num1];
+        } else if (operator === '÷') {
+            num2 = randomInt(1, 10);
+            num1 = randomInt(1, 10) * num2;
+        } else if (operator === '*') {
+            if (currentGameMode.startsWith('practice_') || currentGameMode === 'competition_kids') {
+                num1 = randomInt(1, 9); num2 = randomInt(1, 9);
+            } else { 
+                num1 = randomInt(1, 12); num2 = randomInt(1, 12);
+            }
+        }
+
+        let questionString;
+        if (operator === '+') { questionString = `${num1} + ${num2}`; correctAnswer = num1 + num2; }
+        else if (operator === '-') { questionString = `${num1} - ${num2}`; correctAnswer = num1 - num2; }
+        else if (operator === '*') { questionString = `${num1} × ${num2}`; correctAnswer = num1 * num2; }
+        else { questionString = `${num1} ÷ ${num2}`; correctAnswer = num1 / num2; }
+
+        currentQuestion = { question: questionString, answer: correctAnswer };
+        if (elements.questionElement) elements.questionElement.textContent = currentQuestion.question;
+        if (elements.difficultyLevelElement) elements.difficultyLevelElement.textContent = '';
+        
+        if (elements.questionElement) elements.questionElement.classList.remove('correct-animation', 'incorrect-animation');
+        questionStartTime = Date.now(); 
+
+        let answers = [correctAnswer];
+        while (answers.length < 3) {
+            let incorrectAnswer;
+            let attempts = 0;
+            const maxAttempts = 100;
+            do {
+                let offset = randomInt(1, 10);
+                incorrectAnswer = (Math.random() < 0.5) ? correctAnswer + offset : correctAnswer - offset;
+                attempts++;
+            } while ((incorrectAnswer === correctAnswer || answers.includes(incorrectAnswer) || (correctAnswer >= 0 && incorrectAnswer < 0) || (incorrectAnswer === 0 && correctAnswer !== 0)) && attempts < maxAttempts);
+            if (attempts >= maxAttempts) {
+                incorrectAnswer = answers.includes(correctAnswer + 10) ? correctAnswer - 10 : correctAnswer + 10;
+                if (incorrectAnswer < 0 && correctAnswer >= 0) incorrectAnswer = correctAnswer + 5; 
+                if (answers.includes(incorrectAnswer)) incorrectAnswer = answers.includes(correctAnswer + 1) ? correctAnswer - 1 : correctAnswer + 1; 
+            }
+            answers.push(incorrectAnswer);
+        }
+
+        for (let i = answers.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [answers[i], answers[j]] = [answers[j], answers[i]];
+        }
+
+        elements.answerButtons.forEach((button, index) => {
+            if (button) { 
+                button.textContent = answers[index];
+                button.dataset.value = answers[index];
+                button.classList.remove('correct-feedback', 'incorrect-feedback');
+                button.disabled = false;
+            }
+        });
+    }
+
+    // Function to display floating feedback text
+    function displayFloatingFeedback(targetElement, text, type) {
+        if (!targetElement) return; 
+        const feedbackText = document.createElement('span');
+        feedbackText.textContent = text;
+        feedbackText.classList.add('floating-feedback-text', type);
+        
+        const rect = targetElement.getBoundingClientRect();
+        feedbackText.style.left = `${rect.left + rect.width / 2}px`;
+        feedbackText.style.top = `${rect.top}px`;
+        
+        document.body.appendChild(feedbackText);
+
+        void feedbackText.offsetWidth; 
+        feedbackText.style.opacity = 1;
+
+        feedbackText.addEventListener('animationend', () => {
+            feedbackText.remove();
+        });
+    }
+
+
+    async function startGame() { 
+      if (!currentGameMode || (currentGameMode.startsWith('practice_') && selectedOperationType === null)) {
+          console.warn("Por favor, selecione um modo de jogo e/ou operação antes de começar.");
+          return;
+      }
+      currentPlayerName = elements.playerNameInput.value.trim();
+      if (!elements.playerNameInput.checkValidity() || currentPlayerName === '' || !currentPlayerName.includes(' ')) {
+        console.warn("Por favor, digite seu nome e sobrenome (ex: João Silva) para iniciar o jogo!");
+        if (elements.playerNameInput) elements.playerNameInput.focus();
+        return;
+      }
+      localStorage.setItem('lastPlayerName', currentPlayerName);
+
+      score = 0; timeLeft = 60; gameActive = true; correctAnswersCount = 0; totalQuestionsAnsweredCurrentGame = 0; consecutiveCorrectAnswersCount = 0;
+      if (elements.scoreValueElement) elements.scoreValueElement.textContent = score;
+      if (elements.timerValueElement) elements.timerValueElement.textContent = timeLeft + 's';
+      if (elements.playerNameInput) elements.playerNameInput.style.display = 'none';
+      if (elements.startGameButton) elements.startGameButton.style.display = 'none';
+      if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'flex';
+      if (elements.playAgainButton) elements.playAgainButton.style.display = 'none';
+      if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
+      if (elements.messageElement) {
+          elements.messageElement.textContent = '';
+          elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+      }
+      if (elements.timeBar) {
+          elements.timeBar.style.width = '100%';
+          elements.timeBar.style.backgroundColor = 'var(--primary-green)'; 
+          elements.timeBar.classList.remove('time-bar-shaking');
+      }
+      if (elements.streakIndicator) {
+          elements.streakIndicator.classList.remove('show');
+          elements.streakIndicator.style.display = 'none';
+      }
+
+      setTimeout(() => {
+        generateQuestion();
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          if (elements.timerValueElement) elements.timerValueElement.textContent = timeLeft + 's';
+          const percentage = (timeLeft / 60) * 100;
+          if (elements.timeBar) {
+              elements.timeBar.style.width = percentage + '%';
+
+              if (percentage > 50) elements.timeBar.style.backgroundColor = 'var(--primary-green)'; 
+              else if (percentage > 20) {
+                  elements.timeBar.style.backgroundColor = 'var(--accent-orange)'; 
+                  if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) elements.timeBar.classList.add('time-bar-shaking');
+                } else {
+                    elements.timeBar.style.backgroundColor = 'var(--danger-red)'; 
+                    if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) {
+                        elements.timeBar.classList.add('time-bar-shaking');
+                        void elements.timeBar.offsetWidth; 
+                    }
+                }
+            }
+            if (timeLeft <= 0) endGame();
+        }, 1000);
+      }, 1000);
+    }
+
+    async function endGame() { 
+      clearInterval(timerInterval); 
+      gameActive = false;
+      elements.answerButtons.forEach(button => { if (button) button.disabled = true; }); 
+      
+      if (elements.messageElement) {
+          elements.messageElement.textContent = `Tempo esgotado! Você marcou ${score} pontos.`;
+          elements.messageElement.classList.add('show');
+          elements.messageElement.classList.remove('success-message', 'error-message', 'incredible-message');
+      }
+      
+      elements.answerButtons.forEach(button => { if (button) button.classList.remove('correct-feedback', 'incorrect-feedback'); }); 
+      if (elements.questionElement) elements.questionElement.classList.remove('correct-animation', 'incorrect-animation');
+      if (elements.timeBar) elements.timeBar.classList.remove('time-bar-shaking');
+      if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none'; 
+      if (elements.streakIndicator) {
+          elements.streakIndicator.classList.remove('show');
+          elements.streakIndicator.style.display = 'none';
+      }
+
+      // Save player stats at the end of EACH game
+      await saveUserStats(currentPlayerName, score, correctAnswersCount, totalQuestionsAnsweredCurrentGame, currentGameMode); 
+
+      if (currentGameMode.startsWith('competition_')) {
+          let finalDifficultyLevelName;
+          if (currentGameMode === 'competition_kids') finalDifficultyLevelName = difficultyNames["kids_easy"];
+          else {
+              if (correctAnswersCount >= 16) finalDifficultyLevelName = difficultyNames[4];
+              else if (correctAnswersCount >= 10) finalDifficultyLevelName = difficultyNames[3];
+              else if (correctAnswersCount >= 5) finalDifficultyLevelName = difficultyNames[2];
+              else finalDifficultyLevelName = difficultyNames[1];
+          }
+          
+          saveRanking(currentPlayerName, score, currentGameMode, finalDifficultyLevelName);
+          showRankingsScreen(true); 
+          
+      } else { 
+          if (elements.playerNameInput) elements.playerNameInput.value = '';
+          if (elements.playerNameInput) elements.playerNameInput.style.display = 'inline-block';
+          if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none';
+          currentGameMode = null; selectedOperationType = 'all';
+          if (elements.questionElement) {
+              elements.questionElement.textContent = 'Prepare-se para a aventura!';
+              elements.questionElement.classList.add('prepare-text-animated');
+              elements.questionElement.addEventListener('animationend', function handler() {
+                  if (elements.questionElement) elements.questionElement.classList.remove('prepare-text-animated');
+                  elements.questionElement.removeEventListener('animationend', handler);
+              });
+          }
+          if (elements.difficultyLevelElement) elements.difficultyLevelElement.textContent = '';
+          showMainMenu();
+      }
+    }
+
+    function showFeedbackMessage(text, type) {
+        if (elements.messageElement) { 
+            elements.messageElement.textContent = text;
+            elements.messageElement.classList.remove('success-message', 'error-message', 'incredible-message');
+            elements.messageElement.classList.add(type, 'show');
+            setTimeout(() => {
+                if (elements.messageElement) elements.messageElement.classList.remove('show');
+                setTimeout(() => { if (elements.messageElement) elements.messageElement.textContent = ''; }, 500);
+            }, 1500);
+        }
+    }
+
+    function processCorrectAnswer(clickedButton) {
+        score++; correctAnswersCount++; totalQuestionsAnsweredCurrentGame++;
+        if (elements.scoreValueElement) { 
+            elements.scoreValueElement.textContent = score;
+            elements.scoreValueElement.classList.add('pulse-effect');
+            elements.scoreValueElement.addEventListener('animationend', function handler() {
+                if (elements.scoreValueElement) elements.scoreValueElement.classList.remove('pulse-effect');
+                elements.scoreValueElement.removeEventListener('animationend', handler);
+            });
+        }
+        
+        displayFloatingFeedback(elements.scoreValueElement, '+1', 'score-bonus');
+
+        if (clickedButton) clickedButton.classList.add('correct-feedback'); 
+        if (elements.questionElement) elements.questionElement.classList.add('correct-animation'); 
+        if (isSoundOn && correctSound) correctSound.play();
+        if (isVibrationOn && navigator.vibrate) navigator.vibrate(50);
+
+        const timeTaken = (Date.now() - questionStartTime) / 1000; 
+        const speedBonusThreshold = 1.5; 
+        
+        const bonusTimeSpeed = 0.5; 
+        if (timeTaken <= speedBonusThreshold) {
+            timeLeft = Math.min(60, timeLeft + bonusTimeSpeed); 
+            if (elements.timerValueElement) elements.timerValueElement.textContent = Math.ceil(timeLeft) + 's'; 
+            displayFloatingFeedback(elements.timerValueElement, `+${bonusTimeSpeed}s`, 'time-bonus');
+        }
+        
+        if (elements.questionElement) { 
+            elements.questionElement.addEventListener('animationend', function handler() {
+                if (elements.questionElement) elements.questionElement.classList.remove('correct-animation');
+                elements.questionElement.removeEventListener('animationend', handler);
+            });
+        }
+
+        consecutiveCorrectAnswersCount++;
+        if (elements.streakCount) elements.streakCount.textContent = consecutiveCorrectAnswersCount;
+        if (elements.streakIndicator) { 
+            elements.streakIndicator.style.display = 'flex';
+            elements.streakIndicator.classList.add('show');
+        }
+
+        let messageToShow = "Parabéns!";
+        let messageType = 'success-message';
+
+        // Streak Time Bonus (every 5 consecutive correct answers)
+        if (consecutiveCorrectAnswersCount > 0 && consecutiveCorrectAnswersCount % 5 === 0) {
+            const streakBonusTime = 5; 
+            timeLeft += streakBonusTime;
+            if (elements.timerValueElement) elements.timerValueElement.textContent = Math.ceil(timeLeft) + 's';
+            displayFloatingFeedback(elements.timerValueElement, `+${streakBonusTime}s`, 'time-bonus');
+            messageToShow = "Bônus de Tempo!";
+            messageType = 'incredible-message';
+        }
+
+        // "Incredible!" message (every 10 consecutive correct answers)
+        if (consecutiveCorrectAnswersCount > 0 && consecutiveCorrectAnswersCount % 10 === 0) {
+            messageToShow = "Incrível!";
+            messageType = 'incredible-message';
+        }
+
+        showFeedbackMessage(messageToShow, messageType);
+        
+        if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
+        elements.answerButtons.forEach(button => { if (button) button.disabled = true; }); 
+        setTimeout(() => generateQuestion(), 500);
+    }
+
+    function processIncorrectAnswer(clickedButton) {
+        totalQuestionsAnsweredCurrentGame++;
+        if (elements.scoreValueElement) { 
+            elements.scoreValueElement.textContent = score;
+            elements.scoreValueElement.classList.add('pulse-effect');
+            elements.scoreValueElement.addEventListener('animationend', function handler() {
+                if (elements.scoreValueElement) elements.scoreValueElement.classList.remove('pulse-effect');
+                elements.scoreValueElement.removeEventListener('animationend', handler);
+            });
+        }
+
+        if (clickedButton) clickedButton.classList.add('incorrect-feedback'); 
+        if (elements.questionElement) elements.questionElement.classList.add('incorrect-animation'); 
+        if (isSoundOn && incorrectSound) incorrectSound.play();
+        if (isVibrationOn && navigator.vibrate) navigator.vibrate([100, 30, 100]);
+
+        consecutiveCorrectAnswersCount = 0;
+        if (elements.streakIndicator) { 
+            elements.streakIndicator.style.display = 'none';
+            elements.streakIndicator.classList.remove('show');
+        }
+
+        showFeedbackMessage("Incorreto!", 'error-message');
+        if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
+        elements.answerButtons.forEach(button => { if (button) button.disabled = true; }); 
+        setTimeout(() => generateQuestion(), 500);
+    }
+
+    function openDonationLink() { window.open('https://checkout.nubank.com.br/KVCHaD4Xahm39l1', '_blank'); }
+
+    // Function to generate share message
+    function generateShareMessage(playerName, finalScore, gameMode) {
+        const gameUrl = "https://wiggers12.github.io/"; 
+        let modeText = '';
+        if (gameMode === 'competition_kids') modeText = 'no modo Competição Kids';
+        else if (gameMode === 'competition_adults') modeText = 'no modo Competição Adulto';
+        else if (gameMode && gameMode.startsWith('practice_')) modeText = 'no modo de Prática';
+
+        return `Eu fiz ${finalScore} pontos ${modeText} no Desafio dos 60 Segundos! Você consegue me superar? Jogue agora: ${gameUrl} #Desafio60Segundos #JogoDeMatematica`;
+    }
+
+    // Function to share on WhatsApp
+    function shareOnWhatsApp() {
+        const message = generateShareMessage(currentPlayerName, score, currentGameMode);
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    }
+
+    // --- Event Listeners ---
+    if (elements.practiceButton) elements.practiceButton.addEventListener('click', showOperationSelection); 
+    if (elements.competitionButton) elements.competitionButton.addEventListener('click', showCompetitionModeSelection); 
+    if (elements.myProgressButton) elements.myProgressButton.addEventListener('click', showMyProgressScreen);
+    if (elements.rankingDonateButton) elements.rankingDonateButton.addEventListener('click', openDonationLink);
+
+    if (elements.backToMainFromOperationButton) elements.backToMainFromOperationButton.addEventListener('click', showMainMenu); 
+    if (elements.backToOperationSelectionButton) elements.backToOperationSelectionButton.addEventListener('click', showOperationSelection); 
+    if (elements.backToMainFromCompetitionModeButton) elements.backToMainFromCompetitionModeButton.addEventListener('click', showMainMenu); 
+    if (elements.backToMainFromRankingButton) elements.backToMainFromRankingButton.addEventListener('click', showMainMenu);
+    if (elements.backToMainFromProgressButton) elements.backToMainFromProgressButton.addEventListener('click', showMainMenu);
+
+    document.querySelectorAll('#operation-selection-container .operation-buttons button').forEach(button => {
+        if (button) button.addEventListener('click', (e) => selectOperation(e.target.dataset.op));
+    });
+
+    if (elements.modeKidsButton) elements.modeKidsButton.addEventListener('click', (e) => selectGameModeAndStart(e.target.dataset.mode));
+    if (elements.modeAdultsButton) elements.modeAdultsButton.addEventListener('click', (e) => selectGameModeAndStart(e.target.dataset.mode));
+
+    document.querySelectorAll('#competition-mode-selection-container .competition-buttons button[data-mode^="competition_"]').forEach(button => {
+        if (button) button.addEventListener('click', (e) => selectGameModeAndStart(e.target.dataset.mode));
+    });
+
+    if (elements.showKidsRankingButton) elements.showKidsRankingButton.addEventListener('click', () => {
+        if (elements.dynamicCompetitionRankingDisplay) elements.dynamicCompetitionRankingDisplay.style.display = 'flex';
+        if (elements.rankingKidsAreaDynamic) elements.rankingKidsAreaDynamic.style.display = 'block';
+        if (elements.rankingAdultsAreaDynamic) elements.rankingAdultsAreaDynamic.style.display = 'none';
+        displayRanking('kids', elements.rankingKidsListDynamic, false, 50);
+    });
+
+    if (elements.showAdultsRankingButton) elements.showAdultsRankingButton.addEventListener('click', () => {
+        if (elements.dynamicCompetitionRankingDisplay) elements.dynamicCompetitionRankingDisplay.style.display = 'flex';
+        if (elements.rankingKidsAreaDynamic) elements.rankingKidsAreaDynamic.style.display = 'none';
+        if (elements.rankingAdultsAreaDynamic) elements.rankingAdultsAreaDynamic.style.display = 'block';
+        displayRanking('adults', elements.rankingAdultsListDynamic, false, 50);
+    });
+
+
+    if (elements.startGameButton) elements.startGameButton.addEventListener('click', startGame);
+    if (elements.playAgainButton) elements.playAgainButton.addEventListener('click', startGame);
+
+    if (elements.playerNameInput) elements.playerNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') startGame(); });
+
+    if (elements.answerButtonsContainer) elements.answerButtonsContainer.addEventListener('click', (e) => {
+        if (!gameActive || !e.target.classList.contains('answer-button')) return;
+        const userAnswer = Number(e.target.dataset.value);
+        const correctAnswer = currentQuestion.answer;
+        if (userAnswer === correctAnswer) processCorrectAnswer(e.target);
+        else processIncorrectAnswer(e.target);
+    });
+
+    elements.settingsIcons.forEach(icon => {
+        if (icon) icon.addEventListener('click', (e) => showSettingsModal(e.currentTarget.dataset.targetScreen));
+    });
+
+    if (elements.closeSettingsModalButton) elements.closeSettingsModalButton.addEventListener('click', () => {
+        hideSettingsModal();
+        const sourceScreen = elements.settingsModal ? elements.settingsModal.dataset.sourceScreen : null; 
+        if (sourceScreen === 'operation-selection') showOperationSelection();
+        else if (sourceScreen === 'mode-selection') showModeSelectionForPractice();
+        else if (sourceScreen === 'competition-mode-selection') showCompetitionModeSelection();
+        else if (sourceScreen === 'game') showGameScreen();
+        else if (sourceScreen === 'rankings') showRankingsScreen();
+        else if (sourceScreen === 'my-progress') showMyProgressScreen();
+    });
+    
+    // CORREÇÃO: Adiciona listener para fechar modal de configurações clicando fora
+    if (elements.settingsModal) elements.settingsModal.addEventListener('click', (e) => {
+        if (e.target === elements.settingsModal) hideSettingsModal();
+    });
+
+
+    if (elements.toggleSound) elements.toggleSound.addEventListener('click', () => { isSoundOn = handleToggle(elements.toggleSound, isSoundOn); });
+    if (elements.toggleBGM) elements.toggleBGM.addEventListener('click', () => { isBGMOn = handleToggle(elements.toggleBGM, isBGMOn); });
+    if (elements.toggleVibration) elements.toggleVibration.addEventListener('click', () => { isVibrationOn = handleToggle(elements.toggleVibration, isVibrationOn); });
+
+    if (elements.settingsHomeButton) elements.settingsHomeButton.addEventListener('click', () => {
+        hideSettingsModal();
+        endGame();
+        unsubscribeAllRankings();
+    });
+
+    if (elements.settingsReplayButton) elements.settingsReplayButton.addEventListener('click', () => {
+        hideSettingsModal();
+        clearInterval(timerInterval); 
+        gameActive = false; score = 0; timeLeft = 60; correctAnswersCount = 0; totalQuestionsAnsweredCurrentGame = 0; consecutiveCorrectAnswersCount = 0;
+        if (elements.scoreValueElement) elements.scoreValueElement.textContent = score;
+        if (elements.timerValueElement) elements.timerValueElement.textContent = timeLeft + 's';
+        if (elements.playerNameInput) elements.playerNameInput.style.display = 'none';
+        if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'flex';
+        elements.answerButtons.forEach(button => { if (button) button.disabled = false; }); 
+        if (elements.timeBar) {
+            elements.timeBar.style.width = '100%';
+            elements.timeBar.style.backgroundColor = 'var(--primary-green)';
+            elements.timeBar.classList.remove('time-bar-shaking');
+        }
+        if (elements.explainConceptButton) elements.explainConceptButton.style.display = 'none';
+        if (elements.messageElement) {
+            elements.messageElement.textContent = '';
+            elements.messageElement.classList.remove('show', 'success-message', 'error-message', 'incredible-message');
+        }
+        if (elements.streakIndicator) {
+            elements.streakIndicator.classList.remove('show');
+            elements.streakIndicator.style.display = 'none';
+        }
+        generateQuestion(); 
+        timerInterval = setInterval(() => { 
+            timeLeft--;
+            if (elements.timerValueElement) elements.timerValueElement.textContent = timeLeft + 's';
+            const percentage = (timeLeft / 60) * 100;
+            if (elements.timeBar) {
+                elements.timeBar.style.width = percentage + '%';
+                if (percentage > 50) elements.timeBar.style.backgroundColor = 'var(--primary-green)';
+                else if (percentage > 20) {
+                    elements.timeBar.style.backgroundColor = 'var(--accent-orange)';
+                    if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) elements.timeBar.classList.add('time-bar-shaking');
+                } else {
+                    elements.timeBar.style.backgroundColor = 'var(--danger-red)';
+                    if (timeLeft <= 10 && elements.timeBar && !elements.timeBar.classList.contains('time-bar-shaking')) {
+                        elements.timeBar.classList.add('time-bar-shaking');
+                        void elements.timeBar.offsetWidth;
+                    }
+                }
+            }
+            if (timeLeft <= 0) endGame();
+        }, 1000);
+    });
+
+    if (elements.settingsDonateButton) elements.settingsDonateButton.addEventListener('click', () => {
+        openDonationLink();
+        hideSettingsModal();
+    });
+
+    if (elements.settingsMoreButton) elements.settingsMoreButton.addEventListener('click', () => {
+        console.info("Funcionalidade 'Mais Opções' em desenvolvimento!");
+        hideSettingsModal();
+    });
+
+    if (elements.explainConceptButton) elements.explainConceptButton.addEventListener('click', showExplanationModal);
+    if (elements.closeExplanationModalButton) elements.closeExplanationModalButton.addEventListener('click', hideExplanationModal);
+    if (elements.explanationOkButton) elements.explanationOkButton.addEventListener('click', hideExplanationModal);
+    // CORREÇÃO: Adiciona listener para fechar modal de explicação clicando fora
+    if (elements.explanationModal) elements.explanationModal.addEventListener('click', (e) => {
+        if (e.target === elements.explanationModal) hideExplanationModal();
+    });
+
+    // Event Listeners para os novos modais de informação
+    if (elements.aboutButton) elements.aboutButton.addEventListener('click', () => showModal(elements.aboutModal));
+    if (elements.howToPlayButton) elements.howToPlayButton.addEventListener('click', () => showModal(elements.howToPlayModal));
+    if (elements.whyPlayButton) elements.whyPlayButton.addEventListener('click', () => showModal(elements.whyPlayModal));
+
+    if (elements.closeAboutModalButton) elements.closeAboutModalButton.addEventListener('click', () => hideModal(elements.aboutModal));
+    if (elements.closeHowToPlayModalButton) elements.closeHowToPlayModalButton.addEventListener('click', () => hideModal(elements.howToPlayModal));
+    if (elements.closeWhyPlayModalButton) elements.closeWhyPlayModalButton.addEventListener('click', () => hideModal(elements.whyPlayModal));
+    
+    // CORREÇÃO: Adiciona listeners para fechar modais de info clicando fora
+    if (elements.aboutModal) elements.aboutModal.addEventListener('click', (e) => {
+        if (e.target === elements.aboutModal) hideModal(elements.aboutModal);
+    });
+    if (elements.howToPlayModal) elements.howToPlayModal.addEventListener('click', (e) => {
+        if (e.target === elements.howToPlayModal) hideModal(elements.howToPlayModal);
+    });
+    if (elements.whyPlayModal) elements.whyPlayModal.addEventListener('click', (e) => {
+        if (e.target === elements.whyPlayModal) hideModal(elements.whyPlayModal);
+    });
+
+    // Event Listener for WhatsApp share button
+    if (elements.shareScoreWhatsappButton) elements.shareScoreWhatsappButton.addEventListener('click', shareOnWhatsApp);
+
+    window.onload = () => {
+        try {
+            console.log("window.onload triggered.");
+            if (elements.answerButtonsContainer) elements.answerButtonsContainer.style.display = 'none'; 
+            showSplashScreen();
+        } catch (e) {
+            console.error("Error during app initialization:", e);
+            document.body.innerHTML = `
+                <div style="text-align: center; color: var(--danger-red); margin-top: 50px;">
+                    <h1>Erro ao carregar o jogo!</h1>
+                    <p>Por favor, tente novamente ou contate o suporte.</p>
+                    <p>Detalhes do erro: ${e.message}</p>
+                </div>
+            `;
+        }
+    };
+
+  </script>
 </body>
 </html>
